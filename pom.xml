@@ -1,0 +1,21 @@
+<project>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.ecc.hibernate-xml</groupId>
+	<artifactId>parent</artifactId>
+	<version>1.0.0</version>
+	<packaging>pom</packaging>
+	<properties>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+			    <groupId>org.hibernate</groupId>
+			    <artifactId>hibernate-core</artifactId>
+			    <version>4.3.11.Final</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+</project>
