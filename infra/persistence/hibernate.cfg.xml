@@ -9,6 +9,7 @@
 		</property>
 		<property name="hibernate.connection.username">exist</property>
 		<property name="hibernate.connection.password">ex1stgl0bal</property>
+		<mapping resource="Address.hbm.xml" />
 		<mapping resource="Person.hbm.xml" />
 	</session-factory>
 </hibernate-configuration>
