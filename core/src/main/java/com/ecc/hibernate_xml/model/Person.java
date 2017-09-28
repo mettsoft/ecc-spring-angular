@@ -1,4 +1,4 @@
-package com.ecc.hibernate-xml.model;
+package com.ecc.hibernate_xml.model;
 
 import java.math.BigDecimal;
 import java.util.Set;
@@ -27,16 +27,16 @@ public class Person {
 		this.address = address;
 	}
 
-	public void setDate(Date date) {
-		this.date = date;
+	public void setBirthday(Date birthday) {
+		this.birthday = birthday;
 	}
 
 	public void setGWA(BigDecimal GWA) {
 		this.GWA = GWA;
 	}
 
-	public void setCurrentEmployed(Boolean currentEmployed) {
-		this.currentEmployed = currentEmployed;
+	public void setCurrentlyEmployed(Boolean currentlyEmployed) {
+		this.currentlyEmployed = currentlyEmployed;
 	}
 
 	public void setDateHired(Date dateHired) {
@@ -63,16 +63,16 @@ public class Person {
 		return address;
 	}
 
-	public Date getDate() {
-		return date;
+	public Date getBirthday() {
+		return birthday;
 	}
 
 	public BigDecimal getGWA() {
 		return GWA;
 	}
 
-	public Boolean getCurrentEmployed() {
-		return currentEmployed;
+	public Boolean getCurrentlyEmployed() {
+		return currentlyEmployed;
 	}
 
 	public Date getDateHired() {

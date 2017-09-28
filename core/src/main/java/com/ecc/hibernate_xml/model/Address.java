@@ -1,4 +1,4 @@
-package com.ecc.hibernate-xml.model;
+package com.ecc.hibernate_xml.model;
 
 public class Address {
 	private String streetNumber;
