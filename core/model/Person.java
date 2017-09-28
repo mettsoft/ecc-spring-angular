@@ -1,6 +1,7 @@
 package com.ecc.hibernate-xml.model;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 public class Person {
 	private Integer id;
