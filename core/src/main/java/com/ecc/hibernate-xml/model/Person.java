@@ -1,6 +1,7 @@
 package com.ecc.hibernate-xml.model;
 
 import java.math.BigDecimal;
+import java.util.Set;
 import java.util.Date;
 
 public class Person {
@@ -11,6 +12,8 @@ public class Person {
 	private BigDecimal GWA;
 	private Boolean currentlyEmployed;
 	private Date dateHired;
+	private Set<Contact> contacts;
+	private Set<Role> roles;
 
 	public void setId(Integer id) {
 		this.id = id;
@@ -40,6 +43,14 @@ public class Person {
 		this.dateHired = dateHired;
 	}
 
+	public void setContacts(Set contacts) {
+		this.contacts = contacts;
+	}
+
+	public void setRoles(Set roles) {
+		this.roles = roles;
+	}
+
 	public Integer getId() {
 		return id;
 	}
@@ -66,5 +77,13 @@ public class Person {
 
 	public Date getDateHired() {
 		return dateHired;
+	}
+
+	public Set getContacts() {
+		return contacts;
+	}
+
+	public Set getRoles() {
+		return roles;
 	}
 }
