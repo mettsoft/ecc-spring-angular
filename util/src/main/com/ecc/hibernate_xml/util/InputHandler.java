@@ -1,7 +1,7 @@
 package com.ecc.hibernate_xml.util;
 
 import java.util.Scanner;
-import com.ecc.utility.CheckedFunction;
+import com.ecc.hibernate_xml.util.CheckedFunction;
 
 public class InputHandler {
 	private static final Scanner SCANNER = new Scanner(System.in);
