@@ -23,6 +23,9 @@
 		<property name="currentlyEmployed" column="currently_employed" type="boolean" not-null="true" />
 		<property name="dateHired" column="date_hired" type="date" />
 		<!-- TODO: Contact Information  -->
-		<!-- TODO: Roles -->
+		<set name="roles" table="persons_roles">
+			<key column="person_id" />
+			<many-to-many column="role_id" class="com.ecc.hibernate_xml.model.Role" />
+		</set>
 	</class>
 </hibernate-mapping>
