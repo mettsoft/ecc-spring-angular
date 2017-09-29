@@ -11,5 +11,6 @@
 		<property name="hibernate.connection.password">ex1stgl0bal</property>
 		<mapping resource="persistence/Address.hbm.xml" />
 		<mapping resource="persistence/Person.hbm.xml" />
+		<mapping resource="persistence/Role.hbm.xml" />
 	</session-factory>
 </hibernate-configuration>
