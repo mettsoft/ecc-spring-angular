@@ -4,18 +4,20 @@
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-	<class name="Person" table="persons">
-		<id name="id" column="id" type="int" not-null="true">
-			<generator class="native" />
+	<class name="com.ecc.hibernate_xml.model.Person" table="persons">
+		<id name="id" column="id" type="int">
+			<generator class="sequence">
+				<param name="sequence">persons_id_seq</param>
+			</generator>
 		</id>
-		<component name="name" class="Name">
+		<component name="name" class="com.ecc.hibernate_xml.model.Name">
 			<property name="title" column="title" type="string" />
 			<property name="lastName" column="last_name" type="string" not-null="true" />
 			<property name="firstName" column="first_name" type="string" not-null="true" />
 			<property name="middleName" column="middle_name" type="string" not-null="true" />
 			<property name="suffix" column="suffix" type="string" />
 		</component>
-		<many-to-one name="address" column="address_id" class="Address" not-null="true" />
+		<many-to-one name="address" column="address_id" class="com.ecc.hibernate_xml.model.Address" not-null="true" cascade="all" />
 		<property name="birthday" column="birthday" type="date" not-null="true" />
 		<property name="GWA" column="GWA" type="big_decimal" not-null="true" />
 		<property name="currentlyEmployed" column="currently_employed" type="boolean" not-null="true" />
