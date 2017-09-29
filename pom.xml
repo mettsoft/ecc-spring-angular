@@ -10,6 +10,7 @@
 	</properties>
 
 	<modules>
+		<module>app</module>
 		<module>core</module>
 		<module>infra</module>
 	</modules>

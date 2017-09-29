@@ -7,6 +7,16 @@ public class Name {
 	private String middleName;
 	private String suffix;
 
+	public Name() {
+
+	}
+	
+	public Name(String lastName, String firstName, String middleName) {
+		setLastName(lastName);
+		setFirstName(firstName);
+		setMiddleName(middleName);
+	}
+
 	public void setTitle(String title) {
 		this.title = title;
 	}

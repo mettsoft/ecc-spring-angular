@@ -7,6 +7,17 @@ public class Address {
 	private String municipality;
 	private Integer zipCode;
 
+	public Address() {
+
+	}
+
+	public Address(String streetNumber, Integer barangay, String municipality, Integer zipCode) {
+		setStreetNumber(streetNumber);
+		setBarangay(barangay);
+		setMunicipality(municipality);
+		setZipCode(zipCode);
+	}
+	
 	public void setId(Integer id) {
 		this.id = id;
 	}
