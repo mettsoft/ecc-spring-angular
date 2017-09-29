@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD//EN" 
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.ecc.hibernate_xml.model.Contact" table="contacts">
+		<id name="id" column="id" type="int">
+			<generator class="sequence">
+				<param name="sequence">contacts_id_seq</param>
+			</generator>
+		</id>
+		<discriminator column="contact_type" type="string" />
+		<property name="data" column="data" type="string" />
+		<subclass name="com.ecc.hibernate_xml.model.Email" discriminator-value="EMAIL" />
+		<subclass name="com.ecc.hibernate_xml.model.Landline" discriminator-value="LANDLINE" />
+		<subclass name="com.ecc.hibernate_xml.model.MobileNumber" discriminator-value="MOBILE_NUMBER" />
+	</class>
+</hibernate-mapping>
