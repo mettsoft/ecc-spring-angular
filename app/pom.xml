@@ -37,7 +37,7 @@
 							</descriptorRefs>
 							<archive>
 								<manifest>
-									<mainClass>com.ecc.hibernate_xml.app.App</mainClass>
+									<mainClass>com.ecc.hibernate_xml.app.Application</mainClass>
 								</manifest>
 							</archive>
 						</configuration>
