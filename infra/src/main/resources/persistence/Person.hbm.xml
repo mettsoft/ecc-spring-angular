@@ -22,9 +22,12 @@
 		<property name="GWA" column="GWA" type="big_decimal" not-null="true" />
 		<property name="currentlyEmployed" column="currently_employed" type="boolean" not-null="true" />
 		<property name="dateHired" column="date_hired" type="date" />
-		<!-- TODO: Contact Information  -->
+		<set name="contacts" cascade="all">
+			<key column="person_id" not-null="true" />
+			<one-to-many class="com.ecc.hibernate_xml.model.Contact" />
+		</set>
 		<set name="roles" table="persons_roles">
-			<key column="person_id" />
+			<key column="person_id" not-null="true" />
 			<many-to-many column="role_id" class="com.ecc.hibernate_xml.model.Role" />
 		</set>
 	</class>
