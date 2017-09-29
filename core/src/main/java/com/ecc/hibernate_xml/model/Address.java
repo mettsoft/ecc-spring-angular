@@ -1,10 +1,15 @@
 package com.ecc.hibernate_xml.model;
 
 public class Address {
+	private Integer id;
 	private String streetNumber;
 	private Integer barangay;
 	private String municipality;
 	private Integer zipCode;
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
 	public void setStreetNumber(String streetNumber) {
 		this.streetNumber = streetNumber;
@@ -22,6 +27,10 @@ public class Address {
 		this.zipCode = zipCode;
 	}
 
+	public Integer getId() {
+		return id;
+	}
+	
 	public String getStreetNumber() {
 		return streetNumber;
 	}
