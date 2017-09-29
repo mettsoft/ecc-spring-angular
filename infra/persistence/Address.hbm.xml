@@ -4,9 +4,11 @@
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-	<class name="Address" table="addresses">
-		<id name="id" column="id" type="int" not-null="true">
-			<generator class="native" />
+	<class name="com.ecc.hibernate_xml.model.Address" table="addresses">
+		<id name="id" column="id" type="int">
+			<generator class="sequence">
+				<param name="sequence">addresses_id_seq</param>
+			</generator>
 		</id>
 		<property name="streetNumber" column="street_number" type="string" not-null="true" />
 		<property name="barangay" column="barangay" type="int" not-null="true" />
