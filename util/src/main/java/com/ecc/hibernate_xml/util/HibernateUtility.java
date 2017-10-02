@@ -10,11 +10,18 @@ public class HibernateUtility {
 
 	private static SessionFactory sessionFactory;
 
-	public static SessionFactory getSessionFactory() throws HibernateException {
+	public static void initializeSessionFactory() throws HibernateException {
 		if (sessionFactory == null) {
 			sessionFactory = new Configuration().configure(CONFIGURATION_PATH)
 				.buildSessionFactory();			
 		}
+	}
+
+	public static SessionFactory getSessionFactory() throws HibernateException {
 		return sessionFactory;
+	}
+
+	public static void closeSessionFactory() {
+		sessionFactory.close();
 	}
 }
