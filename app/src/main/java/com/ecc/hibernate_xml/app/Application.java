@@ -4,6 +4,11 @@ import java.util.logging.Logger;
 import java.util.logging.Level;
 
 import com.ecc.hibernate_xml.ui_handler.CompositeUiHandler;
+import com.ecc.hibernate_xml.ui_handler.person.ListPersonsByGwaUiHandler;
+import com.ecc.hibernate_xml.ui_handler.person.ListPersonsByDateHiredUiHandler;
+import com.ecc.hibernate_xml.ui_handler.person.ListPersonsByLastNameUiHandler;
+import com.ecc.hibernate_xml.ui_handler.person.CreatePersonUiHandler;
+import com.ecc.hibernate_xml.ui_handler.person.DeletePersonUiHandler;
 import com.ecc.hibernate_xml.ui_handler.role.ListRolesUiHandler;
 import com.ecc.hibernate_xml.ui_handler.role.CreateRoleUiHandler;
 import com.ecc.hibernate_xml.ui_handler.role.UpdateRoleUiHandler;
@@ -22,6 +27,13 @@ public class Application {
 		HibernateUtility.initializeSessionFactory();
 
 		new CompositeUiHandler()
+			.add(new CompositeUiHandler("Go to Person Registry.")
+				.add(new CompositeUiHandler("List Person Records.")
+					.add(new ListPersonsByGwaUiHandler("Sort by GWA."))
+					.add(new ListPersonsByDateHiredUiHandler("Sort by date hired."))
+					.add(new ListPersonsByLastNameUiHandler("Sort by last name.")))
+				.add(new CreatePersonUiHandler("Create a new Person record."))
+				.add(new DeletePersonUiHandler("Delete an existing Person record.")))
 			.add(new CompositeUiHandler("Go to Role Registry.")
 				.add(new ListRolesUiHandler("List Role Records."))
 				.add(new CreateRoleUiHandler("Create a new Role record."))
