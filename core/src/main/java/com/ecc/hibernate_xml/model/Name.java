@@ -1,5 +1,9 @@
 package com.ecc.hibernate_xml.model;
 
+import java.util.List;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
+
 public class Name {
 	private String title;
 	private String lastName;
@@ -55,5 +59,24 @@ public class Name {
 
 	public String getSuffix() {
 		return suffix;
+	}
+
+	@Override
+	public String toString() {
+		List<String> tokens = new ArrayList<>(5);
+
+		if (title != null) {
+			tokens.add(title);
+		}
+
+		tokens.add(firstName);
+		tokens.add(middleName);
+		tokens.add(lastName);
+
+		if (suffix != null) {
+			tokens.add(suffix);
+		}
+
+		return tokens.stream().collect(Collectors.joining(" "));
 	}
 }
