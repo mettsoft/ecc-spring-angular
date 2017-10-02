@@ -11,6 +11,15 @@ public abstract class UiHandler {
 	public String getOperationName() {
 		return operationName;
 	}
-	
-	public abstract void handle() throws Exception;
+
+	public void handle() {
+		try {
+			onHandle();
+		}
+		catch (Exception exception) {
+			System.out.println("Error: " + exception.getMessage());
+		}
+	}
+
+	public abstract void onHandle() throws Exception;
 }
