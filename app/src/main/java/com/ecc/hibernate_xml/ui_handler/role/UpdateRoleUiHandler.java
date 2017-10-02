@@ -18,8 +18,11 @@ public class UpdateRoleUiHandler extends UiHandler {
 
 	@Override 
 	public void onHandle() throws Exception {
-		roleService.updateRole(InputHandler.getNextLine(ID_PROMPT, Integer::valueOf), 
-			InputHandler.getNextLine(NAME_PROMPT));
+		Integer roleId = InputHandler.getNextLine(ID_PROMPT, Integer::valueOf);
+		String roleName = InputHandler.getNextLine(NAME_PROMPT);
+		roleService.updateRole(roleId, roleName);
+		System.out.println(String.format("Successfully updated the role ID \"%d\" with \"%s\"!", 
+			roleId, roleName));
 	}
 
 	@Override 

@@ -17,7 +17,9 @@ public class CreateRoleUiHandler extends UiHandler {
 
 	@Override 
 	public void onHandle() throws Exception {
-		roleService.createRole(InputHandler.getNextLine(PROMPT));
+		String roleName = InputHandler.getNextLine(PROMPT);
+		roleService.createRole(roleName);
+		System.out.println(String.format("Successfully created the role \"%s\"!", roleName));
 	}
 
 	@Override 
