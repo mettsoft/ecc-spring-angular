@@ -1,9 +1,21 @@
 package com.ecc.hibernate_xml.dao;
 
+import java.util.List;
+
+import org.hibernate.Session;
+
 import com.ecc.hibernate_xml.model.Role;
 import com.ecc.hibernate_xml.util.TransactionScope;
+import com.ecc.hibernate_xml.util.HibernateUtility;
 
 public class RoleDao {
+
+	public List<Role> listRoles() {
+		Session session = HibernateUtility.getSessionFactory().openSession();
+		List<Role> roles = session.createQuery("FROM Role ORDER BY id").list();
+		session.close();
+		return roles;
+	}
 
 	public void createRole(Role newRole) throws DaoException {
 		try {

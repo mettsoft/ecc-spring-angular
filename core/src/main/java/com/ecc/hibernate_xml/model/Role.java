@@ -27,4 +27,9 @@ public class Role {
 	public String getName() {
 		return name;
 	}
+
+	@Override
+	public String toString() {
+		return String.format("------ ID: %d ------\nName: %s", id, name);
+	}
 }

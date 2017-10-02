@@ -1,5 +1,7 @@
 package com.ecc.hibernate_xml.service;
 
+import java.util.List;
+
 import com.ecc.hibernate_xml.dao.RoleDao;
 import com.ecc.hibernate_xml.dao.DaoException;
 import com.ecc.hibernate_xml.model.Role;
@@ -9,6 +11,10 @@ public class RoleService {
 
 	public RoleService() {
 		dao = new RoleDao();
+	}
+
+	public List<Role> listRoles() {
+		return dao.listRoles();
 	}
 
 	public void createRole(String roleName) throws DaoException {

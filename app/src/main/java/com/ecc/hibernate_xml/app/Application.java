@@ -4,6 +4,7 @@ import java.util.logging.Logger;
 import java.util.logging.Level;
 
 import com.ecc.hibernate_xml.ui_handler.CompositeUiHandler;
+import com.ecc.hibernate_xml.ui_handler.role.ListRolesUiHandler;
 import com.ecc.hibernate_xml.ui_handler.role.CreateRoleUiHandler;
 import com.ecc.hibernate_xml.ui_handler.role.UpdateRoleUiHandler;
 import com.ecc.hibernate_xml.ui_handler.role.DeleteRoleUiHandler;
@@ -22,6 +23,7 @@ public class Application {
 
 		new CompositeUiHandler()
 			.add(new CompositeUiHandler("Go to Role Registry.")
+				.add(new ListRolesUiHandler("List Role Records."))
 				.add(new CreateRoleUiHandler("Create a new Role record."))
 				.add(new UpdateRoleUiHandler("Update an existing Role record."))
 				.add(new DeleteRoleUiHandler("Delete an existing Role record.")))
