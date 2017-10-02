@@ -57,4 +57,9 @@ public class Address {
 	public Integer getZipCode() {
 		return zipCode;
 	}
+
+	@Override
+	public String toString() {
+		return String.format("%s, Barangay %d, %s, %d", streetNumber, barangay, municipality, zipCode);
+	}
 }
