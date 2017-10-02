@@ -10,11 +10,11 @@ public class Name {
 	private String firstName;
 	private String middleName;
 	private String suffix;
-
-	public Name() {
+		
+	private Name() {
 
 	}
-	
+
 	public Name(String lastName, String firstName, String middleName) {
 		setLastName(lastName);
 		setFirstName(firstName);
