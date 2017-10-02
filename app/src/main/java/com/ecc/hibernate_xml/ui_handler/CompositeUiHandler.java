@@ -49,4 +49,9 @@ public class CompositeUiHandler extends UiHandler {
 
 		return builder.toString();
 	}
+
+	@Override 
+	protected Boolean relinquishControl() {
+		return false;
+	}
 }
