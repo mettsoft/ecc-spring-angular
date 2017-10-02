@@ -19,7 +19,13 @@ public abstract class UiHandler {
 		catch (Exception exception) {
 			System.out.println("Error: " + exception.getMessage());
 		}
+		finally {
+			if (!relinquishControl()) {
+				handle();		
+			}
+		}
 	}
 
 	public abstract void onHandle() throws Exception;
+	protected abstract Boolean relinquishControl();
 }
