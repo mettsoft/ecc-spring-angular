@@ -11,6 +11,7 @@ public class CompositeUiHandler extends UiHandler {
 	private static String BACK_OPTION = "0. Close Menu\n";
 
 	private List<UiHandler> uiHandlers;
+	private Boolean shouldRelinquishControl;
 
 	public CompositeUiHandler() {
 		this(null);
@@ -18,7 +19,8 @@ public class CompositeUiHandler extends UiHandler {
 
 	public CompositeUiHandler(String operationName) {
 		super(operationName);	
-		this.uiHandlers = new ArrayList<>();
+		uiHandlers = new ArrayList<>();
+		shouldRelinquishControl = false;
 	}
 
 	public CompositeUiHandler add(UiHandler uiHandler) {
@@ -28,11 +30,15 @@ public class CompositeUiHandler extends UiHandler {
 
 	@Override
 	public void onHandle() throws Exception {
+		shouldRelinquishControl = false;
 		try {
 			String userPrompt = String.format(MAIN_PROMPT, buildOperationPrompt());
 			Integer optionIndex = InputHandler.getNextLine(userPrompt, Integer::valueOf);
 			if (optionIndex > 0) {
 				uiHandlers.get(optionIndex - 1).handle();
+			}
+			else {
+				shouldRelinquishControl = true;
 			}
 		}
 		catch (Exception exception) {
@@ -52,6 +58,6 @@ public class CompositeUiHandler extends UiHandler {
 
 	@Override 
 	protected Boolean relinquishControl() {
-		return false;
+		return shouldRelinquishControl;
 	}
 }
