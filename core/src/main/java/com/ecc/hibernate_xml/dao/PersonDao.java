@@ -57,4 +57,11 @@ public class PersonDao {
 			throw new DaoException(exception);
 		}
 	}
+
+	public Person getPerson(Integer personId) {
+		Session session = HibernateUtility.getSessionFactory().openSession();
+		Person person = (Person) session.get(Person.class, personId);
+		session.close();
+		return person;
+	}
 }
