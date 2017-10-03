@@ -8,6 +8,7 @@ import com.ecc.hibernate_xml.ui_handler.person.ListPersonsByGwaUiHandler;
 import com.ecc.hibernate_xml.ui_handler.person.ListPersonsByDateHiredUiHandler;
 import com.ecc.hibernate_xml.ui_handler.person.ListPersonsByLastNameUiHandler;
 import com.ecc.hibernate_xml.ui_handler.person.CreatePersonUiHandler;
+import com.ecc.hibernate_xml.ui_handler.person.UpdatePersonUiHandler;
 import com.ecc.hibernate_xml.ui_handler.person.DeletePersonUiHandler;
 import com.ecc.hibernate_xml.ui_handler.role.ListRolesUiHandler;
 import com.ecc.hibernate_xml.ui_handler.role.CreateRoleUiHandler;
@@ -33,6 +34,7 @@ public class Application {
 					.add(new ListPersonsByDateHiredUiHandler("Sort by date hired."))
 					.add(new ListPersonsByLastNameUiHandler("Sort by last name.")))
 				.add(new CreatePersonUiHandler("Create a new Person record."))
+				.add(new UpdatePersonUiHandler("Update an existing Person record."))
 				.add(new DeletePersonUiHandler("Delete an existing Person record.")))
 			.add(new CompositeUiHandler("Go to Role Registry.")
 				.add(new ListRolesUiHandler("List Role Records."))
