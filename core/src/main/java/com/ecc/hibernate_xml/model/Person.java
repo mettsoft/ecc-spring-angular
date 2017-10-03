@@ -3,6 +3,9 @@ package com.ecc.hibernate_xml.model;
 import java.math.BigDecimal;
 import java.util.Set;
 import java.util.Date;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 public class Person {
 	private Integer id;
@@ -85,5 +88,30 @@ public class Person {
 
 	public Set getRoles() {
 		return roles;
+	}
+
+	@Override
+	public String toString() {
+		List<String> tokens = new ArrayList<>(5);
+
+		tokens.add("Name: " + name);
+		if (address != null) {
+			tokens.add("Address: " + address);
+		}
+
+		if (birthday != null) {
+			tokens.add("Birthday: " + birthday);
+		}
+
+		if (GWA != null) {
+			tokens.add("GWA: " + GWA);
+		}
+
+		tokens.add("Currently Employed: " + (currentlyEmployed? dateHired: "No"));		
+
+		// TODO: Contacts
+		// TODO: Roles
+		return String.format("------ ID: %d ------\n%s", id, 
+			tokens.stream().collect(Collectors.joining("\n")));
 	}
 }
