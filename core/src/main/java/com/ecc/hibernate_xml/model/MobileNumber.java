@@ -9,4 +9,8 @@ public class MobileNumber extends Contact {
 		setData(data);
 	}
 
+	@Override
+	public String getContactType() {
+		return "Mobile Number";
+	}
 }

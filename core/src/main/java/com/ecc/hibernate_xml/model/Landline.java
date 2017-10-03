@@ -8,5 +8,4 @@ public class Landline extends Contact {
 	public Landline(String data) {
 		setData(data);
 	}
-
 }
