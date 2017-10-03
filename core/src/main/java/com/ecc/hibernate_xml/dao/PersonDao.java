@@ -58,10 +58,13 @@ public class PersonDao {
 		}
 	}
 
-	public Person getPerson(Integer personId) {
+	public Person getPerson(Integer personId) throws DaoException {
 		Session session = HibernateUtility.getSessionFactory().openSession();
 		Person person = (Person) session.get(Person.class, personId);
 		session.close();
+		if (person == null) {
+			throw new DaoException("Person not found!");
+		}
 		return person;
 	}
 }
