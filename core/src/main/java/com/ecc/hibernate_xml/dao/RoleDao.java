@@ -58,4 +58,14 @@ public class RoleDao {
 			throw new DaoException(exception);
 		}
 	}
+
+	public Role getRole(Integer roleId) throws DaoException {
+		Session session = HibernateUtility.getSessionFactory().openSession();
+		Role role = (Role) session.get(Role.class, roleId);
+		session.close();
+		if (role == null) {
+			throw new DaoException("Role not found!");
+		}
+		return role;
+	}
 }
