@@ -19,4 +19,13 @@ public abstract class Contact {
 	public String getData() {
 		return data;
 	}
+
+	public String getContactType() {
+		return this.getClass().getSimpleName();
+	}
+	
+	@Override
+	public String toString() {
+		return String.format("[ID=%d][%s] %s", id, getContactType(), data);
+	}
 }
