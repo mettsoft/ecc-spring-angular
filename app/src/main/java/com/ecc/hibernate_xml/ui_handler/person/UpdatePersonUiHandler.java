@@ -35,7 +35,6 @@ public class UpdatePersonUiHandler extends UiHandler {
 
 		Integer personId = InputHandler.getNextLine(PROMPT, Integer::valueOf);
 		Person person = personService.getPerson(personId);
-		// TODO: Manage Contacts
 		new CompositeUiHandler()
 			.add(new NameUiHandler("Change name.", person))
 			.add(new AddressUiHandler("Change address.", person))

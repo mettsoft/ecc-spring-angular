@@ -118,8 +118,18 @@ public class Person {
 
 		tokens.add("Currently Employed: " + (currentlyEmployed? dateHired: "No"));		
 
-		// TODO: Contacts
-		// TODO: Roles
+		if (contacts != null && contacts.size() > 0) {
+			tokens.add("Contacts: " + contacts.stream()
+				.map(contact -> String.format("[%s] %s", contact.getContactType(), contact.getData()))
+				.collect(Collectors.joining(", ")));		
+		}
+
+		if (roles != null && roles.size() > 0) {
+			tokens.add("Roles: " + roles.stream()
+				.map(role -> role.getName())
+				.collect(Collectors.joining(", ")));			
+		}
+
 		return String.format("------ ID: %d ------\n%s", id, 
 			tokens.stream().collect(Collectors.joining("\n")));
 	}
