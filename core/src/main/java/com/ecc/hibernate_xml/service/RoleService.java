@@ -5,6 +5,7 @@ import java.util.List;
 import com.ecc.hibernate_xml.dao.RoleDao;
 import com.ecc.hibernate_xml.dao.DaoException;
 import com.ecc.hibernate_xml.model.Role;
+import com.ecc.hibernate_xml.model.Person;
 
 public class RoleService {
 	private RoleDao dao;
@@ -15,6 +16,10 @@ public class RoleService {
 
 	public List<Role> listRoles() {
 		return dao.listRoles();
+	}
+
+	public List<Role> listRoles(Person person) {
+		return dao.listRoles(person);
 	}
 
 	public void createRole(String roleName) throws DaoException {
