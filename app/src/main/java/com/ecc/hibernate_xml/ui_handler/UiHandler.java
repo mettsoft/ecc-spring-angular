@@ -28,4 +28,12 @@ public abstract class UiHandler {
 
 	public abstract void onHandle() throws Exception;
 	protected abstract Boolean relinquishControl();
+
+	private void debugPrintException(Exception exception) {
+		exception.printStackTrace();
+		if (exception.getCause() != null) {
+			System.out.println("Caused by:");
+			exception.getCause().printStackTrace();
+		}		
+	}
 }
