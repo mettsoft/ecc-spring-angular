@@ -18,6 +18,15 @@ public class Person {
 	private Set<Contact> contacts;
 	private Set<Role> roles;
 
+	private Person() {
+		setCurrentlyEmployed(false);
+	}
+	
+	public Person(Name name) {
+		this();
+		setName(name);
+	}
+
 	public void setId(Integer id) {
 		this.id = id;
 	}
