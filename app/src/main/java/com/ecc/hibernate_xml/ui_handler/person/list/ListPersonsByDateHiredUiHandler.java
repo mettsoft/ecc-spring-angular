@@ -1,4 +1,4 @@
-package com.ecc.hibernate_xml.ui_handler.person;
+package com.ecc.hibernate_xml.ui_handler.person.list;
 
 import com.ecc.hibernate_xml.ui_handler.UiHandler;
 import com.ecc.hibernate_xml.service.PersonService;

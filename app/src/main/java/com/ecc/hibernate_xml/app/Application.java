@@ -4,9 +4,9 @@ import java.util.logging.Logger;
 import java.util.logging.Level;
 
 import com.ecc.hibernate_xml.ui_handler.CompositeUiHandler;
-import com.ecc.hibernate_xml.ui_handler.person.ListPersonsByGwaUiHandler;
-import com.ecc.hibernate_xml.ui_handler.person.ListPersonsByDateHiredUiHandler;
-import com.ecc.hibernate_xml.ui_handler.person.ListPersonsByLastNameUiHandler;
+import com.ecc.hibernate_xml.ui_handler.person.list.ListPersonsByGwaUiHandler;
+import com.ecc.hibernate_xml.ui_handler.person.list.ListPersonsByDateHiredUiHandler;
+import com.ecc.hibernate_xml.ui_handler.person.list.ListPersonsByLastNameUiHandler;
 import com.ecc.hibernate_xml.ui_handler.person.CreatePersonUiHandler;
 import com.ecc.hibernate_xml.ui_handler.person.UpdatePersonUiHandler;
 import com.ecc.hibernate_xml.ui_handler.person.DeletePersonUiHandler;
