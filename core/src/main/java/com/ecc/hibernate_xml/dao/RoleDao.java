@@ -3,8 +3,10 @@ package com.ecc.hibernate_xml.dao;
 import java.util.List;
 
 import org.hibernate.Session;
+import org.hibernate.Query;
 
 import com.ecc.hibernate_xml.model.Role;
+import com.ecc.hibernate_xml.model.Person;
 import com.ecc.hibernate_xml.util.TransactionScope;
 import com.ecc.hibernate_xml.util.HibernateUtility;
 
@@ -13,6 +15,15 @@ public class RoleDao {
 	public List<Role> listRoles() {
 		Session session = HibernateUtility.getSessionFactory().openSession();
 		List<Role> roles = session.createQuery("FROM Role ORDER BY id").list();
+		session.close();
+		return roles;
+	}
+
+	public List<Role> listRoles(Person person) {
+		Session session = HibernateUtility.getSessionFactory().openSession();
+		Query query = session.createQuery("SELECT R FROM Role R JOIN R.persons P WHERE P.id = :id ORDER BY R.id");
+		query.setParameter("id", person.getId());
+		List<Role> roles = query.list();
 		session.close();
 		return roles;
 	}
