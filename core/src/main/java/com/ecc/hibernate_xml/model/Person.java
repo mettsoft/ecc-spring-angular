@@ -91,11 +91,11 @@ public class Person {
 		return dateHired;
 	}
 
-	public Set getContacts() {
+	public Set<Contact> getContacts() {
 		return contacts;
 	}
 
-	public Set getRoles() {
+	public Set<Role> getRoles() {
 		return roles;
 	}
 
