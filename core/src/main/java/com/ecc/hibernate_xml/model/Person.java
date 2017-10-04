@@ -47,10 +47,10 @@ public class Person {
 	}
 
 	public void setGWA(BigDecimal GWA) throws ModelException {
-		if (GWA.compareTo(new BigDecimal(1)) < 0) {
+		if (GWA != null && GWA.compareTo(new BigDecimal(1)) < 0) {
 			throw new ModelException("GWA cannot be less than 1.");
 		}
-		else if (GWA.compareTo(new BigDecimal(5)) > 0) {
+		else if (GWA != null && GWA.compareTo(new BigDecimal(5)) > 0) {
 			throw new ModelException("GWA cannot be greater than 5.");
 		}
 		this.GWA = GWA;
