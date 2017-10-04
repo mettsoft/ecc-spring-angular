@@ -1,13 +1,16 @@
 package com.ecc.hibernate_xml.model;
 
 public class Address {
+	private static final Integer MAX_STREET_NUMBER_CHARACTERS = 20;
+	private static final Integer MAX_MUNICIPALITY_CHARACTERS = 50;
+
 	private Integer id;
 	private String streetNumber;
 	private Integer barangay;
 	private String municipality;
 	private Integer zipCode;
 
-	public Address() {
+	private Address() {
 
 	}
 
@@ -23,18 +26,38 @@ public class Address {
 	}
 
 	public void setStreetNumber(String streetNumber) {
+		if (streetNumber == null || streetNumber.trim().isEmpty()) {
+			throw new ModelException("Street number cannot be empty.");
+		}
+		else if (streetNumber.length() > MAX_STREET_NUMBER_CHARACTERS) {
+			throw new ModelException(String.format("Street number must not exceed %d characters.", 
+				MAX_STREET_NUMBER_CHARACTERS));
+		}
 		this.streetNumber = streetNumber;
 	}
 
 	public void setBarangay(Integer barangay) {
+		if (barangay == null) {
+			throw new ModelException("Barangay cannot be empty.");
+		}
 		this.barangay = barangay;
 	}
 
 	public void setMunicipality(String municipality) {
+		if (municipality == null || municipality.trim().isEmpty()) {
+			throw new ModelException("Municipality cannot be empty.");
+		}
+		else if (municipality.length() > MAX_MUNICIPALITY_CHARACTERS) {
+			throw new ModelException(String.format("Municipality must not exceed %d characters.", 
+				MAX_MUNICIPALITY_CHARACTERS));
+		}
 		this.municipality = municipality;
 	}
 
 	public void setZipCode(Integer zipCode) {
+		if (zipCode == null) {
+			throw new ModelException("Zip code cannot be empty.");
+		}
 		this.zipCode = zipCode;
 	}
 
