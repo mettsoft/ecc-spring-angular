@@ -46,10 +46,9 @@ public class RoleDao {
 		}
 	}
 
-	public void deleteRole(Integer roleId) throws DaoException {
+	public void deleteRole(Role role) throws DaoException {
 		try {
-			TransactionScope.executeTransaction(session -> 
-				session.delete(session.get(Role.class, roleId)));
+			TransactionScope.executeTransaction(session -> session.delete(role));
 		}
 		catch (Exception exception) {
 			throw new DaoException(exception);

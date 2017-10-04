@@ -31,6 +31,6 @@ public class RoleService {
 	}
 
 	public void deleteRole(Integer roleId) throws Exception {
-		dao.deleteRole(roleId);
+		dao.deleteRole(roleDao.getRole(roleId));
 	}
 }
