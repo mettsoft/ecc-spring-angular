@@ -38,7 +38,7 @@ public class Address {
 
 	public void setBarangay(Integer barangay) throws ModelException {
 		if (barangay == null) {
-			throw new ModelException("Barangay cannot be empty.");
+			throw new ModelException("Barangay cannot be null.");
 		}
 		this.barangay = barangay;
 	}
@@ -56,7 +56,7 @@ public class Address {
 
 	public void setZipCode(Integer zipCode) throws ModelException {
 		if (zipCode == null) {
-			throw new ModelException("Zip code cannot be empty.");
+			throw new ModelException("Zip code cannot be null.");
 		}
 		this.zipCode = zipCode;
 	}
