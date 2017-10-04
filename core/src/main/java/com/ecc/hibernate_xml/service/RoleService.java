@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.ecc.hibernate_xml.dao.DaoException;
 import com.ecc.hibernate_xml.dao.RoleDao;
+import com.ecc.hibernate_xml.model.ModelException;
 import com.ecc.hibernate_xml.model.Role;
 import com.ecc.hibernate_xml.model.Person;
 
@@ -22,17 +23,17 @@ public class RoleService {
 		return roleDao.listRoles(person);
 	}
 
-	public void createRole(String roleName) throws Exception {
+	public void createRole(String roleName) throws DaoException, ModelException {
 		roleDao.createRole(new Role(roleName));		
 	}
 
-	public void updateRole(Integer roleId, String roleName) throws Exception {
+	public void updateRole(Integer roleId, String roleName) throws DaoException, ModelException {
 		Role role = new Role(roleName);
 		role.setId(roleId);
 		roleDao.updateRole(role);
 	}
 
-	public void deleteRole(Integer roleId) throws Exception {
+	public void deleteRole(Integer roleId) throws DaoException, ModelException {
 		roleDao.deleteRole(roleDao.getRole(roleId));
 	}
 }
