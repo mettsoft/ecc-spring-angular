@@ -28,21 +28,18 @@ public class RoleDao {
 		return roles;
 	}
 
-	public void createRole(Role newRole) throws DaoException {
+	public void createRole(Role role) throws DaoException {
 		try {
-			TransactionScope.executeTransaction(session -> session.save(newRole));			
+			TransactionScope.executeTransaction(session -> session.save(role));			
 		}
 		catch (Exception exception) {
 			throw new DaoException(exception);
 		}
 	}
 
-	public void updateRole(Integer roleId, Role newRole) throws DaoException {
+	public void updateRole(Role role) throws DaoException {
 		try {
-			TransactionScope.executeTransaction(session -> {
-				newRole.setId(roleId);
-				session.update(newRole);
-			});
+			TransactionScope.executeTransaction(session -> session.update(role));
 		}
 		catch (Exception exception) {
 			throw new DaoException(exception);
