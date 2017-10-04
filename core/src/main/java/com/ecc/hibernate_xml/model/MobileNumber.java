@@ -2,7 +2,8 @@ package com.ecc.hibernate_xml.model;
 
 public class MobileNumber extends Contact {
 	private static final Integer MUST_CHARACTERS = 11;
-	public MobileNumber() {
+	
+	private MobileNumber() {
 
 	}
 
