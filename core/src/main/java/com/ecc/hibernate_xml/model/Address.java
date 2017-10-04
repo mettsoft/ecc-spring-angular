@@ -14,7 +14,7 @@ public class Address {
 
 	}
 
-	public Address(String streetNumber, Integer barangay, String municipality, Integer zipCode) {
+	public Address(String streetNumber, Integer barangay, String municipality, Integer zipCode) throws ModelException {
 		setStreetNumber(streetNumber);
 		setBarangay(barangay);
 		setMunicipality(municipality);
@@ -25,7 +25,7 @@ public class Address {
 		this.id = id;
 	}
 
-	public void setStreetNumber(String streetNumber) {
+	public void setStreetNumber(String streetNumber) throws ModelException {
 		if (streetNumber == null || streetNumber.trim().isEmpty()) {
 			throw new ModelException("Street number cannot be empty.");
 		}
@@ -36,14 +36,14 @@ public class Address {
 		this.streetNumber = streetNumber;
 	}
 
-	public void setBarangay(Integer barangay) {
+	public void setBarangay(Integer barangay) throws ModelException {
 		if (barangay == null) {
 			throw new ModelException("Barangay cannot be empty.");
 		}
 		this.barangay = barangay;
 	}
 
-	public void setMunicipality(String municipality) {
+	public void setMunicipality(String municipality) throws ModelException {
 		if (municipality == null || municipality.trim().isEmpty()) {
 			throw new ModelException("Municipality cannot be empty.");
 		}
@@ -54,7 +54,7 @@ public class Address {
 		this.municipality = municipality;
 	}
 
-	public void setZipCode(Integer zipCode) {
+	public void setZipCode(Integer zipCode) throws ModelException {
 		if (zipCode == null) {
 			throw new ModelException("Zip code cannot be empty.");
 		}
