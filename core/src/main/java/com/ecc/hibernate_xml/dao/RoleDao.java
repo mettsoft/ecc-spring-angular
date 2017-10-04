@@ -21,7 +21,7 @@ public class RoleDao {
 
 	public List<Role> listRoles(Person person) {
 		Session session = HibernateUtility.getSessionFactory().openSession();
-		Query query = session.createQuery("SELECT R FROM Role R JOIN R.persons P WHERE P.id = :id ORDER BY R.id");
+		Query query = session.createQuery("SELECT R FROM Person P JOIN P.roles R WHERE P.id = :id ORDER BY R.id");
 		query.setParameter("id", person.getId());
 		List<Role> roles = query.list();
 		session.close();
