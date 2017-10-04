@@ -24,7 +24,7 @@ public class Name {
 	}
 
 	public void setTitle(String title) throws ModelException  {
-		if (title.length() > MAX_CHARACTERS) {
+		if (title != null && title.length() > MAX_CHARACTERS) {
 			throw new ModelException(String.format("Title must not exceed %d characters.", 
 				MAX_CHARACTERS));
 		}
@@ -65,7 +65,7 @@ public class Name {
 	}
 
 	public void setSuffix(String suffix) throws ModelException  {
-		if (suffix.length() > MAX_CHARACTERS) {
+		if (suffix != null && suffix.length() > MAX_CHARACTERS) {
 			throw new ModelException(String.format("Suffix must not exceed %d characters.", 
 				MAX_CHARACTERS));
 		}
