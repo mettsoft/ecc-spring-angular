@@ -17,13 +17,13 @@ public class Name {
 
 	}
 
-	public Name(String lastName, String firstName, String middleName) {
+	public Name(String lastName, String firstName, String middleName) throws ModelException {
 		setLastName(lastName);
 		setFirstName(firstName);
 		setMiddleName(middleName);
 	}
 
-	public void setTitle(String title) {
+	public void setTitle(String title) throws ModelException  {
 		if (title.length() > MAX_CHARACTERS) {
 			throw new ModelException(String.format("Title must not exceed %d characters.", 
 				MAX_CHARACTERS));
@@ -42,7 +42,7 @@ public class Name {
 		this.lastName = lastName;
 	}
 
-	public void setFirstName(String firstName) {
+	public void setFirstName(String firstName) throws ModelException  {
 		if (firstName == null || firstName.trim().isEmpty()) {
 			throw new ModelException("First name cannot be empty.");
 		}
@@ -53,7 +53,7 @@ public class Name {
 		this.firstName = firstName;
 	}
 
-	public void setMiddleName(String middleName) {
+	public void setMiddleName(String middleName) throws ModelException  {
 		if (middleName == null || middleName.trim().isEmpty()) {
 			throw new ModelException("Middle name cannot be empty.");
 		}
@@ -64,7 +64,7 @@ public class Name {
 		this.middleName = middleName;
 	}
 
-	public void setSuffix(String suffix) {
+	public void setSuffix(String suffix) throws ModelException  {
 		if (suffix.length() > MAX_CHARACTERS) {
 			throw new ModelException(String.format("Suffix must not exceed %d characters.", 
 				MAX_CHARACTERS));
