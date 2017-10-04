@@ -1,8 +1,8 @@
 package com.ecc.hibernate_xml.model;
 
 import java.math.BigDecimal;
-import java.util.Set;
 import java.util.Date;
+import java.util.Set;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
@@ -22,7 +22,7 @@ public class Person {
 		setCurrentlyEmployed(false);
 	}
 	
-	public Person(Name name) {
+	public Person(Name name) throws ModelException {
 		this();
 		setName(name);
 	}
@@ -31,7 +31,10 @@ public class Person {
 		this.id = id;
 	}
 
-	public void setName(Name name) {
+	public void setName(Name name) throws ModelException {
+		if (name == null) {
+			throw new ModelException("Name cannot be null.");
+		}
 		this.name = name;
 	}
 
@@ -40,19 +43,31 @@ public class Person {
 	}
 
 	public void setBirthday(Date birthday) {
-		this.birthday = birthday;
+ 		this.birthday = birthday;
 	}
 
-	public void setGWA(BigDecimal GWA) {
+	public void setGWA(BigDecimal GWA) throws ModelException {
+		if (GWA.compareTo(new BigDecimal(1)) < 0) {
+			throw new ModelException("GWA cannot be less than 1.");
+		}
+		else if (GWA.compareTo(new BigDecimal(5)) > 0) {
+			throw new ModelException("GWA cannot be greater than 5.");
+		}
 		this.GWA = GWA;
 	}
 
-	public void setCurrentlyEmployed(Boolean currentlyEmployed) {
+	public void setCurrentlyEmployed(boolean currentlyEmployed) {
 		this.currentlyEmployed = currentlyEmployed;
 	}
 
-	public void setDateHired(Date dateHired) {
-		this.dateHired = dateHired;
+	public void setDateHired(Date dateHired) throws ModelException {
+		if (!getCurrentlyEmployed() && dateHired != null) {
+			throw new ModelException("Date hired cannot be assigned if person is unemployed.");
+		}
+		else if (getCurrentlyEmployed() && dateHired == null) {
+			throw new ModelException("Date hired cannot be null if person is employed.");
+		}
+		this.dateHired = dateHired;		
 	}
 
 	public void setContacts(Set contacts) {
@@ -101,6 +116,7 @@ public class Person {
 
 	@Override
 	public String toString() {
+
 		List<String> tokens = new ArrayList<>(5);
 
 		tokens.add("Name: " + name);
