@@ -22,15 +22,15 @@ public class RoleService {
 		return dao.listRoles(person);
 	}
 
-	public void createRole(String roleName) throws DaoException {
+	public void createRole(String roleName) throws Exception {
 		dao.createRole(new Role(roleName));		
 	}
 
-	public void updateRole(Integer roleId, String roleName) throws DaoException {
+	public void updateRole(Integer roleId, String roleName) throws Exception {
 		dao.updateRole(roleId, new Role(roleName));
 	}
 
-	public void deleteRole(Integer roleId) throws DaoException {
+	public void deleteRole(Integer roleId) throws Exception {
 		dao.deleteRole(roleId);
 	}
 }
