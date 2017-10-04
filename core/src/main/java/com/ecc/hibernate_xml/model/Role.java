@@ -1,13 +1,8 @@
 package com.ecc.hibernate_xml.model;
 
-import java.util.Set;
-
-import com.ecc.hibernate_xml.model.Person;
-
 public class Role {
 	private Integer id;
 	private String name;
-	private Set<Person> persons;
 
 	public Role() {
 
@@ -25,20 +20,12 @@ public class Role {
 		this.name = name;
 	}
 
-	public void setPersons(Set<Person> persons) {
-		this.persons = persons;
-	}
-
 	public Integer getId() {
 		return id;
 	}
 	
 	public String getName() {
 		return name;
-	}
-
-	public Set<Person> getPersons() {
-		return persons;
 	}
 
 	@Override

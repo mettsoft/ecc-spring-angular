@@ -11,9 +11,5 @@
 			</generator>
 		</id>
 		<property name="name" column="name" type="string" />
-		<set name="persons" table="persons_roles">
-			<key column="role_id" not-null="true" />
-			<many-to-many column="person_id" class="Person" />
-		</set>
 	</class>
 </hibernate-mapping>
