@@ -27,7 +27,9 @@ public class RoleService {
 	}
 
 	public void updateRole(Integer roleId, String roleName) throws Exception {
-		dao.updateRole(roleId, new Role(roleName));
+		Role role = new Role(roleName);
+		role.setId(roleId);
+		roleDao.updateRole(role);
 	}
 
 	public void deleteRole(Integer roleId) throws Exception {
