@@ -3,8 +3,8 @@
 "-//Hibernate/Hibernate Mapping DTD//EN" 
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
-<hibernate-mapping>
-	<class name="com.ecc.hibernate_xml.model.Contact" table="contacts">
+<hibernate-mapping package="com.ecc.hibernate_xml.model">
+	<class name="Contact" table="contacts">
 		<id name="id" column="id" type="int">
 			<generator class="sequence">
 				<param name="sequence">contacts_id_seq</param>
@@ -12,8 +12,8 @@
 		</id>
 		<discriminator column="contact_type" type="string" />
 		<property name="data" column="data" type="string" />
-		<subclass name="com.ecc.hibernate_xml.model.Email" discriminator-value="EMAIL" />
-		<subclass name="com.ecc.hibernate_xml.model.Landline" discriminator-value="LANDLINE" />
-		<subclass name="com.ecc.hibernate_xml.model.MobileNumber" discriminator-value="MOBILE_NUMBER" />
+		<subclass name="Email" discriminator-value="EMAIL" />
+		<subclass name="Landline" discriminator-value="LANDLINE" />
+		<subclass name="MobileNumber" discriminator-value="MOBILE_NUMBER" />
 	</class>
 </hibernate-mapping>
