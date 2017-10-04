@@ -8,7 +8,11 @@ public abstract class Contact {
 		this.id = id;
 	}
 
-	public void setData(String data) {
+	public void setData(String data) throws ModelException {
+		if (data == null || data.trim().isEmpty()) {
+			throw new ModelException(String.format("%s cannot be empty.", getContactType()));
+		}
+		onValidate(data);
 		this.data = data;
 	}
 
@@ -28,4 +32,6 @@ public abstract class Contact {
 	public String toString() {
 		return String.format("[ID=%d][%s] %s", id, getContactType(), data);
 	}
+
+	protected abstract void onValidate(String data) throws ModelException;
 }
