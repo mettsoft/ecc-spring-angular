@@ -1,4 +1,4 @@
-package com.ecc.hibernate_xml.ui_handler.person.update.role;
+package com.ecc.hibernate_xml.ui_handler.person.modify.role;
 
 import java.util.stream.Collectors;
 

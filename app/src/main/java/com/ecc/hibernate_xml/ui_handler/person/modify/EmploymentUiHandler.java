@@ -1,4 +1,4 @@
-package com.ecc.hibernate_xml.ui_handler.person.update;
+package com.ecc.hibernate_xml.ui_handler.person.modify;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

@@ -1,4 +1,4 @@
-package com.ecc.hibernate_xml.ui_handler.person.update.contact;
+package com.ecc.hibernate_xml.ui_handler.person.modify.contact;
 
 import java.util.stream.Collectors;
 import com.ecc.hibernate_xml.ui_handler.CompositeUiHandler;

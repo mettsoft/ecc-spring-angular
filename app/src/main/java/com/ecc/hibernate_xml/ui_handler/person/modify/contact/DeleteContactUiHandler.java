@@ -1,4 +1,4 @@
-package com.ecc.hibernate_xml.ui_handler.person.update.contact;
+package com.ecc.hibernate_xml.ui_handler.person.modify.contact;
 
 import java.util.stream.Collectors;
 import java.util.function.Function;
@@ -12,15 +12,14 @@ import com.ecc.hibernate_xml.service.ContactService;
 import com.ecc.hibernate_xml.model.Person;
 import com.ecc.hibernate_xml.model.Contact;
 
-public class EditContactUiHandler extends UiHandler {
+public class DeleteContactUiHandler extends UiHandler {
 
-	private static final String SELECT_CONTACT_PROMPT = "Please choose a contact to edit from the following: ";
-	private static final String CONTACT_DATA_PROMPT = "Please enter the new contact data for \"%s\": ";
+	private static final String PROMPT = "Please choose a contact to remove from the following: ";
 
 	private ContactService contactService;
 	private Person person;
 
-	public EditContactUiHandler(String operationName, Person person) {
+	public DeleteContactUiHandler(String operationName, Person person) {
 		super(operationName);
 		this.contactService = new ContactService();
 		this.person = person;
@@ -39,13 +38,12 @@ public class EditContactUiHandler extends UiHandler {
 			.collect(Collectors.joining("\n"));
 
 		Integer contactId = InputHandler.getNextLine(
-			String.format("%s\n%s\n Enter Contact ID: ", SELECT_CONTACT_PROMPT, listOfContacts), Integer::valueOf);
+			String.format("%s\n%s\nContact ID: ", PROMPT, listOfContacts), Integer::valueOf);
 
 		Contact contact = mapOfContacts.get(contactId);
-		contact.setData(InputHandler.getNextLine(String.format(CONTACT_DATA_PROMPT, contact)));
-		contactService.updateContact(contact);
+		contactService.deleteContact(contact);
 		System.out.println(String.format(
-			"Successfully updated \"%s\"  of Person \"%s\"!", contact, person.getName()));
+			"Successfully removed \"%s\"  from Person \"%s\"!", contact, person.getName()));
 	}
 
 	@Override 
