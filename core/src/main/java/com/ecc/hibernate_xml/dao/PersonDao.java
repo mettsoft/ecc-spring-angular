@@ -48,10 +48,9 @@ public class PersonDao {
 		}
 	}
 
-	public void deletePerson(Integer personId) throws DaoException {
+	public void deletePerson(Person person) throws DaoException {
 		try {
-			TransactionScope.executeTransaction(session -> 
-				session.delete(session.get(Person.class, personId)));
+			TransactionScope.executeTransaction(session -> session.delete(person));
 		}
 		catch (Exception exception) {
 			throw new DaoException(exception);
