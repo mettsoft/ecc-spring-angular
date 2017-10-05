@@ -1,7 +1,8 @@
 package com.ecc.hibernate_xml.ui_handler.person.modify.contact;
 
 import java.util.stream.Collectors;
-import com.ecc.hibernate_xml.ui_handler.CompositeUiHandler;
+import java.util.List;
+
 import com.ecc.hibernate_xml.ui_handler.UiHandler;
 import com.ecc.hibernate_xml.util.InputHandler;
 import com.ecc.hibernate_xml.service.ContactService;
@@ -21,11 +22,20 @@ public class ListContactsUiHandler extends UiHandler {
 
 	@Override 
 	public void onHandle() throws Exception {
-		System.out.println(String.format("Person \"%s\" has the following contacts:", 
-			person.getName()));
-		contactService.listContacts(person).stream()
-			.map(contact -> contact.toString())
-			.forEach(System.out::println);
+		List<Contact> contacts = contactService.listContacts(person);
+
+		System.out.println("-------------------");
+		if (contacts.isEmpty()) {
+			System.out.println("There are no contacts.");
+		}
+		else {
+			System.out.println(String.format("Person \"%s\" has the following contacts:", 
+				person.getName()));
+			contactService.listContacts(person).stream()
+				.map(contact -> contact.toString())
+				.forEach(System.out::println);			
+		}
+		System.out.println("-------------------");
 	}
 
 	@Override 
