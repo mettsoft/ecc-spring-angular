@@ -2,6 +2,7 @@ package com.ecc.hibernate_xml.dao;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.hibernate.Session;
 import org.hibernate.Query;
@@ -24,6 +25,21 @@ public class RoleDao {
 		Session session = HibernateUtility.getSessionFactory().openSession();
 		Query query = session.createQuery("SELECT R FROM Person P JOIN P.roles R WHERE P.id = :id ORDER BY R.id");
 		query.setParameter("id", person.getId());
+		List<Role> roles = query.list();
+		session.close();
+		return roles;
+	}
+
+	public List<Role> listRolesExcluding(List<Role> rolesToExclude) {
+		Session session = HibernateUtility.getSessionFactory().openSession();
+		String conditionStatement = rolesToExclude.isEmpty()? "": 
+			String.format("WHERE id NOT IN (%s)", 
+				rolesToExclude.stream()
+					.map(role -> role.getId().toString())
+					.collect(Collectors.joining(", ")));
+
+		Query query = session.createQuery(
+			String.format("FROM Role %s ORDER BY id", conditionStatement));
 		List<Role> roles = query.list();
 		session.close();
 		return roles;

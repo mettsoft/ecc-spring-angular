@@ -1,7 +1,6 @@
 package com.ecc.hibernate_xml.ui_handler.person.modify.role;
 
 import java.util.stream.Collectors;
-import com.ecc.hibernate_xml.ui_handler.CompositeUiHandler;
 import com.ecc.hibernate_xml.ui_handler.UiHandler;
 import com.ecc.hibernate_xml.util.InputHandler;
 import com.ecc.hibernate_xml.service.PersonService;
@@ -36,7 +35,8 @@ public class AddRoleUiHandler extends UiHandler {
 
 		personService.addRoleToPerson(roleId, person);
 		System.out.println(String.format(
-			"Successfully added role ID \"%d\" to Person \"%s\"!", roleId, person.getName()));
+			"Successfully added role ID \"%d\" to Person [%d] \"%s\"!", roleId, person.getId(),
+			person.getName()));
 	}
 
 	@Override 
