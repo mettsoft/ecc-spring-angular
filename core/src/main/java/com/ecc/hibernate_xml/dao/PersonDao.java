@@ -30,18 +30,18 @@ public class PersonDao {
 		return persons;
 	}
 
-	public void createPerson(Person newPerson) throws DaoException {
+	public void createPerson(Person person) throws DaoException {
 		try {
-			TransactionScope.executeTransaction(session -> session.save(newPerson));
+			TransactionScope.executeTransaction(session -> session.save(person));
 		}
 		catch (Exception exception) {
 			throw new DaoException(exception);
 		}
 	}
 
-	public void updatePerson(Person newPerson) throws DaoException {
+	public void updatePerson(Person person) throws DaoException {
 		try {
-			TransactionScope.executeTransaction(session -> session.update(newPerson));
+			TransactionScope.executeTransaction(session -> session.update(person));
 		}
 		catch (Exception exception) {
 			throw new DaoException(exception);
