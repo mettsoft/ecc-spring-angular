@@ -24,8 +24,8 @@ public class RoleService {
 		return roleDao.listRoles(person);
 	}
 
-	public Serializable createRole(String roleName) throws DaoException, ModelException {
-		return roleDao.createRole(new Role(roleName));		
+	public Serializable createRole(Role role) throws DaoException {
+		return roleDao.createRole(role);		
 	}
 
 	public void updateRole(Integer roleId, String roleName) throws DaoException, ModelException {

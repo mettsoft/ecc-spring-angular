@@ -3,6 +3,7 @@ package com.ecc.hibernate_xml.ui_handler.role;
 import java.io.Serializable;
 
 import com.ecc.hibernate_xml.ui_handler.UiHandler;
+import com.ecc.hibernate_xml.model.Role;
 import com.ecc.hibernate_xml.util.InputHandler;
 import com.ecc.hibernate_xml.service.RoleService;
 
@@ -18,10 +19,10 @@ public class CreateRoleUiHandler extends UiHandler {
 
 	@Override 
 	public void onHandle() throws Exception {
-		String roleName = InputHandler.getNextLine(PROMPT);
-		Serializable roleId = roleService.createRole(roleName);
+		Role role = InputHandler.getNextLineREPL(PROMPT, Role::new);
+		roleService.createRole(role);
 		System.out.println(String.format("Successfully created the role \"%s\" with ID \"%s\"!", 
-			roleName, roleId));
+			role.getName(), role.getId()));
 	}
 
 	@Override 
