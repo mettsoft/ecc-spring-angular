@@ -1,6 +1,5 @@
 package com.ecc.hibernate_xml.ui_handler.person.modify;
 
-import com.ecc.hibernate_xml.ui_handler.CompositeUiHandler;
 import com.ecc.hibernate_xml.ui_handler.UiHandler;
 import com.ecc.hibernate_xml.util.InputHandler;
 import com.ecc.hibernate_xml.service.PersonService;
@@ -8,7 +7,6 @@ import com.ecc.hibernate_xml.model.Person;
 import com.ecc.hibernate_xml.model.Name;
 
 public class NameUiHandler extends UiHandler {
-
 	private static final String TITLE_PROMPT = "Please enter the title: ";
 	private static final String LAST_NAME_PROMPT = "Please enter the last name: ";
 	private static final String FIRST_NAME_PROMPT = "Please enter the first name: ";
@@ -26,15 +24,30 @@ public class NameUiHandler extends UiHandler {
 
 	@Override 
 	public void onHandle() throws Exception {
-		String title = InputHandler.getNextLine(TITLE_PROMPT);
-		String lastName = InputHandler.getNextLine(LAST_NAME_PROMPT);
-		String firstName = InputHandler.getNextLine(FIRST_NAME_PROMPT);
-		String middleName = InputHandler.getNextLine(MIDDLE_NAME_PROMPT);
-		String suffix = InputHandler.getNextLine(SUFFIX_PROMPT);
 
-		Name name = new Name(lastName, firstName, middleName);
-		name.setTitle(title);
-		name.setSuffix(suffix);
+		Name name = person.getName();
+
+		InputHandler.getNextLineREPL(TITLE_PROMPT, input -> {
+			name.setTitle(input);
+			return 0;
+		});
+		InputHandler.getNextLineREPL(LAST_NAME_PROMPT, input -> {
+			name.setLastName(input);
+			return 0;
+		});
+		InputHandler.getNextLineREPL(FIRST_NAME_PROMPT, input -> {
+			name.setFirstName(input);
+			return 0;
+		});
+		InputHandler.getNextLineREPL(MIDDLE_NAME_PROMPT, input -> {
+			name.setMiddleName(input);
+			return 0;
+		});
+		InputHandler.getNextLineREPL(SUFFIX_PROMPT, input -> {
+			name.setSuffix(input);
+			return 0;
+		});
+
 		person.setName(name);
 
 		personService.updatePerson(person);
