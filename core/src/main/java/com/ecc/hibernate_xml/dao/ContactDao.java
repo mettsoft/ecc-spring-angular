@@ -37,4 +37,14 @@ public class ContactDao {
 			throw new DaoException(exception);
 		}
 	}
+
+	public Contact getContact(Integer contactId) throws DaoException {
+		Session session = HibernateUtility.getSessionFactory().openSession();
+		Contact contact = (Contact) session.get(Contact.class, contactId);
+		session.close();
+		if (contact == null) {
+			throw new DaoException("Contact not found!");
+		}
+		return contact;
+	}
 }

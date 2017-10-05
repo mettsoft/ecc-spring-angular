@@ -22,7 +22,11 @@ public class ContactService {
 		contactDao.updateContact(contact);
 	}
 
-	public void deleteContact(Contact contact) throws DaoException {
-		contactDao.deleteContact(contact);
+	public void deleteContact(Integer contactId) throws DaoException {
+		contactDao.deleteContact(contactDao.getContact(contactId));
+	}
+
+	public Contact getContact(Integer contactId) throws DaoException {
+		return contactDao.getContact(contactId);
 	}
 }
