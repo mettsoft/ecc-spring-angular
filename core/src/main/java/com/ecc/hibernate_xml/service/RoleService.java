@@ -1,5 +1,6 @@
 package com.ecc.hibernate_xml.service;
 
+import java.io.Serializable;
 import java.util.List;
 
 import com.ecc.hibernate_xml.dao.DaoException;
@@ -23,8 +24,8 @@ public class RoleService {
 		return roleDao.listRoles(person);
 	}
 
-	public void createRole(String roleName) throws DaoException, ModelException {
-		roleDao.createRole(new Role(roleName));		
+	public Serializable createRole(String roleName) throws DaoException, ModelException {
+		return roleDao.createRole(new Role(roleName));		
 	}
 
 	public void updateRole(Integer roleId, String roleName) throws DaoException, ModelException {

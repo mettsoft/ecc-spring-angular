@@ -1,5 +1,6 @@
 package com.ecc.hibernate_xml.dao;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -28,9 +29,9 @@ public class RoleDao {
 		return roles;
 	}
 
-	public void createRole(Role role) throws DaoException {
+	public Serializable createRole(Role role) throws DaoException {
 		try {
-			TransactionScope.executeTransaction(session -> session.save(role));			
+			return TransactionScope.executeTransactionWithResult(session -> session.save(role));			
 		}
 		catch (Exception exception) {
 			throw new DaoException(exception);
