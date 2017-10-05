@@ -7,7 +7,6 @@ import com.ecc.hibernate_xml.model.Person;
 import com.ecc.hibernate_xml.model.Name;
 
 public class CreatePersonUiHandler extends UiHandler {
-
 	private static final String LAST_NAME_PROMPT = "Please enter the last name: ";
 	private static final String FIRST_NAME_PROMPT = "Please enter the first name: ";
 	private static final String MIDDLE_NAME_PROMPT = "Please enter the middle name: ";

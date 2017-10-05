@@ -7,20 +7,18 @@ import com.ecc.hibernate_xml.ui_handler.person.update.AddressUiHandler;
 import com.ecc.hibernate_xml.ui_handler.person.update.BirthdayUiHandler;
 import com.ecc.hibernate_xml.ui_handler.person.update.GwaUiHandler;
 import com.ecc.hibernate_xml.ui_handler.person.update.EmploymentUiHandler;
-import com.ecc.hibernate_xml.ui_handler.person.update.role.ListRolesUiHandler;
-import com.ecc.hibernate_xml.ui_handler.person.update.role.AddRoleUiHandler;
-import com.ecc.hibernate_xml.ui_handler.person.update.role.RemoveRoleUiHandler;
 import com.ecc.hibernate_xml.ui_handler.person.update.contact.ListContactsUiHandler;
 import com.ecc.hibernate_xml.ui_handler.person.update.contact.AddContactUiHandler;
 import com.ecc.hibernate_xml.ui_handler.person.update.contact.EditContactUiHandler;
 import com.ecc.hibernate_xml.ui_handler.person.update.contact.DeleteContactUiHandler;
-import com.ecc.hibernate_xml.util.InputHandler;
+import com.ecc.hibernate_xml.ui_handler.person.update.role.ListRolesUiHandler;
+import com.ecc.hibernate_xml.ui_handler.person.update.role.AddRoleUiHandler;
+import com.ecc.hibernate_xml.ui_handler.person.update.role.RemoveRoleUiHandler;
 import com.ecc.hibernate_xml.service.PersonService;
 import com.ecc.hibernate_xml.model.Person;
-import com.ecc.hibernate_xml.model.Name;
+import com.ecc.hibernate_xml.util.InputHandler;
 
 public class UpdatePersonUiHandler extends UiHandler {
-
 	private static final String PROMPT = "Please enter the person ID you wish to update: ";
 
 	private PersonService personService;
@@ -32,7 +30,6 @@ public class UpdatePersonUiHandler extends UiHandler {
 
 	@Override 
 	public void onHandle() throws Exception {
-
 		Integer personId = InputHandler.getNextLine(PROMPT, Integer::valueOf);
 		Person person = personService.getPerson(personId);
 		new CompositeUiHandler()
