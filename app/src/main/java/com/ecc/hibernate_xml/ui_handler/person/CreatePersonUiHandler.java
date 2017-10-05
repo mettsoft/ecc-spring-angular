@@ -26,8 +26,10 @@ public class CreatePersonUiHandler extends UiHandler {
 		InputHandler.getNextLineREPL(MIDDLE_NAME_PROMPT, nameFactory::setMiddleName);
 		Name name = nameFactory.build();
 
-		personService.createPerson(new Person(name));
-		System.out.println(String.format("Successfully created the person \"%s\"!", name));
+		Person person = new Person(name);
+		personService.createPerson(person);
+		System.out.println(String.format("Successfully created the person \"%s\" with ID \"%d\"!", 
+			person.getName(), person.getId()));
 	}
 
 	@Override 
