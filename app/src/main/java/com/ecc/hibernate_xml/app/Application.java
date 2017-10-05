@@ -4,6 +4,7 @@ import java.util.logging.Logger;
 import java.util.logging.Level;
 
 import com.ecc.hibernate_xml.ui_handler.CompositeUiHandler;
+import com.ecc.hibernate_xml.ui_handler.person.list.ListPersonsUiHandler;
 import com.ecc.hibernate_xml.ui_handler.person.list.ListPersonsByGwaUiHandler;
 import com.ecc.hibernate_xml.ui_handler.person.list.ListPersonsByDateHiredUiHandler;
 import com.ecc.hibernate_xml.ui_handler.person.list.ListPersonsByLastNameUiHandler;
@@ -29,7 +30,7 @@ public class Application {
 
 		new CompositeUiHandler()
 			.add(new CompositeUiHandler("Go to Person Registry.")
-				.add(new CompositeUiHandler("List Person Records.")
+				.add(new ListPersonsUiHandler("List Person Records.")
 					.add(new ListPersonsByGwaUiHandler("Sort by GWA."))
 					.add(new ListPersonsByDateHiredUiHandler("Sort by date hired."))
 					.add(new ListPersonsByLastNameUiHandler("Sort by last name.")))
