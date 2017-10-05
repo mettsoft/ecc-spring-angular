@@ -14,6 +14,7 @@ public class ListPersonsByDateHiredUiHandler extends UiHandler {
 
 	@Override 
 	public void onHandle() throws Exception {
+		System.out.println("-------------------");
 		personService.listPersonsByDateHired().stream().forEach(System.out::println);
 		System.out.println("-------------------");
 	}

@@ -14,6 +14,7 @@ public class ListPersonsByLastNameUiHandler extends UiHandler {
 
 	@Override 
 	public void onHandle() throws Exception {
+		System.out.println("-------------------");
 		personService.listPersonsByLastName().stream().forEach(System.out::println);
 		System.out.println("-------------------");
 	}

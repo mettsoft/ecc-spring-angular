@@ -14,6 +14,7 @@ public class ListPersonsByGwaUiHandler extends UiHandler {
 
 	@Override 
 	public void onHandle() throws Exception {
+		System.out.println("-------------------");
 		personService.listPersonsByGwa().stream().forEach(System.out::println);
 		System.out.println("-------------------");
 	}
