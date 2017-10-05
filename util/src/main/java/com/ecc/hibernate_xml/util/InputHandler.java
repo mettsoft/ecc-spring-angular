@@ -20,4 +20,15 @@ public class InputHandler {
 			throw new InputException(exception);
 		}
 	}
+
+	public static <R> R getNextLineREPL(String message, CheckedFunction<String, R> function) {
+		System.out.print(message);
+		try {
+			return function.apply(SCANNER.nextLine());				
+		}
+		catch (Exception exception) {
+			System.out.println("Error: " + exception.getMessage());
+			return getNextLineREPL(message, function);
+		}
+	}
 }
