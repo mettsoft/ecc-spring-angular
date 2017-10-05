@@ -5,6 +5,36 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 public class Name {
+	public static class Factory {
+		private Name name;
+
+		public Factory() {
+			name = new Name();
+		}
+
+		public Factory setLastName(String lastName) throws ModelException {
+			name.setLastName(lastName);
+			return this;
+		}
+
+		public Factory setMiddleName(String middleName) throws ModelException {
+			name.setMiddleName(middleName);
+			return this;
+		}
+
+		public Factory setFirstName(String firstName) throws ModelException {
+			name.setFirstName(firstName);
+			return this;
+		}
+
+		public Name build() throws ModelException {
+			name.setLastName(name.lastName);
+			name.setMiddleName(name.middleName);
+			name.setFirstName(name.firstName);
+			return name;
+		}
+	}
+
 	private static Integer MAX_CHARACTERS = 20;
 
 	private String title;
