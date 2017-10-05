@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat;
 import java.text.ParseException;
 import java.util.Date;
 
-import com.ecc.hibernate_xml.ui_handler.CompositeUiHandler;
 import com.ecc.hibernate_xml.ui_handler.UiHandler;
 import com.ecc.hibernate_xml.util.InputHandler;
 import com.ecc.hibernate_xml.service.PersonService;
@@ -27,23 +26,21 @@ public class EmploymentUiHandler extends UiHandler {
 
 	@Override 
 	public void onHandle() throws Exception {
-		Boolean currentlyEmployed = InputHandler.getNextLine(EMPLOYMENT_PROMPT, input -> {
-			if (input.compareTo("y") == 0) {
+		Boolean currentlyEmployed = InputHandler.getNextLineREPL(EMPLOYMENT_PROMPT, input -> {
+			if (input.equals("y")) {
 				return true;
 			}
-			else if (input.compareTo("n") == 0) {
+			else if (input.equals("n")) {
 				return false;
 			}
-			else {
-				throw new ParseException("Invalid input!", 0);
-			}
+			throw new ParseException("Invalid input!", 0);
 		});
 
 		person.setCurrentlyEmployed(currentlyEmployed);
 
 		if (currentlyEmployed) {
 			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-			Date dateHired = InputHandler.getNextLine(DATE_PROMPT, dateFormat::parse);
+			Date dateHired = InputHandler.getNextLineREPL(DATE_PROMPT, dateFormat::parse);
 			person.setDateHired(dateHired);			
 		}
 
