@@ -5,7 +5,6 @@ import com.ecc.hibernate_xml.util.InputHandler;
 import com.ecc.hibernate_xml.service.PersonService;
 
 public class DeletePersonUiHandler extends UiHandler {
-
 	private static final String PROMPT = "Please enter the person ID you wish to delete: ";
 
 	private PersonService personService;
