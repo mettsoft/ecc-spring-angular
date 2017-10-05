@@ -10,8 +10,14 @@ public class InputHandler {
 		System.out.print(message);
 		return SCANNER.nextLine();		
 	}
-	public static <R> R getNextLine(String message, CheckedFunction<String, R> function) throws Exception {
+
+	public static <R> R getNextLine(String message, CheckedFunction<String, R> function) throws InputException {
 		System.out.print(message);
-		return function.apply(SCANNER.nextLine());		
+		try {
+			return function.apply(SCANNER.nextLine());				
+		}
+		catch (Exception exception) {
+			throw new InputException(exception);
+		}
 	}
 }
