@@ -1,6 +1,8 @@
 package com.ecc.hibernate_xml.util;
 
+import java.text.ParseException;
 import java.util.Scanner;
+
 import com.ecc.hibernate_xml.util.CheckedFunction;
 
 public class InputHandler {
@@ -26,7 +28,7 @@ public class InputHandler {
 		try {
 			return function.apply(SCANNER.nextLine());				
 		}
-		catch (NumberFormatException exception) {
+		catch (NumberFormatException|ParseException exception) {
 			System.out.println("Error: " + new InputException(exception).getMessage());
 			return getNextLineREPL(message, function);
 		}
