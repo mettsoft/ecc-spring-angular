@@ -33,7 +33,7 @@ public class RoleService {
 		roleDao.updateRole(role);
 	}
 
-	public void deleteRole(Integer roleId) throws DaoException, ModelException {
+	public void deleteRole(Integer roleId) throws DaoException {
 		roleDao.deleteRole(roleDao.getRole(roleId));
 	}
 }
