@@ -21,13 +21,13 @@ public class CreatePersonUiHandler extends UiHandler {
 
 	@Override 
 	public void onHandle() throws Exception {
-		Name name = new Name(
-			InputHandler.getNextLine(LAST_NAME_PROMPT),
-			InputHandler.getNextLine(FIRST_NAME_PROMPT),
-			InputHandler.getNextLine(MIDDLE_NAME_PROMPT));
+		Name.Factory nameFactory = new Name.Factory();
+		InputHandler.getNextLineREPL(LAST_NAME_PROMPT, nameFactory::setLastName);
+		InputHandler.getNextLineREPL(FIRST_NAME_PROMPT, nameFactory::setFirstName);
+		InputHandler.getNextLineREPL(MIDDLE_NAME_PROMPT, nameFactory::setMiddleName);
+		Name name = nameFactory.build();
 
 		personService.createPerson(new Person(name));
-
 		System.out.println(String.format("Successfully created the person \"%s\"!", name));
 	}
 
