@@ -47,7 +47,7 @@ public class PersonService {
 	}
 
 	public void deletePerson(Integer personId) throws DaoException {
-		personDao.deletePerson(personId);
+		personDao.deletePerson(personDao.getPerson(personId));
 	}
 
 	public Person getPerson(Integer personId) throws DaoException {
