@@ -3,6 +3,7 @@ package com.ecc.hibernate_xml.ui_handler;
 import java.util.List;
 import java.util.ArrayList;
 
+import com.ecc.hibernate_xml.util.InputException;
 import com.ecc.hibernate_xml.util.InputHandler;
 
 public class CompositeUiHandler extends UiHandler {
@@ -31,18 +32,18 @@ public class CompositeUiHandler extends UiHandler {
 	@Override
 	public void onHandle() throws Exception {
 		shouldRelinquishControl = false;
-		try {
-			String userPrompt = String.format(MAIN_PROMPT, buildOperationPrompt());
-			Integer optionIndex = InputHandler.getNextLine(userPrompt, Integer::valueOf);
-			if (optionIndex > 0) {
-				uiHandlers.get(optionIndex - 1).handle();
+		String userPrompt = String.format(MAIN_PROMPT, buildOperationPrompt());
+		Integer optionIndex = InputHandler.getNextLine(userPrompt, Integer::valueOf);
+		if (optionIndex > 0) {
+			try {
+				uiHandlers.get(optionIndex - 1).handle();			
 			}
-			else {
-				shouldRelinquishControl = true;
+			catch (Exception cause) {
+				throw new InputException(cause);
 			}
 		}
-		catch (Exception exception) {
-			throw new InputException(exception);
+		else {
+			shouldRelinquishControl = true;
 		}
 	}
 
