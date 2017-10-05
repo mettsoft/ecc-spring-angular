@@ -33,11 +33,11 @@ public class UpdatePersonUiHandler extends UiHandler {
 		Integer personId = InputHandler.getNextLine(PROMPT, Integer::valueOf);
 		Person person = personService.getPerson(personId);
 		new CompositeUiHandler()
-			.add(new NameUiHandler("Change name.", person))
-			.add(new AddressUiHandler("Change address.", person))
-			.add(new BirthdayUiHandler("Change birthday.", person))
+			.add(new NameUiHandler("Change Name.", person))
+			.add(new AddressUiHandler("Change Address.", person))
+			.add(new BirthdayUiHandler("Change Birthday.", person))
 			.add(new GwaUiHandler("Change GWA", person))
-			.add(new EmploymentUiHandler("Change employment status.", person))
+			.add(new EmploymentUiHandler("Change Employment Status.", person))
 			.add(new CompositeUiHandler("Manage Contact Information.")
 				.add(new ListContactsUiHandler("List Contact Information.", person))
 				.add(new AddContactUiHandler("Add Contact Information.", person))
