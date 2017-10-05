@@ -17,7 +17,7 @@ public abstract class UiHandler {
 			onHandle();
 		}
 		catch (Exception exception) {
-			System.out.println("Error: " + exception.getMessage());
+			printException(exception);
 		}
 		finally {
 			if (!relinquishControl()) {
@@ -28,6 +28,10 @@ public abstract class UiHandler {
 
 	public abstract void onHandle() throws Exception;
 	protected abstract Boolean relinquishControl();
+
+	private void printException(Exception exception) {
+		System.out.println("Error: " + exception.getMessage());
+	}
 
 	private void debugPrintException(Exception exception) {
 		exception.printStackTrace();
