@@ -55,14 +55,12 @@ public class PersonService {
 	}
 
 	public void addRoleToPerson(Integer roleId, Person person) throws DaoException {
-		Role role = roleDao.getRole(roleId);
-		person.getRoles().add(role);
+		person.getRoles().add(roleDao.getRole(roleId));
 		personDao.updatePerson(person);
 	}
 
 	public void removeRoleFromPerson(Integer roleId, Person person) throws DaoException {
-		Role role = roleDao.getRole(roleId);
-		person.getRoles().remove(role);
+		person.getRoles().remove(roleDao.getRole(roleId));
 		personDao.updatePerson(person);
 	}
 
