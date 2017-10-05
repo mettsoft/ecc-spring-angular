@@ -4,7 +4,6 @@ import com.ecc.hibernate_xml.ui_handler.UiHandler;
 import com.ecc.hibernate_xml.service.RoleService;
 
 public class ListRolesUiHandler extends UiHandler {
-
 	private RoleService roleService;
 
 	public ListRolesUiHandler(String operationName) {
@@ -14,6 +13,7 @@ public class ListRolesUiHandler extends UiHandler {
 
 	@Override 
 	public void onHandle() throws Exception {
+		System.out.println("-------------------");
 		roleService.listRoles().stream().forEach(System.out::println);
 		System.out.println("-------------------");
 	}
