@@ -1,7 +1,6 @@
 package com.ecc.hibernate_xml.ui_handler.person.modify.contact;
 
 import java.util.stream.Collectors;
-import com.ecc.hibernate_xml.ui_handler.CompositeUiHandler;
 import com.ecc.hibernate_xml.ui_handler.UiHandler;
 import com.ecc.hibernate_xml.util.InputException;
 import com.ecc.hibernate_xml.util.InputHandler;
@@ -29,7 +28,6 @@ public class AddContactUiHandler extends UiHandler {
 
 	@Override 
 	public void onHandle() throws Exception {
-
 		Integer contactType = InputHandler.getNextLine(CONTACT_TYPE_PROMPT, Integer::valueOf);
 		Contact contact = null;
 
@@ -49,7 +47,8 @@ public class AddContactUiHandler extends UiHandler {
 
 		personService.addContactToPerson(contact, person);
 		System.out.println(String.format(
-			"Successfully added \"%s\"  to Person \"%s\"!", contact, person.getName()));
+			"Successfully added \"%s\"  to Person ID [%d] \"%s\"!", contact, 
+			person.getId(), person.getName()));
 	}
 
 	@Override 
