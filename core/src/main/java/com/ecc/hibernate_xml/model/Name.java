@@ -58,7 +58,7 @@ public class Name {
 			throw new ModelException(String.format("Title must not exceed %d characters.", 
 				MAX_CHARACTERS));
 		}
-		this.title = title;
+		this.title = title != null && title.trim().isEmpty()? null: title;
 	}
 
 	public void setLastName(String lastName) throws ModelException {
@@ -99,7 +99,7 @@ public class Name {
 			throw new ModelException(String.format("Suffix must not exceed %d characters.", 
 				MAX_CHARACTERS));
 		}
-		this.suffix = suffix;
+		this.suffix = suffix != null && suffix.trim().isEmpty()? null: suffix;
 	}
 
 	public String getTitle() {
