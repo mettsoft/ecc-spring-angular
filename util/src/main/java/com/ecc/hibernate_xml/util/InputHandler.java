@@ -26,6 +26,10 @@ public class InputHandler {
 		try {
 			return function.apply(SCANNER.nextLine());				
 		}
+		catch (NumberFormatException exception) {
+			System.out.println("Error: " + new InputException(exception).getMessage());
+			return getNextLineREPL(message, function);
+		}
 		catch (Exception exception) {
 			System.out.println("Error: " + exception.getMessage());
 			return getNextLineREPL(message, function);

@@ -25,12 +25,13 @@ public class AddressUiHandler extends UiHandler {
 
 	@Override 
 	public void onHandle() throws Exception {
-		String streetNumber = InputHandler.getNextLine(STREET_NUMBER_PROMPT);
-		Integer barangay = InputHandler.getNextLine(BARANGAY_PROMPT, Integer::valueOf);
-		String municipality = InputHandler.getNextLine(MUNICIPALITY_PROMPT);
-		Integer zipCode = InputHandler.getNextLine(ZIP_CODE_PROMPT, Integer::valueOf);
+		Address.Factory addressFactory = new Address.Factory();
+		InputHandler.getNextLineREPL(STREET_NUMBER_PROMPT, addressFactory::setStreetNumber);
+		addressFactory.setBarangay(InputHandler.getNextLineREPL(BARANGAY_PROMPT, Integer::valueOf));
+		InputHandler.getNextLineREPL(MUNICIPALITY_PROMPT, addressFactory::setMunicipality);
+		addressFactory.setZipCode(InputHandler.getNextLineREPL(ZIP_CODE_PROMPT, Integer::valueOf));
 
-		Address address = new Address(streetNumber, barangay, municipality, zipCode);
+		Address address = addressFactory.build();
 		person.setAddress(address);
 
 		personService.updatePerson(person);

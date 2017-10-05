@@ -1,6 +1,42 @@
 package com.ecc.hibernate_xml.model;
 
 public class Address {
+	public static class Factory {
+		private Address address;
+
+		public Factory() {
+			address = new Address();
+		}
+
+		public Factory setStreetNumber(String streetNumber) throws ModelException {
+			address.setStreetNumber(streetNumber);
+			return this;
+		}
+
+		public Factory setBarangay(Integer barangay) throws ModelException {
+			address.setBarangay(barangay);
+			return this;
+		}
+
+		public Factory setMunicipality(String municipality) throws ModelException {
+			address.setMunicipality(municipality);
+			return this;
+		}
+
+		public Factory setZipCode(Integer zipCode) throws ModelException {
+			address.setZipCode(zipCode);
+			return this;
+		}
+
+		public Address build() throws ModelException {
+			address.setStreetNumber(address.streetNumber);
+			address.setBarangay(address.barangay);
+			address.setMunicipality(address.municipality);
+			address.setZipCode(address.zipCode);
+			return address;
+		}
+	}
+
 	private static final Integer MAX_STREET_NUMBER_CHARACTERS = 20;
 	private static final Integer MAX_MUNICIPALITY_CHARACTERS = 50;
 
