@@ -2,7 +2,6 @@ package com.ecc.hibernate_xml.model;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.Set;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
@@ -15,8 +14,8 @@ public class Person {
 	private BigDecimal GWA;
 	private Boolean currentlyEmployed;
 	private Date dateHired;
-	private Set<Contact> contacts;
-	private Set<Role> roles;
+	private List<Contact> contacts;
+	private List<Role> roles;
 
 	private Person() {
 		setCurrentlyEmployed(false);
@@ -70,11 +69,11 @@ public class Person {
 		this.dateHired = dateHired;		
 	}
 
-	public void setContacts(Set contacts) {
+	public void setContacts(List<Contact> contacts) {
 		this.contacts = contacts;
 	}
 
-	public void setRoles(Set roles) {
+	public void setRoles(List<Role> roles) {
 		this.roles = roles;
 	}
 
@@ -106,11 +105,11 @@ public class Person {
 		return dateHired;
 	}
 
-	public Set<Contact> getContacts() {
+	public List<Contact> getContacts() {
 		return contacts;
 	}
 
-	public Set<Role> getRoles() {
+	public List<Role> getRoles() {
 		return roles;
 	}
 
