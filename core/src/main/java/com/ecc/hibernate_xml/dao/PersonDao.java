@@ -11,7 +11,7 @@ public class PersonDao {
 
 	public List<Person> listPersons() {
 		Session session = HibernateUtility.getSessionFactory().openSession();
-		List<Person> persons = session.createQuery("FROM Person").list();
+		List<Person> persons = session.createQuery("FROM Person ORDER BY id").list();
 		session.close();
 		return persons;
 	}
