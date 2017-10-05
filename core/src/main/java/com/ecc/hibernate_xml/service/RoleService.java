@@ -32,12 +32,15 @@ public class RoleService {
 		return roleDao.createRole(role);		
 	}
 
-	public void updateRole(Integer roleId, Role role) throws DaoException {
-		role.setId(roleId);
+	public void updateRole(Role role) throws DaoException {
 		roleDao.updateRole(role);
 	}
 
 	public void deleteRole(Integer roleId) throws DaoException {
 		roleDao.deleteRole(roleDao.getRole(roleId));
+	}
+
+	public Role getRole(Integer roleId) throws DaoException {
+		return roleDao.getRole(roleId);
 	}
 }
