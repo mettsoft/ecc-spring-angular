@@ -1,11 +1,8 @@
 package com.ecc.hibernate_xml.ui_handler.person.modify.contact;
 
 import java.util.stream.Collectors;
-import java.util.function.Function;
-import java.util.Map;
 import java.util.List;
 
-import com.ecc.hibernate_xml.ui_handler.CompositeUiHandler;
 import com.ecc.hibernate_xml.ui_handler.UiHandler;
 import com.ecc.hibernate_xml.util.InputHandler;
 import com.ecc.hibernate_xml.service.ContactService;
@@ -28,24 +25,28 @@ public class EditContactUiHandler extends UiHandler {
 
 	@Override 
 	public void onHandle() throws Exception {
-
 		List<Contact> contacts = contactService.listContacts(person);
 
-		Map<Integer, Contact> mapOfContacts = contacts.stream()
-			.collect(Collectors.toMap(contact -> contact.getId(), Function.identity()));
+		System.out.println("-------------------");
+		if (contacts.isEmpty()) {
+			System.out.println("There are no contacts to delete.");
+		}
+		else {		
+			String listOfContacts = contacts.stream()
+				.map(contact -> contact.toString())
+				.collect(Collectors.joining("\n"));
 
-		String listOfContacts = contacts.stream()
-			.map(contact -> contact.toString())
-			.collect(Collectors.joining("\n"));
+			Integer contactId = InputHandler.getNextLine(
+				String.format("%s\n%s\n Enter Contact ID: ", SELECT_CONTACT_PROMPT, listOfContacts), Integer::valueOf);
 
-		Integer contactId = InputHandler.getNextLine(
-			String.format("%s\n%s\n Enter Contact ID: ", SELECT_CONTACT_PROMPT, listOfContacts), Integer::valueOf);
-
-		Contact contact = mapOfContacts.get(contactId);
-		contact.setData(InputHandler.getNextLine(String.format(CONTACT_DATA_PROMPT, contact)));
-		contactService.updateContact(contact);
-		System.out.println(String.format(
-			"Successfully updated \"%s\"  of Person \"%s\"!", contact, person.getName()));
+			Contact contact = contactService.getContact(contactId);
+			contact.setData(InputHandler.getNextLine(String.format(CONTACT_DATA_PROMPT, contact)));
+			contactService.updateContact(contact);
+			System.out.println(String.format(
+				"Successfully updated \"%s\"  of Person ID [%d] \"%s\"!", contact, 
+				person.getId(), person.getName()));
+		}
+		System.out.println("-------------------");
 	}
 
 	@Override 
