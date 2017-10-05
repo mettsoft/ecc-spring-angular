@@ -19,7 +19,7 @@ public class MobileNumber extends Contact {
 	@Override
 	protected void onValidate(String data) throws ModelException {
 		try {
-			Integer.parseInt(data);
+			Long.parseLong(data);
 		}
 		catch(NumberFormatException exception) {
 			throw new ModelException("Mobile number must only contain numerical digits.");
