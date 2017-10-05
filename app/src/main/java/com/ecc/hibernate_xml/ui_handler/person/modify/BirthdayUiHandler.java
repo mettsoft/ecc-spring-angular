@@ -11,7 +11,6 @@ import com.ecc.hibernate_xml.service.PersonService;
 import com.ecc.hibernate_xml.model.Person;
 
 public class BirthdayUiHandler extends UiHandler {
-
 	private static final String PROMPT = "Please enter the birthday (yyyy-MM-dd): ";
 
 	private PersonService personService;
@@ -26,11 +25,12 @@ public class BirthdayUiHandler extends UiHandler {
 	@Override 
 	public void onHandle() throws Exception {
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		Date birthday = InputHandler.getNextLine(PROMPT, dateFormat::parse);
+		Date birthday = InputHandler.getNextLineREPL(PROMPT, dateFormat::parse);
 		person.setBirthday(birthday);
 
 		personService.updatePerson(person);
-		System.out.println(String.format("Successfully updated person's birthday to \"%s\"!", birthday));
+		System.out.println(String.format(
+			"Successfully updated person's birthday to \"%s\"!", dateFormat.format(birthday)));
 	}
 
 	@Override 
