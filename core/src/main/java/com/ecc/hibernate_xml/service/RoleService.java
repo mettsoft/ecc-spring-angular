@@ -28,8 +28,7 @@ public class RoleService {
 		return roleDao.createRole(role);		
 	}
 
-	public void updateRole(Integer roleId, String roleName) throws DaoException, ModelException {
-		Role role = new Role(roleName);
+	public void updateRole(Integer roleId, Role role) throws DaoException {
 		role.setId(roleId);
 		roleDao.updateRole(role);
 	}
