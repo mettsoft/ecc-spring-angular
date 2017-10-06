@@ -7,44 +7,19 @@ import org.hibernate.Query;
 import com.ecc.hibernate_xml.model.Contact;
 import com.ecc.hibernate_xml.model.Person;
 import com.ecc.hibernate_xml.util.HibernateUtility;
-import com.ecc.hibernate_xml.util.TransactionScope;
 
-public class ContactDao {
+public class ContactDao extends AbstractDao<Contact> {
 
-	public List<Contact> listContacts(Person person) {
+	public ContactDao() {
+		super(Contact.class);
+	}
+
+	public List<Contact> list(Person person) {
 		Session session = HibernateUtility.getSessionFactory().openSession();
 		Query query = session.createQuery("FROM Contact WHERE person_id = :id ORDER BY id");
 		query.setParameter("id", person.getId());
 		List<Contact> contacts = query.list();
 		session.close();
 		return contacts;
-	}
-
-	public void updateContact(Contact contact) throws DaoException {
-		try {
-			TransactionScope.executeTransaction(session -> session.update(contact));
-		}
-		catch (Exception exception) {
-			throw new DaoException(exception);
-		}
-	}
-
-	public void deleteContact(Contact contact) throws DaoException {
-		try {
-			TransactionScope.executeTransaction(session -> session.delete(contact));
-		}
-		catch (Exception exception) {
-			throw new DaoException(exception);
-		}
-	}
-
-	public Contact getContact(Integer contactId) throws DaoException {
-		Session session = HibernateUtility.getSessionFactory().openSession();
-		Contact contact = (Contact) session.get(Contact.class, contactId);
-		session.close();
-		if (contact == null) {
-			throw new DaoException("Contact not found!");
-		}
-		return contact;
 	}
 }

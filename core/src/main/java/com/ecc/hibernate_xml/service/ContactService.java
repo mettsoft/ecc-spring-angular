@@ -15,18 +15,18 @@ public class ContactService {
 	}
 
 	public List<Contact> listContacts(Person person) {
-		return contactDao.listContacts(person);
+		return contactDao.list(person);
 	}
 
 	public void updateContact(Contact contact) throws DaoException {
-		contactDao.updateContact(contact);
+		contactDao.update(contact);
 	}
 
 	public void deleteContact(Integer contactId) throws DaoException {
-		contactDao.deleteContact(contactDao.getContact(contactId));
+		contactDao.delete(contactDao.get(contactId));
 	}
 
 	public Contact getContact(Integer contactId) throws DaoException {
-		return contactDao.getContact(contactId);
+		return contactDao.get(contactId);
 	}
 }
