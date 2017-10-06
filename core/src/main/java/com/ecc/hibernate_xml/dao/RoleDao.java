@@ -18,7 +18,13 @@ public class RoleDao extends AbstractDao<Role> {
 
 	@Override
 	protected void onBeforeSave(Session session, Role role) {
-		if (get(session, role.getName()) != null) {
+		onBeforeUpdate(session, role);
+	}
+
+	@Override
+	protected void onBeforeUpdate(Session session, Role role) {
+		Role existingRole = get(session, role.getName());
+		if (existingRole != null && existingRole.getId() != role.getId()) {
 			throw new RuntimeException(String.format(
 				"Role name \"%s\" is already existing.", role.getName()));
 		}

@@ -42,7 +42,7 @@ public abstract class AbstractDao<T> implements Dao<T> {
 		try {
 			TransactionScope.executeTransaction(session -> {
 				onBeforeUpdate(session, entity);
-				session.update(entity);
+				session.merge(entity);				
 			});			
 		}
 		catch (Exception exception) {
@@ -55,7 +55,7 @@ public abstract class AbstractDao<T> implements Dao<T> {
 		try {
 			TransactionScope.executeTransaction(session -> {
 				onBeforeDelete(session, entity);
-				session.delete(entity);
+				session.delete(entity);				
 			});			
 		}
 		catch (Exception exception) {
