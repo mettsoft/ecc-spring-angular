@@ -22,6 +22,8 @@ public class Person {
 
 	private Person() {
 		setCurrentlyEmployed(false);
+		setContacts(new ArrayList<>());
+		setRoles(new ArrayList<>());
 	}
 	
 	public Person(Name name) throws ValidationException {
