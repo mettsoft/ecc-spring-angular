@@ -1,11 +1,3 @@
-ALTER TABLE persons 
-	DROP COLUMN street_number,
-	DROP COLUMN barangay,
-	DROP COLUMN municipality,
-	DROP COLUMN zip_code,
-	ADD COLUMN address_id INT NOT NULL,
-	ADD CONSTRAINT address_foreign_key FOREIGN KEY (address_id) REFERENCES addresses (id);
-
 CREATE TABLE addresses (
 	id SERIAL NOT NULL,
 	street_number VARCHAR(20) NOT NULL,
@@ -14,3 +6,11 @@ CREATE TABLE addresses (
 	zip_code INT NOT NULL,
 	PRIMARY KEY (id)
 );
+
+ALTER TABLE persons 
+	DROP COLUMN street_number,
+	DROP COLUMN barangay,
+	DROP COLUMN municipality,
+	DROP COLUMN zip_code,
+	ADD COLUMN address_id INT NOT NULL,
+	ADD CONSTRAINT address_foreign_key FOREIGN KEY (address_id) REFERENCES addresses (id);
