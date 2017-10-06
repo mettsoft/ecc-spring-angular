@@ -1,14 +1,17 @@
 package com.ecc.hibernate_xml.model;
 
+import com.ecc.hibernate_xml.util.validator.ValidationException;
+import com.ecc.hibernate_xml.util.validator.ModelValidator;
+
 public class Role {
 	private static final Integer MAX_CHARACTERS = 20;
+	private static final String MAX_LENGTH_ERROR_MESSAGE_TEMPLATE = "%s must not exceed " + MAX_CHARACTERS + " characters.";
+	private static final String NOT_EMPTY_ERROR_MESSAGE_TEMPLATE = "%s cannot be empty.";
 
 	private Integer id;
 	private String name;
 
-	private Role() {
-
-	}
+	private Role() {}
 
 	public Role(String name) throws ModelException {
 		setName(name);
@@ -19,13 +22,13 @@ public class Role {
 	}
 
 	public void setName(String name) throws ModelException {
-		if (name == null || name.trim().isEmpty()) {
-			throw new ModelException("Role name cannot be empty.");
-		}
-		else if (name.length() > MAX_CHARACTERS) {
-			throw new ModelException(String.format("Role name must not exceed %d characters.", 
-				MAX_CHARACTERS));
-		}
+		ModelValidator
+			.create(name)
+			.notEmpty(String.format(NOT_EMPTY_ERROR_MESSAGE_TEMPLATE, "Role name"))
+			.maxLength(MAX_CHARACTERS, String.format(MAX_LENGTH_ERROR_MESSAGE_TEMPLATE, 
+				"Role name"))
+			.validate();
+
 		this.name = name;
 	}
 
