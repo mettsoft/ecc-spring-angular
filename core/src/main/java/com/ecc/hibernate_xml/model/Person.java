@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
+import com.ecc.hibernate_xml.util.validator.ValidationException;
+import com.ecc.hibernate_xml.util.validator.ModelValidator;
+
 public class Person {
 	private Integer id;
 	private Name name;
@@ -21,7 +24,7 @@ public class Person {
 		setCurrentlyEmployed(false);
 	}
 	
-	public Person(Name name) throws ModelException {
+	public Person(Name name) throws ValidationException {
 		this();
 		setName(name);
 	}
@@ -30,10 +33,12 @@ public class Person {
 		this.id = id;
 	}
 
-	public void setName(Name name) throws ModelException {
-		if (name == null) {
-			throw new ModelException("Name cannot be null.");
-		}
+	public void setName(Name name) throws ValidationException {
+		ModelValidator
+			.create(name)
+			.notNull("Name cannot be null.")
+			.validate();
+
 		this.name = name;
 	}
 
@@ -45,13 +50,13 @@ public class Person {
  		this.birthday = birthday;
 	}
 
-	public void setGWA(BigDecimal GWA) throws ModelException {
-		if (GWA != null && GWA.compareTo(new BigDecimal(1)) < 0) {
-			throw new ModelException("GWA cannot be less than 1.");
-		}
-		else if (GWA != null && GWA.compareTo(new BigDecimal(5)) > 0) {
-			throw new ModelException("GWA cannot be greater than 5.");
-		}
+	public void setGWA(BigDecimal GWA) throws ValidationException {
+		ModelValidator
+			.create(GWA)
+			.minimum(new BigDecimal(1), "GWA cannot be less than 1.")
+			.maximum(new BigDecimal(5), "GWA cannot be greater than 5.")
+			.validate();
+
 		this.GWA = GWA;
 	}
 
@@ -59,12 +64,12 @@ public class Person {
 		this.currentlyEmployed = currentlyEmployed;
 	}
 
-	public void setDateHired(Date dateHired) throws ModelException {
+	public void setDateHired(Date dateHired) throws ValidationException {
 		if (!getCurrentlyEmployed() && dateHired != null) {
-			throw new ModelException("Date hired cannot be assigned if person is unemployed.");
+			throw new ValidationException("Date hired cannot be assigned if person is unemployed.");
 		}
 		else if (getCurrentlyEmployed() && dateHired == null) {
-			throw new ModelException("Date hired cannot be null if person is employed.");
+			throw new ValidationException("Date hired cannot be null if person is employed.");
 		}
 		this.dateHired = dateHired;		
 	}

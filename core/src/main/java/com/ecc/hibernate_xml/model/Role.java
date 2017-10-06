@@ -13,7 +13,7 @@ public class Role {
 
 	private Role() {}
 
-	public Role(String name) throws ModelException {
+	public Role(String name) throws ValidationException {
 		setName(name);
 	}
 
@@ -21,7 +21,7 @@ public class Role {
 		this.id = id;
 	}
 
-	public void setName(String name) throws ModelException {
+	public void setName(String name) throws ValidationException {
 		ModelValidator
 			.create(name)
 			.notEmpty(String.format(NOT_EMPTY_ERROR_MESSAGE_TEMPLATE, "Role name"))

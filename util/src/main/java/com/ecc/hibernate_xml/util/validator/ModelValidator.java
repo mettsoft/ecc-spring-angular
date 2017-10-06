@@ -2,6 +2,7 @@ package com.ecc.hibernate_xml.util.validator;
 
 import java.util.Set;
 import java.util.HashSet;
+import java.math.BigDecimal;
 
 public class ModelValidator {
 
@@ -45,6 +46,16 @@ public class ModelValidator {
 
 	public ModelValidator digits(String errorMessage) {
 		policies.add(new DigitsPolicy(data, errorMessage));
+		return this;
+	}
+
+	public ModelValidator minimum(BigDecimal minimumThreshold, String errorMessage) {
+		policies.add(new MinimumPolicy(data, minimumThreshold, errorMessage));
+		return this;
+	}
+
+	public ModelValidator maximum(BigDecimal maximumThreshold, String errorMessage) {
+		policies.add(new MaximumPolicy(data, maximumThreshold, errorMessage));
 		return this;
 	}
 
