@@ -23,7 +23,7 @@ public class PersonService {
 	}
 
 	public List<Person> listPersonsByGwa() {
-		return personDao.listPersons().stream().sorted((firstPerson, secondPerson) -> 
+		return personDao.list().stream().sorted((firstPerson, secondPerson) -> 
 			firstPerson.getGWA() == null? 1: 
 				secondPerson.getGWA() == null? -1:	
 					firstPerson.getGWA().compareTo(secondPerson.getGWA())
@@ -31,41 +31,41 @@ public class PersonService {
 	}
 
 	public List<Person> listPersonsByDateHired() {
-		return personDao.listPersonsByDateHired();
+		return personDao.listByDateHired();
 	}
 
 	public List<Person> listPersonsByLastName() {
-		return personDao.listPersonsByLastName();
+		return personDao.listByLastName();
 	}
 
 	public void createPerson(Person person) throws DaoException {
-		personDao.createPerson(person);		
+		personDao.create(person);		
 	}
 
 	public void updatePerson(Person person) throws DaoException {
-		personDao.updatePerson(person);
+		personDao.update(person);
 	}
 
 	public void deletePerson(Integer personId) throws DaoException {
-		personDao.deletePerson(personDao.getPerson(personId));
+		personDao.delete(personDao.get(personId));
 	}
 
 	public Person getPerson(Integer personId) throws DaoException {
-		return personDao.getPerson(personId);
+		return personDao.get(personId);
 	}
 
 	public void addRoleToPerson(Integer roleId, Person person) throws DaoException {
 		person.getRoles().add(roleDao.get(roleId));
-		personDao.updatePerson(person);
+		personDao.update(person);
 	}
 
 	public void removeRoleFromPerson(Integer roleId, Person person) throws DaoException {
 		person.getRoles().remove(roleDao.get(roleId));
-		personDao.updatePerson(person);
+		personDao.update(person);
 	}
 
 	public void addContactToPerson(Contact contact, Person person) throws DaoException {
 		person.getContacts().add(contact);
-		personDao.updatePerson(person);
+		personDao.update(person);
 	}
 }
