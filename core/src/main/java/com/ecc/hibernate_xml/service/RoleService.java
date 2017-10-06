@@ -17,30 +17,30 @@ public class RoleService {
 	}
 
 	public List<Role> listRoles() {
-		return roleDao.listRoles();
+		return roleDao.list();
 	}
 
 	public List<Role> listRoles(Person person) {
-		return roleDao.listRoles(person);
+		return roleDao.list(person);
 	}
 
 	public List<Role> listRolesUnassignedTo(Person person) {
-		return roleDao.listRolesExcluding(roleDao.listRoles(person));
+		return roleDao.listExcluding(roleDao.list(person));
 	}
 
 	public Serializable createRole(Role role) throws DaoException {
-		return roleDao.createRole(role);		
+		return roleDao.create(role);		
 	}
 
 	public void updateRole(Role role) throws DaoException {
-		roleDao.updateRole(role);
+		roleDao.update(role);
 	}
 
 	public void deleteRole(Integer roleId) throws DaoException {
-		roleDao.deleteRole(roleDao.getRole(roleId));
+		roleDao.delete(roleDao.get(roleId));
 	}
 
 	public Role getRole(Integer roleId) throws DaoException {
-		return roleDao.getRole(roleId);
+		return roleDao.get(roleId);
 	}
 }

@@ -1,6 +1,5 @@
 package com.ecc.hibernate_xml.dao;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -9,19 +8,30 @@ import org.hibernate.Query;
 
 import com.ecc.hibernate_xml.model.Role;
 import com.ecc.hibernate_xml.model.Person;
-import com.ecc.hibernate_xml.util.TransactionScope;
 import com.ecc.hibernate_xml.util.HibernateUtility;
 
-public class RoleDao {
+public class RoleDao extends AbstractDao<Role> {
+	
+	public RoleDao() {
+		super(Role.class);
+	} 
 
-	public List<Role> listRoles() {
-		Session session = HibernateUtility.getSessionFactory().openSession();
-		List<Role> roles = session.createQuery("FROM Role ORDER BY id").list();
-		session.close();
-		return roles;
+	@Override
+	protected void onBeforeSave(Session session, Role role) {
+		if (get(session, role.getName()) != null) {
+			throw new RuntimeException(String.format(
+				"Role name \"%s\" is already existing.", role.getName()));
+		}
 	}
 
-	public List<Role> listRoles(Person person) {
+	private Role get(Session session, String name) {
+		Query query = session.createQuery("FROM Role WHERE name = :name");
+		query.setParameter("name", name);
+		Role role = (Role) query.uniqueResult();
+		return role;
+	}
+
+	public List<Role> list(Person person) {
 		Session session = HibernateUtility.getSessionFactory().openSession();
 		Query query = session.createQuery("SELECT R FROM Person P JOIN P.roles R WHERE P.id = :id ORDER BY R.id");
 		query.setParameter("id", person.getId());
@@ -30,7 +40,7 @@ public class RoleDao {
 		return roles;
 	}
 
-	public List<Role> listRolesExcluding(List<Role> rolesToExclude) {
+	public List<Role> listExcluding(List<Role> rolesToExclude) {
 		Session session = HibernateUtility.getSessionFactory().openSession();
 		String conditionStatement = rolesToExclude.isEmpty()? "": 
 			String.format("WHERE id NOT IN (%s)", 
@@ -43,57 +53,5 @@ public class RoleDao {
 		List<Role> roles = query.list();
 		session.close();
 		return roles;
-	}
-
-	public Serializable createRole(Role role) throws DaoException {
-		try {
-			return TransactionScope.executeTransactionWithResult(session -> {
-				if (getRole(role.getName()) != null) {
-					throw new RuntimeException(String.format(
-						"Role name \"%s\" is already existing.", role.getName()));
-				}
-				return session.save(role);
-			});			
-		}
-		catch (Exception exception) {
-			throw new DaoException(exception);
-		}
-	}
-
-	public void updateRole(Role role) throws DaoException {
-		try {
-			TransactionScope.executeTransaction(session -> session.update(role));
-		}
-		catch (Exception exception) {
-			throw new DaoException(exception);
-		}
-	}
-
-	public void deleteRole(Role role) throws DaoException {
-		try {
-			TransactionScope.executeTransaction(session -> session.delete(role));
-		}
-		catch (Exception exception) {
-			throw new DaoException(exception);
-		}
-	}
-
-	public Role getRole(Integer roleId) throws DaoException {
-		Session session = HibernateUtility.getSessionFactory().openSession();
-		Role role = (Role) session.get(Role.class, roleId);
-		session.close();
-		if (role == null) {
-			throw new DaoException("Role not found!");
-		}
-		return role;
-	}
-
-	private Role getRole(String name) {
-		Session session = HibernateUtility.getSessionFactory().openSession();
-		Query query = session.createQuery("FROM Role WHERE name = :name");
-		query.setParameter("name", name);
-		Role role = (Role) query.uniqueResult();
-		session.close();
-		return role;
 	}
 }
