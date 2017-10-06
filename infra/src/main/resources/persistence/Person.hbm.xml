@@ -16,8 +16,8 @@
 			<property name="firstName" column="first_name" type="string" not-null="true" />
 			<property name="middleName" column="middle_name" type="string" not-null="true" />
 			<property name="suffix" column="suffix" type="string" />
-		</component>
-		<many-to-one name="address" column="address_id" class="Address" cascade="all" lazy="false"/>
+		</component>			
+		<many-to-one name="address" column="address_id" class="Address" cascade="all" unique="true" lazy="false"/>
 		<property name="birthday" column="birthday" type="date" />
 		<property name="GWA" column="GWA" type="big_decimal" />
 		<property name="currentlyEmployed" column="currently_employed" type="boolean" />
