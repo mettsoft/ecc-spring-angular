@@ -30,7 +30,17 @@ public abstract class Contact {
 	public String getContactType() {
 		return this.getClass().getSimpleName();
 	}
-	
+
+	@Override
+	public boolean equals(Object object) {
+		if (object != null && object instanceof Contact) {
+			Contact otherContact = (Contact) object; 
+			return id.equals(otherContact.id) && data.equals(otherContact.data)
+				&& getContactType().equals(otherContact.getContactType());
+		}
+		return false;
+	}
+
 	@Override
 	public String toString() {
 		return String.format("[ID=%d][%s] %s", id, getContactType(), data);

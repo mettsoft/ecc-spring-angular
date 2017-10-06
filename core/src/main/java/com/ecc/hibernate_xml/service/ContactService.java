@@ -21,11 +21,7 @@ public class ContactService {
 	public void updateContact(Contact contact) throws DaoException {
 		contactDao.update(contact);
 	}
-
-	public void deleteContact(Integer contactId) throws DaoException {
-		contactDao.delete(contactDao.get(contactId));
-	}
-
+	
 	public Contact getContact(Integer contactId) throws DaoException {
 		return contactDao.get(contactId);
 	}

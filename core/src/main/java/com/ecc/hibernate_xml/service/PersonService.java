@@ -68,4 +68,10 @@ public class PersonService {
 		person.getContacts().add(contact);
 		personDao.update(person);
 	}
+
+	public void removeContactFromPerson(Integer contactId, Person person) throws DaoException {
+		Contact contact = contactDao.get(contactId);
+		person.getContacts().remove(contact);
+		personDao.update(person);
+	}
 }
