@@ -1,5 +1,8 @@
 package com.ecc.hibernate_xml.model;
 
+import com.ecc.hibernate_xml.util.validator.ValidationException;
+import com.ecc.hibernate_xml.util.validator.ModelValidator;
+
 public class Address {
 	public static class Factory {
 		private Address address;
@@ -8,27 +11,27 @@ public class Address {
 			address = new Address();
 		}
 
-		public Factory setStreetNumber(String streetNumber) throws ModelException {
+		public Factory setStreetNumber(String streetNumber) throws ValidationException {
 			address.setStreetNumber(streetNumber);
 			return this;
 		}
 
-		public Factory setBarangay(Integer barangay) throws ModelException {
+		public Factory setBarangay(Integer barangay) throws ValidationException {
 			address.setBarangay(barangay);
 			return this;
 		}
 
-		public Factory setMunicipality(String municipality) throws ModelException {
+		public Factory setMunicipality(String municipality) throws ValidationException {
 			address.setMunicipality(municipality);
 			return this;
 		}
 
-		public Factory setZipCode(Integer zipCode) throws ModelException {
+		public Factory setZipCode(Integer zipCode) throws ValidationException {
 			address.setZipCode(zipCode);
 			return this;
 		}
 
-		public Address build() throws ModelException {
+		public Address build() throws ValidationException {
 			address.setStreetNumber(address.streetNumber);
 			address.setBarangay(address.barangay);
 			address.setMunicipality(address.municipality);
@@ -40,17 +43,19 @@ public class Address {
 	private static final Integer MAX_STREET_NUMBER_CHARACTERS = 20;
 	private static final Integer MAX_MUNICIPALITY_CHARACTERS = 50;
 
+	private static final String MAX_LENGTH_ERROR_MESSAGE_TEMPLATE = "%s must not exceed %d characters.";
+	private static final String NOT_EMPTY_ERROR_MESSAGE_TEMPLATE = "%s cannot be empty.";
+	private static final String NOT_NULL_ERROR_MESSAGE_TEMPLATE = "%s cannot be null.";
+
 	private Integer id;
 	private String streetNumber;
 	private Integer barangay;
 	private String municipality;
 	private Integer zipCode;
 
-	private Address() {
+	private Address() {}
 
-	}
-
-	public Address(String streetNumber, Integer barangay, String municipality, Integer zipCode) throws ModelException {
+	public Address(String streetNumber, Integer barangay, String municipality, Integer zipCode) throws ValidationException {
 		setStreetNumber(streetNumber);
 		setBarangay(barangay);
 		setMunicipality(municipality);
@@ -61,39 +66,43 @@ public class Address {
 		this.id = id;
 	}
 
-	public void setStreetNumber(String streetNumber) throws ModelException {
-		if (streetNumber == null || streetNumber.trim().isEmpty()) {
-			throw new ModelException("Street number cannot be empty.");
-		}
-		else if (streetNumber.length() > MAX_STREET_NUMBER_CHARACTERS) {
-			throw new ModelException(String.format("Street number must not exceed %d characters.", 
-				MAX_STREET_NUMBER_CHARACTERS));
-		}
+	public void setStreetNumber(String streetNumber) throws ValidationException {
+		ModelValidator
+			.create(streetNumber)
+			.notEmpty(String.format(NOT_EMPTY_ERROR_MESSAGE_TEMPLATE, "Street number"))
+			.maxLength(MAX_STREET_NUMBER_CHARACTERS, String.format(MAX_LENGTH_ERROR_MESSAGE_TEMPLATE, 
+				"Street number", MAX_STREET_NUMBER_CHARACTERS))
+			.validate();
+
 		this.streetNumber = streetNumber;
 	}
 
-	public void setBarangay(Integer barangay) throws ModelException {
-		if (barangay == null) {
-			throw new ModelException("Barangay cannot be null.");
-		}
+	public void setBarangay(Integer barangay) throws ValidationException {
+		ModelValidator
+			.create(streetNumber)
+			.notNull(String.format(NOT_NULL_ERROR_MESSAGE_TEMPLATE, "Barangay"))
+			.validate();
+
 		this.barangay = barangay;
 	}
 
-	public void setMunicipality(String municipality) throws ModelException {
-		if (municipality == null || municipality.trim().isEmpty()) {
-			throw new ModelException("Municipality cannot be empty.");
-		}
-		else if (municipality.length() > MAX_MUNICIPALITY_CHARACTERS) {
-			throw new ModelException(String.format("Municipality must not exceed %d characters.", 
-				MAX_MUNICIPALITY_CHARACTERS));
-		}
+	public void setMunicipality(String municipality) throws ValidationException {
+		ModelValidator
+			.create(municipality)
+			.notEmpty(String.format(NOT_EMPTY_ERROR_MESSAGE_TEMPLATE, "Municipality"))
+			.maxLength(MAX_MUNICIPALITY_CHARACTERS, String.format(MAX_LENGTH_ERROR_MESSAGE_TEMPLATE, 
+				"Municipality", MAX_MUNICIPALITY_CHARACTERS))
+			.validate();
+
 		this.municipality = municipality;
 	}
 
-	public void setZipCode(Integer zipCode) throws ModelException {
-		if (zipCode == null) {
-			throw new ModelException("Zip code cannot be null.");
-		}
+	public void setZipCode(Integer zipCode) throws ValidationException {
+		ModelValidator
+			.create(zipCode)
+			.notNull(String.format(NOT_NULL_ERROR_MESSAGE_TEMPLATE, "Zip code"))
+			.validate();
+
 		this.zipCode = zipCode;
 	}
 

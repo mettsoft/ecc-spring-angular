@@ -28,6 +28,11 @@ public class ModelValidator {
 		return this;
 	}
 
+	public ModelValidator notNull(String errorMessage) {
+		policies.add(new NotNullPolicy(data, errorMessage));
+		return this;
+	}
+
 	public void validate() throws ValidationException {
 		for (ValidatorPolicy policy : policies) {
 			policy.validate();
