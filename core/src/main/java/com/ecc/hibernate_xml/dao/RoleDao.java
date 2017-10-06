@@ -23,7 +23,7 @@ public class RoleDao extends AbstractDao<Role> {
 
 	@Override
 	protected void onBeforeUpdate(Session session, Role role) {
-		Role existingRole = get(session, role.getName());
+		Role existingRole = get(role.getName());
 		if (existingRole != null && existingRole.getId() != role.getId()) {
 			throw new RuntimeException(String.format(
 				"Role name \"%s\" is already existing.", role.getName()));
@@ -43,10 +43,12 @@ public class RoleDao extends AbstractDao<Role> {
 		}
 	}
 
-	private Role get(Session session, String name) {
+	private Role get(String name) {
+		Session session = HibernateUtility.getSessionFactory().openSession();
 		Query query = session.createQuery("FROM Role WHERE name = :name");
 		query.setParameter("name", name);
 		Role role = (Role) query.uniqueResult();
+		session.close();
 		return role;
 	}
 
