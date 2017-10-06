@@ -1,5 +1,8 @@
 package com.ecc.hibernate_xml.model;
 
+import java.util.List;
+
+import com.ecc.hibernate_xml.model.Person;
 import com.ecc.hibernate_xml.util.validator.ValidationException;
 import com.ecc.hibernate_xml.util.validator.ModelValidator;
 
@@ -10,6 +13,7 @@ public class Role {
 
 	private Integer id;
 	private String name;
+	private List<Person> persons;
 
 	private Role() {}
 
@@ -32,12 +36,20 @@ public class Role {
 		this.name = name;
 	}
 
+	public void setPersons(List<Person> persons) {
+		this.persons = persons;
+	}
+
 	public Integer getId() {
 		return id;
 	}
 	
 	public String getName() {
 		return name;
+	}
+
+	public List<Person> getPersons() {
+		return persons;
 	}
 
 	@Override

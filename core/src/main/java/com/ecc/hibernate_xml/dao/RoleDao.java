@@ -30,6 +30,19 @@ public class RoleDao extends AbstractDao<Role> {
 		}
 	}
 
+	@Override
+	protected void onBeforeDelete(Session session, Role role) {
+		if (role.getPersons().size() > 0) {
+			String personIds = role.getPersons()
+				.stream()
+				.map(person -> person.getId().toString())
+				.collect(Collectors.joining(", "));
+
+			throw new RuntimeException(
+				String.format("Role is in used by person IDs [%s].", personIds));
+		}
+	}
+
 	private Role get(Session session, String name) {
 		Query query = session.createQuery("FROM Role WHERE name = :name");
 		query.setParameter("name", name);
