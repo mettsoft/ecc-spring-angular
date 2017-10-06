@@ -1,28 +1,22 @@
 package com.ecc.hibernate_xml.model;
 
+import com.ecc.hibernate_xml.util.validator.ValidationException;
+import com.ecc.hibernate_xml.util.validator.ModelValidator;
+
 public class Landline extends Contact {
 	private static final Integer MUST_CHARACTERS = 7;
 
-	private Landline() {
+	private Landline() {}
 
-	}
-
-	public Landline(String data) throws ModelException {
+	public Landline(String data) throws ValidationException {
 		setData(data);
 	}
 
 	@Override
-	protected void onValidate(String data) throws ModelException {
-		try {
-			Integer.parseInt(data);
-		}
-		catch(NumberFormatException exception) {
-			throw new ModelException("Landline must only contain numerical digits.");
-		}
-
-		if (data.length() != MUST_CHARACTERS) {
-			throw new ModelException(String.format("Landline must contain %d digits.", 
+	protected ModelValidator configureValidator(ModelValidator validator) throws ValidationException {
+		return validator
+			.digits("Landline must only contain numerical digits.")
+			.equalLength(MUST_CHARACTERS, String.format("Landline must contain %d digits.", 
 				MUST_CHARACTERS));
-		}
 	}
 }

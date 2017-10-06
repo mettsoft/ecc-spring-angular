@@ -8,6 +8,10 @@
 	<artifactId>util</artifactId>
 	<dependencies>
 		<dependency>
+		    <groupId>commons-validator</groupId>
+		    <artifactId>commons-validator</artifactId>
+		</dependency>
+		<dependency>
 		    <groupId>org.hibernate</groupId>
 		    <artifactId>hibernate-core</artifactId>
 		</dependency>

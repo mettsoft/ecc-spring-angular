@@ -23,6 +23,11 @@ public class ModelValidator {
 		return this;
 	}
 
+	public ModelValidator equalLength(Integer matchingLength, String errorMessage) {
+		policies.add(new EqualLengthPolicy(data, matchingLength, errorMessage));
+		return this;
+	}
+
 	public ModelValidator notEmpty(String errorMessage) {
 		policies.add(new NotEmptyPolicy(data, errorMessage));
 		return this;
@@ -30,6 +35,16 @@ public class ModelValidator {
 
 	public ModelValidator notNull(String errorMessage) {
 		policies.add(new NotNullPolicy(data, errorMessage));
+		return this;
+	}
+
+	public ModelValidator validEmail(String errorMessage) {
+		policies.add(new ValidEmailPolicy(data, errorMessage));
+		return this;
+	}
+
+	public ModelValidator digits(String errorMessage) {
+		policies.add(new DigitsPolicy(data, errorMessage));
 		return this;
 	}
 

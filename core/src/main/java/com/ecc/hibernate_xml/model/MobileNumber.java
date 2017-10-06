@@ -1,13 +1,14 @@
 package com.ecc.hibernate_xml.model;
 
+import com.ecc.hibernate_xml.util.validator.ValidationException;
+import com.ecc.hibernate_xml.util.validator.ModelValidator;
+
 public class MobileNumber extends Contact {
 	private static final Integer MUST_CHARACTERS = 11;
 	
-	private MobileNumber() {
+	private MobileNumber() {}
 
-	}
-
-	public MobileNumber(String data) throws ModelException {
+	public MobileNumber(String data) throws ValidationException {
 		setData(data);
 	}
 
@@ -17,17 +18,10 @@ public class MobileNumber extends Contact {
 	}
 
 	@Override
-	protected void onValidate(String data) throws ModelException {
-		try {
-			Long.parseLong(data);
-		}
-		catch(NumberFormatException exception) {
-			throw new ModelException("Mobile number must only contain numerical digits.");
-		}
-
-		if (data.length() != MUST_CHARACTERS) {
-			throw new ModelException(String.format("Mobile number must contain %d digits.", 
+	protected ModelValidator configureValidator(ModelValidator validator) throws ValidationException {
+		return validator
+			.digits("Mobile number must only contain numerical digits.")
+			.equalLength(MUST_CHARACTERS, String.format("Mobile number must contain %d digits.", 
 				MUST_CHARACTERS));
-		}
 	}
 }

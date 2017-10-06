@@ -8,10 +8,6 @@
 	<artifactId>core</artifactId>
 	<dependencies>
 		<dependency>
-		    <groupId>commons-validator</groupId>
-		    <artifactId>commons-validator</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>util</artifactId>
 		</dependency>

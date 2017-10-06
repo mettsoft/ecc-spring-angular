@@ -1,26 +1,22 @@
 package com.ecc.hibernate_xml.model;
 
-import org.apache.commons.validator.routines.EmailValidator;
+import com.ecc.hibernate_xml.util.validator.ValidationException;
+import com.ecc.hibernate_xml.util.validator.ModelValidator;
 
 public class Email extends Contact {
 	private static final Integer MAX_CHARACTERS = 50;
 
-	private Email() {
+	private Email() {}
 
-	}
-
-	public Email(String data) throws ModelException {
+	public Email(String data) throws ValidationException {
 		setData(data);
 	}
 
 	@Override
-	protected void onValidate(String data) throws ModelException {
-		if (data.length() > MAX_CHARACTERS) {
-			throw new ModelException(String.format("Email must not exceed %d characters.", 
-				MAX_CHARACTERS));
-		}
-		else if (!EmailValidator.getInstance().isValid(data)) {
-			throw new ModelException("Email is invalid.");
-		}
+	protected ModelValidator configureValidator(ModelValidator validator) throws ValidationException {
+		return validator
+			.maxLength(MAX_CHARACTERS, String.format("Email must not exceed %d characters.", 
+				MAX_CHARACTERS))
+			.validEmail("Email is invalid.");
 	}
 }
