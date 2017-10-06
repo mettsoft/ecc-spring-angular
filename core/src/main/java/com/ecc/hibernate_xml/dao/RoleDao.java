@@ -47,7 +47,13 @@ public class RoleDao {
 
 	public Serializable createRole(Role role) throws DaoException {
 		try {
-			return TransactionScope.executeTransactionWithResult(session -> session.save(role));			
+			return TransactionScope.executeTransactionWithResult(session -> {
+				if (getRole(role.getName()) != null) {
+					throw new RuntimeException(String.format(
+						"Role name \"%s\" is already existing.", role.getName()));
+				}
+				return session.save(role);
+			});			
 		}
 		catch (Exception exception) {
 			throw new DaoException(exception);
@@ -79,6 +85,15 @@ public class RoleDao {
 		if (role == null) {
 			throw new DaoException("Role not found!");
 		}
+		return role;
+	}
+
+	private Role getRole(String name) {
+		Session session = HibernateUtility.getSessionFactory().openSession();
+		Query query = session.createQuery("FROM Role WHERE name = :name");
+		query.setParameter("name", name);
+		Role role = (Role) query.uniqueResult();
+		session.close();
 		return role;
 	}
 }
