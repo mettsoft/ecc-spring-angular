@@ -45,6 +45,7 @@ public class UiRouter {
 					}
 					catch (Exception cause) {
 						ExceptionHandler.debugPrintException(cause);
+						menu = menu.getParent();
 					}					
 				}
 
