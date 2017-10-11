@@ -1,6 +1,5 @@
 package com.ecc.hibernate_xml.service;
 
-import java.io.Serializable;
 import java.util.List;
 
 import com.ecc.hibernate_xml.dao.DaoException;

@@ -1,7 +1,6 @@
 package com.ecc.hibernate_xml.service;
 
 import java.util.List;
-import java.io.Serializable;
 
 import com.ecc.hibernate_xml.dao.Dao;
 import com.ecc.hibernate_xml.dao.DaoException;
@@ -19,8 +18,8 @@ public abstract class AbstractService<T> implements Service<T> {
 	}
 
 	@Override
-	public Serializable create(T entity) throws DaoException {
-		return dao.create(entity);
+	public void create(T entity) throws DaoException {
+		dao.create(entity);
 	}
 
 	@Override

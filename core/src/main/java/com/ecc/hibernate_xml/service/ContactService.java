@@ -1,6 +1,5 @@
 package com.ecc.hibernate_xml.service;
 
-import java.io.Serializable;
 import java.util.List;
 
 import com.ecc.hibernate_xml.dao.DaoException;
@@ -20,8 +19,8 @@ public class ContactService extends AbstractService<Contact> {
 		return contactDao.list(person);
 	}
 
-	public Serializable create(Contact contact, Person person) throws DaoException {
+	public void create(Contact contact, Person person) throws DaoException {
 		contact.setPerson(person);
-		return contactDao.create(contact);
+		contactDao.create(contact);
 	}
 }

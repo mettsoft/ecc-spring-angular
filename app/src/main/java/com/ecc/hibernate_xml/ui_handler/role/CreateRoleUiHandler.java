@@ -1,7 +1,5 @@
 package com.ecc.hibernate_xml.ui_handler.role;
 
-import java.io.Serializable;
-
 import com.ecc.hibernate_xml.ui_handler.UiHandler;
 import com.ecc.hibernate_xml.model.Role;
 import com.ecc.hibernate_xml.util.InputHandler;

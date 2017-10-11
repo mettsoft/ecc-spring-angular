@@ -1,7 +1,6 @@
 package com.ecc.hibernate_xml.dao;
 
 import java.util.List;
-import java.io.Serializable;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 
@@ -27,11 +26,11 @@ public abstract class AbstractDao<T> implements Dao<T> {
 	}
 
 	@Override
-	public Serializable create(T entity) throws DaoException {
+	public void create(T entity) throws DaoException {
 		try {
-			return TransactionScope.executeTransactionWithResult(session -> {
+			TransactionScope.executeTransaction(session -> {
 				onBeforeSave(session, entity);
-				return session.save(entity);
+				session.persist(entity);
 			});			
 		}
 		catch (Exception exception) {
