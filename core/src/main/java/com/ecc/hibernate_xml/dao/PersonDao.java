@@ -2,6 +2,7 @@ package com.ecc.hibernate_xml.dao;
 
 import java.util.List;
 import org.hibernate.Session;
+import org.hibernate.criterion.Order;
 
 import com.ecc.hibernate_xml.model.Person;
 import com.ecc.hibernate_xml.util.HibernateUtility;
@@ -21,7 +22,9 @@ public class PersonDao extends AbstractDao<Person> {
 
 	public List<Person> listByLastName() {
 		Session session = HibernateUtility.getSessionFactory().openSession();
-		List<Person> persons = session.createQuery("FROM Person ORDER BY name.lastName").list();
+		List<Person> persons = session.createCriteria(Person.class)
+			.addOrder(Order.asc("name.lastName"))
+			.list();
 		session.close();
 		return persons;
 	}
