@@ -33,7 +33,7 @@ public class AddressUiHandler extends UiHandler {
 		Address address = addressFactory.build();
 		person.setAddress(address);
 
-		personService.updatePerson(person);
+		personService.update(person);
 		System.out.println(String.format("Successfully updated person's address to \"%s\"!", address));
 	}
 

@@ -50,7 +50,7 @@ public class NameUiHandler extends UiHandler {
 
 		person.setName(name);
 
-		personService.updatePerson(person);
+		personService.update(person);
 		System.out.println(String.format("Successfully updated person's name to \"%s\"!", name));
 	}
 

@@ -44,7 +44,7 @@ public class EmploymentUiHandler extends UiHandler {
 			person.setDateHired(dateHired);			
 		}
 
-		personService.updatePerson(person);
+		personService.update(person);
 		System.out.println("Successfully updated person's employment status!");
 	}
 

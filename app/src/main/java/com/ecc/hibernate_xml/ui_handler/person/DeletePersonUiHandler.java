@@ -17,7 +17,7 @@ public class DeletePersonUiHandler extends UiHandler {
 	@Override 
 	public void onHandle() throws Exception {
 		Integer personId = InputHandler.getNextLine(PROMPT, Integer::valueOf);
-		personService.deletePerson(personId);
+		personService.delete(personId);
 		System.out.println(String.format("Successfully deleted the person ID \"%d\"!", personId));
 	}
 

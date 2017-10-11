@@ -27,7 +27,7 @@ public class BirthdayUiHandler extends UiHandler {
 		Date birthday = InputHandler.getNextLineREPL(PROMPT, dateFormat::parse);
 		person.setBirthday(birthday);
 
-		personService.updatePerson(person);
+		personService.update(person);
 		System.out.println(String.format(
 			"Successfully updated person's birthday to \"%s\"!", dateFormat.format(birthday)));
 	}

@@ -40,7 +40,7 @@ public class CreatePersonUiHandler extends UiHandler {
 		Name name = nameFactory.build();
 
 		Person person = new Person(name);
-		personService.createPerson(person);
+		personService.create(person);
 
 		new CompositeUiHandler()
 			.add(new NameUiHandler("Change Name.", person))

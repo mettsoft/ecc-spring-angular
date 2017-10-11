@@ -23,7 +23,7 @@ public class GwaUiHandler extends UiHandler {
 	public void onHandle() throws Exception {
 		BigDecimal GWA = InputHandler.getNextLineREPL(PROMPT, BigDecimal::new);
 		person.setGWA(GWA);
-		personService.updatePerson(person);
+		personService.update(person);
 		System.out.println(String.format("Successfully updated person's gwa GWA \"%s\"!", GWA));
 	}
 

@@ -31,7 +31,7 @@ public class UpdatePersonUiHandler extends UiHandler {
 	@Override 
 	public void onHandle() throws Exception {
 		Integer personId = InputHandler.getNextLine(PROMPT, Integer::valueOf);
-		Person person = personService.getPerson(personId);
+		Person person = personService.get(personId);
 		new CompositeUiHandler()
 			.add(new NameUiHandler("Change Name.", person))
 			.add(new AddressUiHandler("Change Address.", person))
