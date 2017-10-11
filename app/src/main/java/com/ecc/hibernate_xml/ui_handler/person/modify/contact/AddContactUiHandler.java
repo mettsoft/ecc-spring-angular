@@ -2,8 +2,8 @@ package com.ecc.hibernate_xml.ui_handler.person.modify.contact;
 
 import java.util.stream.Collectors;
 import com.ecc.hibernate_xml.ui_handler.UiHandler;
-import com.ecc.hibernate_xml.util.InputException;
-import com.ecc.hibernate_xml.util.InputHandler;
+import com.ecc.hibernate_xml.app.InputException;
+import com.ecc.hibernate_xml.app.InputHandler;
 import com.ecc.hibernate_xml.service.ContactService;
 import com.ecc.hibernate_xml.model.Person;
 import com.ecc.hibernate_xml.model.Contact;

@@ -1,7 +1,7 @@
 package com.ecc.hibernate_xml.ui_handler.role;
 
 import com.ecc.hibernate_xml.ui_handler.UiHandler;
-import com.ecc.hibernate_xml.util.InputHandler;
+import com.ecc.hibernate_xml.app.InputHandler;
 import com.ecc.hibernate_xml.service.RoleService;
 
 public class DeleteRoleUiHandler extends UiHandler {

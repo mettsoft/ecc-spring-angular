@@ -4,7 +4,7 @@ import java.util.stream.Collectors;
 
 import com.ecc.hibernate_xml.ui_handler.UiHandler;
 import com.ecc.hibernate_xml.model.Role;
-import com.ecc.hibernate_xml.util.InputHandler;
+import com.ecc.hibernate_xml.app.InputHandler;
 import com.ecc.hibernate_xml.service.RoleService;
 
 public class UpdateRoleUiHandler extends UiHandler {

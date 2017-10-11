@@ -1,4 +1,4 @@
-package com.ecc.hibernate_xml.util;
+package com.ecc.hibernate_xml.app;
 
 public class InputException extends Exception {
 	private static final String MESSAGE = "Invalid input!";

@@ -1,4 +1,4 @@
-package com.ecc.hibernate_xml.util;
+package com.ecc.hibernate_xml.app;
 
 import java.text.ParseException;
 import java.util.Scanner;

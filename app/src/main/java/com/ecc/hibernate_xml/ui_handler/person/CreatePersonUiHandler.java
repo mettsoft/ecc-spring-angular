@@ -14,7 +14,7 @@ import com.ecc.hibernate_xml.ui_handler.person.modify.contact.DeleteContactUiHan
 import com.ecc.hibernate_xml.ui_handler.person.modify.role.ListRolesUiHandler;
 import com.ecc.hibernate_xml.ui_handler.person.modify.role.AddRoleUiHandler;
 import com.ecc.hibernate_xml.ui_handler.person.modify.role.RemoveRoleUiHandler;
-import com.ecc.hibernate_xml.util.InputHandler;
+import com.ecc.hibernate_xml.app.InputHandler;
 import com.ecc.hibernate_xml.service.PersonService;
 import com.ecc.hibernate_xml.model.Person;
 import com.ecc.hibernate_xml.model.Name;

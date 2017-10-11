@@ -6,7 +6,7 @@ import java.text.ParseException;
 import java.util.Date;
 
 import com.ecc.hibernate_xml.ui_handler.UiHandler;
-import com.ecc.hibernate_xml.util.InputHandler;
+import com.ecc.hibernate_xml.app.InputHandler;
 import com.ecc.hibernate_xml.service.PersonService;
 import com.ecc.hibernate_xml.model.Person;
 

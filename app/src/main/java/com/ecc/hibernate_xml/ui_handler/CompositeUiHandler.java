@@ -3,8 +3,8 @@ package com.ecc.hibernate_xml.ui_handler;
 import java.util.List;
 import java.util.ArrayList;
 
-import com.ecc.hibernate_xml.util.InputException;
-import com.ecc.hibernate_xml.util.InputHandler;
+import com.ecc.hibernate_xml.app.InputException;
+import com.ecc.hibernate_xml.app.InputHandler;
 
 public class CompositeUiHandler extends UiHandler {
 
