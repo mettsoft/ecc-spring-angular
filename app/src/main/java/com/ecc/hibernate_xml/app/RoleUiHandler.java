@@ -64,7 +64,7 @@ public class RoleUiHandler {
 		return 0;
 	}
 
-	public static Object delete(Object parameter) throws Exception  {			
+	public static Object delete(Object parameter) throws Exception {			
 		Integer roleId = InputHandler.getNextLine(DELETE_PROMPT, Integer::valueOf);
 		roleService.delete(roleId);
 		System.out.println(String.format("Successfully deleted the role ID \"%d\"!", roleId));

@@ -40,6 +40,13 @@ public class Application {
 	}
 
 	public static void registerRoutes() {
+		uiRouter.register("Sort by GWA.", PersonUiHandler::listByGWA);
+		uiRouter.register("Sort by date hired.", PersonUiHandler::listByDateHired);
+		uiRouter.register("Sort by last name.", PersonUiHandler::listByLastName);
+		uiRouter.register("Create a new Person.", PersonUiHandler::create);
+		uiRouter.register("Update an existing Person record.", PersonUiHandler::update);
+		uiRouter.register("Delete an existing Person record.", PersonUiHandler::delete);
+
 		uiRouter.register("List Role records.", RoleUiHandler::list);
 		uiRouter.register("Create a new Role record.", RoleUiHandler::create);
 		uiRouter.register("Update an existing Role record.", RoleUiHandler::update);
