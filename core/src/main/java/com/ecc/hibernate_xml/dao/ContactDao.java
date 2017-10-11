@@ -2,7 +2,6 @@ package com.ecc.hibernate_xml.dao;
 
 import java.util.List;
 import org.hibernate.Session;
-import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Order;
 

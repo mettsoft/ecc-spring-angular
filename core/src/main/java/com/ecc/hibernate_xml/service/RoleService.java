@@ -25,7 +25,7 @@ public class RoleService {
 	}
 
 	public List<Role> listRolesUnassignedTo(Person person) {
-		return roleDao.listExcluding(roleDao.list(person));
+		return roleDao.listExcluding(person);
 	}
 
 	public Serializable createRole(Role role) throws DaoException {

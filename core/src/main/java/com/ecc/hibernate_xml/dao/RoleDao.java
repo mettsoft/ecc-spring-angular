@@ -4,7 +4,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.hibernate.Session;
-import org.hibernate.Query;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.Order;
 
 import com.ecc.hibernate_xml.model.Role;
 import com.ecc.hibernate_xml.model.Person;
@@ -45,33 +46,34 @@ public class RoleDao extends AbstractDao<Role> {
 
 	private Role get(String name) {
 		Session session = HibernateUtility.getSessionFactory().openSession();
-		Query query = session.createQuery("FROM Role WHERE name = :name");
-		query.setParameter("name", name);
-		Role role = (Role) query.uniqueResult();
+		Role role = (Role) session.createCriteria(Role.class)
+			.add(Restrictions.eq("name", name))
+			.uniqueResult();
 		session.close();
 		return role;
 	}
 
 	public List<Role> list(Person person) {
 		Session session = HibernateUtility.getSessionFactory().openSession();
-		Query query = session.createQuery("SELECT R FROM Person P JOIN P.roles R WHERE P.id = :id ORDER BY R.id");
-		query.setParameter("id", person.getId());
-		List<Role> roles = query.list();
+		List<Role> roles = session.createCriteria(Role.class)
+			.createAlias("persons", "P")
+			.add(Restrictions.eq("P.id", person.getId()))
+			.addOrder(Order.asc("id"))
+			.list();
 		session.close();
 		return roles;
 	}
 
-	public List<Role> listExcluding(List<Role> rolesToExclude) {
-		Session session = HibernateUtility.getSessionFactory().openSession();
-		String conditionStatement = rolesToExclude.isEmpty()? "": 
-			String.format("WHERE id NOT IN (%s)", 
-				rolesToExclude.stream()
-					.map(role -> role.getId().toString())
-					.collect(Collectors.joining(", ")));
+	public List<Role> listExcluding(Person person) {
+		List roleIds = list(person).stream()
+			.map(role -> role.getId())
+			.collect(Collectors.toList());
 
-		Query query = session.createQuery(
-			String.format("FROM Role %s ORDER BY id", conditionStatement));
-		List<Role> roles = query.list();
+		Session session = HibernateUtility.getSessionFactory().openSession();
+		List<Role> roles = session.createCriteria(Role.class)
+			.add(Restrictions.not(Restrictions.in("id", roleIds)))
+			.addOrder(Order.asc("id"))
+			.list();
 		session.close();
 		return roles;
 	}
