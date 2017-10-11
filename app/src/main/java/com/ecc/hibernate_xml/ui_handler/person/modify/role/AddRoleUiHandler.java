@@ -23,7 +23,7 @@ public class AddRoleUiHandler extends UiHandler {
 
 	@Override 
 	public void onHandle() throws Exception {		
-		List<Role> roles = roleService.listRolesUnassignedTo(person);
+		List<Role> roles = roleService.listRolesNotBelongingTo(person);
 
 		System.out.println("-------------------");
 		if (roles.isEmpty()) {

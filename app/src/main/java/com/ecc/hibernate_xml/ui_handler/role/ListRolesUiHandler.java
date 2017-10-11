@@ -18,12 +18,12 @@ public class ListRolesUiHandler extends UiHandler {
 	public void onHandle() throws Exception {
 		System.out.println("-------------------");
 
-		List<Role> roles = roleService.listRoles();
+		List<Role> roles = roleService.list();
 		if (roles.isEmpty()) {
 			System.out.println("There are no roles.");
 		}
 		else {	
-			roleService.listRoles().stream().forEach(System.out::println);
+			roles.stream().forEach(System.out::println);
 		}
 
 		System.out.println("-------------------");

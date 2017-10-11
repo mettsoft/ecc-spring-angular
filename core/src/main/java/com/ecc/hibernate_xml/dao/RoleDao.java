@@ -65,7 +65,7 @@ public class RoleDao extends AbstractDao<Role> {
 		return roles;
 	}
 
-	public List<Role> listExcluding(Person person) {
+	public List<Role> listRolesNotBelongingTo(Person person) {
 		List roleIds = list(person).stream()
 			.map(role -> role.getId())
 			.collect(Collectors.toList());

@@ -23,7 +23,7 @@ public class RemoveRoleUiHandler extends UiHandler {
 
 	@Override 
 	public void onHandle() throws Exception {
-		List<Role> roles = roleService.listRoles(person);
+		List<Role> roles = roleService.list(person);
 
 		System.out.println("-------------------");
 		if (roles.isEmpty()) {

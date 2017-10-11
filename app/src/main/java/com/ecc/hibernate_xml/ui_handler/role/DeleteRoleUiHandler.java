@@ -17,7 +17,7 @@ public class DeleteRoleUiHandler extends UiHandler {
 	@Override 
 	public void onHandle() throws Exception {
 		Integer roleId = InputHandler.getNextLine(PROMPT, Integer::valueOf);
-		roleService.deleteRole(roleId);
+		roleService.delete(roleId);
 		System.out.println(String.format("Successfully deleted the role ID \"%d\"!", roleId));
 	}
 

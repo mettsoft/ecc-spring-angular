@@ -22,7 +22,7 @@ public class ListRolesUiHandler extends UiHandler {
 	public void onHandle() throws Exception {
 		System.out.println("-------------------");
 
-		List<Role> roles = roleService.listRoles(person);
+		List<Role> roles = roleService.list(person);
 		if (roles.isEmpty()) {
 			System.out.println(String.format("There are no roles assigned to Person ID [%d] \"%s\"", 
 				person.getId(), person.getName()));

@@ -20,7 +20,7 @@ public class CreateRoleUiHandler extends UiHandler {
 	@Override 
 	public void onHandle() throws Exception {
 		Role role = InputHandler.getNextLineREPL(PROMPT, Role::new);
-		roleService.createRole(role);
+		roleService.create(role);
 		System.out.println(String.format("Successfully created the role \"%s\" with ID \"%s\"!", 
 			role.getName(), role.getId()));
 	}

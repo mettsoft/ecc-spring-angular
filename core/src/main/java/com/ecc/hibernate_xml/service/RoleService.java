@@ -8,39 +8,20 @@ import com.ecc.hibernate_xml.dao.RoleDao;
 import com.ecc.hibernate_xml.model.Role;
 import com.ecc.hibernate_xml.model.Person;
 
-public class RoleService {
+public class RoleService extends AbstractService<Role> {
 	private RoleDao roleDao;
 
 	public RoleService() {
-		roleDao = new RoleDao();
+		super(new RoleDao());
+		roleDao = (RoleDao) dao;
 	}
 
-	public List<Role> listRoles() {
-		return roleDao.list();
-	}
-
-	public List<Role> listRoles(Person person) {
+	public List<Role> list(Person person) {
 		return roleDao.list(person);
 	}
 
-	public List<Role> listRolesUnassignedTo(Person person) {
-		return roleDao.listExcluding(person);
-	}
-
-	public Serializable createRole(Role role) throws DaoException {
-		return roleDao.create(role);		
-	}
-
-	public void updateRole(Role role) throws DaoException {
-		roleDao.update(role);
-	}
-
-	public void deleteRole(Integer roleId) throws DaoException {
-		roleDao.delete(roleDao.get(roleId));
-	}
-
-	public Role getRole(Integer roleId) throws DaoException {
-		return roleDao.get(roleId);
+	public List<Role> listRolesNotBelongingTo(Person person) {
+		return roleDao.listRolesNotBelongingTo(person);
 	}
 
 	public void addRoleToPerson(Integer roleId, Person person) throws DaoException {

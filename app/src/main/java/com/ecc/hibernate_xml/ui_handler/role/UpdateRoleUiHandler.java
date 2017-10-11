@@ -21,14 +21,14 @@ public class UpdateRoleUiHandler extends UiHandler {
 	@Override 
 	public void onHandle() throws Exception {
 		Integer roleId = InputHandler.getNextLine(ID_PROMPT, Integer::valueOf);
-		Role role = roleService.getRole(roleId);
+		Role role = roleService.get(roleId);
 
 		InputHandler.getNextLineREPL(NAME_PROMPT, input -> {
 			role.setName(input);
 			return 0;
 		});
 
-		roleService.updateRole(role);
+		roleService.update(role);
 
 		String message = String.format("Successfully updated the role ID \"%d\" with \"%s\"!", 
 			role.getId(), role.getName());
