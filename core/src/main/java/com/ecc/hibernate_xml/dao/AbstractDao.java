@@ -3,6 +3,7 @@ package com.ecc.hibernate_xml.dao;
 import java.util.List;
 import java.io.Serializable;
 import org.hibernate.Session;
+import org.hibernate.criterion.Order;
 
 import com.ecc.hibernate_xml.util.HibernateUtility;
 import com.ecc.hibernate_xml.util.TransactionScope;
@@ -17,9 +18,10 @@ public abstract class AbstractDao<T> implements Dao<T> {
 
 	@Override
 	public List<T> list() {
-		final String query = String.format("FROM %s ORDER BY id", type.getSimpleName());
 		Session session = HibernateUtility.getSessionFactory().openSession();
-		List<T> objects = session.createQuery(query).list();
+		List<T> objects = session.createCriteria(type)
+			.addOrder(Order.asc("id"))
+			.list();
 		session.close();
 		return objects;
 	}
