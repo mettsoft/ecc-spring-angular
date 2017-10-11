@@ -106,8 +106,6 @@ public class PersonUiHandler {
 		return 0;
 	}
 
-			
-
 	public static Object create(Object parameter) throws Exception {	
 		Name.Factory nameFactory = new Name.Factory();
 		InputHandler.getNextLineREPL(LAST_NAME_PROMPT, nameFactory::setLastName);
@@ -244,31 +242,33 @@ public class PersonUiHandler {
 		return 0;
 	}
 
-	public static Object addContact(Object parameter) throws Exception {
+	public static Object addLandline(Object parameter) throws Exception {
 		Person person = (Person) parameter;
-		
-		Integer contactType = InputHandler.getNextLine(CONTACT_TYPE_PROMPT, Integer::valueOf);
-		Contact contact = null;
-
-		switch (contactType) {
-			case 1: 
-				contact = new Landline(InputHandler.getNextLine(LANDLINE_PROMPT));
-				break;
-			case 2: 
-				contact = new Email(InputHandler.getNextLine(EMAIL_PROMPT));
-				break;
-			case 3: 
-				contact = new MobileNumber(InputHandler.getNextLine(MOBILE_NUMBER_PROMPT));
-				break;
-			default:
-				throw new InputException(null);
-		}		
-
+		Contact contact = new Landline(InputHandler.getNextLine(LANDLINE_PROMPT));
 		contactService.create(contact, person);
 		System.out.println(String.format(
 			"Successfully added \"%s\"  to Person ID [%d] \"%s\"!", contact, 
 			person.getId(), person.getName()));
+		return 0;
+	}
 
+	public static Object addEmail(Object parameter) throws Exception {
+		Person person = (Person) parameter;
+		Contact contact = new Email(InputHandler.getNextLine(EMAIL_PROMPT));
+		contactService.create(contact, person);
+		System.out.println(String.format(
+			"Successfully added \"%s\"  to Person ID [%d] \"%s\"!", contact, 
+			person.getId(), person.getName()));
+		return 0;
+	}
+
+	public static Object addMobileNumber(Object parameter) throws Exception {
+		Person person = (Person) parameter;
+		Contact contact = new MobileNumber(InputHandler.getNextLine(MOBILE_NUMBER_PROMPT));
+		contactService.create(contact, person);
+		System.out.println(String.format(
+			"Successfully added \"%s\"  to Person ID [%d] \"%s\"!", contact, 
+			person.getId(), person.getName()));
 		return 0;
 	}
 
