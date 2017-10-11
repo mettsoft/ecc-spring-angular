@@ -45,7 +45,7 @@ public class AddContactUiHandler extends UiHandler {
 				throw new InputException(null);
 		}		
 
-		contactService.createContact(contact, person);
+		contactService.create(contact, person);
 		System.out.println(String.format(
 			"Successfully added \"%s\"  to Person ID [%d] \"%s\"!", contact, 
 			person.getId(), person.getName()));

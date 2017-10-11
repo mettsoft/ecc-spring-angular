@@ -22,7 +22,7 @@ public class ListContactsUiHandler extends UiHandler {
 
 	@Override 
 	public void onHandle() throws Exception {
-		List<Contact> contacts = contactService.listContacts(person);
+		List<Contact> contacts = contactService.list(person);
 
 		System.out.println("-------------------");
 		if (contacts.isEmpty()) {
@@ -31,7 +31,7 @@ public class ListContactsUiHandler extends UiHandler {
 		else {
 			System.out.println(String.format("Person \"%s\" has the following contacts:", 
 				person.getName()));
-			contactService.listContacts(person).stream()
+			contacts.stream()
 				.map(contact -> contact.toString())
 				.forEach(System.out::println);			
 		}

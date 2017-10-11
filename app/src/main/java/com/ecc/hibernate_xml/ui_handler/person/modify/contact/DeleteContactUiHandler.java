@@ -38,7 +38,7 @@ public class DeleteContactUiHandler extends UiHandler {
 			Integer contactId = InputHandler.getNextLine(
 				String.format("%s\n%s\nContact ID: ", PROMPT, listOfContacts), Integer::valueOf);
 
-			contactService.deleteContact(contactId);
+			contactService.delete(contactId);
 			System.out.println(String.format(
 				"Successfully removed Contact ID \"%d\"  from Person ID [%d] \"%s\"!", contactId, 
 				person.getId(), person.getName()));	

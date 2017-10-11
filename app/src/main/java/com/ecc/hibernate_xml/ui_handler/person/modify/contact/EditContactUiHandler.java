@@ -25,7 +25,7 @@ public class EditContactUiHandler extends UiHandler {
 
 	@Override 
 	public void onHandle() throws Exception {
-		List<Contact> contacts = contactService.listContacts(person);
+		List<Contact> contacts = contactService.list(person);
 
 		System.out.println("-------------------");
 		if (contacts.isEmpty()) {
@@ -39,9 +39,9 @@ public class EditContactUiHandler extends UiHandler {
 			Integer contactId = InputHandler.getNextLine(
 				String.format("%s\n%s\n Enter Contact ID: ", SELECT_CONTACT_PROMPT, listOfContacts), Integer::valueOf);
 
-			Contact contact = contactService.getContact(contactId);
+			Contact contact = contactService.get(contactId);
 			contact.setData(InputHandler.getNextLine(String.format(CONTACT_DATA_PROMPT, contact)));
-			contactService.updateContact(contact);
+			contactService.update(contact);
 			System.out.println(String.format(
 				"Successfully updated \"%s\"  of Person ID [%d] \"%s\"!", contact, 
 				person.getId(), person.getName()));
