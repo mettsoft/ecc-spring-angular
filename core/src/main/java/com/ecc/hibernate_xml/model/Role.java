@@ -53,10 +53,15 @@ public class Role {
 	}
 
 	@Override
+	public int hashCode() {
+		return name.hashCode();
+	}
+	
+	@Override
 	public boolean equals(Object object) {
 		if (object != null && object instanceof Role) {
 			Role otherRole = (Role) object; 
-			return id.equals(otherRole.id) && name.equals(otherRole.name);
+			return name.equals(otherRole.name);
 		}
 		return false;
 	}

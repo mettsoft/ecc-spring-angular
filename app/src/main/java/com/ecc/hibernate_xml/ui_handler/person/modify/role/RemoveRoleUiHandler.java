@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.ecc.hibernate_xml.ui_handler.UiHandler;
 import com.ecc.hibernate_xml.util.InputHandler;
-import com.ecc.hibernate_xml.service.PersonService;
 import com.ecc.hibernate_xml.service.RoleService;
 import com.ecc.hibernate_xml.model.Person;
 import com.ecc.hibernate_xml.model.Role;
@@ -13,13 +12,11 @@ import com.ecc.hibernate_xml.model.Role;
 public class RemoveRoleUiHandler extends UiHandler {
 	private static final String PROMPT = "Please choose role to remove from the following: ";
 
-	private PersonService personService;
 	private RoleService roleService;
 	private Person person;
 
 	public RemoveRoleUiHandler(String operationName, Person person) {
 		super(operationName);
-		this.personService = new PersonService();
 		this.roleService = new RoleService();
 		this.person = person;
 	}
@@ -40,7 +37,7 @@ public class RemoveRoleUiHandler extends UiHandler {
 			Integer roleId = InputHandler.getNextLine(
 				String.format("%s\n%s\nRole ID: ", PROMPT, listOfRoles), Integer::valueOf);
 
-			personService.removeRoleFromPerson(roleId, person);
+			roleService.removeRoleFromPerson(roleId, person);
 			System.out.println(String.format(
 				"Successfully removed role ID \"%d\" to Person ID [%d] \"%s\"!", roleId, 
 				person.getId(), person.getName()));

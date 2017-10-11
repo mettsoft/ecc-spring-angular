@@ -130,6 +130,37 @@ public class Name {
 	}
 
 	@Override
+	public int hashCode() {
+		int accumulator = firstName.hashCode() << 8 + 
+			middleName.hashCode() << 4 + 
+			lastName.hashCode() << 2;
+			 
+		if (title != null) {
+			accumulator += title.hashCode() << 1;
+		}
+
+		if (suffix != null) {
+			accumulator += suffix.hashCode();
+		}
+
+		return accumulator;
+	}
+
+	@Override
+	public boolean equals(Object object) {
+		if (object != null && object instanceof Name) {
+			Name other = (Name) object; 
+
+			return (title == null && title == other.title || title != null && title.equals(other.title)) && 
+				firstName.equals(other.firstName) && 
+				middleName.equals(other.middleName) && 
+				lastName.equals(other.lastName) && 
+				(suffix == null && suffix == other.suffix || suffix != null && suffix.equals(other.suffix));
+		}
+		return false;
+	}
+
+	@Override
 	public String toString() {
 		List<String> tokens = new ArrayList<>(5);
 

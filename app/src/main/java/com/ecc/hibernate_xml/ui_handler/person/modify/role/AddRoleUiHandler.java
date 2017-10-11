@@ -12,13 +12,11 @@ import com.ecc.hibernate_xml.model.Role;
 public class AddRoleUiHandler extends UiHandler {
 	private static final String PROMPT = "Please choose role from the following: ";
 
-	private PersonService personService;
 	private RoleService roleService;
 	private Person person;
 
 	public AddRoleUiHandler(String operationName, Person person) {
 		super(operationName);
-		this.personService = new PersonService();
 		this.roleService = new RoleService();
 		this.person = person;
 	}
@@ -39,7 +37,7 @@ public class AddRoleUiHandler extends UiHandler {
 			Integer roleId = InputHandler.getNextLine(
 				String.format("%s\n%s\nRole ID: ", PROMPT, listOfRoles), Integer::valueOf);
 			
-			personService.addRoleToPerson(roleId, person);
+			roleService.addRoleToPerson(roleId, person);
 			System.out.println(String.format(
 				"Successfully added role ID \"%d\" to Person ID [%d] \"%s\"!", roleId, person.getId(),
 				person.getName()));

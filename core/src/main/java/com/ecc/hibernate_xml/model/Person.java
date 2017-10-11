@@ -123,8 +123,21 @@ public class Person {
 	}
 
 	@Override
-	public String toString() {
+	public int hashCode() {
+		return name.hashCode();
+	}
 
+	@Override
+	public boolean equals(Object object) {
+		if (object != null && object instanceof Person) {
+			Person otherPerson = (Person) object; 
+			return name.equals(otherPerson.name);
+		}
+		return false;
+	}
+
+	@Override
+	public String toString() {
 		List<String> tokens = new ArrayList<>(5);
 
 		tokens.add("Name: " + name);
