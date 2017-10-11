@@ -4,7 +4,7 @@ import java.util.stream.Collectors;
 import com.ecc.hibernate_xml.ui_handler.UiHandler;
 import com.ecc.hibernate_xml.util.InputException;
 import com.ecc.hibernate_xml.util.InputHandler;
-import com.ecc.hibernate_xml.service.PersonService;
+import com.ecc.hibernate_xml.service.ContactService;
 import com.ecc.hibernate_xml.model.Person;
 import com.ecc.hibernate_xml.model.Contact;
 import com.ecc.hibernate_xml.model.Landline;
@@ -17,12 +17,12 @@ public class AddContactUiHandler extends UiHandler {
 	private static final String LANDLINE_PROMPT = "Please enter the landline: ";
 	private static final String EMAIL_PROMPT = "Please enter the email: ";
 	private static final String MOBILE_NUMBER_PROMPT = "Please enter the mobile number: ";
-	private PersonService personService;
+	private ContactService contactService;
 	private Person person;
 
 	public AddContactUiHandler(String operationName, Person person) {
 		super(operationName);
-		this.personService = new PersonService();
+		this.contactService = new ContactService();
 		this.person = person;
 	}
 
@@ -45,7 +45,7 @@ public class AddContactUiHandler extends UiHandler {
 				throw new InputException(null);
 		}		
 
-		personService.addContactToPerson(contact, person);
+		contactService.createContact(contact, person);
 		System.out.println(String.format(
 			"Successfully added \"%s\"  to Person ID [%d] \"%s\"!", contact, 
 			person.getId(), person.getName()));

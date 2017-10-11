@@ -5,21 +5,13 @@ import java.util.stream.Collectors;
 
 import com.ecc.hibernate_xml.dao.DaoException;
 import com.ecc.hibernate_xml.dao.PersonDao;
-import com.ecc.hibernate_xml.dao.RoleDao;
-import com.ecc.hibernate_xml.dao.ContactDao;
 import com.ecc.hibernate_xml.model.Person;
-import com.ecc.hibernate_xml.model.Role;
-import com.ecc.hibernate_xml.model.Contact;
 
 public class PersonService {
 	private PersonDao personDao;
-	private RoleDao roleDao;
-	private ContactDao contactDao;
 
 	public PersonService() {
 		personDao = new PersonDao();
-		roleDao = new RoleDao();
-		contactDao = new ContactDao();
 	}
 
 	public List<Person> listPersonsByGwa() {
@@ -52,16 +44,5 @@ public class PersonService {
 
 	public Person getPerson(Integer personId) throws DaoException {
 		return personDao.get(personId);
-	}
-
-	public void addContactToPerson(Contact contact, Person person) throws DaoException {
-		person.getContacts().add(contact);
-		personDao.update(person);
-	}
-
-	public void removeContactFromPerson(Integer contactId, Person person) throws DaoException {
-		Contact contact = contactDao.get(contactId);
-		person.getContacts().remove(contact);
-		personDao.update(person);
 	}
 }

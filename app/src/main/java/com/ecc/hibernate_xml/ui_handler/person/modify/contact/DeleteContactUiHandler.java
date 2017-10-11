@@ -6,19 +6,19 @@ import java.util.Set;
 import com.ecc.hibernate_xml.ui_handler.CompositeUiHandler;
 import com.ecc.hibernate_xml.ui_handler.UiHandler;
 import com.ecc.hibernate_xml.util.InputHandler;
-import com.ecc.hibernate_xml.service.PersonService;
+import com.ecc.hibernate_xml.service.ContactService;
 import com.ecc.hibernate_xml.model.Person;
 import com.ecc.hibernate_xml.model.Contact;
 
 public class DeleteContactUiHandler extends UiHandler {
 	private static final String PROMPT = "Please choose a contact to remove from the following: ";
 
-	private PersonService personService;
+	private ContactService contactService;
 	private Person person;
 
 	public DeleteContactUiHandler(String operationName, Person person) {
 		super(operationName);
-		this.personService = new PersonService();
+		this.contactService = new ContactService();
 		this.person = person;
 	}
 
@@ -38,7 +38,7 @@ public class DeleteContactUiHandler extends UiHandler {
 			Integer contactId = InputHandler.getNextLine(
 				String.format("%s\n%s\nContact ID: ", PROMPT, listOfContacts), Integer::valueOf);
 
-			personService.removeContactFromPerson(contactId, person);
+			contactService.deleteContact(contactId);
 			System.out.println(String.format(
 				"Successfully removed Contact ID \"%d\"  from Person ID [%d] \"%s\"!", contactId, 
 				person.getId(), person.getName()));	
