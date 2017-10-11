@@ -11,9 +11,9 @@
 			</generator>
 		</id>
 		<property name="name" column="name" type="string" unique="true" />		
-		<bag name="persons" table="persons_roles" lazy="false">
+		<set name="persons" table="persons_roles" lazy="false">
 			<key column="role_id" not-null="true" />
 			<many-to-many column="person_id" class="Person" />
-		</bag>
+		</set>
 	</class>
 </hibernate-mapping>

@@ -1,7 +1,7 @@
 package com.ecc.hibernate_xml.ui_handler.person.modify.contact;
 
 import java.util.stream.Collectors;
-import java.util.List;
+import java.util.Set;
 
 import com.ecc.hibernate_xml.ui_handler.CompositeUiHandler;
 import com.ecc.hibernate_xml.ui_handler.UiHandler;
@@ -24,7 +24,7 @@ public class DeleteContactUiHandler extends UiHandler {
 
 	@Override 
 	public void onHandle() throws Exception {
-		List<Contact> contacts = person.getContacts();
+		Set<Contact> contacts = person.getContacts();
 
 		System.out.println("-------------------");
 		if (contacts.isEmpty()) {

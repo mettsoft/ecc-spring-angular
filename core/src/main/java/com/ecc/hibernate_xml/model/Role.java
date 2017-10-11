@@ -1,6 +1,6 @@
 package com.ecc.hibernate_xml.model;
 
-import java.util.List;
+import java.util.Set;
 
 import com.ecc.hibernate_xml.model.Person;
 import com.ecc.hibernate_xml.util.validator.ValidationException;
@@ -13,7 +13,7 @@ public class Role {
 
 	private Integer id;
 	private String name;
-	private List<Person> persons;
+	private Set<Person> persons;
 
 	private Role() {}
 
@@ -36,7 +36,7 @@ public class Role {
 		this.name = name;
 	}
 
-	public void setPersons(List<Person> persons) {
+	public void setPersons(Set<Person> persons) {
 		this.persons = persons;
 	}
 
@@ -48,7 +48,7 @@ public class Role {
 		return name;
 	}
 
-	public List<Person> getPersons() {
+	public Set<Person> getPersons() {
 		return persons;
 	}
 

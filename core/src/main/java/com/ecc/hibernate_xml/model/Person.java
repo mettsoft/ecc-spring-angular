@@ -2,6 +2,8 @@ package com.ecc.hibernate_xml.model;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Set;
+import java.util.HashSet;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
@@ -17,13 +19,13 @@ public class Person {
 	private BigDecimal GWA;
 	private Boolean currentlyEmployed;
 	private Date dateHired;
-	private List<Contact> contacts;
-	private List<Role> roles;
+	private Set<Contact> contacts;
+	private Set<Role> roles;
 
 	private Person() {
 		setCurrentlyEmployed(false);
-		setContacts(new ArrayList<>());
-		setRoles(new ArrayList<>());
+		setContacts(new HashSet<>());
+		setRoles(new HashSet<>());
 	}
 	
 	public Person(Name name) throws ValidationException {
@@ -76,11 +78,11 @@ public class Person {
 		this.dateHired = dateHired;		
 	}
 
-	public void setContacts(List<Contact> contacts) {
+	public void setContacts(Set<Contact> contacts) {
 		this.contacts = contacts;
 	}
 
-	public void setRoles(List<Role> roles) {
+	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
 	}
 
@@ -112,11 +114,11 @@ public class Person {
 		return dateHired;
 	}
 
-	public List<Contact> getContacts() {
+	public Set<Contact> getContacts() {
 		return contacts;
 	}
 
-	public List<Role> getRoles() {
+	public Set<Role> getRoles() {
 		return roles;
 	}
 
