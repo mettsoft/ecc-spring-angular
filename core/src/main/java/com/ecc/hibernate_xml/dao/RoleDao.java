@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.hibernate.Session;
+import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Order;
 
@@ -70,10 +71,14 @@ public class RoleDao extends AbstractDao<Role> {
 			.collect(Collectors.toList());
 
 		Session session = HibernateUtility.getSessionFactory().openSession();
-		List<Role> roles = session.createCriteria(Role.class)
-			.add(Restrictions.not(Restrictions.in("id", roleIds)))
-			.addOrder(Order.asc("id"))
-			.list();
+		Criteria criteria = session.createCriteria(Role.class)
+			.addOrder(Order.asc("id"));
+
+		if (!roleIds.isEmpty()) {
+			criteria.add(Restrictions.not(Restrictions.in("id", roleIds)));
+		}
+
+		List<Role> roles = criteria.list();
 		session.close();
 		return roles;
 	}
