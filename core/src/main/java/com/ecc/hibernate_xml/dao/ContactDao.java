@@ -3,6 +3,8 @@ package com.ecc.hibernate_xml.dao;
 import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.Query;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.Order;
 
 import com.ecc.hibernate_xml.model.Contact;
 import com.ecc.hibernate_xml.model.Person;
@@ -16,9 +18,10 @@ public class ContactDao extends AbstractDao<Contact> {
 
 	public List<Contact> list(Person person) {
 		Session session = HibernateUtility.getSessionFactory().openSession();
-		Query query = session.createQuery("FROM Contact WHERE person_id = :id ORDER BY id");
-		query.setParameter("id", person.getId());
-		List<Contact> contacts = query.list();
+		List<Contact> contacts = session.createCriteria(Contact.class)
+			.add(Restrictions.eq("person.id", person.getId()))
+			.addOrder(Order.asc("id"))
+			.list();
 		session.close();
 		return contacts;
 	}

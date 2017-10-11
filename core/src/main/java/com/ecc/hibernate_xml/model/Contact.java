@@ -6,6 +6,7 @@ import com.ecc.hibernate_xml.util.validator.ModelValidator;
 public abstract class Contact {
 	private Integer id;
 	private String data;
+	private Person person;
 
 	public void setId(Integer id) {
 		this.id = id;
@@ -19,6 +20,10 @@ public abstract class Contact {
 		this.data = data;
 	}
 
+	public void setPerson(Person person) {
+		this.person = person;
+	}
+
 	public Integer getId() {
 		return id;
 	}
@@ -27,6 +32,10 @@ public abstract class Contact {
 		return data;
 	}
 
+	public Person getPerson() {
+		return person;
+	}
+	
 	public String getContactType() {
 		return this.getClass().getSimpleName();
 	}

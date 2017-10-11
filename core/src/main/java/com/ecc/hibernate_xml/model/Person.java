@@ -22,7 +22,7 @@ public class Person {
 	private Set<Contact> contacts;
 	private Set<Role> roles;
 
-	private Person() {
+	Person() {
 		setCurrentlyEmployed(false);
 		setContacts(new HashSet<>());
 		setRoles(new HashSet<>());

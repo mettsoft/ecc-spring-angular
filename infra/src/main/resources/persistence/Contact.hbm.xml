@@ -12,6 +12,7 @@
 		</id>
 		<discriminator column="contact_type" type="string" />
 		<property name="data" column="data" type="string" />
+		<many-to-one name="person" column="person_id" class="Person" />
 		<subclass name="Email" discriminator-value="EMAIL" />
 		<subclass name="Landline" discriminator-value="LANDLINE" />
 		<subclass name="MobileNumber" discriminator-value="MOBILE_NUMBER" />

@@ -22,7 +22,7 @@
 		<property name="GWA" column="GWA" type="big_decimal" />
 		<property name="currentlyEmployed" column="currently_employed" type="boolean" />
 		<property name="dateHired" column="date_hired" type="date" />
-		<set name="contacts" cascade="all-delete-orphan" lazy="false">
+		<set name="contacts" cascade="all-delete-orphan" lazy="false" inverse="true">
 			<key column="person_id" not-null="true" />
 			<one-to-many class="Contact" />
 		</set>
