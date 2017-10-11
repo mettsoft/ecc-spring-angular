@@ -18,8 +18,36 @@ public class Application {
 					.add(new Menu("Sort by GWA."))
 					.add(new Menu("Sort by date hired."))
 					.add(new Menu("Sort by last name.")))
-				.add(new Menu("Create a new Person."))
-				.add(new Menu("Update an existing Person record."))
+				.add(new Menu("Create a new Person.")
+					.add(new Menu("Change name."))
+					.add(new Menu("Change address."))
+					.add(new Menu("Change birthday."))
+					.add(new Menu("Change GWA."))
+					.add(new Menu("Change employment status."))
+					.add(new Menu("Manage contact information.")
+						.add(new Menu("List contact information."))
+						.add(new Menu("Add contact information."))
+						.add(new Menu("Edit contact information."))
+						.add(new Menu("Delete contact information.")))
+					.add(new Menu("Manage roles.")
+						.add(new Menu("List roles."))
+						.add(new Menu("Add role."))
+						.add(new Menu("Remove role."))))
+				.add(new Menu("Update an existing Person record.")
+					.add(new Menu("Change name."))
+					.add(new Menu("Change address."))
+					.add(new Menu("Change birthday."))
+					.add(new Menu("Change GWA."))
+					.add(new Menu("Change employment status."))
+					.add(new Menu("Manage contact information.")
+						.add(new Menu("List contact information."))
+						.add(new Menu("Add contact information."))
+						.add(new Menu("Edit contact information."))
+						.add(new Menu("Delete contact information.")))
+					.add(new Menu("Manage roles.")
+						.add(new Menu("List roles."))
+						.add(new Menu("Add role."))
+						.add(new Menu("Remove role."))))
 				.add(new Menu("Delete an existing Person record.")))
 			.add(new Menu("Go to Role Registry.")
 				.add(new Menu("List Role records."))
@@ -44,7 +72,21 @@ public class Application {
 		uiRouter.register("Sort by date hired.", PersonUiHandler::listByDateHired);
 		uiRouter.register("Sort by last name.", PersonUiHandler::listByLastName);
 		uiRouter.register("Create a new Person.", PersonUiHandler::create);
-		uiRouter.register("Update an existing Person record.", PersonUiHandler::update);
+		uiRouter.register("Update an existing Person record.", PersonUiHandler::choose);
+
+		uiRouter.register("Change name.", PersonUiHandler::changeName);
+		uiRouter.register("Change address.", PersonUiHandler::changeAddress);
+		uiRouter.register("Change birthday.", PersonUiHandler::changeBirthday);
+		uiRouter.register("Change GWA.", PersonUiHandler::changeGWA);
+		uiRouter.register("Change employment status.", PersonUiHandler::changeEmploymentStatus);
+		uiRouter.register("List contact information.", PersonUiHandler::listContacts);
+		uiRouter.register("Add contact information.", PersonUiHandler::addContact);
+		uiRouter.register("Edit contact information.", PersonUiHandler::updateContact);
+		uiRouter.register("Delete contact information.", PersonUiHandler::deleteContact);
+		uiRouter.register("List roles.", PersonUiHandler::listRoles);
+		uiRouter.register("Add role.", PersonUiHandler::addRole);
+		uiRouter.register("Remove role.", PersonUiHandler::removeRole);
+
 		uiRouter.register("Delete an existing Person record.", PersonUiHandler::delete);
 
 		uiRouter.register("List Role records.", RoleUiHandler::list);
