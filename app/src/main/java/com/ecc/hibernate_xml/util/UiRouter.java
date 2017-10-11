@@ -18,6 +18,7 @@ public class UiRouter {
 
 	public void run() {
 		while (true) {
+			Menu parentMenu = menu.getParent();
 			menu = Menu.chooseMenu(menu);
 			if (menu == null) {
 				break;
@@ -36,12 +37,15 @@ public class UiRouter {
 					}
 				}
 
-				try {
-					Object result = currentRoute.run(argument);	
-					currentRoute.setArgument(result);
-				}
-				catch (Exception cause) {
-					ExceptionHandler.printException(cause);
+				// Only execute the callback if navigating downwards.
+				if (parentMenu != menu) {
+					try {
+						Object result = currentRoute.run(argument);	
+						currentRoute.setArgument(result);
+					}
+					catch (Exception cause) {
+						ExceptionHandler.debugPrintException(cause);
+					}					
 				}
 
 				if (!menu.hasChildren()) {
