@@ -60,8 +60,6 @@ public class ContactService extends AbstractService<Contact> {
 				"Email"))
 			.validEmail(EMAIL_IS_INVALID)
 			.validate();
-
-		return email;
 	}
 
 	public List<Contact> list(Person person) {

@@ -24,8 +24,7 @@ public class PersonContactUiHandler {
 	private static final String EMAIL_PROMPT = "Please enter the email: ";
 	private static final String MOBILE_NUMBER_PROMPT = "Please enter the mobile number: ";
 
-	private static final String UPDATE_CONTACT_PROMPT = "Please choose a contact to update from the following:\n%s\nEnter Contact ID: ";
-	private static final String DELETE_CONTACT_PROMPT = "Please choose a contact to remove from the following:\n%s\nEnter Contact ID: ";
+	private static final String CONTACT_ID_PROMPT = "Enter Contact ID: ";
 	private static final String CONTACT_DATA_PROMPT = "Please enter the new contact data for \"%s\": ";
 
 	private static ContactService contactService = new ContactService();
@@ -51,33 +50,34 @@ public class PersonContactUiHandler {
 		return 0;
 	}
 
-	public static Object addLandline(Object parameter) throws Exception {
-		Contact contact = new Landline();
-		contact.setData(InputHandler.getNextLineREPL(LANDLINE_PROMPT, arg -> 
-			ContactService.validateContact(arg, "Landline")));
-		createContact(contact, (Person) parameter);
+	public static Object addContact(Object parameter, String contactType) throws Exception {
+		switch(contactType) {
+			case "Landline":
+				createContact(LANDLINE_PROMPT, new Landline(), (Person) parameter);
+				break;
+			case "Email":
+				createContact(EMAIL_PROMPT, new Email(), (Person) parameter);
+				break;
+			case "Mobile Number":
+				createContact(MOBILE_NUMBER_PROMPT, new MobileNumber(), (Person) parameter);
+				break;
+			default: 
+				throw new RuntimeException("No validation rule defined for " + contactType + "!");
+		}
 		return 0;
 	}
 
-	public static Object addEmail(Object parameter) throws Exception {
-		Contact contact = new Email();
-		contact.setData(InputHandler.getNextLineREPL(EMAIL_PROMPT, arg -> 
-			ContactService.validateContact(arg, "Email")));
-		createContact(contact, (Person) parameter);
-		return 0;
-	}
-
-	public static Object addMobileNumber(Object parameter) throws Exception {
-		Contact contact = new MobileNumber();
-		contact.setData(InputHandler.getNextLineREPL(MOBILE_NUMBER_PROMPT, arg -> 
-			ContactService.validateContact(arg, "Mobile Number")));
-		createContact(contact, (Person) parameter);
-		return 0;
-	}
-
-	private static void createContact(Contact contact, Person person) throws Exception {
+	private static void createContact(String prompt, Contact contact, Person person) throws Exception {
+		fillContact(prompt, contact);
 		contactService.create(contact, person);
-		System.out.println(String.format(CREATE_SUCCESS_MESSAGE, contact));
+		String successMessage = String.format(CREATE_SUCCESS_MESSAGE, contact);
+		System.out.println(successMessage);
+	}
+
+	private static void fillContact(String prompt, Contact contact) {
+		String data = InputHandler.getNextLineREPL(prompt, arg -> 
+			ContactService.validateContact(arg, contact.getContactType()));
+		contact.setData(data);		
 	}
 
 	public static Object update(Object parameter) throws Exception {
@@ -89,42 +89,31 @@ public class PersonContactUiHandler {
 			System.out.println(NO_CONTACTS_TO_UPDATE);
 		}
 		else {		
-			String listOfContacts = contacts.stream()
-				.map(contact -> contact.toString())
-				.collect(Collectors.joining("\n"));
-
-			String userPrompt = String.format(UPDATE_CONTACT_PROMPT, listOfContacts);
-			Integer contactId = InputHandler.getNextLine(userPrompt, Integer::valueOf);
-
+			Integer contactId = InputHandler.getNextLine(CONTACT_ID_PROMPT, Integer::valueOf);
 			Contact contact = contactService.get(contactId);
-			userPrompt = String.format(CONTACT_DATA_PROMPT, contact);
-			contact.setData(InputHandler.getNextLineREPL(userPrompt, arg -> 
-				ContactService.validateContact(arg, contact.getContactType())));
+			String userPrompt = String.format(CONTACT_DATA_PROMPT, contact);
+			fillContact(userPrompt, contact);
+
 			contactService.update(contact);
 
 			String successMessage = String.format(UPDATE_SUCCESS_MESSAGE, contact);
 			System.out.println(successMessage);
 		}
-
 		System.out.println("-------------------");
+
 		return 0;
 	}
 
 	public static Object delete(Object parameter) throws Exception {
 		Person person = (Person) parameter;
 		List<Contact> contacts = contactService.list(person);
-
+		
 		System.out.println("-------------------");
 		if (contacts.isEmpty()) {
 			System.out.println(NO_CONTACTS_TO_DELETE);
 		}
 		else {
-			String listOfContacts = contacts.stream()
-				.map(contact -> contact.toString())
-				.collect(Collectors.joining("\n"));
-
-			String userPrompt = String.format(DELETE_CONTACT_PROMPT, listOfContacts);
-			Integer contactId = InputHandler.getNextLine(userPrompt, Integer::valueOf);
+			Integer contactId = InputHandler.getNextLine(CONTACT_ID_PROMPT, Integer::valueOf);
 
 			contactService.delete(contactId);
 
