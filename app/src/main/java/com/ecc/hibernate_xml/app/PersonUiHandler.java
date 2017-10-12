@@ -1,8 +1,6 @@
 package com.ecc.hibernate_xml.app;
 
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -14,7 +12,6 @@ import com.ecc.hibernate_xml.model.Name;
 import com.ecc.hibernate_xml.model.Address;
 import com.ecc.hibernate_xml.service.PersonService;
 import com.ecc.hibernate_xml.util.InputHandler;
-import com.ecc.hibernate_xml.util.InputException;
 
 public class PersonUiHandler {
 	private static final String UPDATE_PROMPT = "Please enter the person ID you wish to update: ";
@@ -35,53 +32,43 @@ public class PersonUiHandler {
 	private static final String GWA_PROMPT = "Please enter the GWA: ";
 
 	private static final String EMPLOYMENT_PROMPT = "Please enter the employment status (y/n): ";
-	private static final String DATE_PROMPT = "Please enter date hired (yyyy-MM-dd): ";
+	private static final String DATE_HIRED_PROMPT = "Please enter date hired (yyyy-MM-dd): ";
 
-	private static PersonService personService = new PersonService();
+	private static final String NO_PERSONS_MESSAGE = "There are no persons.";
+	private static final String CREATE_SUCCESS_MESSAGE = "Successfully created the person ID [%d] \"%s\"!";
+	private static final String UPDATE_SUCCESS_MESSAGE = "Successfully updated person's %s to \"%s\"!";
+	private static final String DELETE_SUCCESS_MESSAGE = "Successfully deleted the person ID \"%d\"!";
+	private static final String EMPLOYMENT_SUCCESS_MESSAGE = "Successfully updated person's employment status!";
+	
+	private static final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	private static final PersonService personService = new PersonService();
 
 	public static Object listByDateHired(Object parameter) {		
-		System.out.println("-------------------");
-
-		List<Person> persons = personService.listPersonsByDateHired();
-		if (persons.isEmpty()) {
-			System.out.println("There are no persons.");
-		}
-		else {	
-			persons.stream().forEach(System.out::println);
-		}
-		
-		System.out.println("-------------------");
+		list(personService.listPersonsByDateHired());
 		return 0;
 	}
 
 	public static Object listByLastName(Object parameter) {		
-		System.out.println("-------------------");
-
-		List<Person> persons = personService.listPersonsByLastName();
-		if (persons.isEmpty()) {
-			System.out.println("There are no persons.");
-		}
-		else {	
-			persons.stream().forEach(System.out::println);
-		}
-		
-		System.out.println("-------------------");
+		list(personService.listPersonsByLastName());
 		return 0;
 	}
 
 	public static Object listByGWA(Object parameter) {		
+		list(personService.listPersonsByGwa());
+		return 0;
+	}
+
+	private static void list(List<Person> persons) {		
 		System.out.println("-------------------");
 
-		List<Person> persons = personService.listPersonsByGwa();
 		if (persons.isEmpty()) {
-			System.out.println("There are no persons.");
+			System.out.println(NO_PERSONS_MESSAGE);
 		}
 		else {	
 			persons.stream().forEach(System.out::println);
 		}
 
 		System.out.println("-------------------");
-		return 0;
 	}
 
 	public static Object create(Object parameter) throws Exception {	
@@ -94,13 +81,13 @@ public class PersonUiHandler {
 		Person person = new Person(name);
 		personService.create(person);
 
-		System.out.println(String.format("Successfully created the person \"%s\" with ID \"%d\"!", 
-			person.getName(), person.getId()));	
+		String successMessage = String.format(CREATE_SUCCESS_MESSAGE, person.getId(), person.getName());
+		System.out.println(successMessage);	
 
 		return person;
 	}
 
-	public static Object choose(Object parameter) throws Exception {
+	public static Object update(Object parameter) throws Exception {
 		Integer personId = InputHandler.getNextLine(UPDATE_PROMPT, Integer::valueOf);
 		return personService.get(personId);	
 	}
@@ -109,31 +96,17 @@ public class PersonUiHandler {
 		Person person = (Person) parameter;
 		Name name = person.getName();
 
-		InputHandler.getNextLineREPL(TITLE_PROMPT, input -> {
-			name.setTitle(input);
-			return 0;
-		});
-		InputHandler.getNextLineREPL(LAST_NAME_PROMPT, input -> {
-			name.setLastName(input);
-			return 0;
-		});
-		InputHandler.getNextLineREPL(FIRST_NAME_PROMPT, input -> {
-			name.setFirstName(input);
-			return 0;
-		});
-		InputHandler.getNextLineREPL(MIDDLE_NAME_PROMPT, input -> {
-			name.setMiddleName(input);
-			return 0;
-		});
-		InputHandler.getNextLineREPL(SUFFIX_PROMPT, input -> {
-			name.setSuffix(input);
-			return 0;
-		});
+		InputHandler.consumeNextLineREPL(TITLE_PROMPT, name::setTitle);
+		InputHandler.consumeNextLineREPL(LAST_NAME_PROMPT, name::setLastName);
+		InputHandler.consumeNextLineREPL(FIRST_NAME_PROMPT, name::setFirstName);
+		InputHandler.consumeNextLineREPL(MIDDLE_NAME_PROMPT, name::setMiddleName);
+		InputHandler.consumeNextLineREPL(SUFFIX_PROMPT, name::setSuffix);
 
 		person.setName(name);
-
 		personService.update(person);
-		System.out.println(String.format("Successfully updated person's name to \"%s\"!", name));
+
+		String successMessage = String.format(UPDATE_SUCCESS_MESSAGE, "name", name);
+		System.out.println(successMessage);
 		return 0;
 	}
 
@@ -141,36 +114,42 @@ public class PersonUiHandler {
 		Person person = (Person) parameter;
 		Address.Factory addressFactory = new Address.Factory();
 		InputHandler.getNextLineREPL(STREET_NUMBER_PROMPT, addressFactory::setStreetNumber);
-		addressFactory.setBarangay(InputHandler.getNextLineREPL(BARANGAY_PROMPT, Integer::valueOf));
+		InputHandler.getNextLineREPL(BARANGAY_PROMPT, input -> 
+			addressFactory.setBarangay(Integer.valueOf(input)));
 		InputHandler.getNextLineREPL(MUNICIPALITY_PROMPT, addressFactory::setMunicipality);
-		addressFactory.setZipCode(InputHandler.getNextLineREPL(ZIP_CODE_PROMPT, Integer::valueOf));
+		InputHandler.getNextLineREPL(ZIP_CODE_PROMPT, input -> 
+			addressFactory.setZipCode(Integer.valueOf(input)));
 
 		Address address = addressFactory.build();
 		person.setAddress(address);
-
 		personService.update(person);
-		System.out.println(String.format("Successfully updated person's address to \"%s\"!", address));
+
+		String successMessage = String.format(UPDATE_SUCCESS_MESSAGE, "address", address);
+		System.out.println(successMessage);
 		return 0;
 	}
 
 	public static Object changeBirthday(Object parameter) throws Exception {
 		Person person = (Person) parameter;
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		Date birthday = InputHandler.getNextLineREPL(BIRTHDAY_PROMPT, dateFormat::parse);
-		person.setBirthday(birthday);
 
+		person.setBirthday(birthday);
 		personService.update(person);
-		System.out.println(String.format(
-			"Successfully updated person's birthday to \"%s\"!", dateFormat.format(birthday)));
+
+		String successMessage = String.format(UPDATE_SUCCESS_MESSAGE, "birthday", dateFormat.format(birthday));
+		System.out.println(successMessage);
 		return 0;
 	}
 
 	public static Object changeGWA(Object parameter) throws Exception {
 		Person person = (Person) parameter;
 		BigDecimal GWA = InputHandler.getNextLineREPL(GWA_PROMPT, BigDecimal::new);
+
 		person.setGWA(GWA);
 		personService.update(person);
-		System.out.println(String.format("Successfully updated person's gwa GWA \"%s\"!", GWA));
+
+		String successMessage = String.format(UPDATE_SUCCESS_MESSAGE, "GWA", GWA);
+		System.out.println(successMessage);
 		return 0;
 	}
 
@@ -189,20 +168,22 @@ public class PersonUiHandler {
 		person.setCurrentlyEmployed(currentlyEmployed);
 
 		if (currentlyEmployed) {
-			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-			Date dateHired = InputHandler.getNextLineREPL(DATE_PROMPT, dateFormat::parse);
-			person.setDateHired(dateHired);			
+			Date dateHired = InputHandler.getNextLineREPL(DATE_HIRED_PROMPT, dateFormat::parse);
+			person.setDateHired(dateHired);
 		}
 
 		personService.update(person);
-		System.out.println("Successfully updated person's employment status!");
+		System.out.println(EMPLOYMENT_SUCCESS_MESSAGE);
 		return 0;
 	}
 
 	public static Object delete(Object parameter) throws Exception {			
 		Integer personId = InputHandler.getNextLine(DELETE_PROMPT, Integer::valueOf);
+
 		personService.delete(personId);
-		System.out.println(String.format("Successfully deleted the person ID \"%d\"!", personId));
+
+		String successMessage = String.format(DELETE_SUCCESS_MESSAGE, personId);
+		System.out.println(successMessage);
 		return 0;
 	}
 }
