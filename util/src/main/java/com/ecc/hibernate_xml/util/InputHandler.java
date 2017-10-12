@@ -27,11 +27,11 @@ public class InputHandler {
 			return function.apply(SCANNER.nextLine());				
 		}
 		catch (NumberFormatException|ParseException exception) {
-			System.out.println("Error: " + new InputException(exception).getMessage());
+			ExceptionHandler.printException(new InputException(exception));
 			return getNextLineREPL(message, function);
 		}
 		catch (Exception exception) {
-			System.out.println("Error: " + exception.getMessage());
+			ExceptionHandler.printException(exception);
 			return getNextLineREPL(message, function);
 		}
 	}
