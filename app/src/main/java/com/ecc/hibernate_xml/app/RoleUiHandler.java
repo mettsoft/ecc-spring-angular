@@ -8,17 +8,24 @@ import com.ecc.hibernate_xml.service.RoleService;
 import com.ecc.hibernate_xml.util.InputHandler;
 
 public class RoleUiHandler {
-	private static RoleService roleService = new RoleService();
-	private static final String ID_PROMPT = "Please enter the role ID you wish to replace: ";
-	private static final String NAME_PROMPT = "Please enter the new role: "; 
+	private static final String UPDATE_PROMPT = "Please enter the role ID you wish to update: ";
 	private static final String DELETE_PROMPT = "Please enter the role ID you wish to delete: ";
+	private static final String NAME_PROMPT = "Please enter the new role: "; 
+
+	private static final String NO_ROLES_MESSAGE = "There are no roles.";
+	private static final String CREATE_SUCCESS_MESSAGE = "Successfully created the role ID \"%d\" with \"%s\"!";
+	private static final String UPDATE_SUCCESS_MESSAGE = "Successfully updated the role ID \"%d\" with \"%s\"!";
+	private static final String DELETE_SUCCESS_MESSAGE = "Successfully deleted the role ID \"%d\"!";
+	private static final String AFFECTED_PERSONS_MESSAGE = "Please take note that the following person IDs are affected: [%s].";
+
+	private static RoleService roleService = new RoleService();
 
 	public static Object list(Object parameter) {		
 		System.out.println("-------------------");
 
 		List<Role> roles = roleService.list();
 		if (roles.isEmpty()) {
-			System.out.println("There are no roles.");
+			System.out.println(NO_ROLES_MESSAGE);
 		}
 		else {	
 			roles.stream().forEach(System.out::println);
@@ -31,24 +38,20 @@ public class RoleUiHandler {
 	public static Object create(Object parameter) throws Exception {			
 		Role role = InputHandler.getNextLineREPL(NAME_PROMPT, Role::new);
 		roleService.create(role);
-		System.out.println(String.format("Successfully created the role \"%s\" with ID \"%s\"!", 
-			role.getName(), role.getId()));
+
+		String successMessage = String.format(CREATE_SUCCESS_MESSAGE, role.getId(), role.getName());
+		System.out.println(successMessage);
 		return 0;
 	}
 
 	public static Object update(Object parameter) throws Exception {			
-		Integer roleId = InputHandler.getNextLine(ID_PROMPT, Integer::valueOf);
+		Integer roleId = InputHandler.getNextLine(UPDATE_PROMPT, Integer::valueOf);
 		Role role = roleService.get(roleId);
 
-		InputHandler.getNextLineREPL(NAME_PROMPT, input -> {
-			role.setName(input);
-			return 0;
-		});
-
+		InputHandler.consumeNextLineREPL(NAME_PROMPT, role::setName);
 		roleService.update(role);
 
-		String message = String.format("Successfully updated the role ID \"%d\" with \"%s\"!", 
-			role.getId(), role.getName());
+		String successMessage = String.format(UPDATE_SUCCESS_MESSAGE, role.getId(), role.getName());
 
 		if (role.getPersons().size() > 0) {
 			String personIds = role.getPersons()
@@ -56,18 +59,18 @@ public class RoleUiHandler {
 				.map(person -> person.getId().toString())
 				.collect(Collectors.joining(", "));
 
-			message += String.format(
-				" Please take note that the following person IDs are affected: [%s].",
-				personIds);
+			successMessage += " " + String.format(AFFECTED_PERSONS_MESSAGE, personIds);
 		}
-		System.out.println(message);
+		System.out.println(successMessage);
 		return 0;
 	}
 
 	public static Object delete(Object parameter) throws Exception {			
 		Integer roleId = InputHandler.getNextLine(DELETE_PROMPT, Integer::valueOf);
 		roleService.delete(roleId);
-		System.out.println(String.format("Successfully deleted the role ID \"%d\"!", roleId));
+
+		String successMessage = String.format(DELETE_SUCCESS_MESSAGE, roleId);
+		System.out.println(successMessage);
 		return 0;
 	}
 }
