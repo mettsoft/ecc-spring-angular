@@ -1,11 +1,10 @@
 package com.ecc.hibernate_xml.dao;
 
 import java.util.List;
-import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 
 import com.ecc.hibernate_xml.model.Person;
-import com.ecc.hibernate_xml.util.HibernateUtility;
+import com.ecc.hibernate_xml.util.TransactionScope;
 
 public class PersonDao extends AbstractDao<Person> {
 
@@ -13,19 +12,16 @@ public class PersonDao extends AbstractDao<Person> {
 		super(Person.class);
 	}
 
-	public List<Person> listByDateHired() {
-		Session session = HibernateUtility.getSessionFactory().openSession();
-		List<Person> persons = session.createQuery("FROM Person ORDER BY dateHired").list();
-		session.close();
-		return persons;
+	public List<Person> listByDateHired() {		
+		return TransactionScope.executeTransactionWithResult(session -> 
+			session.createQuery("FROM Person ORDER BY dateHired").list());
 	}
 
 	public List<Person> listByLastName() {
-		Session session = HibernateUtility.getSessionFactory().openSession();
-		List<Person> persons = session.createCriteria(Person.class)
-			.addOrder(Order.asc("name.lastName"))
-			.list();
-		session.close();
-		return persons;
+		return TransactionScope.executeTransactionWithResult(session -> {
+			return session.createCriteria(Person.class)
+				.addOrder(Order.asc("name.lastName"))
+				.list();
+		});
 	}
 }

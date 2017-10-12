@@ -4,7 +4,6 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 
-import com.ecc.hibernate_xml.util.HibernateUtility;
 import com.ecc.hibernate_xml.util.TransactionScope;
 
 public abstract class AbstractDao<T> implements Dao<T> {
@@ -17,12 +16,11 @@ public abstract class AbstractDao<T> implements Dao<T> {
 
 	@Override
 	public List<T> list() {
-		Session session = HibernateUtility.getSessionFactory().openSession();
-		List<T> objects = session.createCriteria(type)
-			.addOrder(Order.asc("id"))
-			.list();
-		session.close();
-		return objects;
+		return TransactionScope.executeTransactionWithResult(session -> {
+			return session.createCriteria(type)
+				.addOrder(Order.asc("id"))
+				.list();
+		});
 	}
 
 	@Override
@@ -65,14 +63,14 @@ public abstract class AbstractDao<T> implements Dao<T> {
 	} 
 
 	@Override
-	public T get(Integer id) throws DaoException {
-		Session session = HibernateUtility.getSessionFactory().openSession();
-		T entity = (T) session.get(type, id);
-		session.close();
-		if (entity == null) {
-			throw new DaoException(String.format("%s not found!", type.getSimpleName()));
-		}
-		return entity;
+	public T get(Integer id) {
+		return TransactionScope.executeTransactionWithResult(session -> {
+			T entity =  (T) session.get(type, id);
+			if (entity == null) {
+				throw new RuntimeException(String.format("%s not found!", type.getSimpleName()));
+			}
+			return entity;			
+		});
 	}
 
 	protected void onBeforeSave(Session session, T entity) {}

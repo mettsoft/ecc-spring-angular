@@ -1,13 +1,12 @@
 package com.ecc.hibernate_xml.dao;
 
 import java.util.List;
-import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Order;
 
 import com.ecc.hibernate_xml.model.Contact;
 import com.ecc.hibernate_xml.model.Person;
-import com.ecc.hibernate_xml.util.HibernateUtility;
+import com.ecc.hibernate_xml.util.TransactionScope;
 
 public class ContactDao extends AbstractDao<Contact> {
 
@@ -16,12 +15,11 @@ public class ContactDao extends AbstractDao<Contact> {
 	}
 
 	public List<Contact> list(Person person) {
-		Session session = HibernateUtility.getSessionFactory().openSession();
-		List<Contact> contacts = session.createCriteria(Contact.class)
+		return TransactionScope.executeTransactionWithResult(session -> {
+			return session.createCriteria(Contact.class)
 			.add(Restrictions.eq("person.id", person.getId()))
 			.addOrder(Order.asc("id"))
 			.list();
-		session.close();
-		return contacts;
+		});
 	}
 }

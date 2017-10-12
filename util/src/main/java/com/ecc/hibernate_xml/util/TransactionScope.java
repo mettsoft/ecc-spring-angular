@@ -2,10 +2,9 @@ package com.ecc.hibernate_xml.util;
 
 import java.util.function.Function;
 import java.util.function.Consumer;
+
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-
-import com.ecc.hibernate_xml.util.HibernateUtility;
 
 public class TransactionScope {
     public static void executeTransaction(Consumer<Session> function) {

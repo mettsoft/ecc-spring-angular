@@ -10,7 +10,7 @@ import org.hibernate.criterion.Order;
 
 import com.ecc.hibernate_xml.model.Role;
 import com.ecc.hibernate_xml.model.Person;
-import com.ecc.hibernate_xml.util.HibernateUtility;
+import com.ecc.hibernate_xml.util.TransactionScope;
 
 public class RoleDao extends AbstractDao<Role> {
 	
@@ -46,23 +46,21 @@ public class RoleDao extends AbstractDao<Role> {
 	}
 
 	private Role get(String name) {
-		Session session = HibernateUtility.getSessionFactory().openSession();
-		Role role = (Role) session.createCriteria(Role.class)
-			.add(Restrictions.eq("name", name))
-			.uniqueResult();
-		session.close();
-		return role;
+		return TransactionScope.executeTransactionWithResult(session -> {
+			return (Role) session.createCriteria(Role.class)
+				.add(Restrictions.eq("name", name))
+				.uniqueResult();
+		});
 	}
 
 	public List<Role> list(Person person) {
-		Session session = HibernateUtility.getSessionFactory().openSession();
-		List<Role> roles = session.createCriteria(Role.class)
-			.createAlias("persons", "P")
-			.add(Restrictions.eq("P.id", person.getId()))
-			.addOrder(Order.asc("id"))
-			.list();
-		session.close();
-		return roles;
+		return TransactionScope.executeTransactionWithResult(session -> {
+			return session.createCriteria(Role.class)
+				.createAlias("persons", "P")
+				.add(Restrictions.eq("P.id", person.getId()))
+				.addOrder(Order.asc("id"))
+				.list();
+		});
 	}
 
 	public List<Role> listRolesNotBelongingTo(Person person) {
@@ -70,16 +68,13 @@ public class RoleDao extends AbstractDao<Role> {
 			.map(role -> role.getId())
 			.collect(Collectors.toList());
 
-		Session session = HibernateUtility.getSessionFactory().openSession();
-		Criteria criteria = session.createCriteria(Role.class)
-			.addOrder(Order.asc("id"));
-
-		if (!roleIds.isEmpty()) {
-			criteria.add(Restrictions.not(Restrictions.in("id", roleIds)));
-		}
-
-		List<Role> roles = criteria.list();
-		session.close();
-		return roles;
+		return TransactionScope.executeTransactionWithResult(session -> {
+			Criteria criteria = session.createCriteria(Role.class)
+				.addOrder(Order.asc("id"));
+			if (!roleIds.isEmpty()) {
+				criteria.add(Restrictions.not(Restrictions.in("id", roleIds)));
+			}
+			return criteria.list();
+		});
 	}
 }

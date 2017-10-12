@@ -5,7 +5,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 public class HibernateUtility {
-
 	private static final String CONFIGURATION_PATH = "persistence/hibernate.cfg.xml";
 
 	private static SessionFactory sessionFactory;
