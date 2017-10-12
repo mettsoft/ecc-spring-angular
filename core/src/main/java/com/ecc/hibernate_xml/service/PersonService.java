@@ -120,15 +120,6 @@ public class PersonService extends AbstractService<Person> {
 		return zipCode;
 	}
 
-	public static Name validateName(Name name) throws ValidationException {
-		ModelValidator
-			.create(name)
-			.notNull(String.format(NOT_NULL_ERROR_MESSAGE_TEMPLATE, "Name"))
-			.validate();
-
-		return name;
-	}
-
 	public static BigDecimal validateGWA(BigDecimal GWA) throws ValidationException {
 		ModelValidator
 			.create(GWA)
