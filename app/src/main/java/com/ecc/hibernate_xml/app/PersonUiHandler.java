@@ -54,9 +54,6 @@ public class PersonUiHandler {
 
 	private static final String DELETE_CONTACT_PROMPT = "Please choose a contact to remove from the following: ";
 
-	private static final String ADD_ROLE_PROMPT = "Please choose role from the following: ";
-	private static final String REMOVE_ROLE_PROMPT = "Please choose role to remove from the following: ";
-
 	private static PersonService personService = new PersonService();
 	private static RoleService roleService = new RoleService();
 	private static ContactService contactService = new ContactService();
@@ -320,79 +317,6 @@ public class PersonUiHandler {
 			System.out.println(String.format(
 				"Successfully removed Contact ID \"%d\"  from Person ID [%d] \"%s\"!", contactId, 
 				person.getId(), person.getName()));	
-		}
-		System.out.println("-------------------");
-		
-		return 0;
-	}
-
-	public static Object listRoles(Object parameter) throws Exception {
-		Person person = (Person) parameter;
-		System.out.println("-------------------");
-
-		List<Role> roles = roleService.list(person);
-		if (roles.isEmpty()) {
-			System.out.println(String.format("There are no roles assigned to Person ID [%d] \"%s\"", 
-				person.getId(), person.getName()));
-		}
-		else {	
-			System.out.println(String.format("Person ID [%d] \"%s\" has the following roles:", 
-				person.getId(), person.getName()));
-			roles.stream()
-				.map(role -> role.toString())
-				.forEach(System.out::println);
-		}
-
-		System.out.println("-------------------");
-		
-		return 0;
-	}
-
-	public static Object addRole(Object parameter) throws Exception {
-		Person person = (Person) parameter;
-		List<Role> roles = roleService.listRolesNotBelongingTo(person);
-
-		System.out.println("-------------------");
-		if (roles.isEmpty()) {
-			System.out.println("There are no available roles to assign.");
-		}
-		else {		
-			String listOfRoles = roles.stream()
-				.map(role -> role.toString())
-				.collect(Collectors.joining("\n"));
-
-			Integer roleId = InputHandler.getNextLine(
-				String.format("%s\n%s\nRole ID: ", ADD_ROLE_PROMPT, listOfRoles), Integer::valueOf);
-			
-			roleService.addRoleToPerson(roleId, person);
-			System.out.println(String.format(
-				"Successfully added role ID \"%d\" to Person ID [%d] \"%s\"!", roleId, person.getId(),
-				person.getName()));
-		}		
-		System.out.println("-------------------");		
-		return 0;
-	}
-
-	public static Object removeRole(Object parameter) throws Exception {
-		Person person = (Person) parameter;
-		List<Role> roles = roleService.list(person);
-
-		System.out.println("-------------------");
-		if (roles.isEmpty()) {
-			System.out.println("There are no assigned roles to remove.");
-		}
-		else {		
-			String listOfRoles = roles.stream()
-				.map(role -> role.toString())
-				.collect(Collectors.joining("\n"));
-
-			Integer roleId = InputHandler.getNextLine(
-				String.format("%s\n%s\nRole ID: ", REMOVE_ROLE_PROMPT, listOfRoles), Integer::valueOf);
-
-			roleService.removeRoleFromPerson(roleId, person);
-			System.out.println(String.format(
-				"Successfully removed role ID \"%d\" to Person ID [%d] \"%s\"!", roleId, 
-				person.getId(), person.getName()));
 		}
 		System.out.println("-------------------");
 		

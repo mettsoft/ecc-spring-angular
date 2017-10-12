@@ -105,9 +105,9 @@ public class Application {
 		uiRouter.register("List contact information.", PersonUiHandler::listContacts);
 		uiRouter.register("Edit contact information.", PersonUiHandler::updateContact);
 		uiRouter.register("Delete contact information.", PersonUiHandler::deleteContact);
-		uiRouter.register("List roles.", PersonUiHandler::listRoles);
-		uiRouter.register("Add role.", PersonUiHandler::addRole);
-		uiRouter.register("Remove role.", PersonUiHandler::removeRole);
+		uiRouter.register("List roles.", PersonRoleUiHandler::list);
+		uiRouter.register("Add role.", PersonRoleUiHandler::add);
+		uiRouter.register("Remove role.", PersonRoleUiHandler::remove);
 
 		// Receives the Person detached instance from the previous level and passes it to the next level.
 		uiRouter.register("Add contact information.", CheckedUnaryOperator.identity());
