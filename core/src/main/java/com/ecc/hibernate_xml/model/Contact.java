@@ -1,8 +1,5 @@
 package com.ecc.hibernate_xml.model;
 
-import com.ecc.hibernate_xml.util.validator.ValidationException;
-import com.ecc.hibernate_xml.util.validator.ModelValidator;
-
 public abstract class Contact {
 	private Integer id;
 	private String data;
@@ -12,11 +9,7 @@ public abstract class Contact {
 		this.id = id;
 	}
 
-	public void setData(String data) throws ValidationException {
-		ModelValidator validator = ModelValidator.create(data)
-			.notEmpty(String.format("%s cannot be empty.", getContactType()));
-	
-		configureValidator(validator).validate();	
+	public void setData(String data) {
 		this.data = data;
 	}
 
@@ -54,6 +47,4 @@ public abstract class Contact {
 	public String toString() {
 		return String.format("[ID=%d][%s] %s", id, getContactType(), data);
 	}
-
-	protected abstract ModelValidator configureValidator(ModelValidator validator) throws ValidationException;
 }

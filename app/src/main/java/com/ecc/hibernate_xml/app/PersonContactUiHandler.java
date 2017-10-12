@@ -52,19 +52,22 @@ public class PersonContactUiHandler {
 	}
 
 	public static Object addLandline(Object parameter) throws Exception {
-		Contact contact = new Landline(InputHandler.getNextLine(LANDLINE_PROMPT));
+		Contact contact = new Landline();
+		contact.setData(InputHandler.getNextLineREPL(LANDLINE_PROMPT, ContactService::validateLandline));
 		createContact(contact, (Person) parameter);
 		return 0;
 	}
 
 	public static Object addEmail(Object parameter) throws Exception {
-		Contact contact = new Email(InputHandler.getNextLine(EMAIL_PROMPT));
+		Contact contact = new Email();
+		contact.setData(InputHandler.getNextLineREPL(EMAIL_PROMPT, ContactService::validateEmail));
 		createContact(contact, (Person) parameter);
 		return 0;
 	}
 
 	public static Object addMobileNumber(Object parameter) throws Exception {
-		Contact contact = new MobileNumber(InputHandler.getNextLine(MOBILE_NUMBER_PROMPT));
+		Contact contact = new MobileNumber();
+		contact.setData(InputHandler.getNextLineREPL(MOBILE_NUMBER_PROMPT, ContactService::validateMobileNumber));
 		createContact(contact, (Person) parameter);
 		return 0;
 	}
