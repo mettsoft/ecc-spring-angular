@@ -49,22 +49,22 @@ CREATE INDEX contacts_contact_type ON contacts (contact_type);
 START TRANSACTION;
 
 INSERT INTO 
-	roles (id, name) 
+	roles (name) 
 VALUES 
-	(1, 'Software Engineer'),
-	(2, 'QA');
+	('Software Engineer'),
+	('QA');
 
 INSERT INTO 
-	addresses (id, street_number, barangay, municipality, zip_code)
+	addresses (street_number, barangay, municipality, zip_code)
 VALUES 
-	(1, '1410', 317, 'Manila', 1003),
-	(2, '1408', 317, 'Manila', 1003);
+	('1410', 317, 'Manila', 1003),
+	('1408', 317, 'Manila', 1003);
 
 INSERT INTO 
-	persons (id, last_name, first_name, middle_name, address_id, currently_employed)
+	persons (last_name, first_name, middle_name, address_id, currently_employed)
 VALUES 
-	(1, 'Young', 'Emmett', 'Ngan', 1, false),
-	(2, 'Dela Cruz', 'Juan', 'Tamad', 2, false);
+	('Young', 'Emmett', 'Ngan', 1, false),
+	('Dela Cruz', 'Juan', 'Tamad', 2, false);
 
 INSERT INTO 
 	persons_roles (person_id, role_id)
@@ -73,11 +73,11 @@ VALUES
 	(2, 2);
 
 INSERT INTO 
-	contacts (id, contact_type, data, person_id)
+	contacts (contact_type, data, person_id)
 VALUES 
-	(1, 'MOBILE_NUMBER', '09955886334', 1),
-	(2, 'EMAIL', 'emmettyoung92@gmail.com', 1),
-	(3, 'LANDLINE', '5015036', 1),
-	(4, 'EMAIL', 'juandelacruz@yahoo.com', 2);
+	('MOBILE_NUMBER', '09955886334', 1),
+	('EMAIL', 'emmettyoung92@gmail.com', 1),
+	('LANDLINE', '5015036', 1),
+	('EMAIL', 'juandelacruz@yahoo.com', 2);
 
 COMMIT;

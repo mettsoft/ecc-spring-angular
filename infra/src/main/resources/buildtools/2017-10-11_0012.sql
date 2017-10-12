@@ -49,19 +49,19 @@ CREATE INDEX contacts_contact_type ON contacts (contact_type);
 START TRANSACTION;
 
 INSERT INTO 
-	roles (id, name) 
+	roles (name) 
 VALUES 
-	(1, 'Software Engineer');
+	('Software Engineer');
 
 INSERT INTO 
-	addresses (id, street_number, barangay, municipality, zip_code)
+	addresses (street_number, barangay, municipality, zip_code)
 VALUES 
-	(1, '1410', 317, 'Manila', 1003);
+	('1410', 317, 'Manila', 1003);
 
 INSERT INTO 
-	persons (id, last_name, first_name, middle_name, address_id, currently_employed)
+	persons (last_name, first_name, middle_name, address_id, currently_employed)
 VALUES 
-	(1, 'Young', 'Emmett', 'Ngan', 1, false);
+	('Young', 'Emmett', 'Ngan', 1, false);
 
 INSERT INTO 
 	persons_roles (person_id, role_id)
@@ -69,10 +69,10 @@ VALUES
 	(1, 1);
 
 INSERT INTO 
-	contacts (id, contact_type, data, person_id)
+	contacts (contact_type, data, person_id)
 VALUES 
-	(1, 'MOBILE_NUMBER', '09955886334', 1),
-	(2, 'EMAIL', 'emmettyoung92@gmail.com', 1),
-	(3, 'LANDLINE', '5015036', 1);
+	('MOBILE_NUMBER', '09955886334', 1),
+	('EMAIL', 'emmettyoung92@gmail.com', 1),
+	('LANDLINE', '5015036', 1);
 
 COMMIT;
