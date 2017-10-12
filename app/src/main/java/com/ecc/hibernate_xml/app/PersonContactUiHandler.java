@@ -27,9 +27,9 @@ public class PersonContactUiHandler {
 	private static final String CONTACT_ID_PROMPT = "Enter Contact ID: ";
 	private static final String CONTACT_DATA_PROMPT = "Please enter the new contact data for \"%s\": ";
 
-	private static ContactService contactService = new ContactService();
+	private ContactService contactService = new ContactService();
 
-	public static Object list(Object parameter) throws Exception {
+	public Object list(Object parameter) throws Exception {
 		Person person = (Person) parameter;
 
 		List<Contact> contacts = contactService.list(person);
@@ -50,7 +50,7 @@ public class PersonContactUiHandler {
 		return 0;
 	}
 
-	public static Object addContact(Object parameter, String contactType) throws Exception {
+	public Object addContact(Object parameter, String contactType) throws Exception {
 		switch(contactType) {
 			case "Landline":
 				createContact(LANDLINE_PROMPT, new Landline(), (Person) parameter);
@@ -67,20 +67,20 @@ public class PersonContactUiHandler {
 		return 0;
 	}
 
-	private static void createContact(String prompt, Contact contact, Person person) throws Exception {
+	private void createContact(String prompt, Contact contact, Person person) throws Exception {
 		fillContact(prompt, contact);
 		contactService.create(contact, person);
 		String successMessage = String.format(CREATE_SUCCESS_MESSAGE, contact);
 		System.out.println(successMessage);
 	}
 
-	private static void fillContact(String prompt, Contact contact) {
+	private void fillContact(String prompt, Contact contact) {
 		String data = InputHandler.getNextLineREPL(prompt, arg -> 
 			ContactService.validateContact(arg, contact.getContactType()));
 		contact.setData(data);		
 	}
 
-	public static Object update(Object parameter) throws Exception {
+	public Object update(Object parameter) throws Exception {
 		Person person = (Person) parameter;
 		List<Contact> contacts = contactService.list(person);
 
@@ -104,7 +104,7 @@ public class PersonContactUiHandler {
 		return 0;
 	}
 
-	public static Object delete(Object parameter) throws Exception {
+	public Object delete(Object parameter) throws Exception {
 		Person person = (Person) parameter;
 		List<Contact> contacts = contactService.list(person);
 		

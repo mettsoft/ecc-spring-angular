@@ -41,24 +41,24 @@ public class PersonUiHandler {
 	private static final String EMPLOYMENT_SUCCESS_MESSAGE = "Successfully updated person's employment status!";
 	
 	private static final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-	private static final PersonService personService = new PersonService();
+	private final PersonService personService = new PersonService();
 
-	public static Object listByDateHired(Object parameter) {		
+	public Object listByDateHired(Object parameter) {		
 		list(personService.listPersonsByDateHired());
 		return 0;
 	}
 
-	public static Object listByLastName(Object parameter) {		
+	public Object listByLastName(Object parameter) {		
 		list(personService.listPersonsByLastName());
 		return 0;
 	}
 
-	public static Object listByGWA(Object parameter) {		
+	public Object listByGWA(Object parameter) {		
 		list(personService.listPersonsByGwa());
 		return 0;
 	}
 
-	private static void list(List<Person> persons) {		
+	private void list(List<Person> persons) {		
 		System.out.println("-------------------");
 
 		if (persons.isEmpty()) {
@@ -71,7 +71,7 @@ public class PersonUiHandler {
 		System.out.println("-------------------");
 	}
 
-	public static Object create(Object parameter) throws Exception {	
+	public Object create(Object parameter) throws Exception {	
 		Name name = new Name();
 		name.setLastName(InputHandler.getNextLineREPL(LAST_NAME_PROMPT, PersonService::validateLastName));
 		name.setFirstName(InputHandler.getNextLineREPL(FIRST_NAME_PROMPT, PersonService::validateFirstName));
@@ -86,12 +86,12 @@ public class PersonUiHandler {
 		return person;
 	}
 
-	public static Object update(Object parameter) throws Exception {
+	public Object update(Object parameter) throws Exception {
 		Integer personId = InputHandler.getNextLine(UPDATE_PROMPT, Integer::valueOf);
 		return personService.get(personId);	
 	}
 
-	public static Object changeName(Object parameter) throws Exception {
+	public Object changeName(Object parameter) throws Exception {
 		Person person = (Person) parameter;
 		Name name = person.getName();
 
@@ -109,7 +109,7 @@ public class PersonUiHandler {
 		return 0;
 	}
 
-	public static Object changeAddress(Object parameter) throws Exception {
+	public Object changeAddress(Object parameter) throws Exception {
 		Person person = (Person) parameter;
 		
 		Address address = new Address();
@@ -128,7 +128,7 @@ public class PersonUiHandler {
 		return 0;
 	}
 
-	public static Object changeBirthday(Object parameter) throws Exception {
+	public Object changeBirthday(Object parameter) throws Exception {
 		Person person = (Person) parameter;
 		Date birthday = InputHandler.getNextLineREPL(BIRTHDAY_PROMPT, dateFormat::parse);
 
@@ -140,7 +140,7 @@ public class PersonUiHandler {
 		return 0;
 	}
 
-	public static Object changeGWA(Object parameter) throws Exception {
+	public Object changeGWA(Object parameter) throws Exception {
 		Person person = (Person) parameter;
 		BigDecimal GWA = InputHandler.getNextLineREPL(GWA_PROMPT, input -> 
 			PersonService.validateGWA(new BigDecimal(input)));
@@ -153,7 +153,7 @@ public class PersonUiHandler {
 		return 0;
 	}
 
-	public static Object changeEmploymentStatus(Object parameter) throws Exception {
+	public Object changeEmploymentStatus(Object parameter) throws Exception {
 		Person person = (Person) parameter;
 		Boolean currentlyEmployed = InputHandler.getNextLineREPL(EMPLOYMENT_PROMPT, input -> {
 			if (input.equals("y")) {
@@ -178,7 +178,7 @@ public class PersonUiHandler {
 		return 0;
 	}
 
-	public static Object delete(Object parameter) throws Exception {			
+	public Object delete(Object parameter) throws Exception {			
 		Integer personId = InputHandler.getNextLine(DELETE_PROMPT, Integer::valueOf);
 
 		personService.delete(personId);

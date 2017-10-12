@@ -10,6 +10,10 @@ import com.ecc.hibernate_xml.util.Menu;
 
 public class Application {
 	private static String MAIN_HEADER = "--------------------------\nExercise 7 - Hibernate XML\nPerson Registration System\nBy Emmett Young\n---------------------------";
+	private static PersonUiHandler personUiHandler = new PersonUiHandler();
+	private static PersonContactUiHandler personContactUiHandler = new PersonContactUiHandler();
+	private static PersonRoleUiHandler personRoleUiHandler = new PersonRoleUiHandler();
+	private static RoleUiHandler roleUiHandler = new RoleUiHandler();
 	private static UiRouter uiRouter;
 
 	static {
@@ -76,45 +80,45 @@ public class Application {
 
 	public static void registerRoutes() {
 		// No passing of parameters.
-		uiRouter.register("Sort by GWA.", PersonUiHandler::listByGWA);
-		uiRouter.register("Sort by date hired.", PersonUiHandler::listByDateHired);
-		uiRouter.register("Sort by last name.", PersonUiHandler::listByLastName);
-		uiRouter.register("Delete an existing Person record.", PersonUiHandler::delete);
+		uiRouter.register("Sort by GWA.", personUiHandler::listByGWA);
+		uiRouter.register("Sort by date hired.", personUiHandler::listByDateHired);
+		uiRouter.register("Sort by last name.", personUiHandler::listByLastName);
+		uiRouter.register("Delete an existing Person record.", personUiHandler::delete);
 
-		uiRouter.register("List Role records.", RoleUiHandler::list);
-		uiRouter.register("Create a new Role record.", RoleUiHandler::create);
-		uiRouter.register("Update an existing Role record.", RoleUiHandler::update);
-		uiRouter.register("Delete an existing Role record.", RoleUiHandler::delete);
+		uiRouter.register("List Role records.", roleUiHandler::list);
+		uiRouter.register("Create a new Role record.", roleUiHandler::create);
+		uiRouter.register("Update an existing Role record.", roleUiHandler::update);
+		uiRouter.register("Delete an existing Role record.", roleUiHandler::delete);
 
 		// Passes the Person detached instance to the next level.
-		uiRouter.register("Create a new Person.", PersonUiHandler::create);
-		uiRouter.register("Update an existing Person record.", PersonUiHandler::update);
+		uiRouter.register("Create a new Person.", personUiHandler::create);
+		uiRouter.register("Update an existing Person record.", personUiHandler::update);
 
 		// Receives the Person detached instance from the previous level.
-		uiRouter.register("Change name.", PersonUiHandler::changeName);
-		uiRouter.register("Change address.", PersonUiHandler::changeAddress);
-		uiRouter.register("Change birthday.", PersonUiHandler::changeBirthday);
-		uiRouter.register("Change GWA.", PersonUiHandler::changeGWA);
-		uiRouter.register("Change employment status.", PersonUiHandler::changeEmploymentStatus);
+		uiRouter.register("Change name.", personUiHandler::changeName);
+		uiRouter.register("Change address.", personUiHandler::changeAddress);
+		uiRouter.register("Change birthday.", personUiHandler::changeBirthday);
+		uiRouter.register("Change GWA.", personUiHandler::changeGWA);
+		uiRouter.register("Change employment status.", personUiHandler::changeEmploymentStatus);
 
 		// Receives the Person detached instance from the previous level and passes it to the next level.
 		uiRouter.register("Manage contact information.", CheckedUnaryOperator.identity());
 		uiRouter.register("Manage roles.", CheckedUnaryOperator.identity());
 
 		// Receives the Person detached instance from the previous level.
-		uiRouter.register("List contact information.", PersonContactUiHandler::list);
-		uiRouter.register("Update contact information.", PersonContactUiHandler::update);
-		uiRouter.register("Delete contact information.", PersonContactUiHandler::delete);
-		uiRouter.register("List roles.", PersonRoleUiHandler::list);
-		uiRouter.register("Add role.", PersonRoleUiHandler::add);
-		uiRouter.register("Remove role.", PersonRoleUiHandler::remove);
+		uiRouter.register("List contact information.", personContactUiHandler::list);
+		uiRouter.register("Update contact information.", personContactUiHandler::update);
+		uiRouter.register("Delete contact information.", personContactUiHandler::delete);
+		uiRouter.register("List roles.", personRoleUiHandler::list);
+		uiRouter.register("Add role.", personRoleUiHandler::add);
+		uiRouter.register("Remove role.", personRoleUiHandler::remove);
 
 		// Receives the Person detached instance from the previous level and passes it to the next level.
 		uiRouter.register("Add contact information.", CheckedUnaryOperator.identity());
 
 		// Receives the Person detached instance from the previous level.
-		uiRouter.register("Add landline.", arg -> PersonContactUiHandler.addContact(arg, "Landline"));
-		uiRouter.register("Add email.", arg -> PersonContactUiHandler.addContact(arg, "Email"));
-		uiRouter.register("Add mobile number.", arg -> PersonContactUiHandler.addContact(arg, "Mobile Number"));
+		uiRouter.register("Add landline.", arg -> personContactUiHandler.addContact(arg, "Landline"));
+		uiRouter.register("Add email.", arg -> personContactUiHandler.addContact(arg, "Email"));
+		uiRouter.register("Add mobile number.", arg -> personContactUiHandler.addContact(arg, "Mobile Number"));
 	}
 }

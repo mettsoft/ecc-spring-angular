@@ -18,9 +18,9 @@ public class RoleUiHandler {
 	private static final String DELETE_SUCCESS_MESSAGE = "Successfully deleted the role ID \"%d\"!";
 	private static final String AFFECTED_PERSONS_MESSAGE = "Please take note that the following person IDs are affected: [%s].";
 
-	private static RoleService roleService = new RoleService();
+	private RoleService roleService = new RoleService();
 
-	public static Object list(Object parameter) {		
+	public Object list(Object parameter) {		
 		System.out.println("-------------------");
 
 		List<Role> roles = roleService.list();
@@ -35,7 +35,7 @@ public class RoleUiHandler {
 		return 0;
 	}
 
-	public static Object create(Object parameter) throws Exception {		
+	public Object create(Object parameter) throws Exception {		
 		Role role = new Role();	
 		role.setName(InputHandler.getNextLineREPL(NAME_PROMPT, RoleService::validateName));
 		roleService.create(role);
@@ -45,7 +45,7 @@ public class RoleUiHandler {
 		return 0;
 	}
 
-	public static Object update(Object parameter) throws Exception {			
+	public Object update(Object parameter) throws Exception {			
 		Integer roleId = InputHandler.getNextLine(UPDATE_PROMPT, Integer::valueOf);
 		Role role = roleService.get(roleId);
 
@@ -66,7 +66,7 @@ public class RoleUiHandler {
 		return 0;
 	}
 
-	public static Object delete(Object parameter) throws Exception {			
+	public Object delete(Object parameter) throws Exception {			
 		Integer roleId = InputHandler.getNextLine(DELETE_PROMPT, Integer::valueOf);
 		roleService.delete(roleId);
 

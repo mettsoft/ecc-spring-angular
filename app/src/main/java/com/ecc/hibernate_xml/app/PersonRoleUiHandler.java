@@ -19,9 +19,9 @@ public class PersonRoleUiHandler {
 	private static final String ADD_SUCCESS_MESSAGE = "Successfully added role ID \"%d\" to Person ID [%d] \"%s\"!";
 	private static final String REMOVE_SUCCESS_MESSAGE = "Successfully removed role ID \"%d\" to Person ID [%d] \"%s\"!";
 
-	private static RoleService roleService = new RoleService();
+	private RoleService roleService = new RoleService();
 
-	public static Object list(Object parameter) {		
+	public Object list(Object parameter) {		
 		Person person = (Person) parameter;
 		System.out.println("-------------------");
 
@@ -43,7 +43,7 @@ public class PersonRoleUiHandler {
 		return 0;
 	}
 
-	public static Object add(Object parameter) throws Exception {
+	public Object add(Object parameter) throws Exception {
 		Person person = (Person) parameter;
 		List<Role> roles = roleService.listRolesNotBelongingTo(person);
 
@@ -69,7 +69,7 @@ public class PersonRoleUiHandler {
 		return 0;
 	}
 
-	public static Object remove(Object parameter) throws Exception {	
+	public Object remove(Object parameter) throws Exception {	
 		Person person = (Person) parameter;
 		List<Role> roles = roleService.list(person);
 
