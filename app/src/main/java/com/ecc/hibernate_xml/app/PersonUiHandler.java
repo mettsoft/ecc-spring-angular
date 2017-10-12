@@ -72,11 +72,10 @@ public class PersonUiHandler {
 	}
 
 	public static Object create(Object parameter) throws Exception {	
-		Name.Factory nameFactory = new Name.Factory();
-		InputHandler.getNextLineREPL(LAST_NAME_PROMPT, nameFactory::setLastName);
-		InputHandler.getNextLineREPL(FIRST_NAME_PROMPT, nameFactory::setFirstName);
-		InputHandler.getNextLineREPL(MIDDLE_NAME_PROMPT, nameFactory::setMiddleName);
-		Name name = nameFactory.build();
+		Name name = new Name();
+		name.setLastName(InputHandler.getNextLineREPL(LAST_NAME_PROMPT, PersonService::validateLastName));
+		name.setFirstName(InputHandler.getNextLineREPL(FIRST_NAME_PROMPT, PersonService::validateFirstName));
+		name.setMiddleName(InputHandler.getNextLineREPL(MIDDLE_NAME_PROMPT, PersonService::validateMiddleName));
 
 		Person person = new Person(name);
 		personService.create(person);
@@ -96,11 +95,11 @@ public class PersonUiHandler {
 		Person person = (Person) parameter;
 		Name name = person.getName();
 
-		InputHandler.consumeNextLineREPL(TITLE_PROMPT, name::setTitle);
-		InputHandler.consumeNextLineREPL(LAST_NAME_PROMPT, name::setLastName);
-		InputHandler.consumeNextLineREPL(FIRST_NAME_PROMPT, name::setFirstName);
-		InputHandler.consumeNextLineREPL(MIDDLE_NAME_PROMPT, name::setMiddleName);
-		InputHandler.consumeNextLineREPL(SUFFIX_PROMPT, name::setSuffix);
+		name.setTitle(InputHandler.getNextLineREPL(TITLE_PROMPT, PersonService::validateTitle));
+		name.setLastName(InputHandler.getNextLineREPL(LAST_NAME_PROMPT, PersonService::validateLastName));
+		name.setFirstName(InputHandler.getNextLineREPL(FIRST_NAME_PROMPT, PersonService::validateFirstName));
+		name.setMiddleName(InputHandler.getNextLineREPL(MIDDLE_NAME_PROMPT, PersonService::validateMiddleName));
+		name.setSuffix(InputHandler.getNextLineREPL(SUFFIX_PROMPT, PersonService::validateSuffix));
 
 		person.setName(name);
 		personService.update(person);
