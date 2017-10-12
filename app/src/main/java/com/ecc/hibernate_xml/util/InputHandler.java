@@ -35,4 +35,11 @@ public class InputHandler {
 			return getNextLineREPL(message, function);
 		}
 	}
+
+	public static void consumeNextLineREPL(String message, CheckedConsumer<String> function) {
+		getNextLineREPL(message, input -> {
+			function.accept(input);
+			return 0;
+		});
+	}
 }
