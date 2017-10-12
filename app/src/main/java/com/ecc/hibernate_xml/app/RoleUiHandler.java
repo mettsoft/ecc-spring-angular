@@ -35,8 +35,9 @@ public class RoleUiHandler {
 		return 0;
 	}
 
-	public static Object create(Object parameter) throws Exception {			
-		Role role = InputHandler.getNextLineREPL(NAME_PROMPT, Role::new);
+	public static Object create(Object parameter) throws Exception {		
+		Role role = new Role();	
+		role.setName(InputHandler.getNextLineREPL(NAME_PROMPT, RoleService::validateName));
 		roleService.create(role);
 
 		String successMessage = String.format(CREATE_SUCCESS_MESSAGE, role.getId(), role.getName());
@@ -48,7 +49,7 @@ public class RoleUiHandler {
 		Integer roleId = InputHandler.getNextLine(UPDATE_PROMPT, Integer::valueOf);
 		Role role = roleService.get(roleId);
 
-		InputHandler.consumeNextLineREPL(NAME_PROMPT, role::setName);
+		role.setName(InputHandler.getNextLineREPL(NAME_PROMPT, RoleService::validateName));
 		roleService.update(role);
 
 		String successMessage = String.format(UPDATE_SUCCESS_MESSAGE, role.getId(), role.getName());

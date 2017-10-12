@@ -6,13 +6,29 @@ import com.ecc.hibernate_xml.dao.DaoException;
 import com.ecc.hibernate_xml.dao.RoleDao;
 import com.ecc.hibernate_xml.model.Role;
 import com.ecc.hibernate_xml.model.Person;
+import com.ecc.hibernate_xml.util.validator.ValidationException;
+import com.ecc.hibernate_xml.util.validator.ModelValidator;
 
 public class RoleService extends AbstractService<Role> {
+	private static final Integer MAX_CHARACTERS = 20;
+	private static final String MAX_LENGTH_ERROR_MESSAGE_TEMPLATE = "%s must not exceed " + MAX_CHARACTERS + " characters.";
+	private static final String NOT_EMPTY_ERROR_MESSAGE_TEMPLATE = "%s cannot be empty.";
+
 	private RoleDao roleDao;
 
 	public RoleService() {
 		super(new RoleDao());
 		roleDao = (RoleDao) dao;
+	}
+
+	public static String validateName(String roleName) throws ValidationException {
+		ModelValidator
+			.create(roleName)
+			.notEmpty(String.format(NOT_EMPTY_ERROR_MESSAGE_TEMPLATE, "Role name"))
+			.maxLength(MAX_CHARACTERS, String.format(MAX_LENGTH_ERROR_MESSAGE_TEMPLATE, 
+				"Role name"))
+			.validate();
+		return roleName;
 	}
 
 	public List<Role> list(Person person) {
