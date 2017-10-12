@@ -9,9 +9,13 @@ import com.ecc.hibernate_xml.util.validator.ValidationException;
 import com.ecc.hibernate_xml.util.validator.ModelValidator;
 
 public class PersonService extends AbstractService<Person> {
-	private static final Integer MAX_CHARACTERS = 20;
-	private static final String MAX_LENGTH_ERROR_MESSAGE_TEMPLATE = "%s must not exceed " + MAX_CHARACTERS + " characters.";
+	private static final Integer DEFAULT_MAX_CHARACTERS = 20;
+	private static final Integer MAX_MUNICIPALITY_CHARACTERS = 50;
+
+	private static final String DEFAULT_MAX_LENGTH_ERROR_MESSAGE_TEMPLATE = "%s must not exceed " + DEFAULT_MAX_CHARACTERS + " characters.";
+	private static final String MUNICIPALITY_MAX_LENGTH_ERROR_MESSAGE_TEMPLATE = "%s must not exceed " + MAX_MUNICIPALITY_CHARACTERS + " characters.";
 	private static final String NOT_EMPTY_ERROR_MESSAGE_TEMPLATE = "%s cannot be empty.";
+	private static final String NOT_NULL_ERROR_MESSAGE_TEMPLATE = "%s cannot be null.";
 
 	private PersonDao personDao;
 
@@ -23,7 +27,7 @@ public class PersonService extends AbstractService<Person> {
 	public static String validateTitle(String title) throws ValidationException {
 		ModelValidator
 			.create(title)
-			.maxLength(MAX_CHARACTERS, String.format(MAX_LENGTH_ERROR_MESSAGE_TEMPLATE, 
+			.maxLength(DEFAULT_MAX_CHARACTERS, String.format(DEFAULT_MAX_LENGTH_ERROR_MESSAGE_TEMPLATE, 
 				"Title"))
 			.validate();
 
@@ -34,7 +38,7 @@ public class PersonService extends AbstractService<Person> {
 		ModelValidator
 			.create(lastName)
 			.notEmpty(String.format(NOT_EMPTY_ERROR_MESSAGE_TEMPLATE, "Last name"))
-			.maxLength(MAX_CHARACTERS, String.format(MAX_LENGTH_ERROR_MESSAGE_TEMPLATE, 
+			.maxLength(DEFAULT_MAX_CHARACTERS, String.format(DEFAULT_MAX_LENGTH_ERROR_MESSAGE_TEMPLATE, 
 				"Last name"))
 			.validate();
 
@@ -45,7 +49,7 @@ public class PersonService extends AbstractService<Person> {
 		ModelValidator
 			.create(firstName)
 			.notEmpty(String.format(NOT_EMPTY_ERROR_MESSAGE_TEMPLATE, "First name"))
-			.maxLength(MAX_CHARACTERS, String.format(MAX_LENGTH_ERROR_MESSAGE_TEMPLATE, 
+			.maxLength(DEFAULT_MAX_CHARACTERS, String.format(DEFAULT_MAX_LENGTH_ERROR_MESSAGE_TEMPLATE, 
 				"First name"))
 			.validate();
 
@@ -56,7 +60,7 @@ public class PersonService extends AbstractService<Person> {
 		ModelValidator
 			.create(middleName)
 			.notEmpty(String.format(NOT_EMPTY_ERROR_MESSAGE_TEMPLATE, "Middle name"))
-			.maxLength(MAX_CHARACTERS, String.format(MAX_LENGTH_ERROR_MESSAGE_TEMPLATE, 
+			.maxLength(DEFAULT_MAX_CHARACTERS, String.format(DEFAULT_MAX_LENGTH_ERROR_MESSAGE_TEMPLATE, 
 				"Middle name"))
 			.validate();
 
@@ -66,11 +70,51 @@ public class PersonService extends AbstractService<Person> {
 	public static String validateSuffix(String suffix) throws ValidationException {
 		ModelValidator
 			.create(suffix)
-			.maxLength(MAX_CHARACTERS, String.format(MAX_LENGTH_ERROR_MESSAGE_TEMPLATE, 
+			.maxLength(DEFAULT_MAX_CHARACTERS, String.format(DEFAULT_MAX_LENGTH_ERROR_MESSAGE_TEMPLATE, 
 				"Suffix"))
 			.validate();
 
 		return suffix;
+	}
+
+	public static String validateStreetNumber(String streetNumber) throws ValidationException {
+		ModelValidator
+			.create(streetNumber)
+			.notEmpty(String.format(NOT_EMPTY_ERROR_MESSAGE_TEMPLATE, "Street number"))
+			.maxLength(DEFAULT_MAX_CHARACTERS, String.format(DEFAULT_MAX_LENGTH_ERROR_MESSAGE_TEMPLATE, 
+				"Street number"))
+			.validate();
+
+		return streetNumber;
+	}
+
+	public static Integer validateBarangay(Integer barangay) throws ValidationException {
+		ModelValidator
+			.create(barangay)
+			.notNull(String.format(NOT_NULL_ERROR_MESSAGE_TEMPLATE, "Barangay"))
+			.validate();
+
+		return barangay;
+	}
+
+	public static String validateMunicipality(String municipality) throws ValidationException {
+		ModelValidator
+			.create(municipality)
+			.notEmpty(String.format(NOT_EMPTY_ERROR_MESSAGE_TEMPLATE, "Municipality"))
+			.maxLength(MAX_MUNICIPALITY_CHARACTERS, String.format(MUNICIPALITY_MAX_LENGTH_ERROR_MESSAGE_TEMPLATE, 
+				"Municipality"))
+			.validate();
+
+		return municipality;
+	}
+
+	public static Integer validateZipCode(Integer zipCode) throws ValidationException {
+		ModelValidator
+			.create(zipCode)
+			.notNull(String.format(NOT_NULL_ERROR_MESSAGE_TEMPLATE, "Zip code"))
+			.validate();
+
+		return zipCode;
 	}
 
 	public List<Person> listPersonsByGwa() {

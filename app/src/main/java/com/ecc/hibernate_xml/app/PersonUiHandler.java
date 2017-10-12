@@ -111,15 +111,15 @@ public class PersonUiHandler {
 
 	public static Object changeAddress(Object parameter) throws Exception {
 		Person person = (Person) parameter;
-		Address.Factory addressFactory = new Address.Factory();
-		InputHandler.getNextLineREPL(STREET_NUMBER_PROMPT, addressFactory::setStreetNumber);
-		InputHandler.getNextLineREPL(BARANGAY_PROMPT, input -> 
-			addressFactory.setBarangay(Integer.valueOf(input)));
-		InputHandler.getNextLineREPL(MUNICIPALITY_PROMPT, addressFactory::setMunicipality);
-		InputHandler.getNextLineREPL(ZIP_CODE_PROMPT, input -> 
-			addressFactory.setZipCode(Integer.valueOf(input)));
+		
+		Address address = new Address();
+		address.setStreetNumber(InputHandler.getNextLineREPL(STREET_NUMBER_PROMPT, PersonService::validateStreetNumber));
+		address.setBarangay(InputHandler.getNextLineREPL(BARANGAY_PROMPT, input -> 
+			PersonService.validateBarangay(Integer.valueOf(input))));
+		address.setMunicipality(InputHandler.getNextLineREPL(MUNICIPALITY_PROMPT, PersonService::validateMunicipality));
+		address.setZipCode(InputHandler.getNextLineREPL(ZIP_CODE_PROMPT, input -> 
+			PersonService.validateZipCode(Integer.valueOf(input))));
 
-		Address address = addressFactory.build();
 		person.setAddress(address);
 		personService.update(person);
 
