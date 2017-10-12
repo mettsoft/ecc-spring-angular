@@ -2,9 +2,12 @@ package com.ecc.hibernate_xml.service;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.math.BigDecimal;
+import java.util.Date;
 
 import com.ecc.hibernate_xml.dao.PersonDao;
 import com.ecc.hibernate_xml.model.Person;
+import com.ecc.hibernate_xml.model.Name;
 import com.ecc.hibernate_xml.util.validator.ValidationException;
 import com.ecc.hibernate_xml.util.validator.ModelValidator;
 
@@ -115,6 +118,35 @@ public class PersonService extends AbstractService<Person> {
 			.validate();
 
 		return zipCode;
+	}
+
+	public static Name validateName(Name name) throws ValidationException {
+		ModelValidator
+			.create(name)
+			.notNull(String.format(NOT_NULL_ERROR_MESSAGE_TEMPLATE, "Name"))
+			.validate();
+
+		return name;
+	}
+
+	public static BigDecimal validateGWA(BigDecimal GWA) throws ValidationException {
+		ModelValidator
+			.create(GWA)
+			.minimum(new BigDecimal(1), "GWA cannot be less than 1.")
+			.maximum(new BigDecimal(5), "GWA cannot be greater than 5.")
+			.validate();
+
+		return GWA;
+	}
+
+	public static Date validateDateHired(Boolean currentlyEmployed, Date dateHired) throws ValidationException {
+		if (!currentlyEmployed && dateHired != null) {
+			throw new ValidationException("Date hired cannot be assigned if person is unemployed.");
+		}
+		else if (currentlyEmployed && dateHired == null) {
+			throw new ValidationException("Date hired cannot be null if person is employed.");
+		}
+		return dateHired;
 	}
 
 	public List<Person> listPersonsByGwa() {

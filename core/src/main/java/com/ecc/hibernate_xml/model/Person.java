@@ -8,9 +8,6 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-import com.ecc.hibernate_xml.util.validator.ValidationException;
-import com.ecc.hibernate_xml.util.validator.ModelValidator;
-
 public class Person {
 	private Integer id;
 	private Name name;
@@ -22,27 +19,22 @@ public class Person {
 	private Set<Contact> contacts;
 	private Set<Role> roles;
 
-	Person() {
+	public Person() {
 		setCurrentlyEmployed(false);
 		setContacts(new HashSet<>());
 		setRoles(new HashSet<>());
 	}
-	
-	public Person(Name name) throws ValidationException {
+
+	public Person(Name name) {
 		this();
 		setName(name);
 	}
-
+	
 	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	public void setName(Name name) throws ValidationException {
-		ModelValidator
-			.create(name)
-			.notNull("Name cannot be null.")
-			.validate();
-
+	public void setName(Name name) {
 		this.name = name;
 	}
 
@@ -54,13 +46,7 @@ public class Person {
  		this.birthday = birthday;
 	}
 
-	public void setGWA(BigDecimal GWA) throws ValidationException {
-		ModelValidator
-			.create(GWA)
-			.minimum(new BigDecimal(1), "GWA cannot be less than 1.")
-			.maximum(new BigDecimal(5), "GWA cannot be greater than 5.")
-			.validate();
-
+	public void setGWA(BigDecimal GWA) {
 		this.GWA = GWA;
 	}
 
@@ -68,13 +54,7 @@ public class Person {
 		this.currentlyEmployed = currentlyEmployed;
 	}
 
-	public void setDateHired(Date dateHired) throws ValidationException {
-		if (!getCurrentlyEmployed() && dateHired != null) {
-			throw new ValidationException("Date hired cannot be assigned if person is unemployed.");
-		}
-		else if (getCurrentlyEmployed() && dateHired == null) {
-			throw new ValidationException("Date hired cannot be null if person is employed.");
-		}
+	public void setDateHired(Date dateHired) {
 		this.dateHired = dateHired;		
 	}
 

@@ -142,7 +142,8 @@ public class PersonUiHandler {
 
 	public static Object changeGWA(Object parameter) throws Exception {
 		Person person = (Person) parameter;
-		BigDecimal GWA = InputHandler.getNextLineREPL(GWA_PROMPT, BigDecimal::new);
+		BigDecimal GWA = InputHandler.getNextLineREPL(GWA_PROMPT, input -> 
+			PersonService.validateGWA(new BigDecimal(input)));
 
 		person.setGWA(GWA);
 		personService.update(person);
@@ -167,7 +168,8 @@ public class PersonUiHandler {
 		person.setCurrentlyEmployed(currentlyEmployed);
 
 		if (currentlyEmployed) {
-			Date dateHired = InputHandler.getNextLineREPL(DATE_HIRED_PROMPT, dateFormat::parse);
+			Date dateHired = InputHandler.getNextLineREPL(DATE_HIRED_PROMPT, input -> 
+				PersonService.validateDateHired(currentlyEmployed, dateFormat.parse(input)));
 			person.setDateHired(dateHired);
 		}
 
