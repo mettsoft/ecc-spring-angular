@@ -12,14 +12,7 @@ import java.math.BigDecimal;
 import com.ecc.hibernate_xml.model.Person;
 import com.ecc.hibernate_xml.model.Name;
 import com.ecc.hibernate_xml.model.Address;
-import com.ecc.hibernate_xml.model.Contact;
-import com.ecc.hibernate_xml.model.Email;
-import com.ecc.hibernate_xml.model.Landline;
-import com.ecc.hibernate_xml.model.MobileNumber;
-import com.ecc.hibernate_xml.model.Role;
 import com.ecc.hibernate_xml.service.PersonService;
-import com.ecc.hibernate_xml.service.ContactService;
-import com.ecc.hibernate_xml.service.RoleService;
 import com.ecc.hibernate_xml.util.InputHandler;
 import com.ecc.hibernate_xml.util.InputException;
 
@@ -44,19 +37,7 @@ public class PersonUiHandler {
 	private static final String EMPLOYMENT_PROMPT = "Please enter the employment status (y/n): ";
 	private static final String DATE_PROMPT = "Please enter date hired (yyyy-MM-dd): ";
 
-	private static final String CONTACT_TYPE_PROMPT = "Please choose contact from the following:\n1. Landline\n2. Email\n3. Mobile Number\nChoose: ";
-	private static final String LANDLINE_PROMPT = "Please enter the landline: ";
-	private static final String EMAIL_PROMPT = "Please enter the email: ";
-	private static final String MOBILE_NUMBER_PROMPT = "Please enter the mobile number: ";
-
-	private static final String SELECT_CONTACT_PROMPT = "Please choose a contact to edit from the following: ";
-	private static final String CONTACT_DATA_PROMPT = "Please enter the new contact data for \"%s\": ";
-
-	private static final String DELETE_CONTACT_PROMPT = "Please choose a contact to remove from the following: ";
-
 	private static PersonService personService = new PersonService();
-	private static RoleService roleService = new RoleService();
-	private static ContactService contactService = new ContactService();
 
 	public static Object listByDateHired(Object parameter) {		
 		System.out.println("-------------------");
@@ -215,111 +196,6 @@ public class PersonUiHandler {
 
 		personService.update(person);
 		System.out.println("Successfully updated person's employment status!");
-		return 0;
-	}
-
-	public static Object listContacts(Object parameter) throws Exception {
-		Person person = (Person) parameter;
-
-		List<Contact> contacts = contactService.list(person);
-
-		System.out.println("-------------------");
-		if (contacts.isEmpty()) {
-			System.out.println("There are no contacts.");
-		}
-		else {
-			System.out.println(String.format("Person \"%s\" has the following contacts:", 
-				person.getName()));
-			contacts.stream()
-				.map(contact -> contact.toString())
-				.forEach(System.out::println);			
-		}
-		System.out.println("-------------------");
-
-		return 0;
-	}
-
-	public static Object addLandline(Object parameter) throws Exception {
-		Person person = (Person) parameter;
-		Contact contact = new Landline(InputHandler.getNextLine(LANDLINE_PROMPT));
-		contactService.create(contact, person);
-		System.out.println(String.format(
-			"Successfully added \"%s\"  to Person ID [%d] \"%s\"!", contact, 
-			person.getId(), person.getName()));
-		return 0;
-	}
-
-	public static Object addEmail(Object parameter) throws Exception {
-		Person person = (Person) parameter;
-		Contact contact = new Email(InputHandler.getNextLine(EMAIL_PROMPT));
-		contactService.create(contact, person);
-		System.out.println(String.format(
-			"Successfully added \"%s\"  to Person ID [%d] \"%s\"!", contact, 
-			person.getId(), person.getName()));
-		return 0;
-	}
-
-	public static Object addMobileNumber(Object parameter) throws Exception {
-		Person person = (Person) parameter;
-		Contact contact = new MobileNumber(InputHandler.getNextLine(MOBILE_NUMBER_PROMPT));
-		contactService.create(contact, person);
-		System.out.println(String.format(
-			"Successfully added \"%s\"  to Person ID [%d] \"%s\"!", contact, 
-			person.getId(), person.getName()));
-		return 0;
-	}
-
-	public static Object updateContact(Object parameter) throws Exception {
-		Person person = (Person) parameter;
-		List<Contact> contacts = contactService.list(person);
-
-		System.out.println("-------------------");
-		if (contacts.isEmpty()) {
-			System.out.println("There are no contacts to delete.");
-		}
-		else {		
-			String listOfContacts = contacts.stream()
-				.map(contact -> contact.toString())
-				.collect(Collectors.joining("\n"));
-
-			Integer contactId = InputHandler.getNextLine(
-				String.format("%s\n%s\n Enter Contact ID: ", SELECT_CONTACT_PROMPT, listOfContacts), Integer::valueOf);
-
-			Contact contact = contactService.get(contactId);
-			contact.setData(InputHandler.getNextLine(String.format(CONTACT_DATA_PROMPT, contact)));
-			contactService.update(contact);
-			System.out.println(String.format(
-				"Successfully updated \"%s\"  of Person ID [%d] \"%s\"!", contact, 
-				person.getId(), person.getName()));
-		}
-		System.out.println("-------------------");
-		
-		return 0;
-	}
-
-	public static Object deleteContact(Object parameter) throws Exception {
-		Person person = (Person) parameter;
-		Set<Contact> contacts = person.getContacts();
-
-		System.out.println("-------------------");
-		if (contacts.isEmpty()) {
-			System.out.println("There are no contacts to delete.");
-		}
-		else {
-			String listOfContacts = contacts.stream()
-				.map(contact -> contact.toString())
-				.collect(Collectors.joining("\n"));
-
-			Integer contactId = InputHandler.getNextLine(
-				String.format("%s\n%s\nContact ID: ", DELETE_CONTACT_PROMPT, listOfContacts), Integer::valueOf);
-
-			contactService.delete(contactId);
-			System.out.println(String.format(
-				"Successfully removed Contact ID \"%d\"  from Person ID [%d] \"%s\"!", contactId, 
-				person.getId(), person.getName()));	
-		}
-		System.out.println("-------------------");
-		
 		return 0;
 	}
 

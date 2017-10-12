@@ -31,7 +31,7 @@ public class Application {
 							.add(new Menu("Add Landline."))
 							.add(new Menu("Add Email."))
 							.add(new Menu("Add Mobile Number.")))
-						.add(new Menu("Edit contact information."))
+						.add(new Menu("Update contact information."))
 						.add(new Menu("Delete contact information.")))
 					.add(new Menu("Manage roles.")
 						.add(new Menu("List roles."))
@@ -49,7 +49,7 @@ public class Application {
 							.add(new Menu("Add landline."))
 							.add(new Menu("Add email."))
 							.add(new Menu("Add mobile number.")))
-						.add(new Menu("Edit contact information."))
+						.add(new Menu("Update contact information."))
 						.add(new Menu("Delete contact information.")))
 					.add(new Menu("Manage roles.")
 						.add(new Menu("List roles."))
@@ -102,9 +102,9 @@ public class Application {
 		uiRouter.register("Manage roles.", CheckedUnaryOperator.identity());
 
 		// Receives the Person detached instance from the previous level.
-		uiRouter.register("List contact information.", PersonUiHandler::listContacts);
-		uiRouter.register("Edit contact information.", PersonUiHandler::updateContact);
-		uiRouter.register("Delete contact information.", PersonUiHandler::deleteContact);
+		uiRouter.register("List contact information.", PersonContactUiHandler::list);
+		uiRouter.register("Update contact information.", PersonContactUiHandler::update);
+		uiRouter.register("Delete contact information.", PersonContactUiHandler::delete);
 		uiRouter.register("List roles.", PersonRoleUiHandler::list);
 		uiRouter.register("Add role.", PersonRoleUiHandler::add);
 		uiRouter.register("Remove role.", PersonRoleUiHandler::remove);
@@ -113,8 +113,8 @@ public class Application {
 		uiRouter.register("Add contact information.", CheckedUnaryOperator.identity());
 
 		// Receives the Person detached instance from the previous level.
-		uiRouter.register("Add landline.", PersonUiHandler::addLandline);
-		uiRouter.register("Add email.", PersonUiHandler::addEmail);
-		uiRouter.register("Add mobile number.", PersonUiHandler::addMobileNumber);
+		uiRouter.register("Add landline.", PersonContactUiHandler::addLandline);
+		uiRouter.register("Add email.", PersonContactUiHandler::addEmail);
+		uiRouter.register("Add mobile number.", PersonContactUiHandler::addMobileNumber);
 	}
 }
