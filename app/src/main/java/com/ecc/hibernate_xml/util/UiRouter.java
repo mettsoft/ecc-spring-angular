@@ -44,7 +44,7 @@ public class UiRouter {
 						currentRoute.setArgument(result);
 					}
 					catch (Exception cause) {
-						ExceptionHandler.debugPrintException(cause);
+						ExceptionHandler.printException(cause);
 						menu = menu.getParent();
 					}					
 				}
