@@ -27,18 +27,33 @@ public class ContactService extends AbstractService<Contact> {
 		contactDao = (ContactDao) dao;
 	}
 
-	public static String validateLandline(String landline) throws ValidationException {
-		ModelValidator
-			.create(landline)
-			.notEmpty(String.format(NOT_EMPTY_ERROR_MESSAGE_TEMPLATE, "Landline"))
-			.digits(String.format(NUMERICAL_DIGITS_ERROR_MESSAGE, "Landline"))
-			.equalLength(LANDLINE_DIGITS, String.format(EQUALS_ERROR_MESSAGE, "Landline", LANDLINE_DIGITS))
-			.validate();
-
-		return landline;
+	public static String validateContact(String data, String contactType) throws ValidationException {
+		switch(contactType) {
+			case "Landline":
+				validateNumericalContact(data, LANDLINE_DIGITS, "Landline"); 
+				break;
+			case "Mobile Number":
+				validateNumericalContact(data, MOBILE_NUMBER_DIGITS, "Mobile number"); 
+				break;
+			case "Email":
+				validateEmail(data);
+				break;
+			default: 
+				throw new RuntimeException("No validation rule defined for " + contactType + "!");
+		}
+		return data;
 	}
 
-	public static String validateEmail(String email) throws ValidationException {
+	private static void validateNumericalContact(String data, Integer matchingDigits, String contactType) throws ValidationException {
+		ModelValidator
+			.create(data)
+			.notEmpty(String.format(NOT_EMPTY_ERROR_MESSAGE_TEMPLATE, contactType))
+			.digits(String.format(NUMERICAL_DIGITS_ERROR_MESSAGE, contactType))
+			.equalLength(matchingDigits, String.format(EQUALS_ERROR_MESSAGE, contactType, matchingDigits))
+			.validate();
+	}
+
+	private static void validateEmail(String email) throws ValidationException {
 		ModelValidator
 			.create(email)
 			.maxLength(MAX_CHARACTERS, String.format(MAX_LENGTH_ERROR_MESSAGE_TEMPLATE, 
@@ -47,18 +62,6 @@ public class ContactService extends AbstractService<Contact> {
 			.validate();
 
 		return email;
-	}
-
-	public static String validateMobileNumber(String mobileNumber) throws ValidationException {
-		ModelValidator
-			.create(mobileNumber)
-			.notEmpty(String.format(NOT_EMPTY_ERROR_MESSAGE_TEMPLATE, "Mobile number"))
-			.digits(String.format(NUMERICAL_DIGITS_ERROR_MESSAGE, "Mobile number"))
-			.equalLength(MOBILE_NUMBER_DIGITS, String.format(EQUALS_ERROR_MESSAGE, "Mobile number", 
-				MOBILE_NUMBER_DIGITS))
-			.validate();
-
-		return mobileNumber;
 	}
 
 	public List<Contact> list(Person person) {

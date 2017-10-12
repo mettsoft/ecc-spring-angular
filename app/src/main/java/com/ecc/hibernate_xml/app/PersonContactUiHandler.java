@@ -53,21 +53,24 @@ public class PersonContactUiHandler {
 
 	public static Object addLandline(Object parameter) throws Exception {
 		Contact contact = new Landline();
-		contact.setData(InputHandler.getNextLineREPL(LANDLINE_PROMPT, ContactService::validateLandline));
+		contact.setData(InputHandler.getNextLineREPL(LANDLINE_PROMPT, arg -> 
+			ContactService.validateContact(arg, "Landline")));
 		createContact(contact, (Person) parameter);
 		return 0;
 	}
 
 	public static Object addEmail(Object parameter) throws Exception {
 		Contact contact = new Email();
-		contact.setData(InputHandler.getNextLineREPL(EMAIL_PROMPT, ContactService::validateEmail));
+		contact.setData(InputHandler.getNextLineREPL(EMAIL_PROMPT, arg -> 
+			ContactService.validateContact(arg, "Email")));
 		createContact(contact, (Person) parameter);
 		return 0;
 	}
 
 	public static Object addMobileNumber(Object parameter) throws Exception {
 		Contact contact = new MobileNumber();
-		contact.setData(InputHandler.getNextLineREPL(MOBILE_NUMBER_PROMPT, ContactService::validateMobileNumber));
+		contact.setData(InputHandler.getNextLineREPL(MOBILE_NUMBER_PROMPT, arg -> 
+			ContactService.validateContact(arg, "Mobile Number")));
 		createContact(contact, (Person) parameter);
 		return 0;
 	}
@@ -95,7 +98,8 @@ public class PersonContactUiHandler {
 
 			Contact contact = contactService.get(contactId);
 			userPrompt = String.format(CONTACT_DATA_PROMPT, contact);
-			InputHandler.consumeNextLineREPL(userPrompt, contact::setData);
+			contact.setData(InputHandler.getNextLineREPL(userPrompt, arg -> 
+				ContactService.validateContact(arg, contact.getContactType())));
 			contactService.update(contact);
 
 			String successMessage = String.format(UPDATE_SUCCESS_MESSAGE, contact);
