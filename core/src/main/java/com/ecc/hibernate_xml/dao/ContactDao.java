@@ -6,7 +6,7 @@ import org.hibernate.criterion.Order;
 
 import com.ecc.hibernate_xml.model.Contact;
 import com.ecc.hibernate_xml.model.Person;
-import com.ecc.hibernate_xml.util.TransactionScope;
+import com.ecc.hibernate_xml.util.dao.TransactionScope;
 
 public class ContactDao extends AbstractDao<Contact> {
 

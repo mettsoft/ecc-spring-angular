@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import com.ecc.hibernate_xml.model.Person;
 import com.ecc.hibernate_xml.model.Role;
 import com.ecc.hibernate_xml.service.RoleService;
-import com.ecc.hibernate_xml.util.InputHandler;
+import com.ecc.hibernate_xml.util.app.InputHandler;
 
 public class PersonRoleUiHandler {
 	private static final String ADD_ROLE_PROMPT = "Please choose role to add from the following:\n%s\nRole ID: ";

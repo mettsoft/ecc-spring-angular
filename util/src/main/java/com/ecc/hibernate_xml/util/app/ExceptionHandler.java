@@ -1,4 +1,4 @@
-package com.ecc.hibernate_xml.util;
+package com.ecc.hibernate_xml.util.app;
 
 public class ExceptionHandler {
 	public static void printException(Exception exception) {

@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 import com.ecc.hibernate_xml.model.Role;
 import com.ecc.hibernate_xml.service.RoleService;
-import com.ecc.hibernate_xml.util.InputHandler;
+import com.ecc.hibernate_xml.util.app.InputHandler;
 
 public class RoleUiHandler {
 	private static final String UPDATE_PROMPT = "Please enter the role ID you wish to update: ";

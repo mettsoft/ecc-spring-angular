@@ -11,7 +11,7 @@ import com.ecc.hibernate_xml.model.Person;
 import com.ecc.hibernate_xml.model.Name;
 import com.ecc.hibernate_xml.model.Address;
 import com.ecc.hibernate_xml.service.PersonService;
-import com.ecc.hibernate_xml.util.InputHandler;
+import com.ecc.hibernate_xml.util.app.InputHandler;
 
 public class PersonUiHandler {
 	private static final String UPDATE_PROMPT = "Please enter the person ID you wish to update: ";

@@ -1,7 +1,9 @@
-package com.ecc.hibernate_xml.util;
+package com.ecc.hibernate_xml.util.app;
 
 import java.text.ParseException;
 import java.util.Scanner;
+
+import com.ecc.hibernate_xml.util.function.CheckedFunction;
 
 public class InputHandler {
 	private static final Scanner SCANNER = new Scanner(System.in);

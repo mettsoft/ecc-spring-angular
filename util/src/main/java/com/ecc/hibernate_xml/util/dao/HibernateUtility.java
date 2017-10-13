@@ -1,4 +1,4 @@
-package com.ecc.hibernate_xml.util;
+package com.ecc.hibernate_xml.util.dao;
 
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;

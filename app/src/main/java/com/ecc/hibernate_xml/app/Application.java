@@ -3,10 +3,10 @@ package com.ecc.hibernate_xml.app;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
-import com.ecc.hibernate_xml.util.CheckedUnaryOperator;
-import com.ecc.hibernate_xml.util.HibernateUtility;
-import com.ecc.hibernate_xml.util.UiRouter;
-import com.ecc.hibernate_xml.util.Menu;
+import com.ecc.hibernate_xml.util.function.CheckedUnaryOperator;
+import com.ecc.hibernate_xml.util.dao.HibernateUtility;
+import com.ecc.hibernate_xml.util.app.UiRouter;
+import com.ecc.hibernate_xml.util.app.Menu;
 
 public class Application {
 	private static String MAIN_HEADER = "--------------------------\nExercise 7 - Hibernate XML\nPerson Registration System\nBy Emmett Young\n---------------------------";

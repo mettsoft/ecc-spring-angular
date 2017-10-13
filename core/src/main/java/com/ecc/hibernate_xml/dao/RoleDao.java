@@ -10,7 +10,7 @@ import org.hibernate.criterion.Order;
 
 import com.ecc.hibernate_xml.model.Role;
 import com.ecc.hibernate_xml.model.Person;
-import com.ecc.hibernate_xml.util.TransactionScope;
+import com.ecc.hibernate_xml.util.dao.TransactionScope;
 
 public class RoleDao extends AbstractDao<Role> {
 	

@@ -9,7 +9,7 @@ import com.ecc.hibernate_xml.model.Email;
 import com.ecc.hibernate_xml.model.Landline;
 import com.ecc.hibernate_xml.model.MobileNumber;
 import com.ecc.hibernate_xml.service.ContactService;
-import com.ecc.hibernate_xml.util.InputHandler;
+import com.ecc.hibernate_xml.util.app.InputHandler;
 
 public class PersonContactUiHandler {
 	private static final String NO_CONTACTS_MESSAGE = "There are no contacts.";

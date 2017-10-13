@@ -1,4 +1,6 @@
-package com.ecc.hibernate_xml.util;
+package com.ecc.hibernate_xml.util.app;
+
+import com.ecc.hibernate_xml.util.function.CheckedUnaryOperator;
 
 public class UiRoute {
 	private CheckedUnaryOperator<Object> callback;

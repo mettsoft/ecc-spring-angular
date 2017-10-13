@@ -1,7 +1,12 @@
-package com.ecc.hibernate_xml.util;
+package com.ecc.hibernate_xml.util.app;
 
 import java.util.Map;
 import java.util.HashMap;
+
+import com.ecc.hibernate_xml.util.function.CheckedUnaryOperator;
+import com.ecc.hibernate_xml.util.function.CheckedConsumer;
+import com.ecc.hibernate_xml.util.function.CheckedRunnable;
+import com.ecc.hibernate_xml.util.function.CheckedSupplier;
 
 public class UiRouter {
 	private Menu menu;

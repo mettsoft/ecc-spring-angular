@@ -4,7 +4,7 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 
-import com.ecc.hibernate_xml.util.TransactionScope;
+import com.ecc.hibernate_xml.util.dao.TransactionScope;
 
 public abstract class AbstractDao<T> implements Dao<T> {
 

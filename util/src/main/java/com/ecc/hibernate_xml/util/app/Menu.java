@@ -1,4 +1,4 @@
-package com.ecc.hibernate_xml.util;
+package com.ecc.hibernate_xml.util.app;
 
 import java.util.List;
 import java.util.ArrayList;

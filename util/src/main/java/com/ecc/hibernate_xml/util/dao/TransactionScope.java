@@ -1,4 +1,4 @@
-package com.ecc.hibernate_xml.util;
+package com.ecc.hibernate_xml.util.dao;
 
 import java.util.function.Function;
 import java.util.function.Consumer;

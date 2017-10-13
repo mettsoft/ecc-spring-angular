@@ -1,4 +1,4 @@
-package com.ecc.hibernate_xml.util;
+package com.ecc.hibernate_xml.util.function;
 
 @FunctionalInterface
 public interface CheckedUnaryOperator<T> extends CheckedFunction<T, T> {
