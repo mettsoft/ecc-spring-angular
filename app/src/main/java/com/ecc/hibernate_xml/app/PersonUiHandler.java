@@ -70,9 +70,9 @@ public class PersonUiHandler {
 
 	public Object create() throws Exception {	
 		Name name = new Name();
-		name.setLastName(InputHandler.getNextLineREPL(LAST_NAME_PROMPT, personService::validateLastName));
-		name.setFirstName(InputHandler.getNextLineREPL(FIRST_NAME_PROMPT, personService::validateFirstName));
-		name.setMiddleName(InputHandler.getNextLineREPL(MIDDLE_NAME_PROMPT, personService::validateMiddleName));
+		name.setLastName(InputHandler.getNextLineREPL(LAST_NAME_PROMPT, t -> personService.validateName(t, "Last name")));
+		name.setFirstName(InputHandler.getNextLineREPL(FIRST_NAME_PROMPT, t -> personService.validateName(t, "First name")));
+		name.setMiddleName(InputHandler.getNextLineREPL(MIDDLE_NAME_PROMPT, t -> personService.validateName(t, "Middle name")));
 
 		Person person = new Person(name);
 		personService.create(person);
@@ -93,9 +93,9 @@ public class PersonUiHandler {
 		Name name = person.getName();
 
 		name.setTitle(InputHandler.getNextLineREPL(TITLE_PROMPT, personService::validateTitle));
-		name.setLastName(InputHandler.getNextLineREPL(LAST_NAME_PROMPT, personService::validateLastName));
-		name.setFirstName(InputHandler.getNextLineREPL(FIRST_NAME_PROMPT, personService::validateFirstName));
-		name.setMiddleName(InputHandler.getNextLineREPL(MIDDLE_NAME_PROMPT, personService::validateMiddleName));
+		name.setLastName(InputHandler.getNextLineREPL(LAST_NAME_PROMPT, t -> personService.validateName(t, "Last name")));
+		name.setFirstName(InputHandler.getNextLineREPL(FIRST_NAME_PROMPT, t -> personService.validateName(t, "First name")));
+		name.setMiddleName(InputHandler.getNextLineREPL(MIDDLE_NAME_PROMPT, t -> personService.validateName(t, "Middle name")));
 		name.setSuffix(InputHandler.getNextLineREPL(SUFFIX_PROMPT, personService::validateSuffix));
 
 		person.setName(name);

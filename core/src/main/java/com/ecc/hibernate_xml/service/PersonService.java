@@ -29,22 +29,10 @@ public class PersonService extends AbstractService<Person> {
 		return title;
 	}
 
-	public String validateLastName(String lastName) throws ValidationException {
-		validator.validate("NotEmpty", lastName, "Last name");
-		validator.validate("MaxLength", lastName, DEFAULT_MAX_CHARACTERS, "Last name");
-		return lastName;
-	}
-
-	public String validateFirstName(String firstName) throws ValidationException {
-		validator.validate("NotEmpty", firstName, "First name");
-		validator.validate("MaxLength", firstName, DEFAULT_MAX_CHARACTERS, "First name");
-		return firstName;
-	}
-
-	public String validateMiddleName(String middleName) throws ValidationException {
-		validator.validate("NotEmpty", middleName, "Middle name");
-		validator.validate("MaxLength", middleName, DEFAULT_MAX_CHARACTERS, "Middle name");
-		return middleName;
+	public String validateName(String name, String nameType) throws ValidationException {
+		validator.validate("NotEmpty", name, nameType);
+		validator.validate("MaxLength", name, DEFAULT_MAX_CHARACTERS, nameType);
+		return name;		
 	}
 
 	public String validateSuffix(String suffix) throws ValidationException {
