@@ -88,7 +88,7 @@ public class ModelValidator {
 			@Override
 			public Boolean onValidate(Object data, Object... arguments) {
 				BigDecimal subject = data == null? null: (BigDecimal) data;
-				BigDecimal threshold = (BigDecimal) arguments[0];
+				BigDecimal threshold = new BigDecimal(arguments[0].toString());
 				return subject != null && subject.compareTo(threshold) >= 0;
 			}
 		});
@@ -99,7 +99,7 @@ public class ModelValidator {
 			@Override
 			public Boolean onValidate(Object data, Object... arguments) {
 				BigDecimal subject = data == null? null: (BigDecimal) data;
-				BigDecimal threshold = (BigDecimal) arguments[0];
+				BigDecimal threshold = new BigDecimal(arguments[0].toString());
 				return subject != null && subject.compareTo(threshold) <= 0;
 			}
 		});
