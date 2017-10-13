@@ -15,118 +15,68 @@ public class PersonService extends AbstractService<Person> {
 	private static final Integer DEFAULT_MAX_CHARACTERS = 20;
 	private static final Integer MAX_MUNICIPALITY_CHARACTERS = 50;
 
-	private static final String DEFAULT_MAX_LENGTH_ERROR_MESSAGE_TEMPLATE = "%s must not exceed " + DEFAULT_MAX_CHARACTERS + " characters.";
-	private static final String MUNICIPALITY_MAX_LENGTH_ERROR_MESSAGE_TEMPLATE = "%s must not exceed " + MAX_MUNICIPALITY_CHARACTERS + " characters.";
-	private static final String NOT_EMPTY_ERROR_MESSAGE_TEMPLATE = "%s cannot be empty.";
-	private static final String NOT_NULL_ERROR_MESSAGE_TEMPLATE = "%s cannot be null.";
-
 	private final PersonDao personDao;
+	private final ModelValidator validator;
 
 	public PersonService() {
 		super(new PersonDao());
 		personDao = (PersonDao) dao;
+		validator = ModelValidator.create();
 	}
 
 	public String validateTitle(String title) throws ValidationException {
-		ModelValidator
-			.create(title)
-			.maxLength(DEFAULT_MAX_CHARACTERS, String.format(DEFAULT_MAX_LENGTH_ERROR_MESSAGE_TEMPLATE, 
-				"Title"))
-			.validate();
-
+		validator.validate("MaxLength", title, DEFAULT_MAX_CHARACTERS, "Title");
 		return title;
 	}
 
 	public String validateLastName(String lastName) throws ValidationException {
-		ModelValidator
-			.create(lastName)
-			.notEmpty(String.format(NOT_EMPTY_ERROR_MESSAGE_TEMPLATE, "Last name"))
-			.maxLength(DEFAULT_MAX_CHARACTERS, String.format(DEFAULT_MAX_LENGTH_ERROR_MESSAGE_TEMPLATE, 
-				"Last name"))
-			.validate();
-
+		validator.validate("NotEmpty", lastName, "Last name");
+		validator.validate("MaxLength", lastName, DEFAULT_MAX_CHARACTERS, "Last name");
 		return lastName;
 	}
 
 	public String validateFirstName(String firstName) throws ValidationException {
-		ModelValidator
-			.create(firstName)
-			.notEmpty(String.format(NOT_EMPTY_ERROR_MESSAGE_TEMPLATE, "First name"))
-			.maxLength(DEFAULT_MAX_CHARACTERS, String.format(DEFAULT_MAX_LENGTH_ERROR_MESSAGE_TEMPLATE, 
-				"First name"))
-			.validate();
-
+		validator.validate("NotEmpty", firstName, "First name");
+		validator.validate("MaxLength", firstName, DEFAULT_MAX_CHARACTERS, "First name");
 		return firstName;
 	}
 
 	public String validateMiddleName(String middleName) throws ValidationException {
-		ModelValidator
-			.create(middleName)
-			.notEmpty(String.format(NOT_EMPTY_ERROR_MESSAGE_TEMPLATE, "Middle name"))
-			.maxLength(DEFAULT_MAX_CHARACTERS, String.format(DEFAULT_MAX_LENGTH_ERROR_MESSAGE_TEMPLATE, 
-				"Middle name"))
-			.validate();
-
+		validator.validate("NotEmpty", middleName, "Middle name");
+		validator.validate("MaxLength", middleName, DEFAULT_MAX_CHARACTERS, "Middle name");
 		return middleName;
 	}
 
 	public String validateSuffix(String suffix) throws ValidationException {
-		ModelValidator
-			.create(suffix)
-			.maxLength(DEFAULT_MAX_CHARACTERS, String.format(DEFAULT_MAX_LENGTH_ERROR_MESSAGE_TEMPLATE, 
-				"Suffix"))
-			.validate();
-
+		validator.validate("MaxLength", suffix, DEFAULT_MAX_CHARACTERS, "Suffix");
 		return suffix;
 	}
 
 	public String validateStreetNumber(String streetNumber) throws ValidationException {
-		ModelValidator
-			.create(streetNumber)
-			.notEmpty(String.format(NOT_EMPTY_ERROR_MESSAGE_TEMPLATE, "Street number"))
-			.maxLength(DEFAULT_MAX_CHARACTERS, String.format(DEFAULT_MAX_LENGTH_ERROR_MESSAGE_TEMPLATE, 
-				"Street number"))
-			.validate();
-
+		validator.validate("NotEmpty", streetNumber, "Street number");
+		validator.validate("MaxLength", streetNumber, DEFAULT_MAX_CHARACTERS, "Street number");
 		return streetNumber;
 	}
 
 	public Integer validateBarangay(Integer barangay) throws ValidationException {
-		ModelValidator
-			.create(barangay)
-			.notNull(String.format(NOT_NULL_ERROR_MESSAGE_TEMPLATE, "Barangay"))
-			.validate();
-
+		validator.validate("NotNull", barangay, "Barangay");
 		return barangay;
 	}
 
 	public String validateMunicipality(String municipality) throws ValidationException {
-		ModelValidator
-			.create(municipality)
-			.notEmpty(String.format(NOT_EMPTY_ERROR_MESSAGE_TEMPLATE, "Municipality"))
-			.maxLength(MAX_MUNICIPALITY_CHARACTERS, String.format(MUNICIPALITY_MAX_LENGTH_ERROR_MESSAGE_TEMPLATE, 
-				"Municipality"))
-			.validate();
-
+		validator.validate("NotEmpty", municipality, "Municipality");
+		validator.validate("MaxLength", municipality, MAX_MUNICIPALITY_CHARACTERS, "Municipality");
 		return municipality;
 	}
 
 	public Integer validateZipCode(Integer zipCode) throws ValidationException {
-		ModelValidator
-			.create(zipCode)
-			.notNull(String.format(NOT_NULL_ERROR_MESSAGE_TEMPLATE, "Zip code"))
-			.validate();
-
+		validator.validate("NotNull", zipCode, "Zip code");
 		return zipCode;
 	}
 
 	public BigDecimal validateGWA(BigDecimal GWA) throws ValidationException {
-		ModelValidator
-			.create(GWA)
-			.minimum(new BigDecimal(1), "GWA cannot be less than 1.")
-			.maximum(new BigDecimal(5), "GWA cannot be greater than 5.")
-			.validate();
-
+		validator.validate("Minimum", GWA, 1, "GWA");
+		validator.validate("Maximum", GWA, 5, "GWA");
 		return GWA;
 	}
 

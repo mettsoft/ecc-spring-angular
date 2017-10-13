@@ -14,17 +14,13 @@ public class ContactService extends AbstractService<Contact> {
 	private static final Integer LANDLINE_DIGITS = 7;
 	private static final Integer MOBILE_NUMBER_DIGITS = 11;
 
-	private static final String MAX_LENGTH_ERROR_MESSAGE_TEMPLATE = "%s must not exceed " + MAX_CHARACTERS + " characters.";
-	private static final String NOT_EMPTY_ERROR_MESSAGE_TEMPLATE = "%s cannot be empty.";
-	private static final String NUMERICAL_DIGITS_ERROR_MESSAGE = "%s must only contain numerical digits.";
-	private static final String EQUALS_ERROR_MESSAGE = "%s must contain %d digits.";
-	private static final String EMAIL_IS_INVALID = "Email is invalid.";
-
 	private final ContactDao contactDao;
+	private final ModelValidator validator;
 
 	public ContactService() {
 		super(new ContactDao());
 		contactDao = (ContactDao) dao;
+		validator = ModelValidator.create();
 	}
 
 	public String validateContact(String data, String contactType) throws ValidationException {
@@ -44,22 +40,16 @@ public class ContactService extends AbstractService<Contact> {
 		return data;
 	}
 
-	private void validateNumericalContact(String data, Integer matchingDigits, String contactType) throws ValidationException {
-		ModelValidator
-			.create(data)
-			.notEmpty(String.format(NOT_EMPTY_ERROR_MESSAGE_TEMPLATE, contactType))
-			.digits(String.format(NUMERICAL_DIGITS_ERROR_MESSAGE, contactType))
-			.equalLength(matchingDigits, String.format(EQUALS_ERROR_MESSAGE, contactType, matchingDigits))
-			.validate();
+	private void validateNumericalContact(String data, Integer matchingDigits, String contactType) throws ValidationException {		
+		validator.validate("NotEmpty", data, contactType);
+		validator.validate("Digits", data, contactType);
+		validator.validate("EqualLength", data, matchingDigits, contactType);
 	}
 
 	private void validateEmail(String email) throws ValidationException {
-		ModelValidator
-			.create(email)
-			.maxLength(MAX_CHARACTERS, String.format(MAX_LENGTH_ERROR_MESSAGE_TEMPLATE, 
-				"Email"))
-			.validEmail(EMAIL_IS_INVALID)
-			.validate();
+		validator.validate("NotEmpty", email, "Email");
+		validator.validate("MaxLength", email, MAX_CHARACTERS, "Email");
+		validator.validate("ValidEmail", email);
 	}
 
 	public List<Contact> list(Person person) {
