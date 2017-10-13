@@ -21,7 +21,7 @@ public class PersonRoleUiHandler {
 
 	private RoleService roleService = new RoleService();
 
-	public Object list(Object parameter) {		
+	public void list(Object parameter) {		
 		Person person = (Person) parameter;
 		System.out.println("-------------------");
 
@@ -39,11 +39,10 @@ public class PersonRoleUiHandler {
 				.forEach(System.out::println);
 		}
 
-		System.out.println("-------------------");		
-		return 0;
+		System.out.println("-------------------");
 	}
 
-	public Object add(Object parameter) throws Exception {
+	public void add(Object parameter) throws Exception {
 		Person person = (Person) parameter;
 		List<Role> roles = roleService.listRolesNotBelongingTo(person);
 
@@ -65,11 +64,10 @@ public class PersonRoleUiHandler {
 			System.out.println(successMessage);
 		}		
 
-		System.out.println("-------------------");		
-		return 0;
+		System.out.println("-------------------");
 	}
 
-	public Object remove(Object parameter) throws Exception {	
+	public void remove(Object parameter) throws Exception {	
 		Person person = (Person) parameter;
 		List<Role> roles = roleService.list(person);
 
@@ -92,6 +90,5 @@ public class PersonRoleUiHandler {
 		}
 		
 		System.out.println("-------------------");
-		return 0;
 	}
 }

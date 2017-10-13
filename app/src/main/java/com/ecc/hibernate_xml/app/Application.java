@@ -117,8 +117,8 @@ public class Application {
 		uiRouter.register("Add contact information.", CheckedUnaryOperator.identity());
 
 		// Receives the Person detached instance from the previous level.
-		uiRouter.register("Add landline.", arg -> personContactUiHandler.addContact(arg, "Landline"));
-		uiRouter.register("Add email.", arg -> personContactUiHandler.addContact(arg, "Email"));
-		uiRouter.register("Add mobile number.", arg -> personContactUiHandler.addContact(arg, "Mobile Number"));
+		uiRouter.register("Add landline.", arg -> { personContactUiHandler.addContact(arg, "Landline"); });
+		uiRouter.register("Add email.", arg -> { personContactUiHandler.addContact(arg, "Email"); });
+		uiRouter.register("Add mobile number.", arg -> { personContactUiHandler.addContact(arg, "Mobile Number"); });
 	}
 }

@@ -29,7 +29,7 @@ public class PersonContactUiHandler {
 
 	private ContactService contactService = new ContactService();
 
-	public Object list(Object parameter) throws Exception {
+	public void list(Object parameter) throws Exception {
 		Person person = (Person) parameter;
 
 		List<Contact> contacts = contactService.list(person);
@@ -47,10 +47,9 @@ public class PersonContactUiHandler {
 		}
 
 		System.out.println("-------------------");
-		return 0;
 	}
 
-	public Object addContact(Object parameter, String contactType) throws Exception {
+	public void addContact(Object parameter, String contactType) throws Exception {
 		switch(contactType) {
 			case "Landline":
 				createContact(LANDLINE_PROMPT, new Landline(), (Person) parameter);
@@ -64,7 +63,6 @@ public class PersonContactUiHandler {
 			default: 
 				throw new RuntimeException("No validation rule defined for " + contactType + "!");
 		}
-		return 0;
 	}
 
 	private void createContact(String prompt, Contact contact, Person person) throws Exception {
@@ -80,7 +78,7 @@ public class PersonContactUiHandler {
 		contact.setData(data);		
 	}
 
-	public Object update(Object parameter) throws Exception {
+	public void update(Object parameter) throws Exception {
 		Person person = (Person) parameter;
 		List<Contact> contacts = contactService.list(person);
 
@@ -100,11 +98,9 @@ public class PersonContactUiHandler {
 			System.out.println(successMessage);
 		}
 		System.out.println("-------------------");
-
-		return 0;
 	}
 
-	public Object delete(Object parameter) throws Exception {
+	public void delete(Object parameter) throws Exception {
 		Person person = (Person) parameter;
 		List<Contact> contacts = contactService.list(person);
 		
@@ -122,6 +118,5 @@ public class PersonContactUiHandler {
 		}
 
 		System.out.println("-------------------");
-		return 0;
 	}
 }

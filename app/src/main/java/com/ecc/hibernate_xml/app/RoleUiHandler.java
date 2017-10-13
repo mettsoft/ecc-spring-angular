@@ -20,7 +20,7 @@ public class RoleUiHandler {
 
 	private RoleService roleService = new RoleService();
 
-	public Object list(Object parameter) {		
+	public void list() {		
 		System.out.println("-------------------");
 
 		List<Role> roles = roleService.list();
@@ -32,20 +32,18 @@ public class RoleUiHandler {
 		}
 
 		System.out.println("-------------------");
-		return 0;
 	}
 
-	public Object create(Object parameter) throws Exception {		
+	public void create() throws Exception {		
 		Role role = new Role();	
 		role.setName(InputHandler.getNextLineREPL(NAME_PROMPT, RoleService::validateName));
 		roleService.create(role);
 
 		String successMessage = String.format(CREATE_SUCCESS_MESSAGE, role.getId(), role.getName());
 		System.out.println(successMessage);
-		return 0;
 	}
 
-	public Object update(Object parameter) throws Exception {			
+	public void update() throws Exception {			
 		Integer roleId = InputHandler.getNextLine(UPDATE_PROMPT, Integer::valueOf);
 		Role role = roleService.get(roleId);
 
@@ -63,15 +61,13 @@ public class RoleUiHandler {
 			successMessage += " " + String.format(AFFECTED_PERSONS_MESSAGE, personIds);
 		}
 		System.out.println(successMessage);
-		return 0;
 	}
 
-	public Object delete(Object parameter) throws Exception {			
+	public void delete() throws Exception {			
 		Integer roleId = InputHandler.getNextLine(DELETE_PROMPT, Integer::valueOf);
 		roleService.delete(roleId);
 
 		String successMessage = String.format(DELETE_SUCCESS_MESSAGE, roleId);
 		System.out.println(successMessage);
-		return 0;
 	}
 }

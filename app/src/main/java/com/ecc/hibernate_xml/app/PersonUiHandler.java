@@ -43,19 +43,16 @@ public class PersonUiHandler {
 	private static final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	private final PersonService personService = new PersonService();
 
-	public Object listByDateHired(Object parameter) {		
+	public void listByDateHired() {		
 		list(personService.listPersonsByDateHired());
-		return 0;
 	}
 
-	public Object listByLastName(Object parameter) {		
+	public void listByLastName() {		
 		list(personService.listPersonsByLastName());
-		return 0;
 	}
 
-	public Object listByGWA(Object parameter) {		
+	public void listByGWA() {		
 		list(personService.listPersonsByGwa());
-		return 0;
 	}
 
 	private void list(List<Person> persons) {		
@@ -71,7 +68,7 @@ public class PersonUiHandler {
 		System.out.println("-------------------");
 	}
 
-	public Object create(Object parameter) throws Exception {	
+	public Object create() throws Exception {	
 		Name name = new Name();
 		name.setLastName(InputHandler.getNextLineREPL(LAST_NAME_PROMPT, PersonService::validateLastName));
 		name.setFirstName(InputHandler.getNextLineREPL(FIRST_NAME_PROMPT, PersonService::validateFirstName));
@@ -86,12 +83,12 @@ public class PersonUiHandler {
 		return person;
 	}
 
-	public Object update(Object parameter) throws Exception {
+	public Object update() throws Exception {
 		Integer personId = InputHandler.getNextLine(UPDATE_PROMPT, Integer::valueOf);
 		return personService.get(personId);	
 	}
 
-	public Object changeName(Object parameter) throws Exception {
+	public void changeName(Object parameter) throws Exception {
 		Person person = (Person) parameter;
 		Name name = person.getName();
 
@@ -106,10 +103,9 @@ public class PersonUiHandler {
 
 		String successMessage = String.format(UPDATE_SUCCESS_MESSAGE, "name", name);
 		System.out.println(successMessage);
-		return 0;
 	}
 
-	public Object changeAddress(Object parameter) throws Exception {
+	public void changeAddress(Object parameter) throws Exception {
 		Person person = (Person) parameter;
 		
 		Address address = new Address();
@@ -125,10 +121,9 @@ public class PersonUiHandler {
 
 		String successMessage = String.format(UPDATE_SUCCESS_MESSAGE, "address", address);
 		System.out.println(successMessage);
-		return 0;
 	}
 
-	public Object changeBirthday(Object parameter) throws Exception {
+	public void changeBirthday(Object parameter) throws Exception {
 		Person person = (Person) parameter;
 		Date birthday = InputHandler.getNextLineREPL(BIRTHDAY_PROMPT, dateFormat::parse);
 
@@ -137,10 +132,9 @@ public class PersonUiHandler {
 
 		String successMessage = String.format(UPDATE_SUCCESS_MESSAGE, "birthday", dateFormat.format(birthday));
 		System.out.println(successMessage);
-		return 0;
 	}
 
-	public Object changeGWA(Object parameter) throws Exception {
+	public void changeGWA(Object parameter) throws Exception {
 		Person person = (Person) parameter;
 		BigDecimal GWA = InputHandler.getNextLineREPL(GWA_PROMPT, input -> 
 			PersonService.validateGWA(new BigDecimal(input)));
@@ -150,10 +144,9 @@ public class PersonUiHandler {
 
 		String successMessage = String.format(UPDATE_SUCCESS_MESSAGE, "GWA", GWA);
 		System.out.println(successMessage);
-		return 0;
 	}
 
-	public Object changeEmploymentStatus(Object parameter) throws Exception {
+	public void changeEmploymentStatus(Object parameter) throws Exception {
 		Person person = (Person) parameter;
 		Boolean currentlyEmployed = InputHandler.getNextLineREPL(EMPLOYMENT_PROMPT, input -> {
 			if (input.equals("y")) {
@@ -175,16 +168,14 @@ public class PersonUiHandler {
 
 		personService.update(person);
 		System.out.println(EMPLOYMENT_SUCCESS_MESSAGE);
-		return 0;
 	}
 
-	public Object delete(Object parameter) throws Exception {			
+	public void delete() throws Exception {			
 		Integer personId = InputHandler.getNextLine(DELETE_PROMPT, Integer::valueOf);
 
 		personService.delete(personId);
 
 		String successMessage = String.format(DELETE_SUCCESS_MESSAGE, personId);
 		System.out.println(successMessage);
-		return 0;
 	}
 }

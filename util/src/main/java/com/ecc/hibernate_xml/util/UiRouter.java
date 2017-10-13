@@ -16,6 +16,24 @@ public class UiRouter {
 		routes.put(route, new UiRoute(callback));
 	}
 
+	public void register(String route, CheckedConsumer<Object> callback) {
+		routes.put(route, new UiRoute(t -> {
+			callback.accept(t);
+			return 0;
+		}));
+	}
+
+	public void register(String route, CheckedRunnable callback) {
+		routes.put(route, new UiRoute(t -> {
+			callback.run();
+			return 0;
+		}));
+	}
+
+	public void register(String route, CheckedSupplier callback) {
+		routes.put(route, new UiRoute(t -> callback.get()));
+	}
+
 	public void run() {
 		while (true) {
 			Menu parentMenu = menu.getParent();
