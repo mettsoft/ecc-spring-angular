@@ -49,25 +49,26 @@ public class PersonContactUiHandler {
 		System.out.println("-------------------");
 	}
 
-	public void addContact(Object parameter, String contactType) throws Exception {
+	public void create(Object parameter, String contactType) throws Exception {
 		switch(contactType) {
 			case "Landline":
-				createContact(LANDLINE_PROMPT, new Landline(), (Person) parameter);
+				saveContact(LANDLINE_PROMPT, new Landline(), (Person) parameter);
 				break;
 			case "Email":
-				createContact(EMAIL_PROMPT, new Email(), (Person) parameter);
+				saveContact(EMAIL_PROMPT, new Email(), (Person) parameter);
 				break;
 			case "Mobile Number":
-				createContact(MOBILE_NUMBER_PROMPT, new MobileNumber(), (Person) parameter);
+				saveContact(MOBILE_NUMBER_PROMPT, new MobileNumber(), (Person) parameter);
 				break;
 			default: 
 				throw new RuntimeException("No validation rule defined for " + contactType + "!");
 		}
 	}
 
-	private void createContact(String prompt, Contact contact, Person person) throws Exception {
+	private void saveContact(String prompt, Contact contact, Person person) throws Exception {
 		fillContact(prompt, contact);
 		contactService.create(contact, person);
+		
 		String successMessage = String.format(CREATE_SUCCESS_MESSAGE, contact);
 		System.out.println(successMessage);
 	}
@@ -75,7 +76,7 @@ public class PersonContactUiHandler {
 	private void fillContact(String prompt, Contact contact) {
 		String data = InputHandler.getNextLineREPL(prompt, arg -> 
 			contactService.validateContact(arg, contact.getContactType()));
-		contact.setData(data);		
+		contact.setData(data);
 	}
 
 	public void update(Object parameter) throws Exception {
