@@ -19,7 +19,7 @@ public class PersonRoleUiHandler {
 	private static final String ADD_SUCCESS_MESSAGE = "Successfully added role ID \"%d\" to Person ID [%d] \"%s\"!";
 	private static final String REMOVE_SUCCESS_MESSAGE = "Successfully removed role ID \"%d\" to Person ID [%d] \"%s\"!";
 
-	private RoleService roleService = new RoleService();
+	private final RoleService roleService = new RoleService();
 
 	public void list(Object parameter) {		
 		Person person = (Person) parameter;

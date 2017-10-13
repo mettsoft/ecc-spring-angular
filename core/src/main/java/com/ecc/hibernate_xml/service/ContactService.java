@@ -20,14 +20,14 @@ public class ContactService extends AbstractService<Contact> {
 	private static final String EQUALS_ERROR_MESSAGE = "%s must contain %d digits.";
 	private static final String EMAIL_IS_INVALID = "Email is invalid.";
 
-	private ContactDao contactDao;
+	private final ContactDao contactDao;
 
 	public ContactService() {
 		super(new ContactDao());
 		contactDao = (ContactDao) dao;
 	}
 
-	public static String validateContact(String data, String contactType) throws ValidationException {
+	public String validateContact(String data, String contactType) throws ValidationException {
 		switch(contactType) {
 			case "Landline":
 				validateNumericalContact(data, LANDLINE_DIGITS, "Landline"); 
@@ -44,7 +44,7 @@ public class ContactService extends AbstractService<Contact> {
 		return data;
 	}
 
-	private static void validateNumericalContact(String data, Integer matchingDigits, String contactType) throws ValidationException {
+	private void validateNumericalContact(String data, Integer matchingDigits, String contactType) throws ValidationException {
 		ModelValidator
 			.create(data)
 			.notEmpty(String.format(NOT_EMPTY_ERROR_MESSAGE_TEMPLATE, contactType))
@@ -53,7 +53,7 @@ public class ContactService extends AbstractService<Contact> {
 			.validate();
 	}
 
-	private static void validateEmail(String email) throws ValidationException {
+	private void validateEmail(String email) throws ValidationException {
 		ModelValidator
 			.create(email)
 			.maxLength(MAX_CHARACTERS, String.format(MAX_LENGTH_ERROR_MESSAGE_TEMPLATE, 

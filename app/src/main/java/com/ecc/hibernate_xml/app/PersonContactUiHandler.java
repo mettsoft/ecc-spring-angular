@@ -27,7 +27,7 @@ public class PersonContactUiHandler {
 	private static final String CONTACT_ID_PROMPT = "Enter Contact ID: ";
 	private static final String CONTACT_DATA_PROMPT = "Please enter the new contact data for \"%s\": ";
 
-	private ContactService contactService = new ContactService();
+	private final ContactService contactService = new ContactService();
 
 	public void list(Object parameter) throws Exception {
 		Person person = (Person) parameter;
@@ -74,7 +74,7 @@ public class PersonContactUiHandler {
 
 	private void fillContact(String prompt, Contact contact) {
 		String data = InputHandler.getNextLineREPL(prompt, arg -> 
-			ContactService.validateContact(arg, contact.getContactType()));
+			contactService.validateContact(arg, contact.getContactType()));
 		contact.setData(data);		
 	}
 

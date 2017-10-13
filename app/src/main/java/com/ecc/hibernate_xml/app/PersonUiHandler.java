@@ -70,9 +70,9 @@ public class PersonUiHandler {
 
 	public Object create() throws Exception {	
 		Name name = new Name();
-		name.setLastName(InputHandler.getNextLineREPL(LAST_NAME_PROMPT, PersonService::validateLastName));
-		name.setFirstName(InputHandler.getNextLineREPL(FIRST_NAME_PROMPT, PersonService::validateFirstName));
-		name.setMiddleName(InputHandler.getNextLineREPL(MIDDLE_NAME_PROMPT, PersonService::validateMiddleName));
+		name.setLastName(InputHandler.getNextLineREPL(LAST_NAME_PROMPT, personService::validateLastName));
+		name.setFirstName(InputHandler.getNextLineREPL(FIRST_NAME_PROMPT, personService::validateFirstName));
+		name.setMiddleName(InputHandler.getNextLineREPL(MIDDLE_NAME_PROMPT, personService::validateMiddleName));
 
 		Person person = new Person(name);
 		personService.create(person);
@@ -92,11 +92,11 @@ public class PersonUiHandler {
 		Person person = (Person) parameter;
 		Name name = person.getName();
 
-		name.setTitle(InputHandler.getNextLineREPL(TITLE_PROMPT, PersonService::validateTitle));
-		name.setLastName(InputHandler.getNextLineREPL(LAST_NAME_PROMPT, PersonService::validateLastName));
-		name.setFirstName(InputHandler.getNextLineREPL(FIRST_NAME_PROMPT, PersonService::validateFirstName));
-		name.setMiddleName(InputHandler.getNextLineREPL(MIDDLE_NAME_PROMPT, PersonService::validateMiddleName));
-		name.setSuffix(InputHandler.getNextLineREPL(SUFFIX_PROMPT, PersonService::validateSuffix));
+		name.setTitle(InputHandler.getNextLineREPL(TITLE_PROMPT, personService::validateTitle));
+		name.setLastName(InputHandler.getNextLineREPL(LAST_NAME_PROMPT, personService::validateLastName));
+		name.setFirstName(InputHandler.getNextLineREPL(FIRST_NAME_PROMPT, personService::validateFirstName));
+		name.setMiddleName(InputHandler.getNextLineREPL(MIDDLE_NAME_PROMPT, personService::validateMiddleName));
+		name.setSuffix(InputHandler.getNextLineREPL(SUFFIX_PROMPT, personService::validateSuffix));
 
 		person.setName(name);
 		personService.update(person);
@@ -109,12 +109,12 @@ public class PersonUiHandler {
 		Person person = (Person) parameter;
 		
 		Address address = new Address();
-		address.setStreetNumber(InputHandler.getNextLineREPL(STREET_NUMBER_PROMPT, PersonService::validateStreetNumber));
+		address.setStreetNumber(InputHandler.getNextLineREPL(STREET_NUMBER_PROMPT, personService::validateStreetNumber));
 		address.setBarangay(InputHandler.getNextLineREPL(BARANGAY_PROMPT, input -> 
-			PersonService.validateBarangay(Integer.valueOf(input))));
-		address.setMunicipality(InputHandler.getNextLineREPL(MUNICIPALITY_PROMPT, PersonService::validateMunicipality));
+			personService.validateBarangay(Integer.valueOf(input))));
+		address.setMunicipality(InputHandler.getNextLineREPL(MUNICIPALITY_PROMPT, personService::validateMunicipality));
 		address.setZipCode(InputHandler.getNextLineREPL(ZIP_CODE_PROMPT, input -> 
-			PersonService.validateZipCode(Integer.valueOf(input))));
+			personService.validateZipCode(Integer.valueOf(input))));
 
 		person.setAddress(address);
 		personService.update(person);
@@ -137,7 +137,7 @@ public class PersonUiHandler {
 	public void changeGWA(Object parameter) throws Exception {
 		Person person = (Person) parameter;
 		BigDecimal GWA = InputHandler.getNextLineREPL(GWA_PROMPT, input -> 
-			PersonService.validateGWA(new BigDecimal(input)));
+			personService.validateGWA(new BigDecimal(input)));
 
 		person.setGWA(GWA);
 		personService.update(person);
@@ -162,7 +162,7 @@ public class PersonUiHandler {
 
 		if (currentlyEmployed) {
 			Date dateHired = InputHandler.getNextLineREPL(DATE_HIRED_PROMPT, input -> 
-				PersonService.validateDateHired(currentlyEmployed, dateFormat.parse(input)));
+				personService.validateDateHired(currentlyEmployed, dateFormat.parse(input)));
 			person.setDateHired(dateHired);
 		}
 

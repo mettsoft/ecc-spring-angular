@@ -20,14 +20,14 @@ public class PersonService extends AbstractService<Person> {
 	private static final String NOT_EMPTY_ERROR_MESSAGE_TEMPLATE = "%s cannot be empty.";
 	private static final String NOT_NULL_ERROR_MESSAGE_TEMPLATE = "%s cannot be null.";
 
-	private PersonDao personDao;
+	private final PersonDao personDao;
 
 	public PersonService() {
 		super(new PersonDao());
 		personDao = (PersonDao) dao;
 	}
 
-	public static String validateTitle(String title) throws ValidationException {
+	public String validateTitle(String title) throws ValidationException {
 		ModelValidator
 			.create(title)
 			.maxLength(DEFAULT_MAX_CHARACTERS, String.format(DEFAULT_MAX_LENGTH_ERROR_MESSAGE_TEMPLATE, 
@@ -37,7 +37,7 @@ public class PersonService extends AbstractService<Person> {
 		return title;
 	}
 
-	public static String validateLastName(String lastName) throws ValidationException {
+	public String validateLastName(String lastName) throws ValidationException {
 		ModelValidator
 			.create(lastName)
 			.notEmpty(String.format(NOT_EMPTY_ERROR_MESSAGE_TEMPLATE, "Last name"))
@@ -48,7 +48,7 @@ public class PersonService extends AbstractService<Person> {
 		return lastName;
 	}
 
-	public static String validateFirstName(String firstName) throws ValidationException {
+	public String validateFirstName(String firstName) throws ValidationException {
 		ModelValidator
 			.create(firstName)
 			.notEmpty(String.format(NOT_EMPTY_ERROR_MESSAGE_TEMPLATE, "First name"))
@@ -59,7 +59,7 @@ public class PersonService extends AbstractService<Person> {
 		return firstName;
 	}
 
-	public static String validateMiddleName(String middleName) throws ValidationException {
+	public String validateMiddleName(String middleName) throws ValidationException {
 		ModelValidator
 			.create(middleName)
 			.notEmpty(String.format(NOT_EMPTY_ERROR_MESSAGE_TEMPLATE, "Middle name"))
@@ -70,7 +70,7 @@ public class PersonService extends AbstractService<Person> {
 		return middleName;
 	}
 
-	public static String validateSuffix(String suffix) throws ValidationException {
+	public String validateSuffix(String suffix) throws ValidationException {
 		ModelValidator
 			.create(suffix)
 			.maxLength(DEFAULT_MAX_CHARACTERS, String.format(DEFAULT_MAX_LENGTH_ERROR_MESSAGE_TEMPLATE, 
@@ -80,7 +80,7 @@ public class PersonService extends AbstractService<Person> {
 		return suffix;
 	}
 
-	public static String validateStreetNumber(String streetNumber) throws ValidationException {
+	public String validateStreetNumber(String streetNumber) throws ValidationException {
 		ModelValidator
 			.create(streetNumber)
 			.notEmpty(String.format(NOT_EMPTY_ERROR_MESSAGE_TEMPLATE, "Street number"))
@@ -91,7 +91,7 @@ public class PersonService extends AbstractService<Person> {
 		return streetNumber;
 	}
 
-	public static Integer validateBarangay(Integer barangay) throws ValidationException {
+	public Integer validateBarangay(Integer barangay) throws ValidationException {
 		ModelValidator
 			.create(barangay)
 			.notNull(String.format(NOT_NULL_ERROR_MESSAGE_TEMPLATE, "Barangay"))
@@ -100,7 +100,7 @@ public class PersonService extends AbstractService<Person> {
 		return barangay;
 	}
 
-	public static String validateMunicipality(String municipality) throws ValidationException {
+	public String validateMunicipality(String municipality) throws ValidationException {
 		ModelValidator
 			.create(municipality)
 			.notEmpty(String.format(NOT_EMPTY_ERROR_MESSAGE_TEMPLATE, "Municipality"))
@@ -111,7 +111,7 @@ public class PersonService extends AbstractService<Person> {
 		return municipality;
 	}
 
-	public static Integer validateZipCode(Integer zipCode) throws ValidationException {
+	public Integer validateZipCode(Integer zipCode) throws ValidationException {
 		ModelValidator
 			.create(zipCode)
 			.notNull(String.format(NOT_NULL_ERROR_MESSAGE_TEMPLATE, "Zip code"))
@@ -120,7 +120,7 @@ public class PersonService extends AbstractService<Person> {
 		return zipCode;
 	}
 
-	public static BigDecimal validateGWA(BigDecimal GWA) throws ValidationException {
+	public BigDecimal validateGWA(BigDecimal GWA) throws ValidationException {
 		ModelValidator
 			.create(GWA)
 			.minimum(new BigDecimal(1), "GWA cannot be less than 1.")
@@ -130,7 +130,7 @@ public class PersonService extends AbstractService<Person> {
 		return GWA;
 	}
 
-	public static Date validateDateHired(Boolean currentlyEmployed, Date dateHired) throws ValidationException {
+	public Date validateDateHired(Boolean currentlyEmployed, Date dateHired) throws ValidationException {
 		if (!currentlyEmployed && dateHired != null) {
 			throw new ValidationException("Date hired cannot be assigned if person is unemployed.");
 		}

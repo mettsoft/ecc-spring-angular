@@ -14,14 +14,14 @@ public class RoleService extends AbstractService<Role> {
 	private static final String MAX_LENGTH_ERROR_MESSAGE_TEMPLATE = "%s must not exceed " + MAX_CHARACTERS + " characters.";
 	private static final String NOT_EMPTY_ERROR_MESSAGE_TEMPLATE = "%s cannot be empty.";
 
-	private RoleDao roleDao;
+	private final RoleDao roleDao;
 
 	public RoleService() {
 		super(new RoleDao());
 		roleDao = (RoleDao) dao;
 	}
 
-	public static String validateName(String roleName) throws ValidationException {
+	public String validateName(String roleName) throws ValidationException {
 		ModelValidator
 			.create(roleName)
 			.notEmpty(String.format(NOT_EMPTY_ERROR_MESSAGE_TEMPLATE, "Role name"))
