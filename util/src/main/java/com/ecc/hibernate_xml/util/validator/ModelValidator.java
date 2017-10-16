@@ -47,21 +47,17 @@ public class ModelValidator {
 		policies.put("NotEmpty", new ValidatorPolicy() {
 			@Override
 			public Boolean onValidate(Object data, Object... arguments) {
-				String subject = data == null? null: (String) data;
-				return subject != null && !subject.trim().isEmpty();
+				if (data == null) {
+					return false;
+				}
+				else if (data instanceof String && ((String) data).trim().isEmpty()) {
+					return false;				
+				}
+				return true;
 			}
 		});
 
 		policies.get("NotEmpty").setMessageTemplate(NOT_EMPTY_ERROR_MESSAGE_TEMPLATE);
-
-		policies.put("NotNull", new ValidatorPolicy() {
-			@Override
-			public Boolean onValidate(Object data, Object... arguments) {
-				return data != null;
-			}
-		});
-
-		policies.get("NotNull").setMessageTemplate(NOT_NULL_ERROR_MESSAGE_TEMPLATE);
 
 		policies.put("ValidEmail", new ValidatorPolicy() {
 			@Override
