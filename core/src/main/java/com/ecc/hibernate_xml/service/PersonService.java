@@ -32,26 +32,16 @@ public class PersonService extends AbstractService<Person> {
 		return data;		
 	}
 
-	public String validateStreetNumber(String streetNumber) throws ValidationException {
-		validator.validate("NotEmpty", streetNumber, "Street number");
-		validator.validate("MaxLength", streetNumber, DEFAULT_MAX_CHARACTERS, "Street number");
-		return streetNumber;
-	}
+	public <T> T validateAddress(T data, String component) throws ValidationException {
+		validator.validate("NotEmpty", data, component);
 
-	public Integer validateBarangay(Integer barangay) throws ValidationException {
-		validator.validate("NotNull", barangay, "Barangay");
-		return barangay;
-	}
-
-	public String validateMunicipality(String municipality) throws ValidationException {
-		validator.validate("NotEmpty", municipality, "Municipality");
-		validator.validate("MaxLength", municipality, MAX_MUNICIPALITY_CHARACTERS, "Municipality");
-		return municipality;
-	}
-
-	public Integer validateZipCode(Integer zipCode) throws ValidationException {
-		validator.validate("NotNull", zipCode, "Zip code");
-		return zipCode;
+		if (component == "Street number") {
+			validator.validate("MaxLength", data, DEFAULT_MAX_CHARACTERS, component);		
+		}
+		else if (component == "Municipality") {
+			validator.validate("MaxLength", data, MAX_MUNICIPALITY_CHARACTERS, component);			
+		}
+		return data;
 	}
 
 	public BigDecimal validateGWA(BigDecimal GWA) throws ValidationException {

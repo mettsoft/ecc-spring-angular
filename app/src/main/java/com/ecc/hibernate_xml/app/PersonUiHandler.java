@@ -109,12 +109,10 @@ public class PersonUiHandler {
 		Person person = (Person) parameter;
 		
 		Address address = new Address();
-		address.setStreetNumber(InputHandler.getNextLineREPL(STREET_NUMBER_PROMPT, personService::validateStreetNumber));
-		address.setBarangay(InputHandler.getNextLineREPL(BARANGAY_PROMPT, input -> 
-			personService.validateBarangay(Integer.valueOf(input))));
-		address.setMunicipality(InputHandler.getNextLineREPL(MUNICIPALITY_PROMPT, personService::validateMunicipality));
-		address.setZipCode(InputHandler.getNextLineREPL(ZIP_CODE_PROMPT, input -> 
-			personService.validateZipCode(Integer.valueOf(input))));
+		address.setStreetNumber(InputHandler.getNextLineREPL(STREET_NUMBER_PROMPT, t -> personService.validateAddress(t, "Street number")));
+		address.setBarangay(InputHandler.getNextLineREPL(BARANGAY_PROMPT, t -> personService.validateAddress(Integer.valueOf(t), "Barangay")));
+		address.setMunicipality(InputHandler.getNextLineREPL(MUNICIPALITY_PROMPT, t -> personService.validateAddress(t, "Municipality")));
+		address.setZipCode(InputHandler.getNextLineREPL(ZIP_CODE_PROMPT, t -> personService.validateAddress(Integer.valueOf(t), "Zip code")));
 
 		person.setAddress(address);
 		personService.update(person);
