@@ -92,11 +92,11 @@ public class PersonUiHandler {
 		Person person = (Person) parameter;
 		Name name = person.getName();
 
-		name.setTitle(InputHandler.getNextLineREPL(TITLE_PROMPT, personService::validateTitle));
+		name.setTitle(InputHandler.getNextLineREPL(TITLE_PROMPT, t -> personService.validateName(t, "Title")));
 		name.setLastName(InputHandler.getNextLineREPL(LAST_NAME_PROMPT, t -> personService.validateName(t, "Last name")));
 		name.setFirstName(InputHandler.getNextLineREPL(FIRST_NAME_PROMPT, t -> personService.validateName(t, "First name")));
 		name.setMiddleName(InputHandler.getNextLineREPL(MIDDLE_NAME_PROMPT, t -> personService.validateName(t, "Middle name")));
-		name.setSuffix(InputHandler.getNextLineREPL(SUFFIX_PROMPT, personService::validateSuffix));
+		name.setSuffix(InputHandler.getNextLineREPL(SUFFIX_PROMPT, t -> personService.validateName(t, "Suffix")));
 
 		person.setName(name);
 		personService.update(person);

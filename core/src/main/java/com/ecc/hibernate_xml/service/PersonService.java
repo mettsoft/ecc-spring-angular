@@ -24,20 +24,12 @@ public class PersonService extends AbstractService<Person> {
 		validator = ModelValidator.create();
 	}
 
-	public String validateTitle(String title) throws ValidationException {
-		validator.validate("MaxLength", title, DEFAULT_MAX_CHARACTERS, "Title");
-		return title;
-	}
-
-	public String validateName(String name, String nameType) throws ValidationException {
-		validator.validate("NotEmpty", name, nameType);
-		validator.validate("MaxLength", name, DEFAULT_MAX_CHARACTERS, nameType);
-		return name;		
-	}
-
-	public String validateSuffix(String suffix) throws ValidationException {
-		validator.validate("MaxLength", suffix, DEFAULT_MAX_CHARACTERS, "Suffix");
-		return suffix;
+	public String validateName(String data, String component) throws ValidationException {
+		if (component != "Title" && component != "Suffix") {
+			validator.validate("NotEmpty", data, component);		
+		}
+		validator.validate("MaxLength", data, DEFAULT_MAX_CHARACTERS, component);
+		return data;		
 	}
 
 	public String validateStreetNumber(String streetNumber) throws ValidationException {
