@@ -26,20 +26,25 @@ public class ModelValidator {
 		policies.put("MaxLength", new ValidatorPolicy() {
 			@Override
 			public Boolean onValidate(Object data, Object... arguments) {
+				if (data == null) {
+					return false;
+				}				
 				Integer maximumLength = (Integer) arguments[0];
-				String subject = data == null? null: (String) data;
-				return subject == null || subject.length() <= maximumLength;
+				String subject = (String) data;
+				return subject.length() <= maximumLength;
 			}
 		});
-
 		policies.get("MaxLength").setMessageTemplate(MAX_LENGTH_ERROR_MESSAGE_TEMPLATE);
 
 		policies.put("EqualLength", new ValidatorPolicy() {
 			@Override
 			public Boolean onValidate(Object data, Object... arguments) {
+				if (data == null) {
+					return false;
+				}
 				Integer matchingLength = (Integer) arguments[0];
-				String subject = data == null? null: (String) data;
-				return subject != null && subject.length() == matchingLength;
+				String subject = (String) data;
+				return subject.length() == matchingLength;
 			}
 		});
 		policies.get("EqualLength").setMessageTemplate(EQUALS_ERROR_MESSAGE);
@@ -51,55 +56,59 @@ public class ModelValidator {
 					return false;
 				}
 				else if (data instanceof String && ((String) data).trim().isEmpty()) {
-					return false;				
+					return false;                           
 				}
 				return true;
 			}
 		});
-
 		policies.get("NotEmpty").setMessageTemplate(NOT_EMPTY_ERROR_MESSAGE_TEMPLATE);
 
 		policies.put("ValidEmail", new ValidatorPolicy() {
 			@Override
 			public Boolean onValidate(Object data, Object... arguments) {
-				String subject = data == null? null: (String) data;
+				String subject = (String) data;
 				return EmailValidator.getInstance().isValid(subject);
 			}
 		});
-
 		policies.get("ValidEmail").setMessageTemplate(EMAIL_IS_INVALID);
 
 		policies.put("Digits", new ValidatorPolicy() {
 			final Pattern PATTERN = Pattern.compile("^[0-9]+$");
 			@Override
 			public Boolean onValidate(Object data, Object... arguments) {
-				String subject = data == null? null: (String) data;
-				return subject != null && PATTERN.matcher(subject).find();
+				if (data == null) {
+					return false;
+				}
+				String subject = (String) data;
+				return PATTERN.matcher(subject).find();
 			}
 		});
-
 		policies.get("Digits").setMessageTemplate(NUMERICAL_DIGITS_ERROR_MESSAGE);
 
 		policies.put("Minimum", new ValidatorPolicy() {
 			@Override
 			public Boolean onValidate(Object data, Object... arguments) {
-				BigDecimal subject = data == null? null: (BigDecimal) data;
+				if (data == null) {
+					return false;
+				}
+				BigDecimal subject = (BigDecimal) data;
 				BigDecimal threshold = new BigDecimal(arguments[0].toString());
-				return subject != null && subject.compareTo(threshold) >= 0;
+				return subject.compareTo(threshold) >= 0;
 			}
 		});
-
 		policies.get("Minimum").setMessageTemplate(MINIMUM_ERROR_MESSAGE_TEMPLATE);
 
 		policies.put("Maximum", new ValidatorPolicy() {
 			@Override
 			public Boolean onValidate(Object data, Object... arguments) {
-				BigDecimal subject = data == null? null: (BigDecimal) data;
+				if (data == null) {
+					return false;
+				}
+				BigDecimal subject = (BigDecimal) data;
 				BigDecimal threshold = new BigDecimal(arguments[0].toString());
-				return subject != null && subject.compareTo(threshold) <= 0;
+				return subject.compareTo(threshold) <= 0;
 			}
 		});
-
 		policies.get("Maximum").setMessageTemplate(MAXIMUM_ERROR_MESSAGE_TEMPLATE);
 	}
 
