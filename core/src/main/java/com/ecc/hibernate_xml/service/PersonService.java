@@ -25,7 +25,7 @@ public class PersonService extends AbstractService<Person> {
 	}
 
 	public String validateName(String data, String component) throws ValidationException {
-		if (component != "Title" && component != "Suffix") {
+		if (!component.equals("Title") && !component.equals("Suffix")) {
 			validator.validate("NotEmpty", data, component);		
 		}
 		validator.validate("MaxLength", data, DEFAULT_MAX_CHARACTERS, component);
@@ -35,10 +35,10 @@ public class PersonService extends AbstractService<Person> {
 	public <T> T validateAddress(T data, String component) throws ValidationException {
 		validator.validate("NotEmpty", data, component);
 
-		if (component == "Street number") {
+		if (component.equals("Street number")) {
 			validator.validate("MaxLength", data, DEFAULT_MAX_CHARACTERS, component);		
 		}
-		else if (component == "Municipality") {
+		else if (component.equals("Municipality")) {
 			validator.validate("MaxLength", data, MAX_MUNICIPALITY_CHARACTERS, component);			
 		}
 		return data;
