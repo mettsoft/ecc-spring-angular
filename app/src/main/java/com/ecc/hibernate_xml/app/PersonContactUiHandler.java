@@ -89,7 +89,7 @@ public class PersonContactUiHandler {
 		}
 		else {		
 			Integer contactId = InputHandler.getNextLine(CONTACT_ID_PROMPT, Integer::valueOf);
-			Contact contact = contactService.get(contactId);
+			Contact contact = contactService.get(contactId, person);
 			String userPrompt = String.format(CONTACT_DATA_PROMPT, contact);
 			fillContact(userPrompt, contact);
 
@@ -112,7 +112,7 @@ public class PersonContactUiHandler {
 		else {
 			Integer contactId = InputHandler.getNextLine(CONTACT_ID_PROMPT, Integer::valueOf);
 
-			contactService.delete(contactId);
+			contactService.delete(contactId, person);
 
 			String successMessage = String.format(DELETE_SUCCESS_MESSAGE, contactId);
 			System.out.println(successMessage);	

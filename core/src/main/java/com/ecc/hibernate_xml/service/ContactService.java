@@ -60,4 +60,12 @@ public class ContactService extends AbstractService<Contact> {
 		contact.setPerson(person);
 		contactDao.create(contact);
 	}
+
+	public Contact get(Integer id, Person person) throws DaoException {
+		return contactDao.get(id, person);
+	}
+
+	public void delete(Integer id, Person person) throws DaoException {
+		contactDao.delete(contactDao.get(id, person));
+	}
 }

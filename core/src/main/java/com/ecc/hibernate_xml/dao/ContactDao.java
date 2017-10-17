@@ -22,4 +22,17 @@ public class ContactDao extends AbstractDao<Contact> {
 			.list();
 		});
 	}
+
+	public Contact get(Integer id, Person person) {
+		return TransactionScope.executeTransactionWithResult(session -> {
+			Contact entity = (Contact) session.createCriteria(Contact.class)
+				.add(Restrictions.eq("person.id", person.getId()))
+				.add(Restrictions.eq("id", id))
+				.uniqueResult();
+			if (entity == null) {
+				throw new RuntimeException("Contact not found!");
+			}
+			return entity;			
+		});
+	}
 }
