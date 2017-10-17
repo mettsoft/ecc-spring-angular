@@ -20,17 +20,17 @@ public class RoleDao extends AbstractDao<Role> {
 	} 
 
 	@Override
-	protected void onBeforeSave(Session session, Role role) {
-		onBeforeUpdate(session, role);
+	protected Throwable onCreateFailure(Role role, Throwable cause) {
+		return onUpdateFailure(role, cause);
 	}
 
 	@Override
-	protected void onBeforeUpdate(Session session, Role role) {
-		Role existingRole = get(role.getName());
-		if (existingRole != null && existingRole.getId() != role.getId()) {
-			throw new RuntimeException(String.format(
+	protected Throwable onUpdateFailure(Role role, Throwable cause) {
+		if (cause instanceof ConstraintViolationException) {
+			return new RuntimeException(String.format(
 				"Role name \"%s\" is already existing.", role.getName()));
 		}
+		return cause;
 	}
 
 	@Override
