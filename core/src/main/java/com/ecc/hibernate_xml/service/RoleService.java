@@ -38,14 +38,22 @@ public class RoleService extends AbstractService<Role> {
 	public void addRoleToPerson(Integer roleId, Person person) throws DaoException {
 		Role role = roleDao.get(roleId);
 		role.getPersons().add(person);
-		person.getRoles().add(role);
-		roleDao.update(role);
+		if (person.getRoles().add(role)) {
+			roleDao.update(role);
+		}
+		else {
+			throw new DaoException("Role not found!");
+		}
 	}
 
 	public void removeRoleFromPerson(Integer roleId, Person person) throws DaoException {
 		Role role = roleDao.get(roleId);
 		role.getPersons().remove(person);
-		person.getRoles().remove(role);
-		roleDao.update(role);
+		if (person.getRoles().remove(role)) {
+			roleDao.update(role);
+		}
+		else {
+			throw new DaoException("Role not found!");
+		}
 	}
 }
