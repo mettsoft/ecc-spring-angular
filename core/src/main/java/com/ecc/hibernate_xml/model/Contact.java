@@ -12,9 +12,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.FetchType;
 import javax.persistence.Transient;
+import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name="contacts")
+@Table(
+	name="contacts",
+	uniqueConstraints=
+		@UniqueConstraint(columnNames={"contact_type", "data"})
+)
 @Inheritance
 @DiscriminatorColumn(name="contact_type", length=20)
 public abstract class Contact {
