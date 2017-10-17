@@ -73,11 +73,11 @@ public class Name {
 		if (object != null && object instanceof Name) {
 			Name other = (Name) object; 
 
-			return (title == null && title.equals(other.title) || title != null && title.equals(other.title)) && 
+			return (title == null && title == other.title || title != null && title.equals(other.title)) && 
 				firstName.equals(other.firstName) && 
 				middleName.equals(other.middleName) && 
 				lastName.equals(other.lastName) && 
-				(suffix == null && suffix.equals(other.suffix) || suffix != null && suffix.equals(other.suffix));
+				(suffix == null && suffix == other.suffix || suffix != null && suffix.equals(other.suffix));
 		}
 		return false;
 	}
