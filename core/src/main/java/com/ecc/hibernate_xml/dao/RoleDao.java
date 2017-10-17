@@ -7,6 +7,7 @@ import org.hibernate.Session;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Order;
+import org.hibernate.exception.ConstraintViolationException;
 
 import com.ecc.hibernate_xml.model.Role;
 import com.ecc.hibernate_xml.model.Person;
@@ -33,16 +34,17 @@ public class RoleDao extends AbstractDao<Role> {
 	}
 
 	@Override
-	protected void onBeforeDelete(Session session, Role role) {
-		if (role.getPersons().size() > 0) {
+	protected Throwable onDeleteFailure(Role role, Throwable cause) {
+		if (cause instanceof ConstraintViolationException && role.getPersons().size() > 0) {
 			String personIds = role.getPersons()
 				.stream()
 				.map(person -> person.getId().toString())
 				.collect(Collectors.joining(", "));
 
-			throw new RuntimeException(
+			return new RuntimeException(
 				String.format("Role is in used by person IDs [%s].", personIds));
 		}
+		return cause;
 	}
 
 	private Role get(String name) {

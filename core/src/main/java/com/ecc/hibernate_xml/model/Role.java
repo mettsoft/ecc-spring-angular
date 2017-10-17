@@ -12,6 +12,7 @@ import javax.persistence.OrderBy;
 import javax.persistence.FetchType;
 import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
+import javax.persistence.CascadeType;
 
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Fetch;
@@ -50,11 +51,7 @@ public class Role {
 	}
 
 	@Fetch(FetchMode.SELECT)
-	@ManyToMany(fetch=FetchType.EAGER)
-	@JoinTable(
-		name="persons_roles",
-		joinColumns=@JoinColumn(name="role_id"),
-		inverseJoinColumns=@JoinColumn(name="person_id"))
+	@ManyToMany(fetch=FetchType.EAGER, mappedBy="roles")
 	@OrderBy
 	public Set<Person> getPersons() {
 		return persons;

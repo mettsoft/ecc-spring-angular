@@ -41,7 +41,7 @@ public abstract class AbstractDao<T> implements Dao<T> {
 		try {
 			TransactionScope.executeTransaction(session -> {
 				onBeforeUpdate(session, entity);
-				session.merge(entity);				
+				session.update(entity);				
 			});			
 		}
 		catch (Exception exception) {
@@ -57,8 +57,8 @@ public abstract class AbstractDao<T> implements Dao<T> {
 				session.delete(entity);				
 			});			
 		}
-		catch (Exception exception) {
-			throw new DaoException(exception);
+		catch (Exception cause) {
+			throw new DaoException(onDeleteFailure(entity, cause));
 		}
 	} 
 
@@ -76,4 +76,5 @@ public abstract class AbstractDao<T> implements Dao<T> {
 	protected void onBeforeSave(Session session, T entity) {}
 	protected void onBeforeUpdate(Session session, T entity) {}
 	protected void onBeforeDelete(Session session, T entity) {}
+	protected Throwable onDeleteFailure(T entity, Throwable cause) { return cause; }
 }

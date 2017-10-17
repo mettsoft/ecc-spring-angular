@@ -69,7 +69,7 @@ public class Application {
 	}
 
 	public static void main(String[] args) {
-		Logger.getLogger("org.hibernate").setLevel(Level.SEVERE);
+		Logger.getLogger("org.hibernate").setLevel(Level.OFF);
 		System.out.println(MAIN_HEADER);
 
 		HibernateUtility.initializeSessionFactory();

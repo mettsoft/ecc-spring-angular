@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.ecc.hibernate_xml.dao.DaoException;
 import com.ecc.hibernate_xml.dao.RoleDao;
+import com.ecc.hibernate_xml.dao.PersonDao;
 import com.ecc.hibernate_xml.model.Role;
 import com.ecc.hibernate_xml.model.Person;
 import com.ecc.hibernate_xml.util.validator.ValidationException;
@@ -13,11 +14,13 @@ public class RoleService extends AbstractService<Role> {
 	private static final Integer MAX_CHARACTERS = 20;
 
 	private final RoleDao roleDao;
+	private final PersonDao personDao;
 	private final ModelValidator validator;
 
 	public RoleService() {
 		super(new RoleDao());
 		roleDao = (RoleDao) dao;
+		personDao = new PersonDao();
 		validator = ModelValidator.create();
 	}
 
@@ -39,7 +42,7 @@ public class RoleService extends AbstractService<Role> {
 		Role role = roleDao.get(roleId);
 		role.getPersons().add(person);
 		if (person.getRoles().add(role)) {
-			roleDao.update(role);
+			personDao.update(person);
 		}
 		else {
 			throw new DaoException("Role not found!");
@@ -50,7 +53,7 @@ public class RoleService extends AbstractService<Role> {
 		Role role = roleDao.get(roleId);
 		role.getPersons().remove(person);
 		if (person.getRoles().remove(role)) {
-			roleDao.update(role);
+			personDao.update(person);
 		}
 		else {
 			throw new DaoException("Role not found!");
