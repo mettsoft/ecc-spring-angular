@@ -26,12 +26,9 @@ public class ModelValidator {
 		policies.put("MaxLength", new ValidatorPolicy() {
 			@Override
 			public Boolean onValidate(Object data, Object... arguments) {
-				if (data == null) {
-					return false;
-				}				
 				Integer maximumLength = (Integer) arguments[0];
 				String subject = (String) data;
-				return subject.length() <= maximumLength;
+				return data != null && subject.length() <= maximumLength;
 			}
 		});
 		policies.get("MaxLength").setMessageTemplate(MAX_LENGTH_ERROR_MESSAGE_TEMPLATE);
@@ -39,12 +36,9 @@ public class ModelValidator {
 		policies.put("EqualLength", new ValidatorPolicy() {
 			@Override
 			public Boolean onValidate(Object data, Object... arguments) {
-				if (data == null) {
-					return false;
-				}
 				Integer matchingLength = (Integer) arguments[0];
 				String subject = (String) data;
-				return subject.length() == matchingLength;
+				return data != null && subject.length() == matchingLength;
 			}
 		});
 		policies.get("EqualLength").setMessageTemplate(EQUALS_ERROR_MESSAGE);
@@ -76,11 +70,8 @@ public class ModelValidator {
 			final Pattern PATTERN = Pattern.compile("^[0-9]+$");
 			@Override
 			public Boolean onValidate(Object data, Object... arguments) {
-				if (data == null) {
-					return false;
-				}
 				String subject = (String) data;
-				return PATTERN.matcher(subject).find();
+				return data != null && PATTERN.matcher(subject).find();
 			}
 		});
 		policies.get("Digits").setMessageTemplate(NUMERICAL_DIGITS_ERROR_MESSAGE);
@@ -88,12 +79,9 @@ public class ModelValidator {
 		policies.put("Minimum", new ValidatorPolicy() {
 			@Override
 			public Boolean onValidate(Object data, Object... arguments) {
-				if (data == null) {
-					return false;
-				}
 				BigDecimal subject = (BigDecimal) data;
 				BigDecimal threshold = new BigDecimal(arguments[0].toString());
-				return subject.compareTo(threshold) >= 0;
+				return data != null && subject.compareTo(threshold) >= 0;
 			}
 		});
 		policies.get("Minimum").setMessageTemplate(MINIMUM_ERROR_MESSAGE_TEMPLATE);
@@ -101,12 +89,9 @@ public class ModelValidator {
 		policies.put("Maximum", new ValidatorPolicy() {
 			@Override
 			public Boolean onValidate(Object data, Object... arguments) {
-				if (data == null) {
-					return false;
-				}
 				BigDecimal subject = (BigDecimal) data;
 				BigDecimal threshold = new BigDecimal(arguments[0].toString());
-				return subject.compareTo(threshold) <= 0;
+				return data != null && subject.compareTo(threshold) <= 0;
 			}
 		});
 		policies.get("Maximum").setMessageTemplate(MAXIMUM_ERROR_MESSAGE_TEMPLATE);
