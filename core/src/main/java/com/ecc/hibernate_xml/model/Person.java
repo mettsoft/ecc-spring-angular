@@ -23,6 +23,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.CascadeType;
 import javax.persistence.FetchType;
 import javax.persistence.TemporalType;
+import javax.persistence.JoinTable;
+import javax.persistence.JoinColumn;
 
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Fetch;
@@ -90,14 +92,17 @@ public class Person {
 	}
 
 	@Fetch(FetchMode.SELECT)
-	@OneToMany(mappedBy="person", fetch=FetchType.EAGER)
+	@OneToMany(cascade=CascadeType.REMOVE, mappedBy="person", fetch=FetchType.EAGER)
 	@OrderBy
 	public Set<Contact> getContacts() {
 		return contacts;
 	}
 
 	@Fetch(FetchMode.SELECT)
-	@ManyToMany(mappedBy="persons", fetch=FetchType.EAGER)
+	@ManyToMany(fetch=FetchType.EAGER)
+	@JoinTable(
+		joinColumns=@JoinColumn(name="person_id"),
+		inverseJoinColumns=@JoinColumn(name="role_id"))
 	@OrderBy
 	public Set<Role> getRoles() {
 		return roles;
