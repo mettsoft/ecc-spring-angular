@@ -26,36 +26,27 @@ public abstract class AbstractDao<T> implements Dao<T> {
 	@Override
 	public void create(T entity) throws DaoException {
 		try {
-			TransactionScope.executeTransaction(session -> {
-				onBeforeSave(session, entity);
-				session.persist(entity);
-			});			
+			TransactionScope.executeTransaction(session -> session.persist(entity));			
 		}
-		catch (Exception exception) {
-			throw new DaoException(exception);
+		catch (Exception cause) {
+			throw new DaoException(onCreateFailure(entity, cause));
 		}
 	}
 
 	@Override
 	public void update(T entity) throws DaoException {
 		try {
-			TransactionScope.executeTransaction(session -> {
-				onBeforeUpdate(session, entity);
-				session.update(entity);				
-			});			
+			TransactionScope.executeTransaction(session -> session.update(entity));			
 		}
-		catch (Exception exception) {
-			throw new DaoException(exception);
+		catch (Exception cause) {
+			throw new DaoException(onUpdateFailure(entity, cause));
 		}
 	}
 
 	@Override
 	public void delete(T entity) throws DaoException {
 		try {
-			TransactionScope.executeTransaction(session -> {
-				onBeforeDelete(session, entity);
-				session.delete(entity);				
-			});			
+			TransactionScope.executeTransaction(session -> session.delete(entity));			
 		}
 		catch (Exception cause) {
 			throw new DaoException(onDeleteFailure(entity, cause));
@@ -72,9 +63,8 @@ public abstract class AbstractDao<T> implements Dao<T> {
 			return entity;			
 		});
 	}
-
-	protected void onBeforeSave(Session session, T entity) {}
-	protected void onBeforeUpdate(Session session, T entity) {}
-	protected void onBeforeDelete(Session session, T entity) {}
+	
+	protected Throwable onCreateFailure(T entity, Throwable cause) { return cause; }
+	protected Throwable onUpdateFailure(T entity, Throwable cause) { return cause; }
 	protected Throwable onDeleteFailure(T entity, Throwable cause) { return cause; }
 }
