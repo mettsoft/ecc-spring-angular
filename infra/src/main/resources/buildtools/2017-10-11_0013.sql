@@ -61,10 +61,10 @@ VALUES
 	('1408', 317, 'Manila', 1003);
 
 INSERT INTO 
-	persons (last_name, first_name, middle_name, address_id, currently_employed)
+	persons (last_name, first_name, middle_name, address_id, currently_employed, date_hired, GWA)
 VALUES 
-	('Young', 'Emmett', 'Ngan', 1, false),
-	('Dela Cruz', 'Juan', 'Tamad', 2, false);
+	('Young', 'Emmett', 'Ngan', 1, true, '2017-07-31', 5),
+	('Dela Cruz', 'Juan', 'Tamad', 2, true, '2017-08-24', 1);
 
 INSERT INTO 
 	persons_roles (person_id, role_id)
