@@ -1,9 +1,25 @@
 package com.ecc.hibernate_xml.model;
 
 import java.util.Set;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Column;
+import javax.persistence.ManyToMany;
+import javax.persistence.OrderBy;
+import javax.persistence.FetchType;
+import javax.persistence.JoinTable;
+import javax.persistence.JoinColumn;
+
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.Fetch;
 
 import com.ecc.hibernate_xml.model.Person;
 
+@Entity
+@Table(name="roles")
 public class Role {
 	private Integer id;
 	private String name;
@@ -21,14 +37,25 @@ public class Role {
 		this.persons = persons;
 	}
 
+	@Id @GeneratedValue(generator="RoleIdGenerator")
+	@SequenceGenerator(name="RoleIdGenerator", sequenceName="roles_id_seq")
+	@Column(nullable=false)
 	public Integer getId() {
 		return id;
 	}
 	
+	@Column(unique=true, nullable=false, length=20)
 	public String getName() {
 		return name;
 	}
 
+	@Fetch(FetchMode.SELECT)
+	@ManyToMany(fetch=FetchType.EAGER)
+	@JoinTable(
+		name="persons_roles",
+		joinColumns=@JoinColumn(name="role_id"),
+		inverseJoinColumns=@JoinColumn(name="person_id"))
+	@OrderBy
 	public Set<Person> getPersons() {
 		return persons;
 	}

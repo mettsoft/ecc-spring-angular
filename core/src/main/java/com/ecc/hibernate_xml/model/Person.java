@@ -8,6 +8,27 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Temporal;
+import javax.persistence.OrderBy;
+import javax.persistence.OneToOne;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.CascadeType;
+import javax.persistence.FetchType;
+import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.Fetch;
+
+@Entity
+@Table(name="persons")
 public class Person {
 	private Integer id;
 	private Name name;
@@ -28,6 +49,58 @@ public class Person {
 	public Person(Name name) {
 		this();
 		setName(name);
+	}
+	
+	@Id @GeneratedValue(generator="PersonIdGenerator")
+	@SequenceGenerator(name="PersonIdGenerator", sequenceName="persons_id_seq")
+	@Column(nullable=false)
+	public Integer getId() {
+		return id;
+	}
+
+	@Embedded
+	public Name getName() {
+		return name;
+	}
+
+	@OneToOne(cascade=CascadeType.ALL, orphanRemoval=true, fetch=FetchType.EAGER)
+	public Address getAddress() {
+		return address;
+	}
+
+	@Temporal(TemporalType.DATE)
+	public Date getBirthday() {
+		return birthday;
+	}
+
+	@Column(precision=4, scale=3)
+	public BigDecimal getGWA() {
+		return GWA;
+	}
+
+	@Column(name="currently_employed", nullable=false)
+	public Boolean getCurrentlyEmployed() {
+		return currentlyEmployed;
+	}
+
+	@Temporal(TemporalType.DATE)
+	@Column(name="date_hired")
+	public Date getDateHired() {
+		return dateHired;
+	}
+
+	@Fetch(FetchMode.SELECT)
+	@OneToMany(mappedBy="person", fetch=FetchType.EAGER)
+	@OrderBy
+	public Set<Contact> getContacts() {
+		return contacts;
+	}
+
+	@Fetch(FetchMode.SELECT)
+	@ManyToMany(mappedBy="persons", fetch=FetchType.EAGER)
+	@OrderBy
+	public Set<Role> getRoles() {
+		return roles;
 	}
 	
 	public void setId(Integer id) {
@@ -64,42 +137,6 @@ public class Person {
 
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public Name getName() {
-		return name;
-	}
-
-	public Address getAddress() {
-		return address;
-	}
-
-	public Date getBirthday() {
-		return birthday;
-	}
-
-	public BigDecimal getGWA() {
-		return GWA;
-	}
-
-	public Boolean getCurrentlyEmployed() {
-		return currentlyEmployed;
-	}
-
-	public Date getDateHired() {
-		return dateHired;
-	}
-
-	public Set<Contact> getContacts() {
-		return contacts;
-	}
-
-	public Set<Role> getRoles() {
-		return roles;
 	}
 
 	@Override

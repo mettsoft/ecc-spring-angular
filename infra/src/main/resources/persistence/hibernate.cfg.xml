@@ -9,9 +9,12 @@
 		</property>
 		<property name="hibernate.connection.username">exist</property>
 		<property name="hibernate.connection.password">ex1stgl0bal</property>
-		<mapping resource="persistence/Address.hbm.xml" />
-		<mapping resource="persistence/Person.hbm.xml" />
-		<mapping resource="persistence/Role.hbm.xml" />
-		<mapping resource="persistence/Contact.hbm.xml" />
+		<mapping class="com.ecc.hibernate_xml.model.Address" />
+		<mapping class="com.ecc.hibernate_xml.model.Person" />
+		<mapping class="com.ecc.hibernate_xml.model.Role" />
+		<mapping class="com.ecc.hibernate_xml.model.Contact" />
+		<mapping class="com.ecc.hibernate_xml.model.Landline" />
+		<mapping class="com.ecc.hibernate_xml.model.Email" />
+		<mapping class="com.ecc.hibernate_xml.model.MobileNumber" />
 	</session-factory>
 </hibernate-configuration>

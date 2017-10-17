@@ -4,12 +4,39 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
+import javax.persistence.Embeddable;
+import javax.persistence.Column;
+
+@Embeddable
 public class Name {
 	private String title;
 	private String lastName;
 	private String firstName;
 	private String middleName;
 	private String suffix;
+
+	public String getTitle() {
+		return title;
+	}
+
+	@Column(name="last_name", nullable=false)
+	public String getLastName() {
+		return lastName;
+	}
+
+	@Column(name="first_name", nullable=false)
+	public String getFirstName() {
+		return firstName;
+	}
+
+	@Column(name="middle_name", nullable=false)
+	public String getMiddleName() {
+		return middleName;
+	}
+
+	public String getSuffix() {
+		return suffix;
+	}
 
 	public void setTitle(String title) {
 		this.title = title != null && title.trim().isEmpty()? null: title;
@@ -29,26 +56,6 @@ public class Name {
 
 	public void setSuffix(String suffix) {
 		this.suffix = suffix != null && suffix.trim().isEmpty()? null: suffix;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public String getMiddleName() {
-		return middleName;
-	}
-
-	public String getSuffix() {
-		return suffix;
 	}
 
 	@Override
