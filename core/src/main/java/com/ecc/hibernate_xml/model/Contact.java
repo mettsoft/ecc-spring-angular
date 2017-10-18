@@ -2,8 +2,6 @@ package com.ecc.hibernate_xml.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.persistence.Inheritance;
-import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
 import javax.persistence.SequenceGenerator;
@@ -26,11 +24,10 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 )
 @Cacheable
 @Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
-@Inheritance
-@DiscriminatorColumn(name="contact_type", length=20)
-public abstract class Contact {
+public class Contact {
 	private Integer id;
 	private String data;
+	private String contactType;
 	private Person person;
 
 	@Id @GeneratedValue(generator="ContactIdGenerator")
@@ -52,9 +49,9 @@ public abstract class Contact {
 		return person;
 	}
 	
-	@Transient
+	@Column(name="contact_type", length=20, nullable=false)
 	public String getContactType() {
-		return this.getClass().getSimpleName();
+		return contactType;
 	}
 
 	public void setId(Integer id) {
@@ -67,6 +64,10 @@ public abstract class Contact {
 
 	public void setPerson(Person person) {
 		this.person = person;
+	}
+
+	public void setContactType(String contactType) {
+		this.contactType = contactType;
 	}
 
 	@Override

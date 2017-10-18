@@ -16,8 +16,5 @@
 		<mapping class="com.ecc.hibernate_xml.model.Person" />
 		<mapping class="com.ecc.hibernate_xml.model.Role" />
 		<mapping class="com.ecc.hibernate_xml.model.Contact" />
-		<mapping class="com.ecc.hibernate_xml.model.Landline" />
-		<mapping class="com.ecc.hibernate_xml.model.Email" />
-		<mapping class="com.ecc.hibernate_xml.model.MobileNumber" />
 	</session-factory>
 </hibernate-configuration>

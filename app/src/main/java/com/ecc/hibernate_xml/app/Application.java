@@ -119,6 +119,6 @@ public class Application {
 		// Receives the Person detached instance from the previous level.
 		uiRouter.register("Add landline.", arg -> { personContactUiHandler.create(arg, "Landline"); });
 		uiRouter.register("Add email.", arg -> { personContactUiHandler.create(arg, "Email"); });
-		uiRouter.register("Add mobile number.", arg -> { personContactUiHandler.create(arg, "Mobile Number"); });
+		uiRouter.register("Add mobile number.", arg -> { personContactUiHandler.create(arg, "Mobile"); });
 	}
 }

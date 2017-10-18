@@ -4,9 +4,6 @@ import com.ecc.hibernate_xml.dto.ContactDTO;
 import com.ecc.hibernate_xml.dto.PersonDTO;
 import com.ecc.hibernate_xml.model.Person;
 import com.ecc.hibernate_xml.model.Contact;
-import com.ecc.hibernate_xml.model.Landline;
-import com.ecc.hibernate_xml.model.Email;
-import com.ecc.hibernate_xml.model.MobileNumber;
 
 public class ContactAssembler extends AbstractAssembler<Contact, ContactDTO> {	
 	@Override
@@ -17,8 +14,8 @@ public class ContactAssembler extends AbstractAssembler<Contact, ContactDTO> {
 		ContactDTO dto = new ContactDTO();
 		dto.setId(model.getId());
 		dto.setData(model.getData());
-		dto.setPerson(createProxyDTO(model.getPerson()));
 		dto.setContactType(model.getContactType());
+		dto.setPerson(createProxyDTO(model.getPerson()));
 		return dto;
 	}
 
@@ -36,22 +33,10 @@ public class ContactAssembler extends AbstractAssembler<Contact, ContactDTO> {
 		if (dto == null) {
 			return null;
 		}
-		Contact model = null;
-
-		switch(dto.getContactType()) {
-			case "Landline": 
-				model = new Landline();
-				break;
-			case "Email":
-				model = new Email();
-				break;
-			case "Mobile Number":
-				model = new MobileNumber();
-				break;
-		}
-
+		Contact model = new Contact();
 		model.setId(dto.getId());
 		model.setData(dto.getData());
+		model.setContactType(dto.getContactType());
 		model.setPerson(createProxyModel(dto.getPerson()));
 		return model;
 	}

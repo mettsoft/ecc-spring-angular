@@ -34,7 +34,7 @@ public class ContactService extends AbstractService<Contact, ContactDTO> {
 			case "Landline":
 				validateNumericalContact(data, LANDLINE_DIGITS, "Landline"); 
 				break;
-			case "Mobile Number":
+			case "Mobile":
 				validateNumericalContact(data, MOBILE_NUMBER_DIGITS, "Mobile number"); 
 				break;
 			case "Email":

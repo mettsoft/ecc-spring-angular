@@ -59,7 +59,7 @@ public class PersonContactUiHandler {
 			case "Email":
 				prompt = EMAIL_PROMPT;
 				break;
-			case "Mobile Number":
+			case "Mobile":
 				prompt = MOBILE_NUMBER_PROMPT;
 				break;
 			default: 

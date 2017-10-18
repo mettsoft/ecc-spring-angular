@@ -10,11 +10,8 @@
 				<param name="sequence">contacts_id_seq</param>
 			</generator>
 		</id>
-		<discriminator column="contact_type" type="string" />
 		<property name="data" column="data" type="string" />
+		<property name="contactType" column="contact_type" type="string" />
 		<many-to-one name="person" column="person_id" class="Person" />
-		<subclass name="Email" discriminator-value="EMAIL" />
-		<subclass name="Landline" discriminator-value="LANDLINE" />
-		<subclass name="MobileNumber" discriminator-value="MOBILE_NUMBER" />
 	</class>
 </hibernate-mapping>
