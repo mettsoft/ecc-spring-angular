@@ -5,7 +5,6 @@ import java.util.List;
 import javax.persistence.Embeddable;
 import javax.persistence.Column;
 
-import javax.persistence.Cacheable;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 

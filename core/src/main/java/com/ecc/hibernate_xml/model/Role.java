@@ -16,7 +16,6 @@ import javax.persistence.CascadeType;
 
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Fetch;
-import javax.persistence.Cacheable;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -24,7 +23,6 @@ import com.ecc.hibernate_xml.model.Person;
 
 @Entity
 @Table(name="roles")
-@Cacheable
 @Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 public class Role {
 	private Integer id;

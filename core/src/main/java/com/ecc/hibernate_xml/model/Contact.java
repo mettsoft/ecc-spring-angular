@@ -12,7 +12,6 @@ import javax.persistence.FetchType;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
-import javax.persistence.Cacheable;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -22,7 +21,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 	uniqueConstraints=
 		@UniqueConstraint(columnNames={"contact_type", "data", "person_id"})
 )
-@Cacheable
 @Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 public class Contact {
 	private Integer id;
