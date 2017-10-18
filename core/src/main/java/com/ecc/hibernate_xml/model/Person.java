@@ -5,8 +5,6 @@ import java.util.Date;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.List;
-import java.util.ArrayList;
-import java.util.stream.Collectors;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -164,40 +162,5 @@ public class Person {
 			return name.equals(otherPerson.name);
 		}
 		return false;
-	}
-
-	@Override
-	public String toString() {
-		List<String> tokens = new ArrayList<>(5);
-
-		tokens.add("Name: " + name);
-		if (address != null) {
-			tokens.add("Address: " + address);
-		}
-
-		if (birthday != null) {
-			tokens.add("Birthday: " + birthday);
-		}
-
-		if (GWA != null) {
-			tokens.add("GWA: " + GWA);
-		}
-
-		tokens.add("Currently Employed: " + (currentlyEmployed? dateHired: "No"));		
-
-		if (contacts != null && contacts.size() > 0) {
-			tokens.add("Contacts: " + contacts.stream()
-				.map(contact -> String.format("[%s] %s", contact.getContactType(), contact.getData()))
-				.collect(Collectors.joining(", ")));		
-		}
-
-		if (roles != null && roles.size() > 0) {
-			tokens.add("Roles: " + roles.stream()
-				.map(role -> role.getName())
-				.collect(Collectors.joining(", ")));			
-		}
-
-		return String.format("------ ID: %d ------\n%s", id, 
-			tokens.stream().collect(Collectors.joining("\n")));
 	}
 }

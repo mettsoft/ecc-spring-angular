@@ -78,9 +78,4 @@ public abstract class Contact {
 		}
 		return false;
 	}
-
-	@Override
-	public String toString() {
-		return String.format("[ID=%d][%s] %s", id, getContactType(), data);
-	}
 }
