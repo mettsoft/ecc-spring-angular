@@ -5,12 +5,14 @@ import java.util.List;
 import com.ecc.hibernate_xml.dao.DaoException;
 import com.ecc.hibernate_xml.dao.RoleDao;
 import com.ecc.hibernate_xml.dao.PersonDao;
+import com.ecc.hibernate_xml.dto.RoleDTO;
+import com.ecc.hibernate_xml.dto.RoleAssembler;
 import com.ecc.hibernate_xml.model.Role;
 import com.ecc.hibernate_xml.model.Person;
 import com.ecc.hibernate_xml.util.validator.ValidationException;
 import com.ecc.hibernate_xml.util.validator.ModelValidator;
 
-public class RoleService extends AbstractService<Role> {
+public class RoleService extends AbstractService<Role, RoleDTO> {
 	private static final Integer MAX_CHARACTERS = 20;
 
 	private final RoleDao roleDao;
@@ -18,7 +20,7 @@ public class RoleService extends AbstractService<Role> {
 	private final ModelValidator validator;
 
 	public RoleService() {
-		super(new RoleDao());
+		super(new RoleDao(), new RoleAssembler());
 		roleDao = (RoleDao) dao;
 		personDao = new PersonDao();
 		validator = ModelValidator.create();
@@ -30,12 +32,12 @@ public class RoleService extends AbstractService<Role> {
 		return roleName;
 	}
 
-	public List<Role> list(Person person) {
-		return roleDao.list(person);
+	public List<RoleDTO> list(Person person) {
+		return assembler.createDTO(roleDao.list(person));
 	}
 
-	public List<Role> listRolesNotBelongingTo(Person person) {
-		return roleDao.listRolesNotBelongingTo(person);
+	public List<RoleDTO> listRolesNotBelongingTo(Person person) {
+		return assembler.createDTO(roleDao.listRolesNotBelongingTo(person));
 	}
 
 	public void addRoleToPerson(Integer roleId, Person person) throws DaoException {

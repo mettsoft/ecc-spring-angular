@@ -3,7 +3,7 @@ package com.ecc.hibernate_xml.app;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.ecc.hibernate_xml.model.Role;
+import com.ecc.hibernate_xml.dto.RoleDTO;
 import com.ecc.hibernate_xml.service.RoleService;
 import com.ecc.hibernate_xml.util.app.InputHandler;
 
@@ -23,7 +23,7 @@ public class RoleUiHandler {
 	public void list() {		
 		System.out.println("-------------------");
 
-		List<Role> roles = roleService.list();
+		List<RoleDTO> roles = roleService.list();
 		if (roles.isEmpty()) {
 			System.out.println(NO_ROLES_MESSAGE);
 		}
@@ -35,7 +35,7 @@ public class RoleUiHandler {
 	}
 
 	public void create() throws Exception {		
-		Role role = new Role();	
+		RoleDTO role = new RoleDTO();	
 		role.setName(InputHandler.getNextLineREPL(NAME_PROMPT, roleService::validateName));
 		roleService.create(role);
 
@@ -45,7 +45,7 @@ public class RoleUiHandler {
 
 	public void update() throws Exception {			
 		Integer roleId = InputHandler.getNextLine(UPDATE_PROMPT, Integer::valueOf);
-		Role role = roleService.get(roleId);
+		RoleDTO role = roleService.get(roleId);
 
 		role.setName(InputHandler.getNextLineREPL(NAME_PROMPT, roleService::validateName));
 		roleService.update(role);
@@ -55,7 +55,7 @@ public class RoleUiHandler {
 		if (role.getPersons().size() > 0) {
 			String personIds = role.getPersons()
 				.stream()
-				.map(person -> person.getId().toString())
+				.map(id -> id.toString())
 				.collect(Collectors.joining(", "));
 
 			successMessage += " " + String.format(AFFECTED_PERSONS_MESSAGE, personIds);

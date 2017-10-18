@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.ecc.hibernate_xml.model.Person;
-import com.ecc.hibernate_xml.model.Role;
+import com.ecc.hibernate_xml.dto.RoleDTO;
 import com.ecc.hibernate_xml.service.RoleService;
 import com.ecc.hibernate_xml.util.app.InputHandler;
 
@@ -25,7 +25,7 @@ public class PersonRoleUiHandler {
 		Person person = (Person) parameter;
 		System.out.println("-------------------");
 
-		List<Role> roles = roleService.list(person);
+		List<RoleDTO> roles = roleService.list(person);
 		if (roles.isEmpty()) {
 			System.out.println(String.format(NO_ROLES_MESSAGE, 
 				person.getId(), person.getName()));
@@ -44,7 +44,7 @@ public class PersonRoleUiHandler {
 
 	public void add(Object parameter) throws Exception {
 		Person person = (Person) parameter;
-		List<Role> roles = roleService.listRolesNotBelongingTo(person);
+		List<RoleDTO> roles = roleService.listRolesNotBelongingTo(person);
 
 		System.out.println("-------------------");
 		if (roles.isEmpty()) {
@@ -69,7 +69,7 @@ public class PersonRoleUiHandler {
 
 	public void remove(Object parameter) throws Exception {	
 		Person person = (Person) parameter;
-		List<Role> roles = roleService.list(person);
+		List<RoleDTO> roles = roleService.list(person);
 
 		System.out.println("-------------------");
 		if (roles.isEmpty()) {

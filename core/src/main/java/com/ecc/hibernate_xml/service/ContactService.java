@@ -9,7 +9,7 @@ import com.ecc.hibernate_xml.model.Person;
 import com.ecc.hibernate_xml.util.validator.ValidationException;
 import com.ecc.hibernate_xml.util.validator.ModelValidator;
 
-public class ContactService extends AbstractService<Contact> {
+public class ContactService extends AbstractService<Contact, Contact> {
 	private static final Integer MAX_CHARACTERS = 50;
 	private static final Integer LANDLINE_DIGITS = 7;
 	private static final Integer MOBILE_NUMBER_DIGITS = 11;

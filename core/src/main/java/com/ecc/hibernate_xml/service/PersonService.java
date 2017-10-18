@@ -11,7 +11,7 @@ import com.ecc.hibernate_xml.model.Name;
 import com.ecc.hibernate_xml.util.validator.ValidationException;
 import com.ecc.hibernate_xml.util.validator.ModelValidator;
 
-public class PersonService extends AbstractService<Person> {
+public class PersonService extends AbstractService<Person, Person> {
 	private static final Integer DEFAULT_MAX_CHARACTERS = 20;
 	private static final Integer MAX_MUNICIPALITY_CHARACTERS = 50;
 
