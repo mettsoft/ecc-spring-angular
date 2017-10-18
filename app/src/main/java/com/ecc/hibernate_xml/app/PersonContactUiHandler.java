@@ -1,13 +1,9 @@
 package com.ecc.hibernate_xml.app;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-import com.ecc.hibernate_xml.model.Person;
-import com.ecc.hibernate_xml.model.Contact;
-import com.ecc.hibernate_xml.model.Email;
-import com.ecc.hibernate_xml.model.Landline;
-import com.ecc.hibernate_xml.model.MobileNumber;
+import com.ecc.hibernate_xml.dto.PersonDTO;
+import com.ecc.hibernate_xml.dto.ContactDTO;
 import com.ecc.hibernate_xml.service.ContactService;
 import com.ecc.hibernate_xml.util.app.InputHandler;
 
@@ -30,9 +26,8 @@ public class PersonContactUiHandler {
 	private final ContactService contactService = new ContactService();
 
 	public void list(Object parameter) throws Exception {
-		Person person = (Person) parameter;
-
-		List<Contact> contacts = contactService.list(person);
+		PersonDTO person = (PersonDTO) parameter;
+		List<ContactDTO> contacts = contactService.list(person);
 
 		System.out.println("-------------------");
 		if (contacts.isEmpty()) {
@@ -50,38 +45,43 @@ public class PersonContactUiHandler {
 	}
 
 	public void create(Object parameter, String contactType) throws Exception {
+		PersonDTO person = (PersonDTO) parameter;
+
+		ContactDTO contact = new ContactDTO();
+		contact.setPerson(person);
+		contact.setContactType(contactType);
+
+		String prompt = "";
 		switch(contactType) {
 			case "Landline":
-				saveContact(LANDLINE_PROMPT, new Landline(), (Person) parameter);
+				prompt = LANDLINE_PROMPT;
 				break;
 			case "Email":
-				saveContact(EMAIL_PROMPT, new Email(), (Person) parameter);
+				prompt = EMAIL_PROMPT;
 				break;
 			case "Mobile Number":
-				saveContact(MOBILE_NUMBER_PROMPT, new MobileNumber(), (Person) parameter);
+				prompt = MOBILE_NUMBER_PROMPT;
 				break;
 			default: 
 				throw new RuntimeException("No validation rule defined for " + contactType + "!");
 		}
-	}
 
-	private void saveContact(String prompt, Contact contact, Person person) throws Exception {
 		fillContact(prompt, contact);
-		contactService.create(contact, person);
+		contact.setId((Integer) contactService.create(contact));
 		
 		String successMessage = String.format(CREATE_SUCCESS_MESSAGE, contact);
 		System.out.println(successMessage);
 	}
 
-	private void fillContact(String prompt, Contact contact) {
+	private void fillContact(String prompt, ContactDTO contact) {
 		String data = InputHandler.getNextLineREPL(prompt, arg -> 
 			contactService.validateContact(arg, contact.getContactType()));
 		contact.setData(data);
 	}
 
 	public void update(Object parameter) throws Exception {
-		Person person = (Person) parameter;
-		List<Contact> contacts = contactService.list(person);
+		PersonDTO person = (PersonDTO) parameter;
+		List<ContactDTO> contacts = contactService.list(person);
 
 		System.out.println("-------------------");
 		if (contacts.isEmpty()) {
@@ -89,7 +89,7 @@ public class PersonContactUiHandler {
 		}
 		else {		
 			Integer contactId = InputHandler.getNextLine(CONTACT_ID_PROMPT, Integer::valueOf);
-			Contact contact = contactService.get(contactId, person);
+			ContactDTO contact = contactService.get(contactId, person);
 			String userPrompt = String.format(CONTACT_DATA_PROMPT, contact);
 			fillContact(userPrompt, contact);
 
@@ -102,8 +102,8 @@ public class PersonContactUiHandler {
 	}
 
 	public void delete(Object parameter) throws Exception {
-		Person person = (Person) parameter;
-		List<Contact> contacts = contactService.list(person);
+		PersonDTO person = (PersonDTO) parameter;
+		List<ContactDTO> contacts = contactService.list(person);
 		
 		System.out.println("-------------------");
 		if (contacts.isEmpty()) {
