@@ -1,13 +1,11 @@
 package com.ecc.hibernate_xml.dto;
 
-import java.util.List;
-
 import java.util.stream.Collectors;
 
-import com.ecc.hibernate_xml.dto.RoleDTO;
 import com.ecc.hibernate_xml.model.Role;
+import com.ecc.hibernate_xml.dto.RoleDTO;
 
-public class RoleAssembler implements Assembler<Role, RoleDTO> {
+public class RoleAssembler extends AbstractAssembler<Role, RoleDTO> {
 	@Override
 	public RoleDTO createDTO(Role role) {
 		RoleDTO dto = new RoleDTO();
@@ -23,15 +21,5 @@ public class RoleAssembler implements Assembler<Role, RoleDTO> {
 		role.setId(dto.getId());
 		role.setName(dto.getName());
 		return role;
-	}
-
-	@Override
-	public List<RoleDTO> createDTO(List<Role> role) {
-		return role.stream().map(this::createDTO).collect(Collectors.toList());
-	}
-
-	@Override 
-	public List<Role> createModel(List<RoleDTO> dto) {
-		return dto.stream().map(this::createModel).collect(Collectors.toList());
 	}
 }
