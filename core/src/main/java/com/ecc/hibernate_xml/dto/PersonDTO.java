@@ -17,6 +17,12 @@ public class PersonDTO {
 	private List<ContactDTO> contacts;
 	private List<RoleDTO> roles;
 	
+	public PersonDTO() {
+		currentlyEmployed = false;
+		contacts = new ArrayList<>();
+		roles = new ArrayList<>();
+	}
+
 	public Integer getId() {
 		return id;
 	}
