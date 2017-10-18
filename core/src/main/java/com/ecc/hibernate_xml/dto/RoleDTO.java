@@ -5,7 +5,7 @@ import java.util.List;
 public class RoleDTO {
 	private Integer id;
 	private String name;
-	private List<Integer> personIds;
+	private List<PersonDTO> persons;
 
 	public void setId(Integer id) {
 		this.id = id;
@@ -15,8 +15,8 @@ public class RoleDTO {
 		this.name = name;
 	}
 
-	public void setPersons(List<Integer> personIds) {
-		this.personIds = personIds;
+	public void setPersons(List<PersonDTO> persons) {
+		this.persons = persons;
 	}
 
 	public Integer getId() {
@@ -27,8 +27,8 @@ public class RoleDTO {
 		return name;
 	}
 
-	public List<Integer> getPersons() {
-		return personIds;
+	public List<PersonDTO> getPersons() {
+		return persons;
 	}
 
 	@Override

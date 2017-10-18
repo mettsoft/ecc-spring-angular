@@ -1,6 +1,7 @@
 package com.ecc.hibernate_xml.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.ecc.hibernate_xml.dao.DaoException;
 import com.ecc.hibernate_xml.dao.RoleDao;
@@ -49,9 +50,9 @@ public class RoleService extends AbstractService<Role, RoleDTO> {
 	public void addRoleToPerson(Integer roleId, PersonDTO personDTO) throws DaoException {
 		Person person = personAssembler.createModel(personDTO);
 		Role role = roleDao.get(roleId);
-		//TODO role.getPersons().add(person);
 		if (person.getRoles().add(role)) {
 			personDao.update(person);
+			personDTO.setRoles(person.getRoles().stream().map(assembler::createDTO).collect(Collectors.toList()));
 		}
 		else {
 			throw new DaoException("Role not found!");
@@ -61,9 +62,9 @@ public class RoleService extends AbstractService<Role, RoleDTO> {
 	public void removeRoleFromPerson(Integer roleId, PersonDTO personDTO) throws DaoException {
 		Person person = personAssembler.createModel(personDTO);
 		Role role = roleDao.get(roleId);
-		//TODO role.getPersons().remove(person);
 		if (person.getRoles().remove(role)) {
 			personDao.update(person);
+			personDTO.setRoles(person.getRoles().stream().map(assembler::createDTO).collect(Collectors.toList()));
 		}
 		else {
 			throw new DaoException("Role not found!");

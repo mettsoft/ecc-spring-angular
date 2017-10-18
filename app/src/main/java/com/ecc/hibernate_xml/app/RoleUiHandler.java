@@ -37,7 +37,7 @@ public class RoleUiHandler {
 	public void create() throws Exception {		
 		RoleDTO role = new RoleDTO();	
 		role.setName(InputHandler.getNextLineREPL(NAME_PROMPT, roleService::validateName));
-		roleService.create(role);
+		role.setId((Integer) roleService.create(role));
 
 		String successMessage = String.format(CREATE_SUCCESS_MESSAGE, role.getId(), role.getName());
 		System.out.println(successMessage);

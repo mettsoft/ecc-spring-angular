@@ -1,9 +1,12 @@
 package com.ecc.hibernate_xml.dto;
 
+import java.util.Set;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import com.ecc.hibernate_xml.model.Role;
 import com.ecc.hibernate_xml.model.Person;
+import com.ecc.hibernate_xml.model.Name;
 import com.ecc.hibernate_xml.dto.RoleDTO;
 
 public class RoleAssembler extends AbstractAssembler<Role, RoleDTO> {
@@ -15,7 +18,7 @@ public class RoleAssembler extends AbstractAssembler<Role, RoleDTO> {
 		RoleDTO dto = new RoleDTO();
 		dto.setId(model.getId());
 		dto.setName(model.getName());
-		dto.setPersons(model.getPersons().stream().map(this::createProxyDTO).collect(Collectors.toList()));	
+		dto.setPersons(createProxyDTO(model.getPersons()));
 		return dto;
 	}
 
@@ -28,6 +31,13 @@ public class RoleAssembler extends AbstractAssembler<Role, RoleDTO> {
 		return dto;
 	}
 
+	private List<PersonDTO> createProxyDTO(Set<Person> models) {
+		if (models == null) {
+			return null;
+		}
+		return models.stream().map(this::createProxyDTO).collect(Collectors.toList());
+	}
+
 	@Override 
 	public Role createModel(RoleDTO dto) {
 		if (dto == null) {
@@ -36,7 +46,7 @@ public class RoleAssembler extends AbstractAssembler<Role, RoleDTO> {
 		Role model = new Role();
 		model.setId(dto.getId());
 		model.setName(dto.getName());
-		model.setPersons(dto.getPersons().stream().map(this::createProxyModel).collect(Collectors.toSet()));	
+		model.setPersons(createProxyModel(dto.getPersons()));
 		return model;
 	}
 
@@ -45,7 +55,19 @@ public class RoleAssembler extends AbstractAssembler<Role, RoleDTO> {
 			return null;
 		}
 		Person model = new Person();
+		Name name = new Name();
+		name.setLastName(dto.getId().toString());
+		name.setMiddleName(dto.getId().toString());
+		name.setFirstName(dto.getId().toString());
 		model.setId(dto.getId());
+		model.setName(name);
 		return model;
+	}
+
+	private Set<Person> createProxyModel(List<PersonDTO> dtos) {
+		if (dtos == null) {
+			return null;
+		}
+		return dtos.stream().map(this::createProxyModel).collect(Collectors.toSet());
 	}
 }

@@ -3,7 +3,7 @@ package com.ecc.hibernate_xml.app;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.ecc.hibernate_xml.model.Person;
+import com.ecc.hibernate_xml.dto.PersonDTO;
 import com.ecc.hibernate_xml.dto.RoleDTO;
 import com.ecc.hibernate_xml.service.RoleService;
 import com.ecc.hibernate_xml.util.app.InputHandler;
@@ -22,7 +22,7 @@ public class PersonRoleUiHandler {
 	private final RoleService roleService = new RoleService();
 
 	public void list(Object parameter) {		
-		Person person = (Person) parameter;
+		PersonDTO person = (PersonDTO) parameter;
 		System.out.println("-------------------");
 
 		List<RoleDTO> roles = roleService.list(person);
@@ -43,7 +43,7 @@ public class PersonRoleUiHandler {
 	}
 
 	public void add(Object parameter) throws Exception {
-		Person person = (Person) parameter;
+		PersonDTO person = (PersonDTO) parameter;
 		List<RoleDTO> roles = roleService.listRolesNotBelongingTo(person);
 
 		System.out.println("-------------------");
@@ -68,7 +68,7 @@ public class PersonRoleUiHandler {
 	}
 
 	public void remove(Object parameter) throws Exception {	
-		Person person = (Person) parameter;
+		PersonDTO person = (PersonDTO) parameter;
 		List<RoleDTO> roles = roleService.list(person);
 
 		System.out.println("-------------------");
