@@ -1,5 +1,6 @@
 package com.ecc.hibernate_xml.service;
 
+import java.io.Serializable;
 import java.util.List;
 
 import com.ecc.hibernate_xml.dao.Dao;
@@ -9,12 +10,6 @@ import com.ecc.hibernate_xml.dto.Assembler;
 public abstract class AbstractService<T, R> implements Service<T, R> {
 	protected final Dao<T> dao;
 	protected final Assembler<T, R> assembler;
-
-	// TODO: Remove this.
-	protected AbstractService(Dao<T> dao) {
-		this.dao = dao;
-		this.assembler = null;
-	}
 
 	protected AbstractService(Dao<T> dao, Assembler<T, R> assembler) {
 		this.dao = dao;
@@ -27,13 +22,14 @@ public abstract class AbstractService<T, R> implements Service<T, R> {
 	}
 
 	@Override
-	public void create(R DTO) throws DaoException {
-		dao.create(assembler.createModel(DTO));
+	public Serializable create(R dto) throws DaoException {
+		T entity = assembler.createModel(dto);
+		return dao.create(entity);
 	}
 
 	@Override
-	public void update(R DTO) throws DaoException {
-		dao.update(assembler.createModel(DTO));
+	public void update(R dto) throws DaoException {
+		dao.update(assembler.createModel(dto));
 	}
 
 	@Override

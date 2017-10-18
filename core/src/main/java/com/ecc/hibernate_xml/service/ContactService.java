@@ -8,6 +8,7 @@ import com.ecc.hibernate_xml.model.Contact;
 import com.ecc.hibernate_xml.model.Person;
 import com.ecc.hibernate_xml.dto.ContactDTO;
 import com.ecc.hibernate_xml.dto.PersonDTO;
+import com.ecc.hibernate_xml.dto.ContactAssembler;
 import com.ecc.hibernate_xml.dto.PersonAssembler;
 import com.ecc.hibernate_xml.util.validator.ValidationException;
 import com.ecc.hibernate_xml.util.validator.ModelValidator;
@@ -22,7 +23,7 @@ public class ContactService extends AbstractService<Contact, ContactDTO> {
 	private final PersonAssembler personAssembler;
 
 	public ContactService() {
-		super(new ContactDao());
+		super(new ContactDao(), new ContactAssembler());
 		contactDao = (ContactDao) dao;
 		validator = ModelValidator.create();
 		personAssembler = new PersonAssembler();
@@ -58,15 +59,8 @@ public class ContactService extends AbstractService<Contact, ContactDTO> {
 	}
 
 	public List<ContactDTO> list(PersonDTO personDTO) {
-		Person person = personAssembler.createModel(person);
-		return assembler.createDTO(contactDao.list(person));
-	}
-
-	public void create(ContactDTO contactDTO, PersonDTO personDTO) throws DaoException {
-		Contact contact = assembler.createModel(contactDTO);
 		Person person = personAssembler.createModel(personDTO);
-		contact.setPerson(person);
-		contactDao.create(contact);
+		return assembler.createDTO(contactDao.list(person));
 	}
 
 	public ContactDTO get(Integer id, PersonDTO personDTO) throws DaoException {
