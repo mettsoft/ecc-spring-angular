@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.ecc.hibernate_xml.dao.Dao;
 import com.ecc.hibernate_xml.dao.DaoException;
-import com.ecc.hibernate_xml.dto.Assembler;
+import com.ecc.hibernate_xml.assembler.Assembler;
 
 public abstract class AbstractService<T, R> implements Service<T, R> {
 	protected final Dao<T> dao;

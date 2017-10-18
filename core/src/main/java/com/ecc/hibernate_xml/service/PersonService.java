@@ -7,7 +7,7 @@ import java.util.Date;
 
 import com.ecc.hibernate_xml.dao.PersonDao;
 import com.ecc.hibernate_xml.dto.PersonDTO;
-import com.ecc.hibernate_xml.dto.PersonAssembler;
+import com.ecc.hibernate_xml.assembler.PersonAssembler;
 import com.ecc.hibernate_xml.model.Name;
 import com.ecc.hibernate_xml.model.Person;
 import com.ecc.hibernate_xml.util.validator.ValidationException;

@@ -1,4 +1,4 @@
-package com.ecc.hibernate_xml.dto;
+package com.ecc.hibernate_xml.assembler;
 
 import java.util.stream.Collectors;
 
@@ -6,6 +6,9 @@ import com.ecc.hibernate_xml.model.Person;
 import com.ecc.hibernate_xml.model.Name;
 import com.ecc.hibernate_xml.model.Address;
 import com.ecc.hibernate_xml.model.Contact;
+import com.ecc.hibernate_xml.dto.AddressDTO;
+import com.ecc.hibernate_xml.dto.NameDTO;
+import com.ecc.hibernate_xml.dto.PersonDTO;
 
 public class PersonAssembler extends AbstractAssembler<Person, PersonDTO> {
 	private RoleAssembler roleAssembler = new RoleAssembler();

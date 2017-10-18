@@ -1,4 +1,4 @@
-package com.ecc.hibernate_xml.dto;
+package com.ecc.hibernate_xml.assembler;
 
 import java.util.Set;
 import java.util.List;
@@ -8,6 +8,7 @@ import com.ecc.hibernate_xml.model.Role;
 import com.ecc.hibernate_xml.model.Person;
 import com.ecc.hibernate_xml.model.Name;
 import com.ecc.hibernate_xml.dto.RoleDTO;
+import com.ecc.hibernate_xml.dto.PersonDTO;
 
 public class RoleAssembler extends AbstractAssembler<Role, RoleDTO> {
 	@Override

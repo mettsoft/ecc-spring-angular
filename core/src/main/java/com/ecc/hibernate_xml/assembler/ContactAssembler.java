@@ -1,6 +1,7 @@
-package com.ecc.hibernate_xml.dto;
+package com.ecc.hibernate_xml.assembler;
 
 import com.ecc.hibernate_xml.dto.ContactDTO;
+import com.ecc.hibernate_xml.dto.PersonDTO;
 import com.ecc.hibernate_xml.model.Person;
 import com.ecc.hibernate_xml.model.Contact;
 import com.ecc.hibernate_xml.model.Landline;

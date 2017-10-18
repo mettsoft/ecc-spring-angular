@@ -10,8 +10,8 @@ import com.ecc.hibernate_xml.model.Role;
 import com.ecc.hibernate_xml.model.Person;
 import com.ecc.hibernate_xml.dto.RoleDTO;
 import com.ecc.hibernate_xml.dto.PersonDTO;
-import com.ecc.hibernate_xml.dto.RoleAssembler;
-import com.ecc.hibernate_xml.dto.PersonAssembler;
+import com.ecc.hibernate_xml.assembler.RoleAssembler;
+import com.ecc.hibernate_xml.assembler.PersonAssembler;
 import com.ecc.hibernate_xml.util.validator.ValidationException;
 import com.ecc.hibernate_xml.util.validator.ModelValidator;
 

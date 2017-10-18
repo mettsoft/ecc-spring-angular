@@ -1,4 +1,4 @@
-package com.ecc.hibernate_xml.dto;
+package com.ecc.hibernate_xml.assembler;
 
 import java.util.List;
 import java.util.stream.Collectors;
