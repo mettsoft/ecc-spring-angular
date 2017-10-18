@@ -13,6 +13,9 @@ public class PersonAssembler extends AbstractAssembler<Person, PersonDTO> {
 
 	@Override
 	public PersonDTO createDTO(Person model) {
+		if (model == null) {
+			return null;
+		}
 		PersonDTO dto = new PersonDTO();
 		dto.setId(model.getId());
 		dto.setName(createNameDTO(model.getName()));
@@ -28,6 +31,9 @@ public class PersonAssembler extends AbstractAssembler<Person, PersonDTO> {
 	}
 
 	private NameDTO createNameDTO(Name model) {
+		if (model == null) {
+			return null;
+		}
 		NameDTO dto = new NameDTO();
 		dto.setTitle(model.getTitle());
 		dto.setLastName(model.getLastName());
@@ -38,6 +44,9 @@ public class PersonAssembler extends AbstractAssembler<Person, PersonDTO> {
 	}
 
 	private AddressDTO createAddressDTO(Address model) {
+		if (model == null) {
+			return null;
+		}
 		AddressDTO dto = new AddressDTO();
 		dto.setStreetNumber(model.getStreetNumber());
 		dto.setBarangay(model.getBarangay());
@@ -48,6 +57,9 @@ public class PersonAssembler extends AbstractAssembler<Person, PersonDTO> {
 
 	@Override 
 	public Person createModel(PersonDTO dto) {
+		if (dto == null) {
+			return null;
+		}
 		Person model = new Person();
 		model.setId(dto.getId());
 		model.setName(createNameModel(dto.getName()));
@@ -63,6 +75,9 @@ public class PersonAssembler extends AbstractAssembler<Person, PersonDTO> {
 	}
 
 	private Name createNameModel(NameDTO dto) {
+		if (dto == null) {
+			return null;
+		}
 		Name model = new Name();
 		model.setTitle(dto.getTitle());
 		model.setLastName(dto.getLastName());
@@ -73,6 +88,9 @@ public class PersonAssembler extends AbstractAssembler<Person, PersonDTO> {
 	}
 
 	private Address createAddressModel(AddressDTO dto) {
+		if (dto == null) {
+			return null;
+		}
 		Address model = new Address();
 		model.setStreetNumber(dto.getStreetNumber());
 		model.setBarangay(dto.getBarangay());

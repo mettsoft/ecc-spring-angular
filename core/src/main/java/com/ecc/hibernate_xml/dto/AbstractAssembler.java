@@ -5,12 +5,18 @@ import java.util.stream.Collectors;
 
 public abstract class AbstractAssembler<T, R> implements Assembler<T, R> {
 	@Override
-	public List<R> createDTO(List<T> entities) {
-		return entities.stream().map(this::createDTO).collect(Collectors.toList());
+	public List<R> createDTO(List<T> models) {
+		if (models == null) {
+			return null;
+		}
+		return models.stream().map(this::createDTO).collect(Collectors.toList());
 	}
 
 	@Override
 	public List<T> createModel(List<R> dtos) {
+		if (dtos == null) {
+			return null;
+		}
 		return dtos.stream().map(this::createModel).collect(Collectors.toList());
 	}
 }
