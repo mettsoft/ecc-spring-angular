@@ -6,21 +6,26 @@ import com.ecc.hibernate_xml.dao.DaoException;
 import com.ecc.hibernate_xml.dao.ContactDao;
 import com.ecc.hibernate_xml.model.Contact;
 import com.ecc.hibernate_xml.model.Person;
+import com.ecc.hibernate_xml.dto.ContactDTO;
+import com.ecc.hibernate_xml.dto.PersonDTO;
+import com.ecc.hibernate_xml.dto.PersonAssembler;
 import com.ecc.hibernate_xml.util.validator.ValidationException;
 import com.ecc.hibernate_xml.util.validator.ModelValidator;
 
-public class ContactService extends AbstractService<Contact, Contact> {
+public class ContactService extends AbstractService<Contact, ContactDTO> {
 	private static final Integer MAX_CHARACTERS = 50;
 	private static final Integer LANDLINE_DIGITS = 7;
 	private static final Integer MOBILE_NUMBER_DIGITS = 11;
 
 	private final ContactDao contactDao;
 	private final ModelValidator validator;
+	private final PersonAssembler personAssembler;
 
 	public ContactService() {
 		super(new ContactDao());
 		contactDao = (ContactDao) dao;
 		validator = ModelValidator.create();
+		personAssembler = new PersonAssembler();
 	}
 
 	public String validateContact(String data, String contactType) throws ValidationException {
@@ -52,20 +57,25 @@ public class ContactService extends AbstractService<Contact, Contact> {
 		validator.validate("ValidEmail", email);
 	}
 
-	public List<Contact> list(Person person) {
-		return contactDao.list(person);
+	public List<ContactDTO> list(PersonDTO personDTO) {
+		Person person = personAssembler.createModel(person);
+		return assembler.createDTO(contactDao.list(person));
 	}
 
-	public void create(Contact contact, Person person) throws DaoException {
+	public void create(ContactDTO contactDTO, PersonDTO personDTO) throws DaoException {
+		Contact contact = assembler.createModel(contactDTO);
+		Person person = personAssembler.createModel(personDTO);
 		contact.setPerson(person);
 		contactDao.create(contact);
 	}
 
-	public Contact get(Integer id, Person person) throws DaoException {
-		return contactDao.get(id, person);
+	public ContactDTO get(Integer id, PersonDTO personDTO) throws DaoException {
+		Person person = personAssembler.createModel(personDTO);
+		return assembler.createDTO(contactDao.get(id, person));
 	}
 
-	public void delete(Integer id, Person person) throws DaoException {
+	public void delete(Integer id, PersonDTO personDTO) throws DaoException {
+		Person person = personAssembler.createModel(personDTO);
 		contactDao.delete(contactDao.get(id, person));
 	}
 }

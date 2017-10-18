@@ -6,12 +6,14 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import com.ecc.hibernate_xml.dao.PersonDao;
-import com.ecc.hibernate_xml.model.Person;
+import com.ecc.hibernate_xml.dto.PersonDTO;
+import com.ecc.hibernate_xml.dto.PersonAssembler;
 import com.ecc.hibernate_xml.model.Name;
+import com.ecc.hibernate_xml.model.Person;
 import com.ecc.hibernate_xml.util.validator.ValidationException;
 import com.ecc.hibernate_xml.util.validator.ModelValidator;
 
-public class PersonService extends AbstractService<Person, Person> {
+public class PersonService extends AbstractService<Person, PersonDTO> {
 	private static final Integer DEFAULT_MAX_CHARACTERS = 20;
 	private static final Integer MAX_MUNICIPALITY_CHARACTERS = 50;
 
@@ -19,7 +21,7 @@ public class PersonService extends AbstractService<Person, Person> {
 	private final ModelValidator validator;
 
 	public PersonService() {
-		super(new PersonDao());
+		super(new PersonDao(), new PersonAssembler());
 		personDao = (PersonDao) dao;
 		validator = ModelValidator.create();
 	}
@@ -60,19 +62,19 @@ public class PersonService extends AbstractService<Person, Person> {
 		return dateHired;
 	}
 
-	public List<Person> listPersonsByGwa() {
-		return personDao.list().stream().sorted((firstPerson, secondPerson) -> 
+	public List<PersonDTO> listPersonsByGwa() {
+		return assembler.createDTO(personDao.list().stream().sorted((firstPerson, secondPerson) -> 
 			firstPerson.getGWA() == null? 1: 
 				secondPerson.getGWA() == null? -1:	
 					firstPerson.getGWA().compareTo(secondPerson.getGWA())
-		).collect(Collectors.toList());
+		).collect(Collectors.toList()));
 	}
 
-	public List<Person> listPersonsByDateHired() {
-		return personDao.listByDateHired();
+	public List<PersonDTO> listPersonsByDateHired() {
+		return assembler.createDTO(personDao.listByDateHired());
 	}
 
-	public List<Person> listPersonsByLastName() {
-		return personDao.listByLastName();
+	public List<PersonDTO> listPersonsByLastName() {
+		return assembler.createDTO(personDao.listByLastName());
 	}
 }
