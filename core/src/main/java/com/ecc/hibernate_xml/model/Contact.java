@@ -22,7 +22,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(
 	name="contacts",
 	uniqueConstraints=
-		@UniqueConstraint(columnNames={"contact_type", "data"})
+		@UniqueConstraint(columnNames={"contact_type", "data", "person_id"})
 )
 @Cacheable
 @Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
