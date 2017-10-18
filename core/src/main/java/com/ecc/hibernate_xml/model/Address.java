@@ -7,8 +7,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Column;
 
+import javax.persistence.Cacheable;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 @Entity
 @Table(name="addresses")
+@Cacheable
+@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 public class Address {
 	private Integer id;
 	private String streetNumber;

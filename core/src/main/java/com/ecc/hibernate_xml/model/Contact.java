@@ -14,12 +14,18 @@ import javax.persistence.FetchType;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
+import javax.persistence.Cacheable;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 @Entity
 @Table(
 	name="contacts",
 	uniqueConstraints=
 		@UniqueConstraint(columnNames={"contact_type", "data"})
 )
+@Cacheable
+@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 @Inheritance
 @DiscriminatorColumn(name="contact_type", length=20)
 public abstract class Contact {
@@ -40,6 +46,7 @@ public abstract class Contact {
 	}
 
 	@ManyToOne(optional=false, fetch=FetchType.EAGER)
+	@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 	@OrderBy
 	public Person getPerson() {
 		return person;

@@ -16,11 +16,16 @@ import javax.persistence.CascadeType;
 
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Fetch;
+import javax.persistence.Cacheable;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import com.ecc.hibernate_xml.model.Person;
 
 @Entity
 @Table(name="roles")
+@Cacheable
+@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 public class Role {
 	private Integer id;
 	private String name;
@@ -52,6 +57,7 @@ public class Role {
 
 	@Fetch(FetchMode.SELECT)
 	@ManyToMany(fetch=FetchType.EAGER, mappedBy="roles")
+	@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 	@OrderBy
 	public Set<Person> getPersons() {
 		return persons;

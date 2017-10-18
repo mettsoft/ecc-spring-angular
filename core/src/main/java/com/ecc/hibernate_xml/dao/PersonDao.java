@@ -14,12 +14,13 @@ public class PersonDao extends AbstractDao<Person> {
 
 	public List<Person> listByDateHired() {		
 		return TransactionScope.executeTransactionWithResult(session -> 
-			session.createQuery("FROM Person ORDER BY dateHired").list());
+			session.createQuery("FROM Person ORDER BY dateHired").setCacheable(true).list());
 	}
 
 	public List<Person> listByLastName() {
 		return TransactionScope.executeTransactionWithResult(session -> {
 			return session.createCriteria(Person.class)
+				.setCacheable(true)
 				.addOrder(Order.asc("name.lastName"))
 				.list();
 		});

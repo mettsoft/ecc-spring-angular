@@ -7,6 +7,10 @@ import java.util.stream.Collectors;
 import javax.persistence.Embeddable;
 import javax.persistence.Column;
 
+import javax.persistence.Cacheable;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 @Embeddable
 public class Name {
 	private String title;

@@ -32,15 +32,17 @@ public class ContactDao extends AbstractDao<Contact> {
 	public List<Contact> list(Person person) {
 		return TransactionScope.executeTransactionWithResult(session -> {
 			return session.createCriteria(Contact.class)
-			.add(Restrictions.eq("person.id", person.getId()))
-			.addOrder(Order.asc("id"))
-			.list();
+				.setCacheable(true)
+				.add(Restrictions.eq("person.id", person.getId()))
+				.addOrder(Order.asc("id"))
+				.list();
 		});
 	}
 
 	public Contact get(Integer id, Person person) {
 		return TransactionScope.executeTransactionWithResult(session -> {
 			Contact entity = (Contact) session.createCriteria(Contact.class)
+				.setCacheable(true)
 				.add(Restrictions.eq("person.id", person.getId()))
 				.add(Restrictions.eq("id", id))
 				.uniqueResult();

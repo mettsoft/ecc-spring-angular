@@ -18,6 +18,7 @@ public abstract class AbstractDao<T> implements Dao<T> {
 	public List<T> list() {
 		return TransactionScope.executeTransactionWithResult(session -> {
 			return session.createCriteria(type)
+				.setCacheable(true)
 				.addOrder(Order.asc("id"))
 				.list();
 		});

@@ -50,6 +50,7 @@ public class RoleDao extends AbstractDao<Role> {
 	private Role get(String name) {
 		return TransactionScope.executeTransactionWithResult(session -> {
 			return (Role) session.createCriteria(Role.class)
+				.setCacheable(true)
 				.add(Restrictions.eq("name", name))
 				.uniqueResult();
 		});
@@ -58,6 +59,7 @@ public class RoleDao extends AbstractDao<Role> {
 	public List<Role> list(Person person) {
 		return TransactionScope.executeTransactionWithResult(session -> {
 			return session.createCriteria(Role.class)
+				.setCacheable(true)
 				.createAlias("persons", "P")
 				.add(Restrictions.eq("P.id", person.getId()))
 				.addOrder(Order.asc("id"))
@@ -72,6 +74,7 @@ public class RoleDao extends AbstractDao<Role> {
 
 		return TransactionScope.executeTransactionWithResult(session -> {
 			Criteria criteria = session.createCriteria(Role.class)
+				.setCacheable(true)
 				.addOrder(Order.asc("id"));
 			if (!roleIds.isEmpty()) {
 				criteria.add(Restrictions.not(Restrictions.in("id", roleIds)));
