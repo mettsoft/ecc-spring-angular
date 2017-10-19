@@ -4,9 +4,9 @@ import java.util.List;
 import java.io.Serializable;
 
 public interface Dao<T> {
-	public List<T> list();
-	public Serializable create(T entity) throws DaoException;
-	public void update(T entity) throws DaoException;
-	public void delete(T entity) throws DaoException;
-	public T get(Integer id) throws DaoException;
+	List<T> list();
+	Serializable create(T entity) throws DaoException;
+	void update(T entity) throws DaoException;
+	void delete(T entity) throws DaoException;
+	T get(Integer id) throws DaoException;
 }
