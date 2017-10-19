@@ -1,1 +1,1 @@
-. build.sh && . run.sh
+mvn clean package && . run.sh
