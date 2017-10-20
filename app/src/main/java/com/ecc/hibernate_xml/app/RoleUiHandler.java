@@ -64,7 +64,7 @@ public class RoleUiHandler {
 			if (role.getPersons().size() > 0) {
 				String personIds = role.getPersons()
 					.stream()
-					.map(id -> id.toString())
+					.map(person -> person.getId().toString())
 					.collect(Collectors.joining(", "));
 
 				successMessage += " " + String.format(AFFECTED_PERSONS_MESSAGE, personIds);
