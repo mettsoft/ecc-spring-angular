@@ -6,10 +6,12 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import com.ecc.hibernate_xml.dao.PersonDao;
+import com.ecc.hibernate_xml.dao.DaoException;
 import com.ecc.hibernate_xml.dto.PersonDTO;
 import com.ecc.hibernate_xml.assembler.PersonAssembler;
 import com.ecc.hibernate_xml.model.Name;
 import com.ecc.hibernate_xml.model.Person;
+import com.ecc.hibernate_xml.util.dao.HibernateUtility;
 import com.ecc.hibernate_xml.util.validator.ValidationException;
 import com.ecc.hibernate_xml.util.validator.ModelValidator;
 
@@ -76,5 +78,12 @@ public class PersonService extends AbstractService<Person, PersonDTO> {
 
 	public List<PersonDTO> listPersonsByLastName() {
 		return assembler.createDTO(personDao.listByLastName());
+	}
+
+	@Override
+	public void delete(Integer id) throws DaoException {
+		super.delete(id);
+		HibernateUtility.getSessionFactory().getCache().evictCollection(
+			"com.ecc.hibernate_xml.model.Person.roles", id);
 	}
 }
