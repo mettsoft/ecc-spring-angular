@@ -23,9 +23,8 @@ public class PersonRoleUiHandler {
 
 	public void list(Object parameter) {		
 		PersonDTO person = (PersonDTO) parameter;
-		System.out.println("-------------------");
-
 		List<RoleDTO> roles = roleService.list(person);
+
 		if (roles.isEmpty()) {
 			System.out.println(String.format(NO_ROLES_MESSAGE, 
 				person.getId(), person.getName()));
@@ -38,7 +37,6 @@ public class PersonRoleUiHandler {
 				.map(role -> role.toString())
 				.forEach(System.out::println);
 		}
-
 		System.out.println("-------------------");
 	}
 
@@ -46,7 +44,6 @@ public class PersonRoleUiHandler {
 		PersonDTO person = (PersonDTO) parameter;
 		List<RoleDTO> roles = roleService.listRolesNotBelongingTo(person);
 
-		System.out.println("-------------------");
 		if (roles.isEmpty()) {
 			System.out.println(NO_ROLES_TO_ASSIGN);
 		}
@@ -63,7 +60,6 @@ public class PersonRoleUiHandler {
 				person.getName());
 			System.out.println(successMessage);
 		}		
-
 		System.out.println("-------------------");
 	}
 
@@ -71,7 +67,6 @@ public class PersonRoleUiHandler {
 		PersonDTO person = (PersonDTO) parameter;
 		List<RoleDTO> roles = roleService.list(person);
 
-		System.out.println("-------------------");
 		if (roles.isEmpty()) {
 			System.out.println(NO_ROLES_TO_REMOVE);
 		}
@@ -88,7 +83,6 @@ public class PersonRoleUiHandler {
 				person.getName());
 			System.out.println(successMessage);
 		}
-		
 		System.out.println("-------------------");
 	}
 }
