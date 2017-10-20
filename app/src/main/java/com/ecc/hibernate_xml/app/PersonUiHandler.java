@@ -110,6 +110,7 @@ public class PersonUiHandler {
 		PersonDTO person = (PersonDTO) parameter;
 		NameDTO name = person.getName();
 
+		System.out.println("Current value: " + name);
 		name.setTitle(InputHandler.getNextLineREPL(TITLE_PROMPT, t -> personService.validateName(t, "Title")));
 		name.setLastName(InputHandler.getNextLineREPL(LAST_NAME_PROMPT, t -> personService.validateName(t, "Last name")));
 		name.setFirstName(InputHandler.getNextLineREPL(FIRST_NAME_PROMPT, t -> personService.validateName(t, "First name")));
@@ -124,9 +125,11 @@ public class PersonUiHandler {
 	}
 
 	public void changeAddress(Object parameter) throws Exception {
-		PersonDTO person = (PersonDTO) parameter;
-		
-		AddressDTO address = new AddressDTO();
+		PersonDTO person = (PersonDTO) parameter;		
+		AddressDTO address = person.getAddress();
+
+		System.out.println("Current value: " + (address == null? "(uninitialized)": address));
+		address = new AddressDTO();
 		address.setStreetNumber(InputHandler.getNextLineREPL(STREET_NUMBER_PROMPT, t -> personService.validateAddress(t, "Street number")));
 		address.setBarangay(InputHandler.getNextLineREPL(BARANGAY_PROMPT, t -> personService.validateAddress(Integer.valueOf(t), "Barangay")));
 		address.setMunicipality(InputHandler.getNextLineREPL(MUNICIPALITY_PROMPT, t -> personService.validateAddress(t, "Municipality")));
@@ -141,8 +144,10 @@ public class PersonUiHandler {
 
 	public void changeBirthday(Object parameter) throws Exception {
 		PersonDTO person = (PersonDTO) parameter;
-		Date birthday = InputHandler.getNextLineREPL(BIRTHDAY_PROMPT, dateFormat::parse);
+		Date birthday = person.getBirthday();
 
+		System.out.println("Current value: " + (birthday == null? "(uninitialized)": birthday));
+		birthday = InputHandler.getNextLineREPL(BIRTHDAY_PROMPT, dateFormat::parse);
 		person.setBirthday(birthday);
 		personService.update(person);
 
@@ -152,7 +157,10 @@ public class PersonUiHandler {
 
 	public void changeGWA(Object parameter) throws Exception {
 		PersonDTO person = (PersonDTO) parameter;
-		BigDecimal GWA = InputHandler.getNextLineREPL(GWA_PROMPT, input -> 
+		BigDecimal GWA = person.getGWA();
+
+		System.out.println("Current value: " + (GWA == null? "(uninitialized)": GWA));
+		GWA = InputHandler.getNextLineREPL(GWA_PROMPT, input -> 
 			personService.validateGWA(new BigDecimal(input)));
 
 		person.setGWA(GWA);
@@ -164,6 +172,8 @@ public class PersonUiHandler {
 
 	public void changeEmploymentStatus(Object parameter) throws Exception {
 		PersonDTO person = (PersonDTO) parameter;
+		System.out.println("Current value: " + person.getEmploymentStatus());
+
 		Boolean currentlyEmployed = InputHandler.getNextLineREPL(EMPLOYMENT_PROMPT, input -> {
 			if (input.equals("y")) {
 				return true;

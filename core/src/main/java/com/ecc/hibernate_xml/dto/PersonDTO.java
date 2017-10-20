@@ -5,8 +5,12 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 public class PersonDTO {
+	private static final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
 	private Integer id;
 	private NameDTO name;
 	private AddressDTO address;
@@ -109,7 +113,7 @@ public class PersonDTO {
 
 		String nameToken = "Name: " + name;
 		String GWAToken = "GWA: " + GWA;
-		String currentlyEmployedToken = "Currently Employed: " + (currentlyEmployed? dateHired: "No");
+		String currentlyEmployedToken = "Currently Employed: " + getEmploymentStatus();
 
 		tokens.add(propertyToEmphasize.equals("name")? ">> " + nameToken: nameToken);
 		if (address != null) {
@@ -140,5 +144,9 @@ public class PersonDTO {
 
 		return String.format("------ ID: %d ------\n%s", id, 
 			tokens.stream().collect(Collectors.joining("\n")));
+	}
+
+	public String getEmploymentStatus() {
+		return currentlyEmployed? dateFormat.format(dateHired): "No";
 	}
 }
