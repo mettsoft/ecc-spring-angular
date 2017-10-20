@@ -50,6 +50,8 @@ public class UiRouter {
 			String currentKey = menu.getDescription();
 			UiRoute currentRoute = routes.get(currentKey);
 
+			InputHandler.clearScreen();
+			
 			if (currentRoute != null) {
 				Object argument = null;
 				if (menu.getParent() != null) {
