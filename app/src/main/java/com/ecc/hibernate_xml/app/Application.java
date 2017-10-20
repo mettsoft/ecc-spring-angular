@@ -91,8 +91,8 @@ public class Application {
 		uiRouter.register("Delete an existing Role record.", roleUiHandler::delete);
 
 		// Passes the Person detached instance to the next level.
-		uiRouter.register("Create a new Person.", personUiHandler::create);
-		uiRouter.register("Update an existing Person record.", personUiHandler::update);
+		uiRouter.register("Create a new Person.", personUiHandler::create, personUiHandler::displayPerson);
+		uiRouter.register("Update an existing Person record.", personUiHandler::update, personUiHandler::displayPerson);
 
 		// Receives the Person detached instance from the previous level.
 		uiRouter.register("Change name.", personUiHandler::changeName);

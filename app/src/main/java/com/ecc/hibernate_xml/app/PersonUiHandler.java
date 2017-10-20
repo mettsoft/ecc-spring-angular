@@ -85,7 +85,13 @@ public class PersonUiHandler {
 
 	public Object update() throws Exception {
 		Integer personId = InputHandler.getNextLine(UPDATE_PROMPT, Integer::valueOf);
-		return personService.get(personId);	
+		return personService.get(personId);
+	}
+
+	public void displayPerson(Object parameter) {
+		PersonDTO person = (PersonDTO) parameter;
+		System.out.println(person);
+		System.out.println("-------------------");
 	}
 
 	public void changeName(Object parameter) throws Exception {
