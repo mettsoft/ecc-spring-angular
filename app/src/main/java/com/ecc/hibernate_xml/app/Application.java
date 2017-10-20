@@ -18,7 +18,7 @@ public class Application {
 
 	static {
 		Menu menu = new Menu()
-			.add(new Menu("Go to Person Registry.")
+			.add(new Menu("Person Registry.")
 				.add(new Menu("List Person records.")
 					.add(new Menu("Sort by GWA."))
 					.add(new Menu("Sort by date hired."))
@@ -60,7 +60,7 @@ public class Application {
 						.add(new Menu("Add role."))
 						.add(new Menu("Remove role."))))
 				.add(new Menu("Delete an existing Person record.")))
-			.add(new Menu("Go to Role Registry.")
+			.add(new Menu("Role Registry.")
 				.add(new Menu("List Role records."))
 				.add(new Menu("Create a new Role record."))
 				.add(new Menu("Update an existing Role record."))

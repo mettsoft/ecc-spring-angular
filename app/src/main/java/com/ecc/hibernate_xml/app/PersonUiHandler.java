@@ -44,17 +44,14 @@ public class PersonUiHandler {
 	private final PersonService personService = new PersonService();
 
 	public void listByDateHired() {		
-		System.out.println("---- Sort by date hired ascending ----");
 		list(personService.listPersonsByDateHired(), "currentlyEmployed");
 	}
 
 	public void listByLastName() {		
-		System.out.println("---- Sort by last name ascending ----");
 		list(personService.listPersonsByLastName(), "name");
 	}
 
 	public void listByGWA() {		
-		System.out.println("---- Sort by GWA ascending ----");
 		list(personService.listPersonsByGwa(), "GWA");
 	}
 

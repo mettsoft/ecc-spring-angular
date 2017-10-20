@@ -21,8 +21,6 @@ public class RoleUiHandler {
 	private final RoleService roleService = new RoleService();
 
 	public void list() {		
-		System.out.println("-------------------");
-
 		List<RoleDTO> roles = roleService.list();
 		if (roles.isEmpty()) {
 			System.out.println(NO_ROLES_MESSAGE);
