@@ -6,8 +6,9 @@ import java.util.List;
 import com.ecc.hibernate_xml.dao.Dao;
 import com.ecc.hibernate_xml.dao.DaoException;
 import com.ecc.hibernate_xml.assembler.Assembler;
+import com.ecc.hibernate_xml.model.Entity;
 
-public abstract class AbstractService<T, R> implements Service<T, R> {
+public abstract class AbstractService<T extends Entity, R> implements Service<T, R> {
 	protected final Dao<T> dao;
 	protected final Assembler<T, R> assembler;
 

@@ -32,7 +32,7 @@ import org.hibernate.annotations.Fetch;
 @Entity
 @Table(name="persons")
 @Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
-public class Person {
+public class Person implements com.ecc.hibernate_xml.model.Entity {
 	private Integer id;
 	private Name name;
 	private Address address;

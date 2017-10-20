@@ -4,8 +4,9 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.ecc.hibernate_xml.dao.DaoException;
+import com.ecc.hibernate_xml.model.Entity;
 
-public interface Service<T, R> {
+public interface Service<T extends Entity, R> {
 	List<R> list();
 	Serializable create(R DTO) throws DaoException;
 	void update(R DTO) throws DaoException;

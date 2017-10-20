@@ -13,7 +13,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity
 @Table(name="addresses")
 @Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
-public class Address {
+public class Address implements com.ecc.hibernate_xml.model.Entity {
 	private Integer id;
 	private String streetNumber;
 	private Integer barangay;

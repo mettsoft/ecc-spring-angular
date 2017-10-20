@@ -3,7 +3,9 @@ package com.ecc.hibernate_xml.dao;
 import java.util.List;
 import java.io.Serializable;
 
-public interface Dao<T> {
+import com.ecc.hibernate_xml.model.Entity;
+
+public interface Dao<T extends Entity> {
 	List<T> list();
 	Serializable create(T entity) throws DaoException;
 	void update(T entity) throws DaoException;

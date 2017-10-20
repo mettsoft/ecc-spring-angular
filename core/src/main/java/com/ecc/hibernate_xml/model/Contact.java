@@ -22,7 +22,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 		@UniqueConstraint(columnNames={"contact_type", "data", "person_id"})
 )
 @Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
-public class Contact {
+public class Contact implements com.ecc.hibernate_xml.model.Entity {
 	private Integer id;
 	private String data;
 	private String contactType;
@@ -69,11 +69,19 @@ public class Contact {
 	}
 
 	@Override
+	public int hashCode() {
+		if (data == null || contactType == null || person == null) {
+			return super.hashCode();
+		}
+		return data.hashCode() << 4 + contactType.hashCode() << 2 + person.getName().hashCode();
+	}
+
+	@Override
 	public boolean equals(Object object) {
 		if (object != null && object instanceof Contact) {
 			Contact otherContact = (Contact) object; 
-			return id.equals(otherContact.id) && data.equals(otherContact.data)
-				&& getContactType().equals(otherContact.getContactType());
+			return data.equals(otherContact.data) && contactType.equals(otherContact.contactType) && 
+				person.getName().equals(otherContact.person.getName());
 		}
 		return false;
 	}

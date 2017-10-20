@@ -6,8 +6,9 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 
 import com.ecc.hibernate_xml.util.dao.TransactionScope;
+import com.ecc.hibernate_xml.model.Entity;
 
-public abstract class AbstractDao<T> implements Dao<T> {
+public abstract class AbstractDao<T extends Entity> implements Dao<T> {
 
 	private final Class<T> type;
 
