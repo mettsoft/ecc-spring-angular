@@ -8,6 +8,7 @@ import org.hibernate.exception.ConstraintViolationException;
 import com.ecc.hibernate_xml.model.Contact;
 import com.ecc.hibernate_xml.model.Person;
 import com.ecc.hibernate_xml.util.dao.TransactionScope;
+import com.ecc.hibernate_xml.util.dao.HibernateUtility;
 
 public class ContactDao extends AbstractDao<Contact> {
 
@@ -51,5 +52,12 @@ public class ContactDao extends AbstractDao<Contact> {
 			}
 			return entity;			
 		});
+	}
+
+	@Override
+	public void delete(Contact contact) throws DaoException {
+		super.delete(contact);
+		HibernateUtility.getSessionFactory().getCache().evictCollection(
+			"com.ecc.hibernate_xml.model.Person.contacts", contact.getPerson().getId());
 	}
 }

@@ -12,7 +12,6 @@ import com.ecc.hibernate_xml.assembler.ContactAssembler;
 import com.ecc.hibernate_xml.assembler.PersonAssembler;
 import com.ecc.hibernate_xml.util.validator.ValidationException;
 import com.ecc.hibernate_xml.util.validator.ModelValidator;
-import com.ecc.hibernate_xml.util.dao.HibernateUtility;
 
 public class ContactService extends AbstractService<Contact, ContactDTO> {
 	private static final Integer MAX_CHARACTERS = 50;
@@ -73,7 +72,5 @@ public class ContactService extends AbstractService<Contact, ContactDTO> {
 		Person person = personAssembler.createModel(personDTO);
 		Contact contact = contactDao.get(id, person);
 		contactDao.delete(contact);
-		HibernateUtility.getSessionFactory().getCache().evictCollection(
-			"com.ecc.hibernate_xml.model.Person.contacts", contact.getPerson().getId());
 	}
 }

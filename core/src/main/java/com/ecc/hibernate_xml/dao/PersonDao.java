@@ -5,6 +5,7 @@ import org.hibernate.criterion.Order;
 
 import com.ecc.hibernate_xml.model.Person;
 import com.ecc.hibernate_xml.util.dao.TransactionScope;
+import com.ecc.hibernate_xml.util.dao.HibernateUtility;
 
 public class PersonDao extends AbstractDao<Person> {
 
@@ -24,5 +25,12 @@ public class PersonDao extends AbstractDao<Person> {
 				.addOrder(Order.asc("name.lastName"))
 				.list();
 		});
+	}
+
+	@Override
+	public void delete(Person person) throws DaoException {
+		super.delete(person);
+		HibernateUtility.getSessionFactory().getCache().evictCollection(
+			"com.ecc.hibernate_xml.model.Person.roles", person.getId());
 	}
 }
