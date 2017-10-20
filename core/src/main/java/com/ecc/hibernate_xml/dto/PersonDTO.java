@@ -97,9 +97,17 @@ public class PersonDTO {
 
 	@Override
 	public String toString() {
+		return toString("");
+	}
+
+	public String toString(String propertyToEmphasize) {
 		List<String> tokens = new ArrayList<>(7);
 
-		tokens.add("Name: " + name);
+		String nameToken = "Name: " + name;
+		String GWAToken = "GWA: " + GWA;
+		String currentlyEmployedToken = "Currently Employed: " + (currentlyEmployed? dateHired: "No");
+
+		tokens.add(propertyToEmphasize.equals("name")? ">> " + nameToken: nameToken);
 		if (address != null) {
 			tokens.add("Address: " + address);
 		}
@@ -109,10 +117,10 @@ public class PersonDTO {
 		}
 
 		if (GWA != null) {
-			tokens.add("GWA: " + GWA);
+			tokens.add(propertyToEmphasize.equals("GWA")? ">> " + GWAToken: GWAToken);
 		}
 
-		tokens.add("Currently Employed: " + (currentlyEmployed? dateHired: "No"));		
+		tokens.add(propertyToEmphasize.equals("currentlyEmployed")? ">> " + currentlyEmployedToken: currentlyEmployedToken);		
 
 		if (contacts != null && contacts.size() > 0) {
 			tokens.add("Contacts: " + contacts.stream()

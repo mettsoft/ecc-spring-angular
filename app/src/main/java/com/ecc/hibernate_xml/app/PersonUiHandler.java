@@ -44,25 +44,27 @@ public class PersonUiHandler {
 	private final PersonService personService = new PersonService();
 
 	public void listByDateHired() {		
-		list(personService.listPersonsByDateHired());
+		System.out.println("---- Sort by date hired ascending ----");
+		list(personService.listPersonsByDateHired(), "currentlyEmployed");
 	}
 
 	public void listByLastName() {		
-		list(personService.listPersonsByLastName());
+		System.out.println("---- Sort by last name ascending ----");
+		list(personService.listPersonsByLastName(), "name");
 	}
 
 	public void listByGWA() {		
-		list(personService.listPersonsByGwa());
+		System.out.println("---- Sort by GWA ascending ----");
+		list(personService.listPersonsByGwa(), "GWA");
 	}
 
-	private void list(List<PersonDTO> persons) {		
-		System.out.println("-------------------");
-
+	private void list(List<PersonDTO> persons, String propertyToEmphasize) {		
 		if (persons.isEmpty()) {
 			System.out.println(NO_PERSONS_MESSAGE);
 		}
 		else {	
-			persons.stream().forEach(System.out::println);
+			persons.stream().map(t -> t.toString(propertyToEmphasize))
+				.forEach(System.out::println);
 		}
 
 		System.out.println("-------------------");
