@@ -100,6 +100,10 @@ public class PersonDTO {
 		return toString("");
 	}
 
+	public String toSimplifiedForm() {
+		return String.format("[ID=%d] %s", id, name);
+	}
+
 	public String toString(String propertyToEmphasize) {
 		List<String> tokens = new ArrayList<>(7);
 

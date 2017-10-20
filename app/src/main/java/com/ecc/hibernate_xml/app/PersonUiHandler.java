@@ -35,6 +35,8 @@ public class PersonUiHandler {
 	private static final String DATE_HIRED_PROMPT = "Please enter date hired (yyyy-MM-dd): ";
 
 	private static final String NO_PERSONS_MESSAGE = "There are no persons.";
+	private static final String NO_PERSONS_TO_UPDATE = "There are no persons to update.";
+	private static final String NO_PERSONS_TO_DELETE = "There are no persons to delete.";
 	private static final String CREATE_SUCCESS_MESSAGE = "Successfully created the person ID [%d] \"%s\"!";
 	private static final String UPDATE_SUCCESS_MESSAGE = "Successfully updated person's %s to \"%s\"!";
 	private static final String DELETE_SUCCESS_MESSAGE = "Successfully deleted the person ID \"%d\"!";
@@ -84,8 +86,18 @@ public class PersonUiHandler {
 	}
 
 	public Object update() throws Exception {
-		Integer personId = InputHandler.getNextLine(UPDATE_PROMPT, Integer::valueOf);
-		return personService.get(personId);
+		List<PersonDTO> persons = personService.list();
+
+		if (persons.isEmpty()) {
+			throw new Exception(NO_PERSONS_TO_UPDATE);
+		}
+		else {		
+			persons.stream().map(person -> person.toSimplifiedForm())
+				.forEach(System.out::println);
+			System.out.println("-------------------");		
+			Integer personId = InputHandler.getNextLine(UPDATE_PROMPT, Integer::valueOf);
+			return personService.get(personId);
+		}
 	}
 
 	public void displayPerson(Object parameter) {
@@ -175,11 +187,22 @@ public class PersonUiHandler {
 	}
 
 	public void delete() throws Exception {			
-		Integer personId = InputHandler.getNextLine(DELETE_PROMPT, Integer::valueOf);
+		List<PersonDTO> persons = personService.list();
 
-		personService.delete(personId);
+		if (persons.isEmpty()) {
+			throw new Exception(NO_PERSONS_TO_DELETE);
+		}
+		else {		
+			persons.stream().map(person -> person.toSimplifiedForm())
+				.forEach(System.out::println);
+			System.out.println("-------------------");		
+		
+			Integer personId = InputHandler.getNextLine(DELETE_PROMPT, Integer::valueOf);
 
-		String successMessage = String.format(DELETE_SUCCESS_MESSAGE, personId);
-		System.out.println(successMessage);
+			personService.delete(personId);
+
+			String successMessage = String.format(DELETE_SUCCESS_MESSAGE, personId);
+			System.out.println(successMessage);
+		}
 	}
 }
