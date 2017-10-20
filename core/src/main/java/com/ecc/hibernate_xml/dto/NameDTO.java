@@ -59,9 +59,9 @@ public class NameDTO {
 			tokens.add(title);
 		}
 
+		tokens.add(lastName + ",");
 		tokens.add(firstName);
 		tokens.add(middleName);
-		tokens.add(lastName);
 
 		if (suffix != null) {
 			tokens.add(suffix);
