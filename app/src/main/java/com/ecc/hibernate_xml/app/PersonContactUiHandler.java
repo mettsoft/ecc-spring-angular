@@ -29,7 +29,6 @@ public class PersonContactUiHandler {
 		PersonDTO person = (PersonDTO) parameter;
 		List<ContactDTO> contacts = contactService.list(person);
 
-		System.out.println("-------------------");
 		if (contacts.isEmpty()) {
 			System.out.println(NO_CONTACTS_MESSAGE);
 		}
@@ -80,14 +79,18 @@ public class PersonContactUiHandler {
 	}
 
 	public void update(Object parameter) throws Exception {
+
 		PersonDTO person = (PersonDTO) parameter;
 		List<ContactDTO> contacts = contactService.list(person);
 
-		System.out.println("-------------------");
 		if (contacts.isEmpty()) {
 			System.out.println(NO_CONTACTS_TO_UPDATE);
 		}
 		else {		
+			contacts.stream().map(t -> t.toString())
+				.forEach(System.out::println);
+			System.out.println("-------------------");
+
 			Integer contactId = InputHandler.getNextLine(CONTACT_ID_PROMPT, Integer::valueOf);
 			ContactDTO contact = contactService.get(contactId, person);
 			String userPrompt = String.format(CONTACT_DATA_PROMPT, contact);
@@ -105,11 +108,14 @@ public class PersonContactUiHandler {
 		PersonDTO person = (PersonDTO) parameter;
 		List<ContactDTO> contacts = contactService.list(person);
 		
-		System.out.println("-------------------");
 		if (contacts.isEmpty()) {
 			System.out.println(NO_CONTACTS_TO_DELETE);
 		}
 		else {
+			contacts.stream().map(t -> t.toString())
+				.forEach(System.out::println);
+			System.out.println("-------------------");
+
 			Integer contactId = InputHandler.getNextLine(CONTACT_ID_PROMPT, Integer::valueOf);
 
 			contactService.delete(contactId, person);
