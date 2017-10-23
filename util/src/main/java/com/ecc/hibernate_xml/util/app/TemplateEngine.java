@@ -21,9 +21,12 @@ public class TemplateEngine {
 	public void render(String templatePath, Map<String, Object> parameters) throws IOException {
 		File template = new File(templatePath);
 		String buffer = FileUtils.readFileToString(template, Charset.forName("UTF-8"));
-		for (Map.Entry<String, Object> parameter : parameters.entrySet()) {
-			buffer = buffer.replaceAll(parameter.getKey(), parameter.getValue().toString());
+		for (Map.Entry<String, Object> parameter: parameters.entrySet()) {
+			if (parameter.getValue() != null) {
+				buffer = buffer.replaceAll(parameter.getKey(), parameter.getValue().toString());			
+			}
 		}
+		buffer = buffer.replaceAll(":\\w+", "");
 		printWriter.println(buffer);
 	}
 
