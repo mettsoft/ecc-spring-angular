@@ -31,10 +31,9 @@ public class RoleService extends AbstractService<Role, RoleDTO> {
 		personAssembler = new PersonAssembler();
 	}
 
-	public String validateName(String roleName) throws ValidationException {
-		validator.validate("NotEmpty", roleName, "Role name");
-		validator.validate("MaxLength", roleName, MAX_CHARACTERS, "Role name");
-		return roleName;
+	public void validate(RoleDTO role) throws ValidationException {
+		validator.validate("NotEmpty", role.getName(), "Role name");
+		validator.validate("MaxLength", role.getName(), MAX_CHARACTERS, "Role name");
 	}
 
 	public List<RoleDTO> list(PersonDTO personDTO) {
