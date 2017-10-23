@@ -3,10 +3,15 @@
 		<title>Role | Person Registry System</title>
 	</head>
 	<body>
+		<h3>:message</h3>
 		<h3>:header</h3>
-		<label for="role_name">Enter the role name.</label>
-		<input type="text" id="role_name" name="role_name">
-		<button>Submit</button>
-		:body
+		<form action="/role" method="POST">
+			<label for="name">Enter the role name:</label>
+			<input type="hidden" name="mode" value=":mode">
+			<input type="hidden" name="id" value=":roleId">
+			<input type="text" id="name" name="name" value=":roleName">
+			<button>Submit</button>
+		</form>
+		:dataTable
 	</body>
 </html>
