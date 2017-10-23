@@ -1,19 +1,12 @@
 package com.ecc.hibernate_xml.util.app;
 
 public class ExceptionHandler {
-	public static void printException(Exception exception) {
-		productionPrintException(exception);
-	}
-
-	public static void productionPrintException(Exception exception) {
-		System.out.println("Error: " + exception.getMessage());
-	}
-
-	public static void debugPrintException(Exception exception) {
-		exception.printStackTrace();
-		if (exception.getCause() != null) {
-			System.out.println("Caused by:");
-			exception.getCause().printStackTrace();
-		}		
+	public static String printException(Exception cause) {
+		cause.printStackTrace();
+		if (cause.getCause() != null) {
+			System.out.println("Caused by: ");
+			cause.getCause().printStackTrace();
+		}
+		return "Error: " + cause.getMessage();
 	}
 }
