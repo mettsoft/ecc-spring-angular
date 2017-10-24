@@ -20,7 +20,7 @@ public class PersonDao extends AbstractDao<Person> {
 
 	public List<Person> list(String lastName, Integer roleId, Date birthday, String orderBy, String order) {
 		return TransactionScope.executeTransactionWithResult(session -> {
-			String orderColumn = orderBy == null? "id": orderBy;
+			String orderColumn = StringUtils.isEmpty(orderBy)? "id": orderBy;
 			Criteria criteria = session.createCriteria(Person.class)
 				.setCacheable(true)
 				.addOrder("DESC".equals(order)? Order.desc(orderColumn): Order.asc(orderColumn));
