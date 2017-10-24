@@ -44,7 +44,7 @@ public class PersonDao extends AbstractDao<Person> {
 	@Override
 	public void delete(Person person) throws DaoException {
 		super.delete(person);
-		HibernateUtility.getSessionFactory().getCache().evictCollection(
-			"com.ecc.hibernate_xml.model.Person.roles", person.getId());
+		HibernateUtility.getSessionFactory().getCache().evictCollectionRegion(
+			"com.ecc.hibernate_xml.model.Role.persons");
 	}
 }
