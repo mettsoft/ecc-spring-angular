@@ -40,6 +40,6 @@ public class ContactDTO {
 
 	@Override
 	public String toString() {
-		return String.format("[ID=%d][%s] %s", id, getContactType(), data);
+		return String.format("[%s] %s", getContactType(), data);
 	}
 }

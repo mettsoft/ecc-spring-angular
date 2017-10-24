@@ -33,6 +33,6 @@ public class RoleDTO {
 
 	@Override
 	public String toString() {
-		return String.format("[ID=%d] %s", id, name);
+		return name;
 	}
 }
