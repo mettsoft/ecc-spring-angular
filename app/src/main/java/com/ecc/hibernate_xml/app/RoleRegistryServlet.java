@@ -127,7 +127,7 @@ public class RoleRegistryServlet extends HttpServlet {
 			.map(role -> Arrays.asList(role.getId().toString(), role.getName()))
 			.collect(Collectors.toList());
 
-		return templateEngine.renderTable(headers, data, SERVLET_PATH, SERVLET_PATH);		
+		return templateEngine.renderTable(headers, data, SERVLET_PATH);		
 	}
 
 	@Override
