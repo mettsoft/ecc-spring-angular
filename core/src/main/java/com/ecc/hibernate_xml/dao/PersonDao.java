@@ -1,7 +1,12 @@
 package com.ecc.hibernate_xml.dao;
 
 import java.util.List;
+import java.util.Date;
+
+import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
+import org.apache.commons.lang3.StringUtils;
 
 import com.ecc.hibernate_xml.model.Person;
 import com.ecc.hibernate_xml.util.dao.TransactionScope;
@@ -13,17 +18,26 @@ public class PersonDao extends AbstractDao<Person> {
 		super(Person.class);
 	}
 
-	public List<Person> listByDateHired() {		
-		return TransactionScope.executeTransactionWithResult(session -> 
-			session.createQuery("FROM Person ORDER BY dateHired").setCacheable(true).list());
-	}
-
-	public List<Person> listByLastName() {
+	public List<Person> list(String lastName, Integer roleId, Date birthday, String orderBy, String order) {
 		return TransactionScope.executeTransactionWithResult(session -> {
-			return session.createCriteria(Person.class)
+			String orderColumn = orderBy == null? "id": orderBy;
+			Criteria criteria = session.createCriteria(Person.class)
 				.setCacheable(true)
-				.addOrder(Order.asc("name.lastName"))
-				.list();
+				.addOrder("DESC".equals(order)? Order.desc(orderColumn): Order.asc(orderColumn));
+
+			if (!StringUtils.isEmpty(lastName)) {
+				criteria.add(Restrictions.ilike("name.lastName", "%" + lastName + "%"));
+			}
+
+			if (roleId != null) {
+				criteria.createAlias("roles", "R").add(Restrictions.eq("R.id", roleId));
+			}
+
+			if (birthday != null) {
+				criteria.add(Restrictions.eq("birthday", birthday));
+			}
+
+			return criteria.list();
 		});
 	}
 
