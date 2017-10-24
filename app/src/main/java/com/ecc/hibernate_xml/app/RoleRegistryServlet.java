@@ -50,7 +50,6 @@ public class RoleRegistryServlet extends HttpServlet {
 	public void init() throws ServletException {
 		VIEW_TEMPLATE = getServletContext().getRealPath("/") + "/role-registry.template.html";
 		roleService = new RoleService();
-		HibernateUtility.initializeSessionFactory();
 	}
 
 	@Override
@@ -183,10 +182,5 @@ public class RoleRegistryServlet extends HttpServlet {
 	
 	private Integer encodeResponse(Integer mode, Integer roleId) {
 		return roleId << 8 | mode & 0xff;
-	}
-
-	@Override
-	public void destroy() {
-		HibernateUtility.closeSessionFactory();
 	}
 }
