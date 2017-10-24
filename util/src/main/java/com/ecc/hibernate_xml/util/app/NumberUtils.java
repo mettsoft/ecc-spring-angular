@@ -15,7 +15,7 @@ public class NumberUtils {
 		try {
 			return new BigDecimal(number);
 		}
-		catch (NumberFormatException cause) {
+		catch (NumberFormatException|NullPointerException cause) {
 			return null;
 		}
  	}
