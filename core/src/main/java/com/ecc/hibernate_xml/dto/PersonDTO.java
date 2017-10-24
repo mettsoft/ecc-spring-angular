@@ -5,12 +5,10 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+
+import com.ecc.hibernate_xml.util.app.DateUtils;
 
 public class PersonDTO {
-	private static final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
 	private Integer id;
 	private NameDTO name;
 	private AddressDTO address;
@@ -147,6 +145,6 @@ public class PersonDTO {
 	}
 
 	public String getEmploymentStatus() {
-		return currentlyEmployed? dateFormat.format(dateHired): "No";
+		return currentlyEmployed? DateUtils.toString(dateHired): "No";
 	}
 }
