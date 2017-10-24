@@ -12,8 +12,12 @@ public class DateUtils {
 		try {
 			return DATE_FORMAT.parse(date);
 		}
-		catch (ParseException cause) {
+		catch (ParseException|NullPointerException cause) {
 			return null;
 		}
+ 	}
+
+ 	public static String toString(Date date) {
+ 		return DATE_FORMAT.format(date);
  	}
 }
