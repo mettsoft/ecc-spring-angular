@@ -21,7 +21,7 @@ import com.ecc.hibernate_xml.util.validator.ValidationException;
 public class RoleRegistryServlet extends HttpServlet {
 	private String VIEW_TEMPLATE;
 
-	private static final String CONTEXT_PATH = "/role";
+	private static final String SERVLET_PATH = "/role";
 
 	private static final Integer MODE_CREATE = 1;
 	private static final Integer MODE_UPDATE = 2;
@@ -126,7 +126,7 @@ public class RoleRegistryServlet extends HttpServlet {
 			.map(role -> Arrays.asList(role.getId().toString(), role.getName()))
 			.collect(Collectors.toList());
 
-		return templateEngine.renderTable(headers, data, CONTEXT_PATH, CONTEXT_PATH);		
+		return templateEngine.renderTable(headers, data, SERVLET_PATH, SERVLET_PATH);		
 	}
 
 	@Override
@@ -146,7 +146,7 @@ public class RoleRegistryServlet extends HttpServlet {
 				role.setName(request.getParameter(QUERY_PARAMETER_ROLE_NAME));
 				roleService.validate(role);
 				role.setId((Integer) roleService.create(role));
-				response.sendRedirect(String.format("%s?%s=%d", CONTEXT_PATH, QUERY_PARAMETER_ENCODED_RESPONSE, encodeResponse(MODE_CREATE, role.getId())));
+				response.sendRedirect(String.format("%s?%s=%d", SERVLET_PATH, QUERY_PARAMETER_ENCODED_RESPONSE, encodeResponse(MODE_CREATE, role.getId())));
 			}
 			else if (mode.equals(MODE_UPDATE.toString())){
 				parameters.put(VIEW_PARAMETER_HEADER, "Update existing role");
@@ -155,12 +155,12 @@ public class RoleRegistryServlet extends HttpServlet {
 				role.setName(request.getParameter(QUERY_PARAMETER_ROLE_NAME));
 				roleService.validate(role);
 				roleService.update(role);
-				response.sendRedirect(String.format("%s?%s=%d", CONTEXT_PATH, QUERY_PARAMETER_ENCODED_RESPONSE, encodeResponse(MODE_UPDATE, role.getId())));
+				response.sendRedirect(String.format("%s?%s=%d", SERVLET_PATH, QUERY_PARAMETER_ENCODED_RESPONSE, encodeResponse(MODE_UPDATE, role.getId())));
 			}	
 			else if (mode.equals(MODE_DELETE.toString())) {
 				Integer roleId = Integer.valueOf(rawRoleId);
 				roleService.delete(roleId);	
-				response.sendRedirect(String.format("%s?%s=%d", CONTEXT_PATH, QUERY_PARAMETER_ENCODED_RESPONSE, encodeResponse(MODE_DELETE, roleId)));
+				response.sendRedirect(String.format("%s?%s=%d", SERVLET_PATH, QUERY_PARAMETER_ENCODED_RESPONSE, encodeResponse(MODE_DELETE, roleId)));
 			}
 		}
 		catch (Exception cause) {
