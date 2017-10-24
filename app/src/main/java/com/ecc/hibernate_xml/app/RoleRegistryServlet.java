@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ecc.hibernate_xml.util.app.NumberUtils;
+
 import com.ecc.hibernate_xml.dto.RoleDTO;
 import com.ecc.hibernate_xml.service.RoleService;
 import com.ecc.hibernate_xml.util.app.ExceptionHandler;
@@ -65,7 +67,7 @@ public class RoleRegistryServlet extends HttpServlet {
 				parameters.put(VIEW_PARAMETER_MODE, MODE_CREATE);
 			}
 			else {
-				RoleDTO role = roleService.get(Integer.valueOf(roleId));
+				RoleDTO role = roleService.get(NumberUtils.createInteger(roleId));
 				parameters.put(VIEW_PARAMETER_HEADER, "Update existing role");
 				parameters.put(VIEW_PARAMETER_ROLE_ID, role.getId());
 				parameters.put(VIEW_PARAMETER_ROLE_NAME, role.getName());
@@ -85,7 +87,7 @@ public class RoleRegistryServlet extends HttpServlet {
 		String message = null;
 		String rawEncodedResponse = request.getParameter(QUERY_PARAMETER_ENCODED_RESPONSE);
 		if (rawEncodedResponse != null) {
-			Integer encodedResponse = Integer.valueOf(rawEncodedResponse);
+			Integer encodedResponse = NumberUtils.createInteger(rawEncodedResponse);
 			Integer roleId = decodeRoleId(encodedResponse);
 			Integer mode = decodeMode(encodedResponse);
 			RoleDTO role = null;
@@ -150,14 +152,14 @@ public class RoleRegistryServlet extends HttpServlet {
 			else if (mode.equals(MODE_UPDATE.toString())){
 				parameters.put(VIEW_PARAMETER_HEADER, "Update existing role");
 
-				role = roleService.get(Integer.valueOf(rawRoleId));
+				role = roleService.get(NumberUtils.createInteger(rawRoleId));
 				role.setName(request.getParameter(QUERY_PARAMETER_ROLE_NAME));
 				roleService.validate(role);
 				roleService.update(role);
 				response.sendRedirect(String.format("%s?%s=%d", SERVLET_PATH, QUERY_PARAMETER_ENCODED_RESPONSE, encodeResponse(MODE_UPDATE, role.getId())));
 			}	
 			else if (mode.equals(MODE_DELETE.toString())) {
-				Integer roleId = Integer.valueOf(rawRoleId);
+				Integer roleId = NumberUtils.createInteger(rawRoleId);
 				roleService.delete(roleId);	
 				response.sendRedirect(String.format("%s?%s=%d", SERVLET_PATH, QUERY_PARAMETER_ENCODED_RESPONSE, encodeResponse(MODE_DELETE, roleId)));
 			}
