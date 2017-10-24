@@ -1,11 +1,20 @@
 <web-app>
 	<display-name>Person Registration System</display-name>
 	<servlet>
+		<servlet-name>PersonRegistryServlet</servlet-name>
+		<servlet-class>com.ecc.hibernate_xml.app.PersonRegistryServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet>
 		<servlet-name>RoleRegistryServlet</servlet-name>
 		<servlet-class>com.ecc.hibernate_xml.app.RoleRegistryServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 
+	<servlet-mapping>
+		<servlet-name>PersonRegistryServlet</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>RoleRegistryServlet</servlet-name>
 		<url-pattern>/role</url-pattern>
