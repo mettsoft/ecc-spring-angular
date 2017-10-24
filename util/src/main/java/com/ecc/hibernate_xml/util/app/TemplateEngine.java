@@ -10,8 +10,8 @@ import java.util.List;
 import org.apache.commons.io.FileUtils;
 
 public class TemplateEngine {
-	private static final String UPDATE_BUTTON_FORM = "<form action=\"%s\" method=\"GET\"><input type=\"hidden\" name=\"id\" value=\"%s\"><button>Edit</button></form>";
-	private static final String DELETE_BUTTON_FORM = "<form action=\"%s\" method=\"POST\"><input type=\"hidden\" name=\"id\" value=\"%s\"><input type=\"hidden\" name=\"mode\" value=\"3\"><button onClick=\"return confirm('Are you sure you want to delete this entry?')\">Delete</button></form>";
+	private static final String UPDATE_BUTTON_FORM = "<form action=\"%s\" method=\"GET\"><input type=\"hidden\" name=\"id\" value=\"%s\">%s<button>Edit</button></form>";
+	private static final String DELETE_BUTTON_FORM = "<form action=\"%s\" method=\"POST\"><input type=\"hidden\" name=\"id\" value=\"%s\">%s<input type=\"hidden\" name=\"mode\" value=\"3\"><button onClick=\"return confirm('Are you sure you want to delete this entry?')\">Delete</button></form>";
 	private PrintWriter printWriter;
 
 	public TemplateEngine(PrintWriter printWriter) {
@@ -30,7 +30,11 @@ public class TemplateEngine {
 		printWriter.println(buffer);
 	}
 
-	public String renderTable(List<String> headers, List<List<String>> data, String editAction, String deleteAction) {
+	public String renderTable(List<String> headers, List<List<String>> data, String action) {
+		return renderTable(headers, data, action, "");
+	}
+
+	public String renderTable(List<String> headers, List<List<String>> data, String action, String additionalFormElements) {
 		if (data.size() == 0) {
 			return "<h6>No records found!</h6>";
 		}
@@ -47,8 +51,8 @@ public class TemplateEngine {
 			for (String column: row) {
 				builder.append(String.format("<td>%s</td>", column));
 			}
-			String updateButton = String.format(UPDATE_BUTTON_FORM, editAction, row.get(0));
-			String deleteButton = String.format(DELETE_BUTTON_FORM, deleteAction, row.get(0));
+			String updateButton = String.format(UPDATE_BUTTON_FORM, action, row.get(0), additionalFormElements);
+			String deleteButton = String.format(DELETE_BUTTON_FORM, action, row.get(0), additionalFormElements);
 			builder.append(String.format("<td>%s</td><td>%s</td></tr>", updateButton, deleteButton));
 		}
 		builder.append("</tbody></table>");
