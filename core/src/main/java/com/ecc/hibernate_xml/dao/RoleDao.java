@@ -3,7 +3,6 @@ package com.ecc.hibernate_xml.dao;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.hibernate.Session;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Order;
@@ -14,7 +13,6 @@ import com.ecc.hibernate_xml.model.Person;
 import com.ecc.hibernate_xml.util.dao.TransactionScope;
 
 public class RoleDao extends AbstractDao<Role> {
-	
 	public RoleDao() {
 		super(Role.class);
 	} 
@@ -47,15 +45,6 @@ public class RoleDao extends AbstractDao<Role> {
 		return cause;
 	}
 
-	private Role get(String name) {
-		return TransactionScope.executeTransactionWithResult(session -> {
-			return (Role) session.createCriteria(Role.class)
-				.setCacheable(true)
-				.add(Restrictions.eq("name", name))
-				.uniqueResult();
-		});
-	}
-
 	public List<Role> list(Person person) {
 		return TransactionScope.executeTransactionWithResult(session -> {
 			return session.createCriteria(Role.class)
@@ -64,22 +53,6 @@ public class RoleDao extends AbstractDao<Role> {
 				.add(Restrictions.eq("P.id", person.getId()))
 				.addOrder(Order.asc("id"))
 				.list();
-		});
-	}
-
-	public List<Role> listRolesNotBelongingTo(Person person) {
-		List roleIds = list(person).stream()
-			.map(role -> role.getId())
-			.collect(Collectors.toList());
-
-		return TransactionScope.executeTransactionWithResult(session -> {
-			Criteria criteria = session.createCriteria(Role.class)
-				.setCacheable(true)
-				.addOrder(Order.asc("id"));
-			if (!roleIds.isEmpty()) {
-				criteria.add(Restrictions.not(Restrictions.in("id", roleIds)));
-			}
-			return criteria.list();
 		});
 	}
 }

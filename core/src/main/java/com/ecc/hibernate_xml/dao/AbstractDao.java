@@ -2,14 +2,12 @@ package com.ecc.hibernate_xml.dao;
 
 import java.io.Serializable;
 import java.util.List;
-import org.hibernate.Session;
+
 import org.hibernate.criterion.Order;
 
 import com.ecc.hibernate_xml.util.dao.TransactionScope;
-import com.ecc.hibernate_xml.model.Entity;
 
 public abstract class AbstractDao<T> implements Dao<T> {
-
 	private final Class<T> type;
 
 	protected AbstractDao(Class<T> type) {
