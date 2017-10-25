@@ -2,11 +2,8 @@ package com.ecc.hibernate_xml.model;
 
 import java.util.List;
 
-import javax.persistence.Embeddable;
 import javax.persistence.Column;
-
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
+import javax.persistence.Embeddable;
 
 @Embeddable
 public class Name {
