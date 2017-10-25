@@ -96,7 +96,7 @@ public class Person {
 	}
 
 	@Fetch(FetchMode.SELECT)
-	@OneToMany(cascade=CascadeType.ALL, mappedBy="person", fetch=FetchType.EAGER)
+	@OneToMany(cascade=CascadeType.ALL, mappedBy="person", fetch=FetchType.EAGER, orphanRemoval=true)
 	@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 	@OrderBy
 	public Set<Contact> getContacts() {
