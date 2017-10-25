@@ -5,6 +5,8 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
+import org.apache.commons.lang3.StringUtils;
+
 @Embeddable
 public class Name {
 	private String title;
@@ -37,7 +39,7 @@ public class Name {
 	}
 
 	public void setTitle(String title) {
-		this.title = title != null && title.trim().isEmpty()? null: title;
+		this.title = StringUtils.trimToNull(title);
 	}
 
 	public void setLastName(String lastName) {
@@ -53,7 +55,7 @@ public class Name {
 	}
 
 	public void setSuffix(String suffix) {
-		this.suffix = suffix != null && suffix.trim().isEmpty()? null: suffix;
+		this.suffix = StringUtils.trimToNull(suffix);
 	}
 
 	@Override
@@ -69,7 +71,6 @@ public class Name {
 		if (suffix != null) {
 			accumulator += suffix.hashCode();
 		}
-
 		return accumulator;
 	}
 
@@ -77,12 +78,11 @@ public class Name {
 	public boolean equals(Object object) {
 		if (object != null && object instanceof Name) {
 			Name other = (Name) object; 
-
-			return (title == null && title == other.title || title != null && title.equals(other.title)) && 
-				firstName.equals(other.firstName) && 
-				middleName.equals(other.middleName) && 
-				lastName.equals(other.lastName) && 
-				(suffix == null && suffix == other.suffix || suffix != null && suffix.equals(other.suffix));
+			return StringUtils.equals(title, other.title) && 
+				StringUtils.equals(lastName, other.lastName) &&
+				StringUtils.equals(firstName, other.firstName) &&
+				StringUtils.equals(middleName, other.middleName) &&
+				StringUtils.equals(suffix, other.suffix);
 		}
 		return false;
 	}

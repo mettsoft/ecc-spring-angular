@@ -35,17 +35,6 @@ public class Role {
 		setId(id);
 		setName(name);
 	}
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public void setPersons(Set<Person> persons) {
-		this.persons = persons;
-	}
 
 	@Id @GeneratedValue(generator="RoleIdGenerator")
 	@SequenceGenerator(name="RoleIdGenerator", sequenceName="roles_id_seq")
@@ -65,6 +54,18 @@ public class Role {
 	@OrderBy
 	public Set<Person> getPersons() {
 		return persons;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setPersons(Set<Person> persons) {
+		this.persons = persons;
 	}
 
 	@Override
