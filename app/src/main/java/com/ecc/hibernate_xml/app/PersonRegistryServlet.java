@@ -71,9 +71,6 @@ public class PersonRegistryServlet extends HttpServlet {
 	private static final String QUERY_PARAMETER_ORDER_BY = "queryOrderBy";
 	private static final String QUERY_PARAMETER_ORDER_TYPE = "queryOrderType";
 
-	// Contact
-	// Role
-
 	private static final String VIEW_PARAMETER_MESSAGE = ":message";
 	private static final String VIEW_PARAMETER_HEADER = ":header";
 
@@ -266,7 +263,7 @@ public class PersonRegistryServlet extends HttpServlet {
 			.map(person -> Arrays.asList(toString(person.getId()), toString(person.getName()), toString(person.getAddress()), toString(person.getBirthday()), toString(person.getGWA()), person.getEmploymentStatus(), toString(person.getContacts()), toString(person.getRoles())))
 			.collect(Collectors.toList());
 
-		return templateEngine.renderTable(headers, data, SERVLET_PATH, TEMPLATE_POST_QUERY_PARAMETERS);		
+		return templateEngine.generateTable(headers, data, SERVLET_PATH, TEMPLATE_POST_QUERY_PARAMETERS);		
 	}
 
 	private Map<String, Object> queryToViewParameters(HttpServletRequest request) {

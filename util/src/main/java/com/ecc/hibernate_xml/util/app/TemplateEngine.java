@@ -30,11 +30,11 @@ public class TemplateEngine {
 		printWriter.println(buffer);
 	}
 
-	public String renderTable(List<String> headers, List<List<String>> data, String action) {
-		return renderTable(headers, data, action, "");
+	public String generateTable(List<String> headers, List<List<String>> data, String action) {
+		return generateTable(headers, data, action, "");
 	}
 
-	public String renderTable(List<String> headers, List<List<String>> data, String action, String additionalFormElements) {
+	public String generateTable(List<String> headers, List<List<String>> data, String action, String additionalFormElements) {
 		if (data.size() == 0) {
 			return "<h6>No records found!</h6>";
 		}

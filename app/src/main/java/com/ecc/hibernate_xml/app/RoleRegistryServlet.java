@@ -17,7 +17,6 @@ import com.ecc.hibernate_xml.dto.RoleDTO;
 import com.ecc.hibernate_xml.service.RoleService;
 import com.ecc.hibernate_xml.util.app.ExceptionHandler;
 import com.ecc.hibernate_xml.util.app.TemplateEngine;
-import com.ecc.hibernate_xml.util.dao.HibernateUtility;
 import com.ecc.hibernate_xml.util.validator.ValidationException;
 
 public class RoleRegistryServlet extends HttpServlet {
@@ -29,10 +28,12 @@ public class RoleRegistryServlet extends HttpServlet {
 	private static final Integer MODE_UPDATE = 2;
 	private static final Integer MODE_DELETE = 3;
 
-	private static final String QUERY_PARAMETER_ROLE_ID = "id";
-	private static final String QUERY_PARAMETER_ROLE_NAME = "name";
-	private static final String QUERY_PARAMETER_MODE = "mode";
 	private static final String QUERY_PARAMETER_ENCODED_RESPONSE = "m";
+
+	private static final String QUERY_PARAMETER_MODE = "mode";
+	private static final String QUERY_PARAMETER_ROLE_ID = "id";
+
+	private static final String QUERY_PARAMETER_ROLE_NAME = "name";
 
 	private static final String VIEW_PARAMETER_MESSAGE = ":message";
 	private static final String VIEW_PARAMETER_HEADER = ":header";
@@ -127,7 +128,7 @@ public class RoleRegistryServlet extends HttpServlet {
 			.map(role -> Arrays.asList(role.getId().toString(), role.getName()))
 			.collect(Collectors.toList());
 
-		return templateEngine.renderTable(headers, data, SERVLET_PATH);		
+		return templateEngine.generateTable(headers, data, SERVLET_PATH);		
 	}
 
 	@Override
