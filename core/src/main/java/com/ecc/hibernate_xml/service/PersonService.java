@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import com.ecc.hibernate_xml.dto.PersonDTO;
+import com.ecc.hibernate_xml.dto.ContactDTO;
 import com.ecc.hibernate_xml.assembler.PersonAssembler;
 import com.ecc.hibernate_xml.dao.PersonDao;
 import com.ecc.hibernate_xml.model.Person;
@@ -14,6 +15,9 @@ import com.ecc.hibernate_xml.util.validator.ModelValidator;
 public class PersonService extends AbstractService<Person, PersonDTO> {
 	private static final Integer DEFAULT_MAX_CHARACTERS = 20;
 	private static final Integer MAX_MUNICIPALITY_CHARACTERS = 50;
+	private static final Integer MAX_EMAIL_CHARACTERS = 50;
+	private static final Integer LANDLINE_DIGITS = 7;
+	private static final Integer MOBILE_NUMBER_DIGITS = 11;
 
 	private final PersonDao personDao;
 	private final ModelValidator validator;
@@ -37,6 +41,7 @@ public class PersonService extends AbstractService<Person, PersonDTO> {
 		validateBirthday(person.getBirthday());
 		validateGWA(person.getGWA());
 		validateDateHired(person.getCurrentlyEmployed(), person.getDateHired());
+		validateContacts(person.getContacts());
 	}
 
 	private void validateName(String data, String component) throws ValidationException {
@@ -74,6 +79,36 @@ public class PersonService extends AbstractService<Person, PersonDTO> {
 		else if (currentlyEmployed && dateHired == null) {
 			throw new ValidationException("Date hired cannot be empty if person is employed.");
 		}
+	}
+
+	private void validateContacts(List<ContactDTO> contacts) throws ValidationException {
+		for (ContactDTO contact: contacts) {
+			switch(contact.getContactType()) {
+				case "Landline":
+					validateNumericalContact(contact.getData(), LANDLINE_DIGITS, "Landline"); 
+					break;
+				case "Mobile":
+					validateNumericalContact(contact.getData(), MOBILE_NUMBER_DIGITS, "Mobile number"); 
+					break;
+				case "Email":
+					validateEmail(contact.getData());
+					break;
+				default: 
+					throw new RuntimeException("No validation rule defined for " + contact.getContactType() + "!");
+			}			
+		}
+	}
+
+	private void validateNumericalContact(String data, Integer matchingDigits, String contactType) throws ValidationException {		
+		validator.validate("NotEmpty", data, contactType);
+		validator.validate("Digits", data, contactType);
+		validator.validate("EqualLength", data, matchingDigits, contactType);
+	}
+
+	private void validateEmail(String email) throws ValidationException {
+		validator.validate("NotEmpty", email, "Email");
+		validator.validate("MaxLength", email, MAX_EMAIL_CHARACTERS, "Email");
+		validator.validate("ValidEmail", email);
 	}
 
 	public List<PersonDTO> list(String lastName, Integer roleId, Date birthday, String orderBy, String order) {
