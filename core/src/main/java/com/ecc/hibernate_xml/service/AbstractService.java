@@ -4,9 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.ecc.hibernate_xml.dao.Dao;
-import com.ecc.hibernate_xml.dao.DaoException;
 import com.ecc.hibernate_xml.assembler.Assembler;
-import com.ecc.hibernate_xml.model.Entity;
 import com.ecc.hibernate_xml.util.app.AssemblerUtils;
 
 public abstract class AbstractService<T, R> implements Service<T, R> {
@@ -24,23 +22,22 @@ public abstract class AbstractService<T, R> implements Service<T, R> {
 	}
 
 	@Override
-	public Serializable create(R dto) throws DaoException {
-		T entity = assembler.createModel(dto);
-		return dao.create(entity);
+	public Serializable create(R dto) throws Exception {
+		return dao.create(assembler.createModel(dto));
 	}
 
 	@Override
-	public void update(R dto) throws DaoException {
+	public void update(R dto) throws Exception {
 		dao.update(assembler.createModel(dto));
 	}
 
 	@Override
-	public void delete(Integer id) throws DaoException {
+	public void delete(Integer id) throws Exception {
 		dao.delete(dao.get(id));
 	} 
 
 	@Override
-	public R get(Integer id) throws DaoException {
+	public R get(Integer id) throws Exception {
 		return assembler.createDTO(dao.get(id));
 	}
 }

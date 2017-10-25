@@ -3,13 +3,10 @@ package com.ecc.hibernate_xml.service;
 import java.io.Serializable;
 import java.util.List;
 
-import com.ecc.hibernate_xml.dao.DaoException;
-import com.ecc.hibernate_xml.model.Entity;
-
 public interface Service<T, R> {
 	List<R> list();
-	Serializable create(R DTO) throws DaoException;
-	void update(R DTO) throws DaoException;
-	void delete(Integer id) throws DaoException;
-	R get(Integer id) throws DaoException;
+	Serializable create(R DTO) throws Exception;
+	void update(R DTO) throws Exception;
+	void delete(Integer id) throws Exception;
+	R get(Integer id) throws Exception;
 }
