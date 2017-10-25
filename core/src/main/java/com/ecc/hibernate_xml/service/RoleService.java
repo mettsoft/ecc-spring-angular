@@ -32,8 +32,7 @@ public class RoleService extends AbstractService<Role, RoleDTO> {
 		validator.validate("MaxLength", role.getName(), MAX_CHARACTERS, "Role name");
 	}
 
-	public List<RoleDTO> list(PersonDTO personDTO) {
-		Person person = personAssembler.createModel(personDTO);
-		return AssemblerUtils.asList(roleDao.list(person), assembler::createDTO);
+	public List<RoleDTO> list() {
+		return AssemblerUtils.asList(roleDao.list(), assembler::createDTO);
 	}
 }

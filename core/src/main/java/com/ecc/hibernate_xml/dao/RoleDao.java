@@ -45,7 +45,7 @@ public class RoleDao extends AbstractDao<Role> {
 		return cause;
 	}
 
-	public List<T> list() {
+	public List<Role> list() {
 		return TransactionScope.executeTransactionWithResult(session -> {
 			return session.createCriteria(Role.class)
 				.setCacheable(true)

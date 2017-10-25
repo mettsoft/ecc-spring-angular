@@ -1,7 +1,6 @@
 package com.ecc.hibernate_xml.service;
 
 import java.io.Serializable;
-import java.util.List;
 
 import com.ecc.hibernate_xml.dao.Dao;
 import com.ecc.hibernate_xml.assembler.Assembler;
@@ -14,11 +13,6 @@ public abstract class AbstractService<T, R> implements Service<T, R> {
 	protected AbstractService(Dao<T> dao, Assembler<T, R> assembler) {
 		this.dao = dao;
 		this.assembler = assembler;
-	}
-
-	@Override
-	public List<R> list() {
-		return AssemblerUtils.asList(dao.list(), assembler::createDTO);
 	}
 
 	@Override
