@@ -93,7 +93,7 @@ public class Person implements com.ecc.hibernate_xml.model.Entity {
 	}
 
 	@Fetch(FetchMode.SELECT)
-	@OneToMany(cascade=CascadeType.REMOVE, mappedBy="person", fetch=FetchType.EAGER)
+	@OneToMany(cascade=CascadeType.ALL, mappedBy="person", fetch=FetchType.EAGER)
 	@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 	@OrderBy
 	public Set<Contact> getContacts() {
