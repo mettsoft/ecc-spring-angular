@@ -40,33 +40,4 @@ public class RoleService extends AbstractService<Role, RoleDTO> {
 		Person person = personAssembler.createModel(personDTO);
 		return assembler.createDTO(roleDao.list(person));
 	}
-
-	public List<RoleDTO> listRolesNotBelongingTo(PersonDTO personDTO) {
-		Person person = personAssembler.createModel(personDTO);
-		return assembler.createDTO(roleDao.listRolesNotBelongingTo(person));
-	}
-
-	public void addRoleToPerson(Integer roleId, PersonDTO personDTO) throws DaoException {
-		Person person = personAssembler.createModel(personDTO);
-		Role role = roleDao.get(roleId);
-		if (person.getRoles().add(role)) {
-			personDao.update(person);
-			personDTO.setRoles(person.getRoles().stream().map(assembler::createDTO).collect(Collectors.toList()));
-		}
-		else {
-			throw new DaoException("Role not found!");
-		}
-	}
-
-	public void removeRoleFromPerson(Integer roleId, PersonDTO personDTO) throws DaoException {
-		Person person = personAssembler.createModel(personDTO);
-		Role role = roleDao.get(roleId);
-		if (person.getRoles().remove(role)) {
-			personDao.update(person);
-			personDTO.setRoles(person.getRoles().stream().map(assembler::createDTO).collect(Collectors.toList()));
-		}
-		else {
-			throw new DaoException("Role not found!");
-		}
-	}
 }
