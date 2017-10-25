@@ -15,16 +15,6 @@ public abstract class AbstractDao<T> implements Dao<T> {
 	}
 
 	@Override
-	public List<T> list() {
-		return TransactionScope.executeTransactionWithResult(session -> {
-			return session.createCriteria(type)
-				.setCacheable(true)
-				.addOrder(Order.asc("id"))
-				.list();
-		});
-	}
-
-	@Override
 	public Serializable create(T entity) throws DaoException {
 		try {
 			return TransactionScope.executeTransactionWithResult(session -> session.save(entity));			

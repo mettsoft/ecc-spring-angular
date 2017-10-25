@@ -50,7 +50,6 @@ public class Role {
 
 	@Fetch(FetchMode.SELECT)
 	@ManyToMany(fetch=FetchType.EAGER, mappedBy="roles")
-	@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 	@OrderBy
 	public Set<Person> getPersons() {
 		return persons;

@@ -45,12 +45,10 @@ public class RoleDao extends AbstractDao<Role> {
 		return cause;
 	}
 
-	public List<Role> list(Person person) {
+	public List<T> list() {
 		return TransactionScope.executeTransactionWithResult(session -> {
 			return session.createCriteria(Role.class)
 				.setCacheable(true)
-				.createAlias("persons", "P")
-				.add(Restrictions.eq("P.id", person.getId()))
 				.addOrder(Order.asc("id"))
 				.list();
 		});

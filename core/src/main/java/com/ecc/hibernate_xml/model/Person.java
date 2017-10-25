@@ -22,14 +22,11 @@ import javax.persistence.TemporalType;
 import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Fetch;
 
 @Entity
 @Table(name="persons")
-@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 public class Person {
 	private Integer id;
 	private Name name;
@@ -97,7 +94,6 @@ public class Person {
 
 	@Fetch(FetchMode.SELECT)
 	@OneToMany(cascade=CascadeType.ALL, mappedBy="person", fetch=FetchType.EAGER, orphanRemoval=true)
-	@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 	@OrderBy
 	public Set<Contact> getContacts() {
 		return contacts;
@@ -108,7 +104,6 @@ public class Person {
 	@JoinTable(
 		joinColumns=@JoinColumn(name="person_id"),
 		inverseJoinColumns=@JoinColumn(name="role_id"))
-	@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 	@OrderBy
 	public Set<Role> getRoles() {
 		return roles;

@@ -10,7 +10,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.ecc.hibernate_xml.model.Person;
 import com.ecc.hibernate_xml.util.dao.TransactionScope;
-import com.ecc.hibernate_xml.util.dao.HibernateUtility;
 
 public class PersonDao extends AbstractDao<Person> {
 	public PersonDao() {
@@ -21,7 +20,6 @@ public class PersonDao extends AbstractDao<Person> {
 		return TransactionScope.executeTransactionWithResult(session -> {
 			String orderColumn = StringUtils.isEmpty(orderBy)? "id": orderBy;
 			Criteria criteria = session.createCriteria(Person.class)
-				.setCacheable(true)
 				.addOrder("DESC".equals(order)? Order.desc(orderColumn): Order.asc(orderColumn));
 
 			if (!StringUtils.isEmpty(lastName)) {
@@ -54,12 +52,5 @@ public class PersonDao extends AbstractDao<Person> {
 		catch (Exception cause) {
 			throw new DaoException(onUpdateFailure(person, cause));
 		}
-	}
-
-	@Override
-	public void delete(Person person) throws DaoException {
-		super.delete(person);
-		HibernateUtility.getSessionFactory().getCache().evictCollectionRegion(
-			"com.ecc.hibernate_xml.model.Role.persons");
 	}
 }

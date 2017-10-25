@@ -10,16 +10,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.FetchType;
 import javax.persistence.UniqueConstraint;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
 @Entity
 @Table(
 	name="contacts",
 	uniqueConstraints=
 		@UniqueConstraint(columnNames={"contact_type", "data", "person_id"})
 )
-@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 public class Contact {
 	private Integer id;
 	private String data;
@@ -39,7 +35,6 @@ public class Contact {
 	}
 
 	@ManyToOne(optional=false, fetch=FetchType.EAGER)
-	@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 	public Person getPerson() {
 		return person;
 	}
