@@ -93,7 +93,8 @@ public class Person {
 	}
 
 	@Fetch(FetchMode.SELECT)
-	@OneToMany(cascade=CascadeType.ALL, mappedBy="person", fetch=FetchType.EAGER, orphanRemoval=true)
+	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, orphanRemoval=true)
+	@JoinColumn(name="person_id")
 	@OrderBy
 	public Set<Contact> getContacts() {
 		return contacts;

@@ -20,7 +20,6 @@ public class Contact {
 	private Integer id;
 	private String data;
 	private String contactType;
-	private Person person;
 
 	@Id @GeneratedValue(generator="ContactIdGenerator")
 	@SequenceGenerator(name="ContactIdGenerator", sequenceName="contacts_id_seq")
@@ -32,11 +31,6 @@ public class Contact {
 	@Column(nullable=false, length=50)
 	public String getData() {
 		return data;
-	}
-
-	@ManyToOne(optional=false, fetch=FetchType.EAGER)
-	public Person getPerson() {
-		return person;
 	}
 	
 	@Column(name="contact_type", length=20, nullable=false)
@@ -52,28 +46,23 @@ public class Contact {
 		this.data = data;
 	}
 
-	public void setPerson(Person person) {
-		this.person = person;
-	}
-
 	public void setContactType(String contactType) {
 		this.contactType = contactType;
 	}
 
 	@Override
 	public int hashCode() {
-		if (data == null || contactType == null || person == null) {
+		if (data == null || contactType == null) {
 			return super.hashCode();
 		}
-		return data.hashCode() << 4 + contactType.hashCode() << 2 + person.getName().hashCode();
+		return data.hashCode() << 4 + contactType.hashCode() << 2;
 	}
 
 	@Override
 	public boolean equals(Object object) {
 		if (object != null && object instanceof Contact) {
 			Contact otherContact = (Contact) object; 
-			return data.equals(otherContact.data) && contactType.equals(otherContact.contactType) && 
-				person.getName().equals(otherContact.person.getName());
+			return data.equals(otherContact.data) && contactType.equals(otherContact.contactType);
 		}
 		return false;
 	}
