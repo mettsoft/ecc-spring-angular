@@ -16,6 +16,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.ecc.hibernate_xml.dto.PersonDTO;
 import com.ecc.hibernate_xml.dto.RoleDTO;
+import com.ecc.hibernate_xml.dto.ContactDTO;
 import com.ecc.hibernate_xml.dto.NameDTO;
 import com.ecc.hibernate_xml.dto.AddressDTO;
 import com.ecc.hibernate_xml.service.PersonService;
@@ -60,6 +61,9 @@ public class PersonRegistryServlet extends HttpServlet {
 	private static final String FORM_PARAMETER_DATE_HIRED = "dateHired";
 
 	private static final String FORM_PARAMETER_PERSON_ROLE_IDS = "personRoleIds";
+
+	private static final String FORM_PARAMETER_PERSON_CONTACT_TYPE = "contactType";
+	private static final String FORM_PARAMETER_PERSON_CONTACT_DATA = "contactData";
 
 	private static final String QUERY_PARAMETER_PERSON_LAST_NAME = "queryLastName";
 	private static final String QUERY_PARAMETER_ROLE_ID = "queryRoleId";
@@ -214,7 +218,7 @@ public class PersonRegistryServlet extends HttpServlet {
 		}
 
 		StringBuilder assignedRoles = new StringBuilder();
-		for (int i = 0; i < person.getRoles().size(); i++) {
+		for (RoleDTO role: person.getRoles()) {
 			assignedRoles.append("<div><select class=\"assigned-roles\" name=\"personRoleIds\">:queryRoleItems</select><button onclick=\"this.parentNode.remove()\">Remove</button></div>");
 		}
 
@@ -222,7 +226,16 @@ public class PersonRegistryServlet extends HttpServlet {
 			"]; document.querySelectorAll('select.assigned-roles').forEach((e, i) => e.value = rolesId[i]);</script>");
 		parameters.put(VIEW_PARAMETER_ROLES_FORM, assignedRoles);
 
-		// parameters.put(VIEW_PARAMETER_CONTACTS_FORM, person.getId());
+
+		StringBuilder assignedContacts = new StringBuilder();
+		for (ContactDTO contact: person.getContacts()) {
+			assignedContacts.append("<div><select class=\"assigned-contacts\" name=\"contactType\"><option value=\"Landline\">Landline</option><option value=\"Email\">Email</option><option value=\"Mobile\">Mobile</option></select><button onclick=\"this.parentNode.remove()\">Remove</button>");
+			assignedContacts.append("<input type=\"text\" name=\"contactData\" value=\"" + contact.getData() + "\"></div>");
+		}
+
+		assignedContacts.append("<script> var contactTypes = [" + person.getContacts().stream().map(t -> "'" + t.getContactType() + "'").collect(Collectors.joining(",")) +  
+			"]; document.querySelectorAll('select.assigned-contacts').forEach((e, i) => e.value = contactTypes[i]);</script>");
+		parameters.put(VIEW_PARAMETER_CONTACTS_FORM, assignedContacts);
 		return parameters;
 	} 
 
@@ -347,6 +360,13 @@ public class PersonRegistryServlet extends HttpServlet {
 
 		for (String roleId: request.getParameterValues(FORM_PARAMETER_PERSON_ROLE_IDS)) {
 			person.getRoles().add(new RoleDTO(NumberUtils.createInteger(roleId)));			
+		}
+
+		String[] contactTypes = request.getParameterValues(FORM_PARAMETER_PERSON_CONTACT_TYPE);
+		String[] contactData = request.getParameterValues(FORM_PARAMETER_PERSON_CONTACT_DATA);
+
+		for (int i = 0; i < contactTypes.length; i++) {
+			person.getContacts().add(new ContactDTO(contactTypes[i], contactData[i]));			
 		}
 
 		return person;

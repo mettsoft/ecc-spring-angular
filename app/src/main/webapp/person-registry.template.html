@@ -30,6 +30,8 @@
 		<script>
 			var ROLE_MARK_UP = document.createElement('div');
 			ROLE_MARK_UP.innerHTML = '<select name="personRoleIds">:queryRoleItems</select><button onclick="this.parentNode.remove()">Remove</button>';
+			var CONTACT_MARK_UP = document.createElement('div');
+			CONTACT_MARK_UP.innerHTML = "<div><select class=\"assigned-contacts\" name=\"contactType\"><option value=\"Landline\">Landline</option><option value=\"Email\">Email</option><option value=\"Mobile\">Mobile</option></select><button onclick=\"this.parentNode.remove()\">Remove</button><input type=\"text\" name=\"contactData\"></div>";
 		</script>
 	</head>
 	<body>
@@ -107,11 +109,12 @@
 						<fieldset>
 							<legend>Contact Information:</legend>
 							:contactsForm
+							<button onclick="this.parentNode.insertBefore(CONTACT_MARK_UP.cloneNode(true), this); return false;">Add</button>
 						</fieldset>
 						<fieldset>
 							<legend>Role Assignment:</legend>
 							:rolesForm
-							<button id="addRoleButton" onclick="this.parentNode.insertBefore(ROLE_MARK_UP.cloneNode(true), this); return false;">Add</button>
+							<button onclick="this.parentNode.insertBefore(ROLE_MARK_UP.cloneNode(true), this); return false;">Add</button>
 						</fieldset>
 						<button>Submit</button>
 					</fieldset>
