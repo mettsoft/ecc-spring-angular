@@ -20,7 +20,7 @@ import com.ecc.hibernate_xml.util.app.TemplateEngine;
 import com.ecc.hibernate_xml.util.validator.ValidationException;
 
 public class RoleRegistryServlet extends HttpServlet {
-	private String VIEW_TEMPLATE;
+	private static final String VIEW_TEMPLATE = "<html><head><title>Role | Person Registry System</title><style>div.container {display: inline-flex;width: 100%;}div.container div {width: 50%;margin: 16px;}label {display: block;}table, th, td {border: 1px solid black;}</style></head><body><a href=\"/\">Go to Person Registry</a><div class=\"container\"><div><h3>:message</h3><h3>:header</h3><form action=\"/role\" method=\"POST\"><input type=\"hidden\" name=\"mode\" value=\":mode\"><input type=\"hidden\" name=\"id\" value=\":roleId\"><label for=\"name\">Enter the role name:</label><input type=\"text\" id=\"name\" name=\"name\" value=\":roleName\"><button>Submit</button></form></div><div><h3>Roles</h3>:dataTable		</div>			</div></body></html>";
 
 	private static final String SERVLET_PATH = "/role";
 
@@ -51,7 +51,6 @@ public class RoleRegistryServlet extends HttpServlet {
 
 	@Override
 	public void init() throws ServletException {
-		VIEW_TEMPLATE = getServletContext().getRealPath("/") + "/role-registry.template.html";
 		roleService = new RoleService();
 	}
 

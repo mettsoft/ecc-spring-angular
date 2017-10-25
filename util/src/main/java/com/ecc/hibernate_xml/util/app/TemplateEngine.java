@@ -1,13 +1,8 @@
 package com.ecc.hibernate_xml.util.app;
 
 import java.io.PrintWriter;
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.Map;
 import java.util.List;
-
-import org.apache.commons.io.FileUtils;
 
 public class TemplateEngine {
 	private static final String UPDATE_BUTTON_FORM = "<form action=\"%s\" method=\"GET\"><input type=\"hidden\" name=\"id\" value=\"%s\">%s<button>Edit</button></form>";
@@ -18,16 +13,14 @@ public class TemplateEngine {
 		this.printWriter = printWriter;
 	}
 
-	public void render(String templatePath, Map<String, Object> parameters) throws IOException {
-		File template = new File(templatePath);
-		String buffer = FileUtils.readFileToString(template, Charset.forName("UTF-8"));
+	public void render(String template, Map<String, Object> parameters) {
 		for (Map.Entry<String, Object> parameter: parameters.entrySet()) {
 			if (parameter.getValue() != null) {
-				buffer = buffer.replaceAll(parameter.getKey(), parameter.getValue().toString());			
+				template = template.replaceAll(parameter.getKey(), parameter.getValue().toString());			
 			}
 		}
-		buffer = buffer.replaceAll(":\\w+", "");
-		printWriter.println(buffer);
+		template = template.replaceAll(":\\w+", "");
+		printWriter.println(template);
 	}
 
 	public String generateTable(List<String> headers, List<List<String>> data, String action) {
