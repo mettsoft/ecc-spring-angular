@@ -354,15 +354,20 @@ public class PersonRegistryServlet extends HttpServlet {
 			person.setDateHired(DateUtils.parse(request.getParameter(FORM_PARAMETER_DATE_HIRED)));
 		}
 
-		for (String roleId: request.getParameterValues(FORM_PARAMETER_PERSON_ROLE_IDS)) {
-			person.getRoles().add(new RoleDTO(NumberUtils.createInteger(roleId)));			
+		String[] roleIds = request.getParameterValues(FORM_PARAMETER_PERSON_ROLE_IDS);
+		if (roleIds != null) {
+			for (String roleId: request.getParameterValues(FORM_PARAMETER_PERSON_ROLE_IDS)) {
+				person.getRoles().add(new RoleDTO(NumberUtils.createInteger(roleId)));			
+			}			
 		}
 
 		String[] contactTypes = request.getParameterValues(FORM_PARAMETER_PERSON_CONTACT_TYPE);
 		String[] contactData = request.getParameterValues(FORM_PARAMETER_PERSON_CONTACT_DATA);
 
-		for (int i = 0; i < contactTypes.length; i++) {
-			person.getContacts().add(new ContactDTO(contactTypes[i], contactData[i], person));			
+		if (contactData != null && contactTypes != null) {
+			for (int i = 0; i < contactTypes.length; i++) {
+				person.getContacts().add(new ContactDTO(contactTypes[i], contactData[i]));			
+			}			
 		}
 
 		return person;
