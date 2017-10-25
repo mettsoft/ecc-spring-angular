@@ -366,7 +366,7 @@ public class PersonRegistryServlet extends HttpServlet {
 		String[] contactData = request.getParameterValues(FORM_PARAMETER_PERSON_CONTACT_DATA);
 
 		for (int i = 0; i < contactTypes.length; i++) {
-			person.getContacts().add(new ContactDTO(contactTypes[i], contactData[i]));			
+			person.getContacts().add(new ContactDTO(contactTypes[i], contactData[i], person));			
 		}
 
 		return person;
