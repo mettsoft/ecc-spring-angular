@@ -66,8 +66,7 @@ public class Person implements com.ecc.hibernate_xml.model.Entity {
 		return name;
 	}
 
-	@OneToOne(cascade=CascadeType.ALL, orphanRemoval=true, fetch=FetchType.EAGER)
-	@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
+	@Embedded
 	public Address getAddress() {
 		return address;
 	}
