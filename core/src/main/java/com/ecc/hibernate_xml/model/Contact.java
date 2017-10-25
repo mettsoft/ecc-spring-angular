@@ -20,7 +20,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 		@UniqueConstraint(columnNames={"contact_type", "data", "person_id"})
 )
 @Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
-public class Contact implements com.ecc.hibernate_xml.model.Entity {
+public class Contact {
 	private Integer id;
 	private String data;
 	private String contactType;

@@ -9,7 +9,7 @@ import com.ecc.hibernate_xml.assembler.Assembler;
 import com.ecc.hibernate_xml.model.Entity;
 import com.ecc.hibernate_xml.util.app.AssemblerUtils;
 
-public abstract class AbstractService<T extends Entity, R> implements Service<T, R> {
+public abstract class AbstractService<T, R> implements Service<T, R> {
 	protected final Dao<T> dao;
 	protected final Assembler<T, R> assembler;
 

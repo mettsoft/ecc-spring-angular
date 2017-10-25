@@ -5,7 +5,7 @@ import java.io.Serializable;
 
 import com.ecc.hibernate_xml.model.Entity;
 
-public interface Dao<T extends Entity> {
+public interface Dao<T> {
 	List<T> list();
 	Serializable create(T entity) throws DaoException;
 	void update(T entity) throws DaoException;

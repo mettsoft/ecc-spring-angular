@@ -24,7 +24,7 @@ import com.ecc.hibernate_xml.model.Person;
 @Entity
 @Table(name="roles")
 @Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
-public class Role implements com.ecc.hibernate_xml.model.Entity {
+public class Role {
 	private Integer id;
 	private String name;
 	private Set<Person> persons;
