@@ -1,8 +1,6 @@
 package com.ecc.hibernate_xml.dto;
 
-import java.util.List;
-import java.util.ArrayList;
-import java.util.stream.Collectors;
+import org.apache.commons.lang3.StringUtils;
 
 public class NameDTO {
 	private String title;
@@ -53,20 +51,7 @@ public class NameDTO {
 
 	@Override
 	public String toString() {
-		List<String> tokens = new ArrayList<>(5);
-
-		if (title != null) {
-			tokens.add(title);
-		}
-
-		tokens.add(lastName + ",");
-		tokens.add(firstName);
-		tokens.add(middleName);
-
-		if (suffix != null) {
-			tokens.add(suffix);
-		}
-
-		return tokens.stream().collect(Collectors.joining(" "));
+		return StringUtils.trim(StringUtils.trimToEmpty(title) + " " + lastName + ", " + 
+			firstName + " " + middleName + " " + StringUtils.trimToEmpty(suffix));
 	}
 }

@@ -48,6 +48,6 @@ public class ContactDTO {
 
 	@Override
 	public String toString() {
-		return String.format("[%s] %s", getContactType(), data);
+		return String.format("[%s] %s", contactType, data);
 	}
 }

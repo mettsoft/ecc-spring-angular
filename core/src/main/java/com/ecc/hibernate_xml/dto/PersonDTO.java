@@ -25,6 +25,7 @@ public class PersonDTO {
 	}
 
 	public PersonDTO(Integer id, NameDTO name) {
+		this();
 		setId(id);
 		setName(name);
 	}
