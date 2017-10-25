@@ -42,6 +42,22 @@ public class PersonDao extends AbstractDao<Person> {
 	}
 
 	@Override
+	public void update(Person person) throws DaoException {
+		try {
+			TransactionScope.executeTransaction(session -> {
+				Person persistentPerson = (Person) session.get(Person.class, person.getId());
+				persistentPerson.getContacts().clear();
+				session.flush();
+				session.evict(persistentPerson);
+				session.update(person);
+			});			
+		}
+		catch (Exception cause) {
+			throw new DaoException(onUpdateFailure(person, cause));
+		}
+	}
+
+	@Override
 	public void delete(Person person) throws DaoException {
 		super.delete(person);
 		HibernateUtility.getSessionFactory().getCache().evictCollectionRegion(
