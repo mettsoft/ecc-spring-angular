@@ -7,6 +7,15 @@ public class RoleDTO {
 	private String name;
 	private List<PersonDTO> persons;
 
+	public RoleDTO() {
+
+	}
+
+	public RoleDTO(Integer id) {
+		setId(id);
+		setName(id.toString());
+	}
+
 	public void setId(Integer id) {
 		this.id = id;
 	}

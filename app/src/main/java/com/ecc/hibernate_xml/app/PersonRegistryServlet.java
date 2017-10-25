@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 
 import com.ecc.hibernate_xml.dto.PersonDTO;
+import com.ecc.hibernate_xml.dto.RoleDTO;
 import com.ecc.hibernate_xml.dto.NameDTO;
 import com.ecc.hibernate_xml.dto.AddressDTO;
 import com.ecc.hibernate_xml.service.PersonService;
@@ -57,6 +58,8 @@ public class PersonRegistryServlet extends HttpServlet {
 	private static final String FORM_PARAMETER_GWA = "GWA";
 	private static final String FORM_PARAMETER_CURRENTLY_EMPLOYED = "currentlyEmployed";
 	private static final String FORM_PARAMETER_DATE_HIRED = "dateHired";
+
+	private static final String FORM_PARAMETER_PERSON_ROLE_IDS = "personRoleIds";
 
 	private static final String QUERY_PARAMETER_PERSON_LAST_NAME = "queryLastName";
 	private static final String QUERY_PARAMETER_ROLE_ID = "queryRoleId";
@@ -134,7 +137,7 @@ public class PersonRegistryServlet extends HttpServlet {
 				PersonDTO person = personService.get(NumberUtils.createInteger(personId));
 				parameters.put(VIEW_PARAMETER_HEADER, "Update existing person");
 				parameters.put(VIEW_PARAMETER_MODE, MODE_UPDATE);
-				parameters.putAll(extractMapFromPerson(person));
+				parameters.putAll(constructViewParametersFromPerson(person));
 			}
 		}
 		catch (Exception cause) {
@@ -189,7 +192,7 @@ public class PersonRegistryServlet extends HttpServlet {
 		return encodedResponse & 0xff;
 	}
 
-	private Map<String, Object> extractMapFromPerson(PersonDTO person) {
+	private Map<String, Object> constructViewParametersFromPerson(PersonDTO person) {
 		Map<String, Object> parameters = new LinkedHashMap<>(); 
 		parameters.put(VIEW_PARAMETER_PERSON_ID, person.getId());
 		parameters.put(VIEW_PARAMETER_TITLE, person.getName().getTitle());
@@ -209,8 +212,17 @@ public class PersonRegistryServlet extends HttpServlet {
 		if (person.getCurrentlyEmployed()) {
 			parameters.put(VIEW_PARAMETER_DATE_HIRED, toString(person.getDateHired()));
 		}
+
+		StringBuilder assignedRoles = new StringBuilder();
+		for (int i = 0; i < person.getRoles().size(); i++) {
+			assignedRoles.append("<div><select class=\"assigned-roles\" name=\"personRoleIds\">:queryRoleItems</select><button onclick=\"this.parentNode.remove()\">Remove</button></div>");
+		}
+
+		assignedRoles.append("<script> var rolesId = [" + person.getRoles().stream().map(t -> t.getId().toString()).collect(Collectors.joining(",")) +  
+			"]; document.querySelectorAll('select.assigned-roles').forEach((e, i) => e.value = rolesId[i]);</script>");
+		parameters.put(VIEW_PARAMETER_ROLES_FORM, assignedRoles);
+
 		// parameters.put(VIEW_PARAMETER_CONTACTS_FORM, person.getId());
-		// parameters.put(VIEW_PARAMETER_ROLES_FORM, person.getId());
 		return parameters;
 	} 
 
@@ -299,7 +311,7 @@ public class PersonRegistryServlet extends HttpServlet {
 				parameters.put(VIEW_PARAMETER_MODE, MODE_CREATE);
 			}
 			parameters.put(VIEW_PARAMETER_MESSAGE, ExceptionHandler.printException(cause));
-			parameters.putAll(extractMapFromPerson(person));
+			parameters.putAll(constructViewParametersFromPerson(person));
 			parameters.put(VIEW_PARAMETER_DATATABLE, createDataTable(queryParameters, templateEngine));
 			parameters.putAll(queryToViewParameters(request));
 			templateEngine.render(VIEW_TEMPLATE, parameters);
@@ -332,6 +344,11 @@ public class PersonRegistryServlet extends HttpServlet {
 		if (person.getCurrentlyEmployed()) {
 			person.setDateHired(DateUtils.parse(request.getParameter(FORM_PARAMETER_DATE_HIRED)));
 		}
+
+		for (String roleId: request.getParameterValues(FORM_PARAMETER_PERSON_ROLE_IDS)) {
+			person.getRoles().add(new RoleDTO(NumberUtils.createInteger(roleId)));			
+		}
+
 		return person;
 	}
 	
