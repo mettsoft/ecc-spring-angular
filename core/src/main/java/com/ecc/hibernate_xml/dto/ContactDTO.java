@@ -10,9 +10,10 @@ public class ContactDTO {
 
 	}
 
-	public ContactDTO(String contactType, String data) {
+	public ContactDTO(String contactType, String data, PersonDTO person) {
 		setContactType(contactType);
 		setData(data);
+		setPerson(person);
 	}
 	
 	public Integer getId() {
