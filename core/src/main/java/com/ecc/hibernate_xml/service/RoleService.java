@@ -9,6 +9,7 @@ import com.ecc.hibernate_xml.model.Role;
 import com.ecc.hibernate_xml.model.Person;
 import com.ecc.hibernate_xml.assembler.RoleAssembler;
 import com.ecc.hibernate_xml.assembler.PersonAssembler;
+import com.ecc.hibernate_xml.util.app.AssemblerUtils;
 import com.ecc.hibernate_xml.util.validator.ValidationException;
 import com.ecc.hibernate_xml.util.validator.ModelValidator;
 
@@ -22,7 +23,6 @@ public class RoleService extends AbstractService<Role, RoleDTO> {
 	public RoleService() {
 		super(new RoleDao(), new RoleAssembler());
 		roleDao = (RoleDao) dao;
-		personDao = new PersonDao();
 		validator = ModelValidator.create();
 		personAssembler = new PersonAssembler();
 	}
@@ -34,6 +34,6 @@ public class RoleService extends AbstractService<Role, RoleDTO> {
 
 	public List<RoleDTO> list(PersonDTO personDTO) {
 		Person person = personAssembler.createModel(personDTO);
-		return assembler.createDTO(roleDao.list(person));
+		return AssemblerUtils.asList(roleDao.list(person), assembler::createDTO);
 	}
 }

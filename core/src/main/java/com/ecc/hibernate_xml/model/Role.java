@@ -29,6 +29,12 @@ public class Role implements com.ecc.hibernate_xml.model.Entity {
 	private String name;
 	private Set<Person> persons;
 
+	public Role() {}
+
+	public Role(Integer id, String name) {
+		setId(id);
+		setName(name);
+	}
 	public void setId(Integer id) {
 		this.id = id;
 	}

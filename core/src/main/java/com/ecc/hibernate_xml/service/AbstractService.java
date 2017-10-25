@@ -7,6 +7,7 @@ import com.ecc.hibernate_xml.dao.Dao;
 import com.ecc.hibernate_xml.dao.DaoException;
 import com.ecc.hibernate_xml.assembler.Assembler;
 import com.ecc.hibernate_xml.model.Entity;
+import com.ecc.hibernate_xml.util.app.AssemblerUtils;
 
 public abstract class AbstractService<T extends Entity, R> implements Service<T, R> {
 	protected final Dao<T> dao;
@@ -19,7 +20,7 @@ public abstract class AbstractService<T extends Entity, R> implements Service<T,
 
 	@Override
 	public List<R> list() {
-		return assembler.createDTO(dao.list());
+		return AssemblerUtils.asList(dao.list(), assembler::createDTO);
 	}
 
 	@Override

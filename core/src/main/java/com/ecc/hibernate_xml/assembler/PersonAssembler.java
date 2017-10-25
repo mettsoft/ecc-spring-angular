@@ -1,36 +1,30 @@
 package com.ecc.hibernate_xml.assembler;
 
-import java.util.stream.Collectors;
-
 import com.ecc.hibernate_xml.model.Person;
-import com.ecc.hibernate_xml.model.Name;
 import com.ecc.hibernate_xml.model.Address;
-import com.ecc.hibernate_xml.model.Contact;
-import com.ecc.hibernate_xml.dto.AddressDTO;
-import com.ecc.hibernate_xml.dto.NameDTO;
 import com.ecc.hibernate_xml.dto.PersonDTO;
+import com.ecc.hibernate_xml.dto.AddressDTO;
+import com.ecc.hibernate_xml.util.app.AssemblerUtils;
 
-public class PersonAssembler extends AbstractAssembler<Person, PersonDTO> {
+public class PersonAssembler implements Assembler<Person, PersonDTO> {
+	private NameAssembler nameAssembler = new NameAssembler();
 	private RoleAssembler roleAssembler = new RoleAssembler();
 	private ContactAssembler contactAssembler = new ContactAssembler();
-	private NameAssembler nameAssembler = new NameAssembler();
 
 	@Override
 	public PersonDTO createDTO(Person model) {
 		if (model == null) {
 			return null;
 		}
-		PersonDTO dto = new PersonDTO();
-		dto.setId(model.getId());
-		dto.setName(nameAssembler.createDTO(model.getName()));
+		PersonDTO dto = new PersonDTO(model.getId(), nameAssembler.createDTO(model.getName()));
 		dto.setAddress(createAddressDTO(model.getAddress()));
 		dto.setBirthday(model.getBirthday());
 		dto.setGWA(model.getGWA());
 		dto.setCurrentlyEmployed(model.getCurrentlyEmployed());
 		dto.setDateHired(model.getDateHired());
 		dto.setGWA(model.getGWA());
-		dto.setContacts(contactAssembler.createDTO(model.getContacts().stream().collect(Collectors.toList())));
-		dto.setRoles(roleAssembler.createDTO(model.getRoles().stream().collect(Collectors.toList())));
+		dto.setContacts(AssemblerUtils.asList(model.getContacts(), contactAssembler::createDTO));
+		dto.setRoles(AssemblerUtils.asList(model.getRoles(), roleAssembler::createDTO));
 		return dto;
 	}
 
@@ -51,17 +45,15 @@ public class PersonAssembler extends AbstractAssembler<Person, PersonDTO> {
 		if (dto == null) {
 			return null;
 		}
-		Person model = new Person();
-		model.setId(dto.getId());
-		model.setName(nameAssembler.createModel(dto.getName()));
+		Person model = new Person(dto.getId(), nameAssembler.createModel(dto.getName()));
 		model.setAddress(createAddressModel(dto.getAddress()));
 		model.setBirthday(dto.getBirthday());
 		model.setGWA(dto.getGWA());
 		model.setCurrentlyEmployed(dto.getCurrentlyEmployed());
 		model.setDateHired(dto.getDateHired());
 		model.setGWA(dto.getGWA());
-		model.setContacts(contactAssembler.createModel(dto.getContacts()).stream().collect(Collectors.toSet()));
-		model.setRoles(roleAssembler.createModel(dto.getRoles()).stream().collect(Collectors.toSet()));
+		model.setContacts(AssemblerUtils.asSet(dto.getContacts(), contactAssembler::createModel));
+		model.setRoles(AssemblerUtils.asSet(dto.getRoles(), roleAssembler::createModel));
 		return model;
 	}
 

@@ -9,6 +9,7 @@ import com.ecc.hibernate_xml.dto.ContactDTO;
 import com.ecc.hibernate_xml.assembler.PersonAssembler;
 import com.ecc.hibernate_xml.dao.PersonDao;
 import com.ecc.hibernate_xml.model.Person;
+import com.ecc.hibernate_xml.util.app.AssemblerUtils;
 import com.ecc.hibernate_xml.util.validator.ValidationException;
 import com.ecc.hibernate_xml.util.validator.ModelValidator;
 
@@ -112,6 +113,6 @@ public class PersonService extends AbstractService<Person, PersonDTO> {
 	}
 
 	public List<PersonDTO> list(String lastName, Integer roleId, Date birthday, String orderBy, String order) {
-		return assembler.createDTO(personDao.list(lastName, roleId, birthday, orderBy, order));		
+		return AssemblerUtils.asList(personDao.list(lastName, roleId, birthday, orderBy, order), assembler::createDTO);
 	}
 }

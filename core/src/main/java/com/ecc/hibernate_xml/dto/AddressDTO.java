@@ -1,16 +1,11 @@
 package com.ecc.hibernate_xml.dto;
 
 public class AddressDTO {
-	private Integer id;
 	private String streetNumber;
 	private Integer barangay;
 	private String municipality;
 	private Integer zipCode;
-	
-	public Integer getId() {
-		return id;
-	}
-	
+		
 	public String getStreetNumber() {
 		return streetNumber;
 	}
@@ -25,10 +20,6 @@ public class AddressDTO {
 
 	public Integer getZipCode() {
 		return zipCode;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
 	}
 
 	public void setStreetNumber(String streetNumber) {

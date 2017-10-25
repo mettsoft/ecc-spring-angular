@@ -7,9 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Column;
 import javax.persistence.ManyToOne;
-import javax.persistence.OrderBy;
 import javax.persistence.FetchType;
-import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
 import org.hibernate.annotations.Cache;
@@ -42,7 +40,6 @@ public class Contact implements com.ecc.hibernate_xml.model.Entity {
 
 	@ManyToOne(optional=false, fetch=FetchType.EAGER)
 	@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
-	@OrderBy
 	public Person getPerson() {
 		return person;
 	}

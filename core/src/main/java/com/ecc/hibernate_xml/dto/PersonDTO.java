@@ -24,6 +24,11 @@ public class PersonDTO {
 		roles = new ArrayList<>();
 	}
 
+	public PersonDTO(Integer id, NameDTO name) {
+		setId(id);
+		setName(name);
+	}
+
 	public Integer getId() {
 		return id;
 	}

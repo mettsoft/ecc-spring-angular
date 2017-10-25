@@ -1,15 +1,12 @@
 package com.ecc.hibernate_xml.assembler;
 
-import java.util.Set;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import com.ecc.hibernate_xml.model.Role;
 import com.ecc.hibernate_xml.model.Person;
 import com.ecc.hibernate_xml.dto.RoleDTO;
 import com.ecc.hibernate_xml.dto.PersonDTO;
+import com.ecc.hibernate_xml.util.app.AssemblerUtils;
 
-public class RoleAssembler extends AbstractAssembler<Role, RoleDTO> {
+public class RoleAssembler implements Assembler<Role, RoleDTO> {
 	private NameAssembler nameAssembler = new NameAssembler();
 	
 	@Override
@@ -17,28 +14,13 @@ public class RoleAssembler extends AbstractAssembler<Role, RoleDTO> {
 		if (model == null) {
 			return null;
 		}
-		RoleDTO dto = new RoleDTO();
-		dto.setId(model.getId());
-		dto.setName(model.getName());
-		dto.setPersons(createProxyPersonDTO(model.getPersons()));
+		RoleDTO dto = new RoleDTO(model.getId(), model.getName());
+		dto.setPersons(AssemblerUtils.asList(model.getPersons(), this::createProxyPersonDTO));
 		return dto;
 	}
 
 	private PersonDTO createProxyPersonDTO(Person model) {
-		if (model == null) {
-			return null;
-		}		
-		PersonDTO dto = new PersonDTO();
-		dto.setId(model.getId());
-		dto.setName(nameAssembler.createDTO(model.getName()));
-		return dto;
-	}
-
-	private List<PersonDTO> createProxyPersonDTO(Set<Person> models) {
-		if (models == null) {
-			return null;
-		}
-		return models.stream().map(this::createProxyPersonDTO).collect(Collectors.toList());
+		return model == null? null: new PersonDTO(model.getId(), nameAssembler.createDTO(model.getName()));
 	}
 
 	@Override 
@@ -46,27 +28,12 @@ public class RoleAssembler extends AbstractAssembler<Role, RoleDTO> {
 		if (dto == null) {
 			return null;
 		}
-		Role model = new Role();
-		model.setId(dto.getId());
-		model.setName(dto.getName());
-		model.setPersons(createProxyPersonModel(dto.getPersons()));
+		Role model = new Role(dto.getId(), dto.getName());
+		model.setPersons(AssemblerUtils.asSet(dto.getPersons(), this::createProxyPersonModel));
 		return model;
 	}
 
 	private Person createProxyPersonModel(PersonDTO dto) {
-		if (dto == null) {
-			return null;
-		}
-		Person model = new Person();
-		model.setId(dto.getId());
-		model.setName(nameAssembler.createModel(dto.getName()));
-		return model;
-	}
-
-	private Set<Person> createProxyPersonModel(List<PersonDTO> dtos) {
-		if (dtos == null) {
-			return null;
-		}
-		return dtos.stream().map(this::createProxyPersonModel).collect(Collectors.toSet());
+		return dto == null? null: new Person(dto.getId(), nameAssembler.createModel(dto.getName()));
 	}
 }

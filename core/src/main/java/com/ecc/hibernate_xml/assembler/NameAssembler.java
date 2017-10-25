@@ -1,9 +1,9 @@
 package com.ecc.hibernate_xml.assembler;
 
-import com.ecc.hibernate_xml.dto.NameDTO;
 import com.ecc.hibernate_xml.model.Name;
+import com.ecc.hibernate_xml.dto.NameDTO;
 
-public class NameAssembler extends AbstractAssembler<Name, NameDTO> {	
+public class NameAssembler implements Assembler<Name, NameDTO> {	
 	@Override
 	public NameDTO createDTO(Name model) {
 		if (model == null) {

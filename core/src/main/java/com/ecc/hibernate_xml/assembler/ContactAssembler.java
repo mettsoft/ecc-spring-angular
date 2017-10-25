@@ -1,11 +1,11 @@
 package com.ecc.hibernate_xml.assembler;
 
+import com.ecc.hibernate_xml.model.Contact;
+import com.ecc.hibernate_xml.model.Person;
 import com.ecc.hibernate_xml.dto.ContactDTO;
 import com.ecc.hibernate_xml.dto.PersonDTO;
-import com.ecc.hibernate_xml.model.Person;
-import com.ecc.hibernate_xml.model.Contact;
 
-public class ContactAssembler extends AbstractAssembler<Contact, ContactDTO> {	
+public class ContactAssembler implements Assembler<Contact, ContactDTO> {	
 	private NameAssembler nameAssembler = new NameAssembler();
 
 	@Override
@@ -22,13 +22,7 @@ public class ContactAssembler extends AbstractAssembler<Contact, ContactDTO> {
 	}
 
 	private PersonDTO createProxyPersonDTO(Person model) {
-		if (model == null) {
-			return null;
-		}		
-		PersonDTO dto = new PersonDTO();
-		dto.setId(model.getId());
-		dto.setName(nameAssembler.createDTO(model.getName()));
-		return dto;
+		return model == null? null: new PersonDTO(model.getId(), nameAssembler.createDTO(model.getName()));
 	}
 
 	@Override 
@@ -45,12 +39,6 @@ public class ContactAssembler extends AbstractAssembler<Contact, ContactDTO> {
 	}
 
 	private Person createProxyPersonModel(PersonDTO dto) {
-		if (dto == null) {
-			return null;
-		}
-		Person model = new Person();
-		model.setId(dto.getId());
-		model.setName(nameAssembler.createModel(dto.getName()));
-		return model;
+		return dto == null? null: new Person(dto.getId(), nameAssembler.createModel(dto.getName()));
 	}
 }

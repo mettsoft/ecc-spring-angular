@@ -54,6 +54,11 @@ public class Person implements com.ecc.hibernate_xml.model.Entity {
 		setName(name);
 	}
 	
+	public Person(Integer id, Name name) {
+		this(name);
+		setId(id);		
+	}
+
 	@Id @GeneratedValue(generator="PersonIdGenerator")
 	@SequenceGenerator(name="PersonIdGenerator", sequenceName="persons_id_seq")
 	@Column(nullable=false)
