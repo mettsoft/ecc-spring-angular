@@ -74,34 +74,10 @@ public class PersonRegistryServlet extends HttpServlet {
 	private static final String VIEW_PARAMETER_MESSAGE = ":message";
 	private static final String VIEW_PARAMETER_HEADER = ":header";
 
-	private static final String VIEW_PARAMETER_MODE = ":" + FORM_PARAMETER_MODE;
-	private static final String VIEW_PARAMETER_PERSON_ID = ":" + FORM_PARAMETER_PERSON_ID;
-
-	private static final String VIEW_PARAMETER_TITLE = ":" + FORM_PARAMETER_TITLE;
-	private static final String VIEW_PARAMETER_LAST_NAME = ":" + FORM_PARAMETER_LAST_NAME;
-	private static final String VIEW_PARAMETER_FIRST_NAME = ":" + FORM_PARAMETER_FIRST_NAME;
-	private static final String VIEW_PARAMETER_MIDDLE_NAME = ":" + FORM_PARAMETER_MIDDLE_NAME;
-	private static final String VIEW_PARAMETER_SUFFIX = ":" + FORM_PARAMETER_SUFFIX;
-
-	private static final String VIEW_PARAMETER_STREET_NUMBER = ":" + FORM_PARAMETER_STREET_NUMBER;
-	private static final String VIEW_PARAMETER_BARANGAY = ":" + FORM_PARAMETER_BARANGAY;
-	private static final String VIEW_PARAMETER_MUNICIPALITY = ":" + FORM_PARAMETER_MUNICIPALITY;
-	private static final String VIEW_PARAMETER_ZIP_CODE = ":" + FORM_PARAMETER_ZIP_CODE;
-
-	private static final String VIEW_PARAMETER_BIRTHDAY = ":" + FORM_PARAMETER_BIRTHDAY;
-	private static final String VIEW_PARAMETER_GWA = ":" + FORM_PARAMETER_GWA;
-	private static final String VIEW_PARAMETER_CURRENTLY_EMPLOYED = ":" + FORM_PARAMETER_CURRENTLY_EMPLOYED;
-	private static final String VIEW_PARAMETER_DATE_HIRED = ":" + FORM_PARAMETER_DATE_HIRED;
-
 	private static final String VIEW_PARAMETER_CONTACTS_FORM = ":contactsForm";
 	private static final String VIEW_PARAMETER_ROLES_FORM = ":rolesForm";
 
 	private static final String VIEW_PARAMETER_QUERY_ROLE_ITEMS = ":queryRoleItems";
-	private static final String VIEW_PARAMETER_QUERY_PERSON_LAST_NAME = ":" + QUERY_PARAMETER_PERSON_LAST_NAME;
-	private static final String VIEW_PARAMETER_QUERY_ROLE_ID = ":" + QUERY_PARAMETER_ROLE_ID;
-	private static final String VIEW_PARAMETER_QUERY_BIRTHDAY = ":" + QUERY_PARAMETER_BIRTHDAY;
-	private static final String VIEW_PARAMETER_QUERY_ORDER_BY = ":" + QUERY_PARAMETER_ORDER_BY;
-	private static final String VIEW_PARAMETER_QUERY_ORDER_TYPE = ":" + QUERY_PARAMETER_ORDER_TYPE;
 	
 	private static final String VIEW_PARAMETER_POST_QUERY_PARAMETERS = ":postQueryParameters";
 	private static final String VIEW_PARAMETER_DATATABLE = ":dataTable";
@@ -131,12 +107,12 @@ public class PersonRegistryServlet extends HttpServlet {
 			String personId = request.getParameter(FORM_PARAMETER_PERSON_ID);
 			if (personId == null) {
 				parameters.put(VIEW_PARAMETER_HEADER, "Create new person");
-				parameters.put(VIEW_PARAMETER_MODE, MODE_CREATE);
+				parameters.put(":" + FORM_PARAMETER_MODE, MODE_CREATE);
 			}
 			else {
 				PersonDTO person = personService.get(NumberUtils.createInteger(personId));
 				parameters.put(VIEW_PARAMETER_HEADER, "Update existing person");
-				parameters.put(VIEW_PARAMETER_MODE, MODE_UPDATE);
+				parameters.put(":" + FORM_PARAMETER_MODE, MODE_UPDATE);
 				parameters.putAll(constructViewParametersFromPerson(person));
 			}
 		}
@@ -182,12 +158,12 @@ public class PersonRegistryServlet extends HttpServlet {
 		catch (Exception cause) {
 			if (cause instanceof ValidationException) {
 				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-				parameters.put(VIEW_PARAMETER_MODE, mode);
+				parameters.put(":" + FORM_PARAMETER_MODE, mode);
 			}
 			else {
 				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 				parameters.put(VIEW_PARAMETER_HEADER, "Create new person");
-				parameters.put(VIEW_PARAMETER_MODE, MODE_CREATE);
+				parameters.put(":" + FORM_PARAMETER_MODE, MODE_CREATE);
 			}
 			parameters.put(VIEW_PARAMETER_MESSAGE, ExceptionHandler.printException(cause));
 			parameters.putAll(constructViewParametersFromPerson(person));
@@ -246,23 +222,23 @@ public class PersonRegistryServlet extends HttpServlet {
 
 	private Map<String, Object> constructViewParametersFromPerson(PersonDTO person) {
 		Map<String, Object> parameters = new LinkedHashMap<>(); 
-		parameters.put(VIEW_PARAMETER_PERSON_ID, person.getId());
-		parameters.put(VIEW_PARAMETER_TITLE, person.getName().getTitle());
-		parameters.put(VIEW_PARAMETER_LAST_NAME, person.getName().getLastName());
-		parameters.put(VIEW_PARAMETER_FIRST_NAME, person.getName().getFirstName());
-		parameters.put(VIEW_PARAMETER_MIDDLE_NAME, person.getName().getMiddleName());
-		parameters.put(VIEW_PARAMETER_SUFFIX, person.getName().getSuffix());
+		parameters.put(":" + FORM_PARAMETER_PERSON_ID, person.getId());
+		parameters.put(":" + FORM_PARAMETER_TITLE, person.getName().getTitle());
+		parameters.put(":" + FORM_PARAMETER_LAST_NAME, person.getName().getLastName());
+		parameters.put(":" + FORM_PARAMETER_FIRST_NAME, person.getName().getFirstName());
+		parameters.put(":" + FORM_PARAMETER_MIDDLE_NAME, person.getName().getMiddleName());
+		parameters.put(":" + FORM_PARAMETER_SUFFIX, person.getName().getSuffix());
 
-		parameters.put(VIEW_PARAMETER_STREET_NUMBER, person.getAddress().getStreetNumber());
-		parameters.put(VIEW_PARAMETER_BARANGAY, person.getAddress().getBarangay());
-		parameters.put(VIEW_PARAMETER_MUNICIPALITY, person.getAddress().getMunicipality());
-		parameters.put(VIEW_PARAMETER_ZIP_CODE, person.getAddress().getZipCode());
+		parameters.put(":" + FORM_PARAMETER_STREET_NUMBER, person.getAddress().getStreetNumber());
+		parameters.put(":" + FORM_PARAMETER_BARANGAY, person.getAddress().getBarangay());
+		parameters.put(":" + FORM_PARAMETER_MUNICIPALITY, person.getAddress().getMunicipality());
+		parameters.put(":" + FORM_PARAMETER_ZIP_CODE, person.getAddress().getZipCode());
 
-		parameters.put(VIEW_PARAMETER_BIRTHDAY, toString(person.getBirthday()));
-		parameters.put(VIEW_PARAMETER_GWA, person.getGWA());
-		parameters.put(VIEW_PARAMETER_CURRENTLY_EMPLOYED, person.getCurrentlyEmployed());				
+		parameters.put(":" + FORM_PARAMETER_BIRTHDAY, toString(person.getBirthday()));
+		parameters.put(":" + FORM_PARAMETER_GWA, person.getGWA());
+		parameters.put(":" + FORM_PARAMETER_CURRENTLY_EMPLOYED, person.getCurrentlyEmployed());				
 		if (person.getCurrentlyEmployed()) {
-			parameters.put(VIEW_PARAMETER_DATE_HIRED, toString(person.getDateHired()));
+			parameters.put(":" + FORM_PARAMETER_DATE_HIRED, toString(person.getDateHired()));
 		}
 
 		StringBuilder assignedRoles = new StringBuilder();
@@ -320,11 +296,11 @@ public class PersonRegistryServlet extends HttpServlet {
 	private Map<String, Object> queryToViewParameters(HttpServletRequest request) {
 		Map<String, Object> parameters = new LinkedHashMap<>(7);
 		parameters.put(VIEW_PARAMETER_POST_QUERY_PARAMETERS, TEMPLATE_POST_QUERY_PARAMETERS);
-		parameters.put(VIEW_PARAMETER_QUERY_PERSON_LAST_NAME, request.getParameter(QUERY_PARAMETER_PERSON_LAST_NAME));
-		parameters.put(VIEW_PARAMETER_QUERY_ROLE_ID, request.getParameter(QUERY_PARAMETER_ROLE_ID));
-		parameters.put(VIEW_PARAMETER_QUERY_BIRTHDAY, request.getParameter(QUERY_PARAMETER_BIRTHDAY));
-		parameters.put(VIEW_PARAMETER_QUERY_ORDER_BY, request.getParameter(QUERY_PARAMETER_ORDER_BY));
-		parameters.put(VIEW_PARAMETER_QUERY_ORDER_TYPE, request.getParameter(QUERY_PARAMETER_ORDER_TYPE));
+		parameters.put(":" + QUERY_PARAMETER_PERSON_LAST_NAME, request.getParameter(QUERY_PARAMETER_PERSON_LAST_NAME));
+		parameters.put(":" + QUERY_PARAMETER_ROLE_ID, request.getParameter(QUERY_PARAMETER_ROLE_ID));
+		parameters.put(":" + QUERY_PARAMETER_BIRTHDAY, request.getParameter(QUERY_PARAMETER_BIRTHDAY));
+		parameters.put(":" + QUERY_PARAMETER_ORDER_BY, request.getParameter(QUERY_PARAMETER_ORDER_BY));
+		parameters.put(":" + QUERY_PARAMETER_ORDER_TYPE, request.getParameter(QUERY_PARAMETER_ORDER_TYPE));
 		parameters.put(VIEW_PARAMETER_QUERY_ROLE_ITEMS, roleService.list().stream()
 			.map(role -> String.format("<option value=\"%d\">%s</option>", role.getId(), role.getName()))
 			.collect(Collectors.joining("")));
