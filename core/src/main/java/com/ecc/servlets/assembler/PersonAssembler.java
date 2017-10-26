@@ -28,18 +28,6 @@ public class PersonAssembler implements Assembler<Person, PersonDTO> {
 		return dto;
 	}
 
-	private AddressDTO createAddressDTO(Address model) {
-		if (model == null) {
-			return null;
-		}
-		AddressDTO dto = new AddressDTO();
-		dto.setStreetNumber(model.getStreetNumber());
-		dto.setBarangay(model.getBarangay());
-		dto.setMunicipality(model.getMunicipality());
-		dto.setZipCode(model.getZipCode());
-		return dto;	
-	}
-
 	@Override 
 	public Person createModel(PersonDTO dto) {
 		if (dto == null) {
@@ -55,6 +43,18 @@ public class PersonAssembler implements Assembler<Person, PersonDTO> {
 		model.setContacts(AssemblerUtils.asSet(dto.getContacts(), contactAssembler::createModel));
 		model.setRoles(AssemblerUtils.asSet(dto.getRoles(), roleAssembler::createModel));
 		return model;
+	}
+
+	private AddressDTO createAddressDTO(Address model) {
+		if (model == null) {
+			return null;
+		}
+		AddressDTO dto = new AddressDTO();
+		dto.setStreetNumber(model.getStreetNumber());
+		dto.setBarangay(model.getBarangay());
+		dto.setMunicipality(model.getMunicipality());
+		dto.setZipCode(model.getZipCode());
+		return dto;	
 	}
 
 	private Address createAddressModel(AddressDTO dto) {

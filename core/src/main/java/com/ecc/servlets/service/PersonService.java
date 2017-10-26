@@ -45,6 +45,10 @@ public class PersonService extends AbstractService<Person, PersonDTO> {
 		validateContacts(person.getContacts());
 	}
 
+	public List<PersonDTO> list(String lastName, Integer roleId, Date birthday, String orderBy, String order) {
+		return AssemblerUtils.asList(personDao.list(lastName, roleId, birthday, orderBy, order), assembler::createDTO);
+	}
+
 	private void validateName(String data, String component) throws ValidationException {
 		if (!component.equals("Title") && !component.equals("Suffix")) {
 			validator.validate("NotEmpty", data, component);		
@@ -110,9 +114,5 @@ public class PersonService extends AbstractService<Person, PersonDTO> {
 		validator.validate("NotEmpty", email, "Email");
 		validator.validate("MaxLength", email, MAX_EMAIL_CHARACTERS, "Email");
 		validator.validate("ValidEmail", email);
-	}
-
-	public List<PersonDTO> list(String lastName, Integer roleId, Date birthday, String orderBy, String order) {
-		return AssemblerUtils.asList(personDao.list(lastName, roleId, birthday, orderBy, order), assembler::createDTO);
 	}
 }

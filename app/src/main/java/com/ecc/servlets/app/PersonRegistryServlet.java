@@ -150,6 +150,58 @@ public class PersonRegistryServlet extends HttpServlet {
 		}
 	}
 
+	@Override
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+		TemplateEngine templateEngine = new TemplateEngine(response.getWriter());
+		Map<String, Object> queryParameters = new LinkedHashMap<>();
+		Map<String, Object> parameters = new LinkedHashMap<>();
+
+		PersonDTO person = createPersonFromRequest(request);
+		String mode = request.getParameter(FORM_PARAMETER_MODE);
+
+		try {
+			queryParameters = extractQueryParameters(request);
+			if (mode.equals(MODE_CREATE.toString())) {
+				parameters.put(VIEW_PARAMETER_HEADER, "Create new person");
+				personService.validate(person);
+				person.setId((Integer) personService.create(person));
+				response.sendRedirect(String.format("%s?%s=%d", SERVLET_PATH, FORM_PARAMETER_ENCODED_RESPONSE, encodeResponse(MODE_CREATE, person.getId())));
+			}
+			else if (mode.equals(MODE_UPDATE.toString())){
+				parameters.put(VIEW_PARAMETER_HEADER, "Update existing person");
+				personService.get(person.getId());
+				personService.validate(person);
+				personService.update(person);
+				response.sendRedirect(String.format("%s?%s=%d", SERVLET_PATH, FORM_PARAMETER_ENCODED_RESPONSE, encodeResponse(MODE_UPDATE, person.getId())));
+			}	
+			else if (mode.equals(MODE_DELETE.toString())) {
+				personService.delete(person.getId());	
+				response.sendRedirect(String.format("%s?%s=%d", SERVLET_PATH, FORM_PARAMETER_ENCODED_RESPONSE, encodeResponse(MODE_DELETE, person.getId())));
+			}
+		}
+		catch (Exception cause) {
+			if (cause instanceof ValidationException) {
+				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+				parameters.put(VIEW_PARAMETER_MODE, mode);
+			}
+			else {
+				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+				parameters.put(VIEW_PARAMETER_HEADER, "Create new person");
+				parameters.put(VIEW_PARAMETER_MODE, MODE_CREATE);
+			}
+			parameters.put(VIEW_PARAMETER_MESSAGE, ExceptionHandler.printException(cause));
+			parameters.putAll(constructViewParametersFromPerson(person));
+			parameters.put(VIEW_PARAMETER_DATATABLE, createDataTable(queryParameters, templateEngine));
+			parameters.putAll(queryToViewParameters(request));
+			templateEngine.render(VIEW_TEMPLATE, parameters);
+		}
+	}
+
+	@Override
+	public void destroy() {
+		HibernateUtility.closeSessionFactory();
+	}
+
 	private Map<String, Object> extractQueryParameters(HttpServletRequest request) {
 		Map<String, Object> queryParameters = new LinkedHashMap<>(5);
 		queryParameters.put(QUERY_PARAMETER_PERSON_LAST_NAME, request.getParameter(QUERY_PARAMETER_PERSON_LAST_NAME));
@@ -280,53 +332,6 @@ public class PersonRegistryServlet extends HttpServlet {
 		return parameters;
 	}
 
-	@Override
-	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-		TemplateEngine templateEngine = new TemplateEngine(response.getWriter());
-		Map<String, Object> queryParameters = new LinkedHashMap<>();
-		Map<String, Object> parameters = new LinkedHashMap<>();
-
-		PersonDTO person = createPersonFromRequest(request);
-		String mode = request.getParameter(FORM_PARAMETER_MODE);
-
-		try {
-			queryParameters = extractQueryParameters(request);
-			if (mode.equals(MODE_CREATE.toString())) {
-				parameters.put(VIEW_PARAMETER_HEADER, "Create new person");
-				personService.validate(person);
-				person.setId((Integer) personService.create(person));
-				response.sendRedirect(String.format("%s?%s=%d", SERVLET_PATH, FORM_PARAMETER_ENCODED_RESPONSE, encodeResponse(MODE_CREATE, person.getId())));
-			}
-			else if (mode.equals(MODE_UPDATE.toString())){
-				parameters.put(VIEW_PARAMETER_HEADER, "Update existing person");
-				personService.get(person.getId());
-				personService.validate(person);
-				personService.update(person);
-				response.sendRedirect(String.format("%s?%s=%d", SERVLET_PATH, FORM_PARAMETER_ENCODED_RESPONSE, encodeResponse(MODE_UPDATE, person.getId())));
-			}	
-			else if (mode.equals(MODE_DELETE.toString())) {
-				personService.delete(person.getId());	
-				response.sendRedirect(String.format("%s?%s=%d", SERVLET_PATH, FORM_PARAMETER_ENCODED_RESPONSE, encodeResponse(MODE_DELETE, person.getId())));
-			}
-		}
-		catch (Exception cause) {
-			if (cause instanceof ValidationException) {
-				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-				parameters.put(VIEW_PARAMETER_MODE, mode);
-			}
-			else {
-				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-				parameters.put(VIEW_PARAMETER_HEADER, "Create new person");
-				parameters.put(VIEW_PARAMETER_MODE, MODE_CREATE);
-			}
-			parameters.put(VIEW_PARAMETER_MESSAGE, ExceptionHandler.printException(cause));
-			parameters.putAll(constructViewParametersFromPerson(person));
-			parameters.put(VIEW_PARAMETER_DATATABLE, createDataTable(queryParameters, templateEngine));
-			parameters.putAll(queryToViewParameters(request));
-			templateEngine.render(VIEW_TEMPLATE, parameters);
-		}
-	}
-
 	private PersonDTO createPersonFromRequest(HttpServletRequest request) {
 		PersonDTO person = new PersonDTO();
 		person.setId(NumberUtils.createInteger(request.getParameter(FORM_PARAMETER_PERSON_ID)));		
@@ -375,10 +380,5 @@ public class PersonRegistryServlet extends HttpServlet {
 	
 	private Integer encodeResponse(Integer mode, Integer personId) {
 		return mode & 0xff | personId << 8;
-	}
-
-	@Override
-	public void destroy() {
-		HibernateUtility.closeSessionFactory();
 	}
 }

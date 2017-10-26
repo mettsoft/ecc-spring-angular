@@ -17,6 +17,15 @@ public class RoleDao extends AbstractDao<Role> {
 		super(Role.class);
 	} 
 
+	public List<Role> list() {
+		return TransactionScope.executeTransactionWithResult(session -> {
+			return session.createCriteria(Role.class)
+				.setCacheable(true)
+				.addOrder(Order.asc("id"))
+				.list();
+		});
+	}
+
 	@Override
 	protected Throwable onCreateFailure(Role role, Throwable cause) {
 		return onUpdateFailure(role, cause);
@@ -43,14 +52,5 @@ public class RoleDao extends AbstractDao<Role> {
 				String.format("Role is in used by person IDs [%s].", personIds));
 		}
 		return cause;
-	}
-
-	public List<Role> list() {
-		return TransactionScope.executeTransactionWithResult(session -> {
-			return session.createCriteria(Role.class)
-				.setCacheable(true)
-				.addOrder(Order.asc("id"))
-				.list();
-		});
 	}
 }

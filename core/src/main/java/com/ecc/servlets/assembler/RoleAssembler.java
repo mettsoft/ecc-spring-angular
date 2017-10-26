@@ -19,10 +19,6 @@ public class RoleAssembler implements Assembler<Role, RoleDTO> {
 		return dto;
 	}
 
-	private PersonDTO createProxyPersonDTO(Person model) {
-		return model == null? null: new PersonDTO(model.getId(), nameAssembler.createDTO(model.getName()));
-	}
-
 	@Override 
 	public Role createModel(RoleDTO dto) {
 		if (dto == null) {
@@ -31,6 +27,10 @@ public class RoleAssembler implements Assembler<Role, RoleDTO> {
 		Role model = new Role(dto.getId(), dto.getName());
 		model.setPersons(AssemblerUtils.asSet(dto.getPersons(), this::createProxyPersonModel));
 		return model;
+	}
+
+	private PersonDTO createProxyPersonDTO(Person model) {
+		return model == null? null: new PersonDTO(model.getId(), nameAssembler.createDTO(model.getName()));
 	}
 
 	private Person createProxyPersonModel(PersonDTO dto) {

@@ -83,53 +83,6 @@ public class RoleRegistryServlet extends HttpServlet {
 		}
 	}
 
-	private String createMessage(HttpServletRequest request) throws Exception {
-		String message = null;
-		String rawEncodedResponse = request.getParameter(QUERY_PARAMETER_ENCODED_RESPONSE);
-		if (rawEncodedResponse != null) {
-			Integer encodedResponse = NumberUtils.createInteger(rawEncodedResponse);
-			Integer roleId = decodeRoleId(encodedResponse);
-			Integer mode = decodeMode(encodedResponse);
-			RoleDTO role = null;
-		
-			if (mode == MODE_CREATE) {
-				role = roleService.get(roleId);
-				message = String.format(CREATE_SUCCESS_MESSAGE, role.getId(), role.getName());	
-			}
-			else if (mode == MODE_UPDATE) {
-				role = roleService.get(roleId);
-				message = String.format(UPDATE_SUCCESS_MESSAGE, role.getId(), role.getName());
-				if (role.getPersons().size() > 0) {
-					String personIds = role.getPersons().stream()
-						.map(person -> person.getId().toString())
-						.collect(Collectors.joining(", "));
-					message += " " + String.format(AFFECTED_PERSONS_MESSAGE, personIds);
-				}
-			}
-			else if (mode == MODE_DELETE) {
-				message = String.format(DELETE_SUCCESS_MESSAGE, roleId);
-			}			
-		}
-		return message;
-	}
-
-	private Integer decodeRoleId(Integer encodedResponse) {
-		return encodedResponse >> 8;
-	}
-
-	private Integer decodeMode(Integer encodedResponse) {
-		return encodedResponse & 0xff;
-	}
-
-	private String createDataTable(TemplateEngine templateEngine) {
-		List<String> headers = Arrays.asList("ID", "Role");
-		List<List<String>> data = roleService.list().stream()
-			.map(role -> Arrays.asList(role.getId().toString(), role.getName()))
-			.collect(Collectors.toList());
-
-		return templateEngine.generateTable(headers, data, SERVLET_PATH);		
-	}
-
 	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		TemplateEngine templateEngine = new TemplateEngine(response.getWriter());
@@ -180,6 +133,53 @@ public class RoleRegistryServlet extends HttpServlet {
 			parameters.put(VIEW_PARAMETER_DATATABLE, createDataTable(templateEngine));
 			templateEngine.render(VIEW_TEMPLATE, parameters);
 		}
+	}
+
+	private String createMessage(HttpServletRequest request) throws Exception {
+		String message = null;
+		String rawEncodedResponse = request.getParameter(QUERY_PARAMETER_ENCODED_RESPONSE);
+		if (rawEncodedResponse != null) {
+			Integer encodedResponse = NumberUtils.createInteger(rawEncodedResponse);
+			Integer roleId = decodeRoleId(encodedResponse);
+			Integer mode = decodeMode(encodedResponse);
+			RoleDTO role = null;
+		
+			if (mode == MODE_CREATE) {
+				role = roleService.get(roleId);
+				message = String.format(CREATE_SUCCESS_MESSAGE, role.getId(), role.getName());	
+			}
+			else if (mode == MODE_UPDATE) {
+				role = roleService.get(roleId);
+				message = String.format(UPDATE_SUCCESS_MESSAGE, role.getId(), role.getName());
+				if (role.getPersons().size() > 0) {
+					String personIds = role.getPersons().stream()
+						.map(person -> person.getId().toString())
+						.collect(Collectors.joining(", "));
+					message += " " + String.format(AFFECTED_PERSONS_MESSAGE, personIds);
+				}
+			}
+			else if (mode == MODE_DELETE) {
+				message = String.format(DELETE_SUCCESS_MESSAGE, roleId);
+			}			
+		}
+		return message;
+	}
+
+	private Integer decodeRoleId(Integer encodedResponse) {
+		return encodedResponse >> 8;
+	}
+
+	private Integer decodeMode(Integer encodedResponse) {
+		return encodedResponse & 0xff;
+	}
+
+	private String createDataTable(TemplateEngine templateEngine) {
+		List<String> headers = Arrays.asList("ID", "Role");
+		List<List<String>> data = roleService.list().stream()
+			.map(role -> Arrays.asList(role.getId().toString(), role.getName()))
+			.collect(Collectors.toList());
+
+		return templateEngine.generateTable(headers, data, SERVLET_PATH);		
 	}
 	
 	private Integer encodeResponse(Integer mode, Integer roleId) {
