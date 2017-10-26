@@ -1,30 +1,26 @@
 <ehcache>
-	<defaultCache 
-		maxEntriesLocalHeap="10000" 
+	<defaultCache
+		maxEntriesLocalHeap="120" 
 		eternal="false" 
 		timeToIdleSeconds="120" 
-		timeToLiveSeconds="120" 
-		maxEntriesLocalDisk="10000000"> 
-		<persistence strategy="localTempSwap"/> 
+		timeToLiveSeconds="120"> 		
 	</defaultCache> 
+
 	<cache name="com.ecc.servlets.model.Role" 
 		maxEntriesLocalHeap="100"
 		eternal="false"
 		timeToIdleSeconds="120"
 		timeToLiveSeconds="300">
-		<persistence strategy="localTempSwap"/>
 	</cache>
 
 	<cache name="org.hibernate.cache.internal.StandardQueryCache"
 		maxEntriesLocalHeap="5"
 		eternal="false"
 		timeToLiveSeconds="300">
-		<persistence strategy="localTempSwap" />
 	</cache>
 
 	<cache name="org.hibernate.cache.spi.UpdateTimestampsCache"
 		maxEntriesLocalHeap="5000"
 		eternal="true">
-		<persistence strategy="localTempSwap" />
 	</cache>
 </ehcache>
