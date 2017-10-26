@@ -33,16 +33,16 @@ public class TemplateEngine {
 		}
 
 		StringBuilder builder = new StringBuilder("<table><thead>");
-		for (String header: headers) {
-			builder.append(String.format("<th>%s</th>", header));
+		for (int i = 0; i < headers.size(); i++) {
+			builder.append(String.format("<th %s>%s</th>", i == 0? "hidden": "", headers.get(i)));
 		}
 		builder.append("<th></th><th></th>");
 		builder.append("</thead><tbody>");
 
 		for (List<String> row: data) {
 			builder.append("<tr>");
-			for (String column: row) {
-				builder.append(String.format("<td>%s</td>", column));
+			for (int i = 0; i < row.size(); i++) {
+				builder.append(String.format("<td %s>%s</td>", i == 0? "hidden": "", row.get(i)));
 			}
 			String updateButton = String.format(UPDATE_BUTTON_FORM, action, row.get(0), additionalFormElements);
 			String deleteButton = String.format(DELETE_BUTTON_FORM, action, row.get(0), additionalFormElements);

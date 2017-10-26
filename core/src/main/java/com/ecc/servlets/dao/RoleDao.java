@@ -43,13 +43,13 @@ public class RoleDao extends AbstractDao<Role> {
 	@Override
 	protected Throwable onDeleteFailure(Role role, Throwable cause) {
 		if (cause instanceof ConstraintViolationException && role.getPersons().size() > 0) {
-			String personIds = role.getPersons()
+			String personNames = role.getPersons()
 				.stream()
-				.map(person -> person.getId().toString())
-				.collect(Collectors.joining(", "));
+				.map(person -> person.getName().toString())
+				.collect(Collectors.joining("; "));
 
 			return new RuntimeException(
-				String.format("Role is in used by person IDs [%s].", personIds));
+				String.format("Role is in used by persons [%s].", personNames));
 		}
 		return cause;
 	}

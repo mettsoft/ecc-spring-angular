@@ -41,7 +41,7 @@ public class RoleRegistryServlet extends HttpServlet {
 	private static final String CREATE_SUCCESS_MESSAGE = "Successfully created the role \"%s\"!";
 	private static final String UPDATE_SUCCESS_MESSAGE = "Successfully updated the role \"%s\"!";
 	private static final String DELETE_SUCCESS_MESSAGE = "Successfully deleted a role!";
-	private static final String AFFECTED_PERSONS_MESSAGE = "Please take note that the following person IDs are affected: [%s].";
+	private static final String AFFECTED_PERSONS_MESSAGE = "Please take note that the following persons are affected: [%s].";
 
 	private RoleService roleService;
 
@@ -149,8 +149,8 @@ public class RoleRegistryServlet extends HttpServlet {
 				message = String.format(UPDATE_SUCCESS_MESSAGE, role.getName());
 				if (role.getPersons().size() > 0) {
 					String personIds = role.getPersons().stream()
-						.map(person -> person.getId().toString())
-						.collect(Collectors.joining(", "));
+						.map(person -> person.getName().toString())
+						.collect(Collectors.joining("; "));
 					message += " " + String.format(AFFECTED_PERSONS_MESSAGE, personIds);
 				}
 			}
