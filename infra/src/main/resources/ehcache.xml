@@ -7,7 +7,7 @@
 		maxEntriesLocalDisk="10000000"> 
 		<persistence strategy="localTempSwap"/> 
 	</defaultCache> 
-	<cache name="com.ecc.hibernate_xml.model.Role" 
+	<cache name="com.ecc.servlets.model.Role" 
 		maxEntriesLocalHeap="100"
 		eternal="false"
 		timeToIdleSeconds="120"
