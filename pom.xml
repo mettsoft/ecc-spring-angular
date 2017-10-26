@@ -10,7 +10,7 @@
 	</properties>
 
 	<modules>
-		<module>app</module>
+		<module>web</module>
 		<module>core</module>
 		<module>infra</module>
 		<module>util</module>
