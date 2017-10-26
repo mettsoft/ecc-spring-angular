@@ -20,7 +20,7 @@ import com.ecc.servlets.util.app.TemplateEngine;
 import com.ecc.servlets.util.validator.ValidationException;
 
 public class RoleRegistryServlet extends HttpServlet {
-	private static final String VIEW_TEMPLATE = "<html><head><title>Role | Person Registry System</title><style>div.container {display: inline-flex;width: 100%;}div.container div {width: 50%;margin: 16px;}label {display: block;}table, th, td {border: 1px solid black;}</style></head><body><a href=\"/\">Go to Person Registry</a><div class=\"container\"><div><h3>:message</h3><h3>:header</h3><form action=\"/role\" method=\"POST\"><input type=\"hidden\" name=\"mode\" value=\":mode\"><input type=\"hidden\" name=\"id\" value=\":roleId\"><label for=\"name\">Enter the role name:</label><input type=\"text\" id=\"name\" name=\"name\" value=\":roleName\"><button>Submit</button></form></div><div><h3>Roles</h3>:dataTable		</div>			</div></body></html>";
+	private static final String VIEW_TEMPLATE = "<html><head><title>Role | Person Registry System</title><style>div.container {display: inline-flex;width: 100%;}div.container div {width: 50%;margin: 16px;}label {display: block;}table, th, td {border: 1px solid black;}</style></head><body><a href=\"/\">Go to Person Registry</a><div class=\"container\"><div><h3>:message</h3><h3>:header</h3><form action=\"/role\" method=\"POST\"><input type=\"hidden\" name=\"mode\" value=\":mode\"><input type=\"hidden\" name=\"id\" value=\":id\"><label for=\"name\">Enter the role name:</label><input type=\"text\" id=\"name\" name=\"name\" value=\":name\"><button>Submit</button></form></div><div><h3>Roles</h3>:dataTable		</div>			</div></body></html>";
 
 	private static final String SERVLET_PATH = "/role";
 
@@ -32,14 +32,10 @@ public class RoleRegistryServlet extends HttpServlet {
 
 	private static final String QUERY_PARAMETER_MODE = "mode";
 	private static final String QUERY_PARAMETER_ROLE_ID = "id";
-
 	private static final String QUERY_PARAMETER_ROLE_NAME = "name";
 
 	private static final String VIEW_PARAMETER_MESSAGE = ":message";
 	private static final String VIEW_PARAMETER_HEADER = ":header";
-	private static final String VIEW_PARAMETER_MODE = ":mode";
-	private static final String VIEW_PARAMETER_ROLE_ID = ":roleId";
-	private static final String VIEW_PARAMETER_ROLE_NAME = ":roleName";
 	private static final String VIEW_PARAMETER_DATATABLE = ":dataTable";
 	
 	private static final String CREATE_SUCCESS_MESSAGE = "Successfully created the role ID \"%d\" with \"%s\"!";
@@ -64,14 +60,14 @@ public class RoleRegistryServlet extends HttpServlet {
 			parameters.put(VIEW_PARAMETER_MESSAGE, createMessage(request));
 			if (roleId == null) {
 				parameters.put(VIEW_PARAMETER_HEADER, "Create new role");
-				parameters.put(VIEW_PARAMETER_MODE, MODE_CREATE);
+				parameters.put(":" + QUERY_PARAMETER_MODE, MODE_CREATE);
 			}
 			else {
 				RoleDTO role = roleService.get(NumberUtils.createInteger(roleId));
 				parameters.put(VIEW_PARAMETER_HEADER, "Update existing role");
-				parameters.put(VIEW_PARAMETER_ROLE_ID, role.getId());
-				parameters.put(VIEW_PARAMETER_ROLE_NAME, role.getName());
-				parameters.put(VIEW_PARAMETER_MODE, MODE_UPDATE);
+				parameters.put(":" + QUERY_PARAMETER_ROLE_ID, role.getId());
+				parameters.put(":" + QUERY_PARAMETER_ROLE_NAME, role.getName());
+				parameters.put(":" + QUERY_PARAMETER_MODE, MODE_UPDATE);
 			}
 		}
 		catch (Exception cause) {
@@ -120,16 +116,16 @@ public class RoleRegistryServlet extends HttpServlet {
 		catch (Exception cause) {
 			if (cause instanceof ValidationException) {
 				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-				parameters.put(VIEW_PARAMETER_MODE, mode);
+				parameters.put(":" + QUERY_PARAMETER_MODE, mode);
 			}
 			else {
 				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 				parameters.put(VIEW_PARAMETER_HEADER, "Create new role");
-				parameters.put(VIEW_PARAMETER_MODE, MODE_CREATE);
+				parameters.put(":" + QUERY_PARAMETER_MODE, MODE_CREATE);
 			}
 			parameters.put(VIEW_PARAMETER_MESSAGE, ExceptionHandler.printException(cause));
-			parameters.put(VIEW_PARAMETER_ROLE_ID, rawRoleId);
-			parameters.put(VIEW_PARAMETER_ROLE_NAME, request.getParameter(QUERY_PARAMETER_ROLE_NAME));
+			parameters.put(":" + QUERY_PARAMETER_ROLE_ID, rawRoleId);
+			parameters.put(":" + QUERY_PARAMETER_ROLE_NAME, request.getParameter(QUERY_PARAMETER_ROLE_NAME));
 			parameters.put(VIEW_PARAMETER_DATATABLE, createDataTable(templateEngine));
 			templateEngine.render(VIEW_TEMPLATE, parameters);
 		}
