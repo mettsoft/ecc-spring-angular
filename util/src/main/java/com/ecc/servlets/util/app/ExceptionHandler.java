@@ -7,6 +7,6 @@ public class ExceptionHandler {
 			System.out.println("Caused by: ");
 			cause.getCause().printStackTrace();
 		}
-		return "Error: " + cause.getMessage();
+		return "<h3 style=\"color: red\"> Error: " + cause.getMessage() + "</h3>";
 	}
 }
