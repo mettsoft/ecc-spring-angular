@@ -82,9 +82,9 @@ public class PersonRegistryServlet extends HttpServlet {
 	private static final String VIEW_PARAMETER_POST_QUERY_PARAMETERS = ":postQueryParameters";
 	private static final String VIEW_PARAMETER_DATATABLE = ":dataTable";
 	
-	private static final String CREATE_SUCCESS_MESSAGE = "Successfully created the person ID [%d] \"%s\"!";
-	private static final String UPDATE_SUCCESS_MESSAGE = "Successfully updated the person ID [%d] \"%s\"!";
-	private static final String DELETE_SUCCESS_MESSAGE = "Successfully deleted the person ID \"%d\"!";
+	private static final String CREATE_SUCCESS_MESSAGE = "Successfully created the person \"%s\"!";
+	private static final String UPDATE_SUCCESS_MESSAGE = "Successfully updated the person \"%s\"!";
+	private static final String DELETE_SUCCESS_MESSAGE = "Successfully deleted a person!";
 
 	private PersonService personService;
 	private RoleService roleService;
@@ -199,14 +199,14 @@ public class PersonRegistryServlet extends HttpServlet {
 		
 			if (mode.equals(MODE_CREATE)) {
 				person = personService.get(personId);
-				message = String.format(CREATE_SUCCESS_MESSAGE, person.getId(), person.getName());	
+				message = String.format(CREATE_SUCCESS_MESSAGE, person.getName());	
 			}
 			else if (mode.equals(MODE_UPDATE)) {
 				person = personService.get(personId);
-				message = String.format(UPDATE_SUCCESS_MESSAGE, person.getId(), person.getName());
+				message = String.format(UPDATE_SUCCESS_MESSAGE, person.getName());
 			}
 			else if (mode.equals(MODE_DELETE)) {
-				message = String.format(DELETE_SUCCESS_MESSAGE, personId);
+				message = DELETE_SUCCESS_MESSAGE;
 			}
 		}
 		return message;

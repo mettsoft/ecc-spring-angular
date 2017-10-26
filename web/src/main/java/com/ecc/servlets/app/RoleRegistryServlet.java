@@ -38,9 +38,9 @@ public class RoleRegistryServlet extends HttpServlet {
 	private static final String VIEW_PARAMETER_HEADER = ":header";
 	private static final String VIEW_PARAMETER_DATATABLE = ":dataTable";
 	
-	private static final String CREATE_SUCCESS_MESSAGE = "Successfully created the role ID \"%d\" with \"%s\"!";
-	private static final String UPDATE_SUCCESS_MESSAGE = "Successfully updated the role ID \"%d\" with \"%s\"!";
-	private static final String DELETE_SUCCESS_MESSAGE = "Successfully deleted the role ID \"%d\"!";
+	private static final String CREATE_SUCCESS_MESSAGE = "Successfully created the role \"%s\"!";
+	private static final String UPDATE_SUCCESS_MESSAGE = "Successfully updated the role \"%s\"!";
+	private static final String DELETE_SUCCESS_MESSAGE = "Successfully deleted a role!";
 	private static final String AFFECTED_PERSONS_MESSAGE = "Please take note that the following person IDs are affected: [%s].";
 
 	private RoleService roleService;
@@ -142,11 +142,11 @@ public class RoleRegistryServlet extends HttpServlet {
 		
 			if (mode == MODE_CREATE) {
 				role = roleService.get(roleId);
-				message = String.format(CREATE_SUCCESS_MESSAGE, role.getId(), role.getName());	
+				message = String.format(CREATE_SUCCESS_MESSAGE, role.getName());	
 			}
 			else if (mode == MODE_UPDATE) {
 				role = roleService.get(roleId);
-				message = String.format(UPDATE_SUCCESS_MESSAGE, role.getId(), role.getName());
+				message = String.format(UPDATE_SUCCESS_MESSAGE, role.getName());
 				if (role.getPersons().size() > 0) {
 					String personIds = role.getPersons().stream()
 						.map(person -> person.getId().toString())
@@ -155,7 +155,7 @@ public class RoleRegistryServlet extends HttpServlet {
 				}
 			}
 			else if (mode == MODE_DELETE) {
-				message = String.format(DELETE_SUCCESS_MESSAGE, roleId);
+				message = DELETE_SUCCESS_MESSAGE;
 			}			
 		}
 		return message;
