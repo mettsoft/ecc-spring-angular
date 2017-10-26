@@ -4,18 +4,14 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.function.Function;
 
 public class AssemblerUtils {
-	@FunctionalInterface
-	public interface Converter<T, R> {
-		R convert(T input);
+	public static <T, R> List<R> asList(Collection<T> data, Function<T, R> converter) {
+		return data == null? null: data.stream().map(converter::apply).collect(Collectors.toList());
 	}
 
-	public static <T, R> List<R> asList(Collection<T> data, Converter<T, R> converter) {
-		return data == null? null: data.stream().map(converter::convert).collect(Collectors.toList());
-	}
-
-	public static <T, R> Set<R> asSet(Collection<T> data, Converter<T, R> converter) {
-		return data == null? null: data.stream().map(converter::convert).collect(Collectors.toSet());
+	public static <T, R> Set<R> asSet(Collection<T> data, Function<T, R> converter) {
+		return data == null? null: data.stream().map(converter::apply).collect(Collectors.toSet());
 	}
 }
