@@ -13,7 +13,7 @@
 
 	<servlet-mapping>
 		<servlet-name>PersonRegistryServlet</servlet-name>
-		<url-pattern>/</url-pattern>
+		<url-pattern></url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>RoleRegistryServlet</servlet-name>
