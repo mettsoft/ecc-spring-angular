@@ -15,7 +15,7 @@ import com.ecc.servlets.util.validator.ModelValidator;
 
 public class PersonService extends AbstractService<Person, PersonDTO> {
 	private static final Integer DEFAULT_MAX_CHARACTERS = 20;
-	private static final Integer MAX_MUNICIPALITY_CHARACTERS = 50;
+	private static final Integer LONG_MAX_CHARACTERS = 50;
 	private static final Integer MAX_EMAIL_CHARACTERS = 50;
 	private static final Integer LANDLINE_DIGITS = 7;
 	private static final Integer MOBILE_NUMBER_DIGITS = 11;
@@ -63,7 +63,10 @@ public class PersonService extends AbstractService<Person, PersonDTO> {
 			validator.validate("MaxLength", data, DEFAULT_MAX_CHARACTERS, component);		
 		}
 		else if (component.equals("Municipality")) {
-			validator.validate("MaxLength", data, MAX_MUNICIPALITY_CHARACTERS, component);			
+			validator.validate("MaxLength", data, LONG_MAX_CHARACTERS, component);			
+		}
+		else if (component.equals("Barangay")) {
+			validator.validate("MaxLength", data, LONG_MAX_CHARACTERS, component);			
 		}
 	}
 

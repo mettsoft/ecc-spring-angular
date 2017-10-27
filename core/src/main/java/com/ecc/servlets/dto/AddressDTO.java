@@ -2,7 +2,7 @@ package com.ecc.servlets.dto;
 
 public class AddressDTO {
 	private String streetNumber;
-	private Integer barangay;
+	private String barangay;
 	private String municipality;
 	private Integer zipCode;
 		
@@ -10,7 +10,7 @@ public class AddressDTO {
 		return streetNumber;
 	}
 
-	public Integer getBarangay() {
+	public String getBarangay() {
 		return barangay;
 	}
 
@@ -26,7 +26,7 @@ public class AddressDTO {
 		this.streetNumber = streetNumber;
 	}
 
-	public void setBarangay(Integer barangay) {
+	public void setBarangay(String barangay) {
 		this.barangay = barangay;
 	}
 
@@ -40,6 +40,6 @@ public class AddressDTO {
 
 	@Override
 	public String toString() {
-		return String.format("%s, Barangay %d, %s, %d", streetNumber, barangay, municipality, zipCode);
+		return String.format("%s, Barangay %s, %s, %d", streetNumber, barangay, municipality, zipCode);
 	}
 }

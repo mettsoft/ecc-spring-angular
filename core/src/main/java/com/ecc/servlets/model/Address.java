@@ -6,7 +6,7 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class Address {
 	private String streetNumber;
-	private Integer barangay;
+	private String barangay;
 	private String municipality;
 	private Integer zipCode;
 		
@@ -16,7 +16,7 @@ public class Address {
 	}
 
 	@Column(nullable=false)
-	public Integer getBarangay() {
+	public String getBarangay() {
 		return barangay;
 	}
 
@@ -34,7 +34,7 @@ public class Address {
 		this.streetNumber = streetNumber;
 	}
 
-	public void setBarangay(Integer barangay) {
+	public void setBarangay(String barangay) {
 		this.barangay = barangay;
 	}
 
