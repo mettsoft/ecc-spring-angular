@@ -198,16 +198,12 @@ public class PersonRegistryServlet extends HttpServlet {
 			Integer mode = decodeMode(encodedResponse);
 			PersonDTO person = null;
 		
-			if (mode.equals(MODE_CREATE)) {
-				person = personService.get(personId);
-				message = String.format(CREATE_SUCCESS_MESSAGE, person.getName());	
-			}
-			else if (mode.equals(MODE_UPDATE)) {
-				person = personService.get(personId);
-				message = String.format(UPDATE_SUCCESS_MESSAGE, person.getName());
-			}
-			else if (mode.equals(MODE_DELETE)) {
+			if (mode.equals(MODE_DELETE)) {
 				message = DELETE_SUCCESS_MESSAGE;
+			}
+			else {
+				person = personService.get(personId);
+				message = String.format(mode.equals(MODE_CREATE)? CREATE_SUCCESS_MESSAGE: UPDATE_SUCCESS_MESSAGE, person.getName());					
 			}
 		}
 		return message;
