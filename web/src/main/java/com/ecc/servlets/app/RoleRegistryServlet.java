@@ -140,11 +140,11 @@ public class RoleRegistryServlet extends HttpServlet {
 			Integer mode = decodeMode(encodedResponse);
 			RoleDTO role = null;
 		
-			if (mode == MODE_CREATE) {
+			if (mode.equals(MODE_CREATE)) {
 				role = roleService.get(roleId);
 				message = String.format(CREATE_SUCCESS_MESSAGE, role.getName());	
 			}
-			else if (mode == MODE_UPDATE) {
+			else if (mode.equals(MODE_UPDATE)) {
 				role = roleService.get(roleId);
 				message = String.format(UPDATE_SUCCESS_MESSAGE, role.getName());
 				if (role.getPersons().size() > 0) {
@@ -154,7 +154,7 @@ public class RoleRegistryServlet extends HttpServlet {
 					message += " " + String.format(AFFECTED_PERSONS_MESSAGE, personIds);
 				}
 			}
-			else if (mode == MODE_DELETE) {
+			else if (mode.equals(MODE_DELETE)) {
 				message = DELETE_SUCCESS_MESSAGE;
 			}			
 		}
