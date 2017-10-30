@@ -62,10 +62,7 @@ public class PersonService extends AbstractService<Person, PersonDTO> {
 		if (component.equals("Street number")) {
 			validator.validate("MaxLength", data, DEFAULT_MAX_CHARACTERS, component);		
 		}
-		else if (component.equals("Municipality")) {
-			validator.validate("MaxLength", data, LONG_MAX_CHARACTERS, component);			
-		}
-		else if (component.equals("Barangay")) {
+		else if (component.equals("Municipality") || component.equals("Barangay")) {
 			validator.validate("MaxLength", data, LONG_MAX_CHARACTERS, component);			
 		}
 	}
