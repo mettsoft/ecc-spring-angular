@@ -1,7 +1,7 @@
 <project>
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>com.ecc.hibernate-xml</groupId>
+		<groupId>com.ecc.spring-xml</groupId>
 		<artifactId>parent</artifactId>
 		<version>1.0.0</version>		
 	</parent>
