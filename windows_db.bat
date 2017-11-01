@@ -1,0 +1,1 @@
+psql -U exist -d spring_xml -a -f "C:\Users\emmet\Dropbox\ECC\checkpoint-10\exercise-10\infra\src\main\resources\buildtools\2017-10-26_0021.sql" 
