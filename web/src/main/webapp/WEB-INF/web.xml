@@ -2,12 +2,12 @@
 	<display-name>Person Registration System</display-name>
 	<servlet>
 		<servlet-name>PersonRegistryServlet</servlet-name>
-		<servlet-class>com.ecc.servlets.app.PersonRegistryServlet</servlet-class>
+		<servlet-class>com.ecc.spring_xml.app.PersonRegistryServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet>
 		<servlet-name>RoleRegistryServlet</servlet-name>
-		<servlet-class>com.ecc.servlets.app.RoleRegistryServlet</servlet-class>
+		<servlet-class>com.ecc.spring_xml.app.RoleRegistryServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 
