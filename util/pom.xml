@@ -11,10 +11,5 @@
 		    <groupId>commons-validator</groupId>
 		    <artifactId>commons-validator</artifactId>
 		</dependency>
-		<!-- TODO: This will be removed, along with HibernateUtility and TransactionScope -->
-		<dependency>
-		    <groupId>org.hibernate</groupId>
-		    <artifactId>hibernate-core</artifactId>
-		</dependency>
 	</dependencies>
 </project>

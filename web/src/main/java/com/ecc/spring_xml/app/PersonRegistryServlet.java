@@ -25,7 +25,6 @@ import com.ecc.spring_xml.util.app.DateUtils;
 import com.ecc.spring_xml.util.app.NumberUtils;
 import com.ecc.spring_xml.util.app.ExceptionHandler;
 import com.ecc.spring_xml.util.app.TemplateEngine;
-import com.ecc.spring_xml.util.dao.HibernateUtility;
 import com.ecc.spring_xml.util.validator.ValidationException;
 
 public class PersonRegistryServlet extends HttpServlet {
@@ -94,7 +93,6 @@ public class PersonRegistryServlet extends HttpServlet {
 	public void init() throws ServletException {
 		personService = new PersonService();
 		roleService = new RoleService();
-		HibernateUtility.initializeSessionFactory();
 	}
 
 	@Override
@@ -172,11 +170,6 @@ public class PersonRegistryServlet extends HttpServlet {
 			parameters.putAll(queryToViewParameters(request));
 			templateEngine.render(VIEW_TEMPLATE, parameters);
 		}
-	}
-
-	@Override
-	public void destroy() {
-		HibernateUtility.closeSessionFactory();
 	}
 
 	private Map<String, Object> extractQueryParameters(HttpServletRequest request) {
