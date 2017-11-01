@@ -8,10 +8,11 @@
 	<artifactId>web</artifactId>
 	<packaging>war</packaging>
 	<dependencies>
-		<dependency>
-		    <groupId>org.slf4j</groupId>
-		    <artifactId>slf4j-nop</artifactId>
+		<dependency>			
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-webmvc</artifactId>
 		</dependency>
+		<!-- TODO: This will be removed soon. -->
 		<dependency>			
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
