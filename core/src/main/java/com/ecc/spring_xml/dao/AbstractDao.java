@@ -57,7 +57,5 @@ public abstract class AbstractDao<T> implements Dao<T> {
 	protected RuntimeException onCreateFailure(T entity, Exception cause) { return toRuntimeException(cause); }
 	protected RuntimeException onUpdateFailure(T entity, Exception cause) { return toRuntimeException(cause); }
 	protected RuntimeException onDeleteFailure(T entity, Exception cause) { return toRuntimeException(cause); }
-	private RuntimeException toRuntimeException(Exception cause) { 
-		return (cause instanceof RuntimeException)? (RuntimeException) cause: new RuntimeException(cause); 
-	}
+	private RuntimeException toRuntimeException(Exception cause) { return (cause instanceof RuntimeException)? (RuntimeException) cause: new RuntimeException(cause); }
 }
