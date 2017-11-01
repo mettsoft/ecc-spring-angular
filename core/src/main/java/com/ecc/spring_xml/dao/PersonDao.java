@@ -3,7 +3,6 @@ package com.ecc.spring_xml.dao;
 import java.util.List;
 import java.util.Date;
 
-import org.springframework.dao.DataAccessException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Criteria;
@@ -49,7 +48,7 @@ public class PersonDao extends AbstractDao<Person> {
 			session.update(person);
 		}
 		catch (Exception cause) {
-			throw new DataAccessException(onUpdateFailure(person, cause));
+			throw onUpdateFailure(person, cause);
 		}
 	}
 }

@@ -2,13 +2,12 @@ package com.ecc.spring_xml.dao;
 
 import java.io.Serializable;
 
-import org.springframework.dao.DataAccessException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 public abstract class AbstractDao<T> implements Dao<T> {
 	private final Class<T> type;
-	private final SessionFactory sessionFactory;
+	protected final SessionFactory sessionFactory;
 
 	protected AbstractDao(Class<T> type, SessionFactory sessionFactory) {
 		this.type = type;
@@ -21,7 +20,7 @@ public abstract class AbstractDao<T> implements Dao<T> {
 			return sessionFactory.getCurrentSession().save(entity);		
 		}
 		catch (Exception cause) {
-			throw new DataAccessException(onCreateFailure(entity, cause));
+			throw onCreateFailure(entity, cause);
 		}
 	}
 
@@ -31,7 +30,7 @@ public abstract class AbstractDao<T> implements Dao<T> {
 			sessionFactory.getCurrentSession().update(entity);		
 		}
 		catch (Exception cause) {
-			throw new DataAccessException(onUpdateFailure(entity, cause));
+			throw onUpdateFailure(entity, cause);
 		}
 	}
 
@@ -41,7 +40,7 @@ public abstract class AbstractDao<T> implements Dao<T> {
 			sessionFactory.getCurrentSession().delete(entity);		
 		}
 		catch (Exception cause) {
-			throw new DataAccessException(onDeleteFailure(entity, cause));
+			throw onDeleteFailure(entity, cause);
 		}
 	} 
 
@@ -50,12 +49,15 @@ public abstract class AbstractDao<T> implements Dao<T> {
 		Session session = sessionFactory.getCurrentSession();
 		T entity =  (T) session.get(type, id);
 		if (entity == null) {
-			throw new DataAccessException(String.format("%s not found!", type.getSimpleName()));
+			throw new RuntimeException(String.format("%s not found!", type.getSimpleName()));
 		}
 		return entity;			
 	}
 	
-	protected Throwable onCreateFailure(T entity, Throwable cause) { return cause; }
-	protected Throwable onUpdateFailure(T entity, Throwable cause) { return cause; }
-	protected Throwable onDeleteFailure(T entity, Throwable cause) { return cause; }
+	protected RuntimeException onCreateFailure(T entity, Exception cause) { return toRuntimeException(cause); }
+	protected RuntimeException onUpdateFailure(T entity, Exception cause) { return toRuntimeException(cause); }
+	protected RuntimeException onDeleteFailure(T entity, Exception cause) { return toRuntimeException(cause); }
+	private RuntimeException toRuntimeException(Exception cause) { 
+		return (cause instanceof RuntimeException)? (RuntimeException) cause: new RuntimeException(cause); 
+	}
 }

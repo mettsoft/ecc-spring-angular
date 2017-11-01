@@ -3,7 +3,6 @@ package com.ecc.spring_xml.dao;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.dao.DataAccessException;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.exception.ConstraintViolationException;
@@ -24,30 +23,30 @@ public class RoleDao extends AbstractDao<Role> {
 	}
 
 	@Override
-	protected Throwable onCreateFailure(Role role, Throwable cause) {
+	protected RuntimeException onCreateFailure(Role role, Exception cause) {
 		return onUpdateFailure(role, cause);
 	}
 
 	@Override
-	protected Throwable onUpdateFailure(Role role, Throwable cause) {
+	protected RuntimeException onUpdateFailure(Role role, Exception cause) {
 		if (cause instanceof ConstraintViolationException) {
-			return new DataAccessException(String.format(
+			return new RuntimeException(String.format(
 				"Role name \"%s\" is already existing.", role.getName()));
 		}
-		return cause;
+		return super.onUpdateFailure(role, cause);
 	}
 
 	@Override
-	protected Throwable onDeleteFailure(Role role, Throwable cause) {
+	protected RuntimeException onDeleteFailure(Role role, Exception cause) {
 		if (cause instanceof ConstraintViolationException && role.getPersons().size() > 0) {
 			String personNames = role.getPersons()
 				.stream()
 				.map(person -> person.getName().toString())
 				.collect(Collectors.joining("; "));
 
-			return new DataAccessException(
+			return new RuntimeException(
 				String.format("Role is in used by persons [%s].", personNames));
 		}
-		return cause;
+		return super.onDeleteFailure(role, cause);
 	}
 }
