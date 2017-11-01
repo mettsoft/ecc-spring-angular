@@ -3,27 +3,24 @@ package com.ecc.spring_xml.dao;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Restrictions;
+import org.springframework.dao.DataAccessException;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.exception.ConstraintViolationException;
 
 import com.ecc.spring_xml.model.Role;
-import com.ecc.spring_xml.model.Person;
-import com.ecc.spring_xml.util.dao.TransactionScope;
 
 public class RoleDao extends AbstractDao<Role> {
-	public RoleDao() {
-		super(Role.class);
-	} 
+	public RoleDao(SessionFactory sessionFactory) {
+		super(Role.class, sessionFactory);
+	}
 
 	public List<Role> list() {
-		return TransactionScope.executeTransactionWithResult(session -> {
-			return session.createCriteria(Role.class)
-				.setCacheable(true)
-				.addOrder(Order.asc("id"))
-				.list();
-		});
+		return sessionFactory.getCurrentSession()
+			.createCriteria(Role.class)
+			.setCacheable(true)
+			.addOrder(Order.asc("id"))
+			.list();
 	}
 
 	@Override
@@ -34,7 +31,7 @@ public class RoleDao extends AbstractDao<Role> {
 	@Override
 	protected Throwable onUpdateFailure(Role role, Throwable cause) {
 		if (cause instanceof ConstraintViolationException) {
-			return new RuntimeException(String.format(
+			return new DataAccessException(String.format(
 				"Role name \"%s\" is already existing.", role.getName()));
 		}
 		return cause;
@@ -48,7 +45,7 @@ public class RoleDao extends AbstractDao<Role> {
 				.map(person -> person.getName().toString())
 				.collect(Collectors.joining("; "));
 
-			return new RuntimeException(
+			return new DataAccessException(
 				String.format("Role is in used by persons [%s].", personNames));
 		}
 		return cause;

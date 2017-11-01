@@ -1,58 +1,58 @@
 package com.ecc.spring_xml.dao;
 
 import java.io.Serializable;
-import java.util.List;
 
-import org.hibernate.criterion.Order;
-
-import com.ecc.spring_xml.util.dao.TransactionScope;
+import org.springframework.dao.DataAccessException;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 
 public abstract class AbstractDao<T> implements Dao<T> {
 	private final Class<T> type;
+	private final SessionFactory sessionFactory;
 
-	protected AbstractDao(Class<T> type) {
+	protected AbstractDao(Class<T> type, SessionFactory sessionFactory) {
 		this.type = type;
+		this.sessionFactory = sessionFactory;
 	}
 
 	@Override
-	public Serializable create(T entity) throws DaoException {
+	public Serializable create(T entity) {
 		try {
-			return TransactionScope.executeTransactionWithResult(session -> session.save(entity));			
+			return sessionFactory.getCurrentSession().save(entity);		
 		}
 		catch (Exception cause) {
-			throw new DaoException(onCreateFailure(entity, cause));
-		}
-	}
-
-	@Override
-	public void update(T entity) throws DaoException {
-		try {
-			TransactionScope.executeTransaction(session -> session.update(entity));			
-		}
-		catch (Exception cause) {
-			throw new DaoException(onUpdateFailure(entity, cause));
+			throw new DataAccessException(onCreateFailure(entity, cause));
 		}
 	}
 
 	@Override
-	public void delete(T entity) throws DaoException {
+	public void update(T entity) {
 		try {
-			TransactionScope.executeTransaction(session -> session.delete(entity));			
+			sessionFactory.getCurrentSession().update(entity);		
 		}
 		catch (Exception cause) {
-			throw new DaoException(onDeleteFailure(entity, cause));
+			throw new DataAccessException(onUpdateFailure(entity, cause));
+		}
+	}
+
+	@Override
+	public void delete(T entity) {
+		try {
+			sessionFactory.getCurrentSession().delete(entity);		
+		}
+		catch (Exception cause) {
+			throw new DataAccessException(onDeleteFailure(entity, cause));
 		}
 	} 
 
 	@Override
 	public T get(Integer id) {
-		return TransactionScope.executeTransactionWithResult(session -> {
-			T entity =  (T) session.get(type, id);
-			if (entity == null) {
-				throw new RuntimeException(String.format("%s not found!", type.getSimpleName()));
-			}
-			return entity;			
-		});
+		Session session = sessionFactory.getCurrentSession();
+		T entity =  (T) session.get(type, id);
+		if (entity == null) {
+			throw new DataAccessException(String.format("%s not found!", type.getSimpleName()));
+		}
+		return entity;			
 	}
 	
 	protected Throwable onCreateFailure(T entity, Throwable cause) { return cause; }
