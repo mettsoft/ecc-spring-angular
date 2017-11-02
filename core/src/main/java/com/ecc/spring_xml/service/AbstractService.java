@@ -16,21 +16,43 @@ public abstract class AbstractService<T, R> implements Service<R> {
 
 	@Override
 	public Serializable create(R dto) {
-		return dao.create(assembler.createModel(dto));
+		T entity = assembler.createModel(dto);
+		try {
+			return dao.create(entity);		
+		}
+		catch (RuntimeException cause) {
+			throw onCreateFailure(entity, cause);
+		}
 	}
 
 	@Override
 	public void update(R dto) {
-		dao.update(assembler.createModel(dto));
+		T entity = assembler.createModel(dto);
+		try {
+			dao.update(entity);	
+		}
+		catch (RuntimeException cause) {
+			throw onUpdateFailure(entity, cause);
+		}
 	}
 
 	@Override
 	public void delete(Integer id) {
-		dao.delete(dao.get(id));
+		T entity = dao.get(id);
+		try {
+			dao.delete(entity);
+		}
+		catch (RuntimeException cause) {
+			throw onDeleteFailure(entity, cause);
+		}
 	} 
 
 	@Override
 	public R get(Integer id) {
 		return assembler.createDTO(dao.get(id));
 	}
+
+	protected RuntimeException onCreateFailure(T entity, RuntimeException cause) { return cause; }
+	protected RuntimeException onUpdateFailure(T entity, RuntimeException cause) { return cause; }
+	protected RuntimeException onDeleteFailure(T entity, RuntimeException cause) { return cause; }
 }

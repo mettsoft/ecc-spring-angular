@@ -34,21 +34,16 @@ public class PersonDao extends AbstractDao<Person> {
 			criteria.add(Restrictions.eq("birthday", birthday));
 		}
 
-		return criteria.list();
+		return criteria.list();	
 	}
 
 	@Override
 	public void update(Person person) {
-		try {
-			Session session = sessionFactory.getCurrentSession();
-			Person persistentPerson = (Person) session.get(Person.class, person.getId());
-			persistentPerson.getContacts().clear();
-			session.flush();
-			session.evict(persistentPerson);
-			session.update(person);
-		}
-		catch (Exception cause) {
-			throw onUpdateFailure(person, cause);
-		}
+		Session session = sessionFactory.getCurrentSession();
+		Person persistentPerson = (Person) session.get(Person.class, person.getId());
+		persistentPerson.getContacts().clear();
+		session.flush();
+		session.evict(persistentPerson);
+		session.update(person);
 	}
 }

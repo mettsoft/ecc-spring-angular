@@ -1,6 +1,9 @@
 package com.ecc.spring_xml.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.dao.DataIntegrityViolationException;
 
 import com.ecc.spring_xml.dto.RoleDTO;
 import com.ecc.spring_xml.model.Role;
@@ -31,5 +34,33 @@ public class RoleService extends AbstractService<Role, RoleDTO> {
 
 	public List<RoleDTO> list() {
 		return AssemblerUtils.asList(roleDao.list(), roleAssembler::createDTO);
+	}
+
+	@Override
+	protected RuntimeException onCreateFailure(Role role, RuntimeException cause) {
+		return onUpdateFailure(role, cause);
+	}
+
+	@Override
+	protected RuntimeException onUpdateFailure(Role role, RuntimeException cause) {
+		if (cause instanceof DataIntegrityViolationException) {
+			return new RuntimeException(String.format(
+				"Role name \"%s\" is already existing.", role.getName()));
+		}
+		return super.onUpdateFailure(role, cause);
+	}
+
+	@Override
+	protected RuntimeException onDeleteFailure(Role role, RuntimeException cause) {
+		if (cause instanceof DataIntegrityViolationException && role.getPersons().size() > 0) {
+			String personNames = role.getPersons()
+				.stream()
+				.map(person -> person.getName().toString())
+				.collect(Collectors.joining("; "));
+
+			return new RuntimeException(
+				String.format("Role is in used by persons [%s].", personNames));
+		}
+		return super.onDeleteFailure(role, cause);
 	}
 }

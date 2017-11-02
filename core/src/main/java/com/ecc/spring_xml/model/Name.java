@@ -92,4 +92,10 @@ public class Name {
 		}
 		return false;
 	}
+
+	@Override
+	public String toString() {
+		return StringUtils.trim(StringUtils.trimToEmpty(title) + " " + lastName + ", " + 
+			firstName + " " + middleName + " " + StringUtils.trimToEmpty(suffix));
+	}
 }

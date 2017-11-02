@@ -16,32 +16,17 @@ public abstract class AbstractDao<T> implements Dao<T> {
 
 	@Override
 	public Serializable create(T entity) {
-		try {
-			return sessionFactory.getCurrentSession().save(entity);		
-		}
-		catch (Exception cause) {
-			throw onCreateFailure(entity, cause);
-		}
+		return sessionFactory.getCurrentSession().save(entity);
 	}
 
 	@Override
 	public void update(T entity) {
-		try {
-			sessionFactory.getCurrentSession().update(entity);		
-		}
-		catch (Exception cause) {
-			throw onUpdateFailure(entity, cause);
-		}
+		sessionFactory.getCurrentSession().update(entity);
 	}
 
 	@Override
 	public void delete(T entity) {
-		try {
-			sessionFactory.getCurrentSession().delete(entity);		
-		}
-		catch (Exception cause) {
-			throw onDeleteFailure(entity, cause);
-		}
+		sessionFactory.getCurrentSession().delete(entity);
 	} 
 
 	@Override
@@ -51,11 +36,6 @@ public abstract class AbstractDao<T> implements Dao<T> {
 		if (entity == null) {
 			throw new RuntimeException(String.format("%s not found!", type.getSimpleName()));
 		}
-		return entity;			
+		return entity;
 	}
-	
-	protected RuntimeException onCreateFailure(T entity, Exception cause) { return toRuntimeException(cause); }
-	protected RuntimeException onUpdateFailure(T entity, Exception cause) { return toRuntimeException(cause); }
-	protected RuntimeException onDeleteFailure(T entity, Exception cause) { return toRuntimeException(cause); }
-	private RuntimeException toRuntimeException(Exception cause) { return (cause instanceof RuntimeException)? (RuntimeException) cause: new RuntimeException(cause); }
 }

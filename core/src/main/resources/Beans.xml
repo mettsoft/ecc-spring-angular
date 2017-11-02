@@ -36,7 +36,6 @@
 
 	<bean id="personAssembler" class="com.ecc.spring_xml.assembler.PersonAssembler" />
 	<bean id="roleAssembler" class="com.ecc.spring_xml.assembler.RoleAssembler" />
-
 	<bean id="validator" class="com.ecc.spring_xml.util.validator.ModelValidator" />
 	
 	<bean id="personService" class="com.ecc.spring_xml.service.PersonService">
