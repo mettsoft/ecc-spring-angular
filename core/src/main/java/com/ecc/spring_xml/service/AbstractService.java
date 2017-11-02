@@ -4,11 +4,10 @@ import java.io.Serializable;
 
 import com.ecc.spring_xml.dao.Dao;
 import com.ecc.spring_xml.assembler.Assembler;
-import com.ecc.spring_xml.util.app.AssemblerUtils;
 
 public abstract class AbstractService<T, R> implements Service<R> {
-	protected final Dao<T> dao;
-	protected final Assembler<T, R> assembler;
+	private final Dao<T> dao;
+	private final Assembler<T, R> assembler;
 
 	protected AbstractService(Dao<T> dao, Assembler<T, R> assembler) {
 		this.dao = dao;

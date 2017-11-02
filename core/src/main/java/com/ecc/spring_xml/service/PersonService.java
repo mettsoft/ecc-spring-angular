@@ -6,9 +6,9 @@ import java.util.Date;
 
 import com.ecc.spring_xml.dto.PersonDTO;
 import com.ecc.spring_xml.dto.ContactDTO;
+import com.ecc.spring_xml.model.Person;
 import com.ecc.spring_xml.assembler.PersonAssembler;
 import com.ecc.spring_xml.dao.PersonDao;
-import com.ecc.spring_xml.model.Person;
 import com.ecc.spring_xml.util.app.AssemblerUtils;
 import com.ecc.spring_xml.util.validator.ValidationException;
 import com.ecc.spring_xml.util.validator.ModelValidator;
@@ -16,17 +16,18 @@ import com.ecc.spring_xml.util.validator.ModelValidator;
 public class PersonService extends AbstractService<Person, PersonDTO> {
 	private static final Integer DEFAULT_MAX_CHARACTERS = 20;
 	private static final Integer LONG_MAX_CHARACTERS = 50;
-	private static final Integer MAX_EMAIL_CHARACTERS = 50;
 	private static final Integer LANDLINE_DIGITS = 7;
 	private static final Integer MOBILE_NUMBER_DIGITS = 11;
 
 	private final PersonDao personDao;
+	private final PersonAssembler personAssembler;
 	private final ModelValidator validator;
 
-	public PersonService(PersonDao personDao, PersonAssembler personAssembler) {
+	public PersonService(PersonDao personDao, PersonAssembler personAssembler, ModelValidator validator) {
 		super(personDao, personAssembler);
 		this.personDao = personDao;
-		validator = ModelValidator.create();
+		this.personAssembler = personAssembler;
+		this.validator = validator;
 	}
 
 	public void validate(PersonDTO person) throws ValidationException {
@@ -46,7 +47,7 @@ public class PersonService extends AbstractService<Person, PersonDTO> {
 	}
 
 	public List<PersonDTO> list(String lastName, Integer roleId, Date birthday, String orderBy, String order) {
-		return AssemblerUtils.asList(personDao.list(lastName, roleId, birthday, orderBy, order), assembler::createDTO);
+		return AssemblerUtils.asList(personDao.list(lastName, roleId, birthday, orderBy, order), personAssembler::createDTO);
 	}
 
 	private void validateName(String data, String component) throws ValidationException {
@@ -112,7 +113,7 @@ public class PersonService extends AbstractService<Person, PersonDTO> {
 
 	private void validateEmail(String email) throws ValidationException {
 		validator.validate("NotEmpty", email, "Email");
-		validator.validate("MaxLength", email, MAX_EMAIL_CHARACTERS, "Email");
+		validator.validate("MaxLength", email, LONG_MAX_CHARACTERS, "Email");
 		validator.validate("ValidEmail", email);
 	}
 }

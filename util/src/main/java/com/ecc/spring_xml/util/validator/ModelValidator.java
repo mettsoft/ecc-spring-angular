@@ -20,7 +20,7 @@ public class ModelValidator {
 	private Object data;	
 	private Map<String, ValidatorPolicy> policies;
 
-	private ModelValidator() {
+	public ModelValidator() {
 		policies = new HashMap<>();
 
 		policies.put("MaxLength", new ValidatorPolicy() {
@@ -95,10 +95,6 @@ public class ModelValidator {
 			}
 		});
 		policies.get("Maximum").setMessageTemplate(MAXIMUM_ERROR_MESSAGE_TEMPLATE);
-	}
-
-	public static ModelValidator create() {
-		return new ModelValidator();
 	}
 
 	public void validate(String key, Object data, Object... arguments) throws ValidationException {
