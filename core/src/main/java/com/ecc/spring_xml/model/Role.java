@@ -25,8 +25,17 @@ import com.ecc.spring_xml.model.Person;
 @Table(name="roles")
 @Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 public class Role {
+	@Id @GeneratedValue(generator="RoleIdGenerator")
+	@SequenceGenerator(name="RoleIdGenerator", sequenceName="roles_id_seq")
+	@Column(nullable=false)
 	private Integer id;
+
+	@Column(unique=true, nullable=false, length=20)
 	private String name;
+	
+	@Fetch(FetchMode.SELECT)
+	@ManyToMany(fetch=FetchType.EAGER, mappedBy="roles")
+	@OrderBy
 	private Set<Person> persons;
 
 	public Role() {}
@@ -36,21 +45,14 @@ public class Role {
 		setName(name);
 	}
 
-	@Id @GeneratedValue(generator="RoleIdGenerator")
-	@SequenceGenerator(name="RoleIdGenerator", sequenceName="roles_id_seq")
-	@Column(nullable=false)
 	public Integer getId() {
 		return id;
 	}
 	
-	@Column(unique=true, nullable=false, length=20)
 	public String getName() {
 		return name;
 	}
 
-	@Fetch(FetchMode.SELECT)
-	@ManyToMany(fetch=FetchType.EAGER, mappedBy="roles")
-	@OrderBy
 	public Set<Person> getPersons() {
 		return persons;
 	}

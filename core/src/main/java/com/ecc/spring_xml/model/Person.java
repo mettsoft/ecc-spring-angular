@@ -28,14 +28,42 @@ import org.hibernate.annotations.Fetch;
 @Entity
 @Table(name="persons")
 public class Person {
+	@Id @GeneratedValue(generator="PersonIdGenerator")
+	@SequenceGenerator(name="PersonIdGenerator", sequenceName="persons_id_seq")
+	@Column(nullable=false)
 	private Integer id;
+
+	@Embedded
 	private Name name;
+
+	@Embedded
 	private Address address;
+
+	@Temporal(TemporalType.DATE)
 	private Date birthday;
+
+	@Column(precision=4, scale=3)
 	private BigDecimal GWA;
+
+	@Column(name="currently_employed", nullable=false)
 	private Boolean currentlyEmployed;
+
+	@Temporal(TemporalType.DATE)
+	@Column(name="date_hired")
 	private Date dateHired;
+
+	@Fetch(FetchMode.SELECT)
+	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, orphanRemoval=true)
+	@JoinColumn(name="person_id")
+	@OrderBy
 	private Set<Contact> contacts;
+
+	@Fetch(FetchMode.SELECT)
+	@ManyToMany(fetch=FetchType.EAGER)
+	@JoinTable(
+		joinColumns=@JoinColumn(name="person_id"),
+		inverseJoinColumns=@JoinColumn(name="role_id"))
+	@OrderBy
 	private Set<Role> roles;
 
 	public Person() {
@@ -53,59 +81,39 @@ public class Person {
 		this(name);
 		setId(id);		
 	}
-
-	@Id @GeneratedValue(generator="PersonIdGenerator")
-	@SequenceGenerator(name="PersonIdGenerator", sequenceName="persons_id_seq")
-	@Column(nullable=false)
+	
 	public Integer getId() {
 		return id;
 	}
 
-	@Embedded
 	public Name getName() {
 		return name;
 	}
 
-	@Embedded
 	public Address getAddress() {
 		return address;
 	}
 
-	@Temporal(TemporalType.DATE)
 	public Date getBirthday() {
 		return birthday;
 	}
 
-	@Column(precision=4, scale=3)
 	public BigDecimal getGWA() {
 		return GWA;
 	}
 
-	@Column(name="currently_employed", nullable=false)
 	public Boolean getCurrentlyEmployed() {
 		return currentlyEmployed;
 	}
 
-	@Temporal(TemporalType.DATE)
-	@Column(name="date_hired")
 	public Date getDateHired() {
 		return dateHired;
 	}
 
-	@Fetch(FetchMode.SELECT)
-	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, orphanRemoval=true)
-	@JoinColumn(name="person_id")
-	@OrderBy
 	public Set<Contact> getContacts() {
 		return contacts;
 	}
 
-	@Fetch(FetchMode.SELECT)
-	@ManyToMany(fetch=FetchType.EAGER)
-	@JoinTable(
-		joinColumns=@JoinColumn(name="person_id"),
-		inverseJoinColumns=@JoinColumn(name="role_id"))
-	@OrderBy
 	public Set<Role> getRoles() {
 		return roles;
 	}

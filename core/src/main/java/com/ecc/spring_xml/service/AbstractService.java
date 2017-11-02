@@ -6,7 +6,7 @@ import com.ecc.spring_xml.dao.Dao;
 import com.ecc.spring_xml.assembler.Assembler;
 import com.ecc.spring_xml.util.app.AssemblerUtils;
 
-public abstract class AbstractService<T, R> implements Service<T, R> {
+public abstract class AbstractService<T, R> implements Service<R> {
 	protected final Dao<T> dao;
 	protected final Assembler<T, R> assembler;
 
@@ -16,22 +16,22 @@ public abstract class AbstractService<T, R> implements Service<T, R> {
 	}
 
 	@Override
-	public Serializable create(R dto) throws Exception {
+	public Serializable create(R dto) {
 		return dao.create(assembler.createModel(dto));
 	}
 
 	@Override
-	public void update(R dto) throws Exception {
+	public void update(R dto) {
 		dao.update(assembler.createModel(dto));
 	}
 
 	@Override
-	public void delete(Integer id) throws Exception {
+	public void delete(Integer id) {
 		dao.delete(dao.get(id));
 	} 
 
 	@Override
-	public R get(Integer id) throws Exception {
+	public R get(Integer id) {
 		return assembler.createDTO(dao.get(id));
 	}
 }

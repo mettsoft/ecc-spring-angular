@@ -5,27 +5,30 @@ import javax.persistence.Embeddable;
 
 @Embeddable
 public class Address {
+	@Column(name="street_number", nullable=false, length=20)
 	private String streetNumber;
+
+	@Column(nullable=false)
 	private String barangay;
+
+	@Column(nullable=false, length=50)
 	private String municipality;
+	
+	@Column(name="zip_code", nullable=false)
 	private Integer zipCode;
 		
-	@Column(name="street_number", nullable=false, length=20)
 	public String getStreetNumber() {
 		return streetNumber;
 	}
 
-	@Column(nullable=false)
 	public String getBarangay() {
 		return barangay;
 	}
 
-	@Column(nullable=false, length=50)
 	public String getMunicipality() {
 		return municipality;
 	}
 
-	@Column(name="zip_code", nullable=false)
 	public Integer getZipCode() {
 		return zipCode;
 	}

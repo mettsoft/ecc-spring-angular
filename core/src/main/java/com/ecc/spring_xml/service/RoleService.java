@@ -20,9 +20,9 @@ public class RoleService extends AbstractService<Role, RoleDTO> {
 	private final ModelValidator validator;
 	private final PersonAssembler personAssembler;
 
-	public RoleService() {
-		super(new RoleDao(), new RoleAssembler());
-		roleDao = (RoleDao) dao;
+	public RoleService(RoleDao roleDao, RoleAssembler roleAssembler) {
+		super(roleDao, roleAssembler);
+		this.roleDao = roleDao;
 		validator = ModelValidator.create();
 		personAssembler = new PersonAssembler();
 	}

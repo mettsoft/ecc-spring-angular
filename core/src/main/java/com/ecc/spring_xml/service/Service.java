@@ -2,9 +2,9 @@ package com.ecc.spring_xml.service;
 
 import java.io.Serializable;
 
-public interface Service<T, R> {
-	Serializable create(R DTO) throws Exception;
-	void update(R DTO) throws Exception;
-	void delete(Integer id) throws Exception;
-	R get(Integer id) throws Exception;
+public interface Service<R> {
+	Serializable create(R DTO);
+	void update(R DTO);
+	void delete(Integer id);
+	R get(Integer id);
 }

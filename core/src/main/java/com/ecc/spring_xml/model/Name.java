@@ -9,27 +9,33 @@ import org.apache.commons.lang3.StringUtils;
 
 @Embeddable
 public class Name {
+	@Column(name="title")
 	private String title;
+
+	@Column(name="last_name", nullable=false)
 	private String lastName;
+
+	@Column(name="first_name", nullable=false)
 	private String firstName;
+
+	@Column(name="middle_name", nullable=false)
 	private String middleName;
+
+	@Column(name="suffix")
 	private String suffix;
 
 	public String getTitle() {
 		return title;
 	}
 
-	@Column(name="last_name", nullable=false)
 	public String getLastName() {
 		return lastName;
 	}
 
-	@Column(name="first_name", nullable=false)
 	public String getFirstName() {
 		return firstName;
 	}
 
-	@Column(name="middle_name", nullable=false)
 	public String getMiddleName() {
 		return middleName;
 	}
@@ -85,11 +91,5 @@ public class Name {
 				StringUtils.equals(suffix, other.suffix);
 		}
 		return false;
-	}
-
-	@Override
-	public String toString() {
-		return StringUtils.trim(StringUtils.trimToEmpty(title) + " " + lastName + ", " + 
-			firstName + " " + middleName + " " + StringUtils.trimToEmpty(suffix));
 	}
 }

@@ -23,9 +23,9 @@ public class PersonService extends AbstractService<Person, PersonDTO> {
 	private final PersonDao personDao;
 	private final ModelValidator validator;
 
-	public PersonService() {
-		super(new PersonDao(), new PersonAssembler());
-		personDao = (PersonDao) dao;
+	public PersonService(PersonDao personDao, PersonAssembler personAssembler) {
+		super(personDao, personAssembler);
+		this.personDao = personDao;
 		validator = ModelValidator.create();
 	}
 

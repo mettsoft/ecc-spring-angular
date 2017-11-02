@@ -6,8 +6,6 @@ import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Column;
-import javax.persistence.ManyToOne;
-import javax.persistence.FetchType;
 import javax.persistence.UniqueConstraint;
 
 @Entity
@@ -17,23 +15,25 @@ import javax.persistence.UniqueConstraint;
 		@UniqueConstraint(columnNames={"contact_type", "data", "person_id"})
 )
 public class Contact {
-	private Integer id;
-	private String data;
-	private String contactType;
-
 	@Id @GeneratedValue(generator="ContactIdGenerator")
 	@SequenceGenerator(name="ContactIdGenerator", sequenceName="contacts_id_seq")
 	@Column(nullable=false)
+	private Integer id;
+
+	@Column(nullable=false, length=50)
+	private String data;
+
+	@Column(name="contact_type", length=20, nullable=false)
+	private String contactType;
+
 	public Integer getId() {
 		return id;
 	}
 
-	@Column(nullable=false, length=50)
 	public String getData() {
 		return data;
 	}
 	
-	@Column(name="contact_type", length=20, nullable=false)
 	public String getContactType() {
 		return contactType;
 	}
