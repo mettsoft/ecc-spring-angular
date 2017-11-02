@@ -10,6 +10,11 @@
         http://www.springframework.org/schema/aop
         http://www.springframework.org/schema/aop/spring-aop.xsd">
 
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/jsp/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+	
 	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
 		<property name="driverClassName" value="org.postgresql.Driver" />
 		<property name="url" value="jdbc:postgresql://localhost:5432/spring_xml" />
@@ -48,6 +53,11 @@
 		<constructor-arg ref="roleDao" />
 		<constructor-arg ref="roleAssembler" />
 		<constructor-arg ref="validator" />
+	</bean>
+
+	<bean class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping" />
+	<bean name="/role" class="com.ecc.spring_xml.controller.RoleController">
+		<property name="roleService" ref="roleService" />
 	</bean>
 
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">

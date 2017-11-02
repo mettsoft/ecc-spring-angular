@@ -1,22 +1,12 @@
-<web-app>
+<web-app version="2.4">
 	<display-name>Person Registration System</display-name>
 	<servlet>
-		<servlet-name>PersonRegistryServlet</servlet-name>
-		<servlet-class>com.ecc.spring_xml.app.PersonRegistryServlet</servlet-class>
+		<servlet-name>App</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
-	<servlet>
-		<servlet-name>RoleRegistryServlet</servlet-name>
-		<servlet-class>com.ecc.spring_xml.app.RoleRegistryServlet</servlet-class>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
-
 	<servlet-mapping>
-		<servlet-name>PersonRegistryServlet</servlet-name>
-		<url-pattern></url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>RoleRegistryServlet</servlet-name>
-		<url-pattern>/role</url-pattern>
+		<servlet-name>App</servlet-name>
+		<url-pattern>/</url-pattern>
 	</servlet-mapping>
 </web-app>
