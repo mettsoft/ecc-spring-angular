@@ -8,8 +8,9 @@
 		<property name="hibernate.cache.use_query_cache">true</property>
 		<property name="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</property>
 		<mapping class="com.ecc.spring_xml.model.Address" />
+		<mapping class="com.ecc.spring_xml.model.Contact" />
+		<mapping class="com.ecc.spring_xml.model.Name" />
 		<mapping class="com.ecc.spring_xml.model.Person" />
 		<mapping class="com.ecc.spring_xml.model.Role" />
-		<mapping class="com.ecc.spring_xml.model.Contact" />
 	</session-factory>
 </hibernate-configuration>
