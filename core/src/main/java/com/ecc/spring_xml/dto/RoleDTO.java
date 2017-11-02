@@ -1,17 +1,15 @@
 package com.ecc.spring_xml.dto;
 
 import java.util.List;
+import java.util.ArrayList;
 
 public class RoleDTO {
 	private Integer id;
 	private String name;
 	private List<PersonDTO> persons;
 
-	public RoleDTO() {}
-
-	public RoleDTO(Integer id) {
-		setId(id);
-		setName(id.toString());
+	public RoleDTO() {
+		persons = new ArrayList<>();
 	}
 
 	public RoleDTO(Integer id, String name) {

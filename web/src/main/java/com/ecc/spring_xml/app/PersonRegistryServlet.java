@@ -329,7 +329,7 @@ public class PersonRegistryServlet extends HttpServlet {
 		String[] roleIds = request.getParameterValues(FORM_PARAMETER_PERSON_ROLE_IDS);
 		if (roleIds != null) {
 			for (String roleId: request.getParameterValues(FORM_PARAMETER_PERSON_ROLE_IDS)) {
-				person.getRoles().add(new RoleDTO(NumberUtils.createInteger(roleId)));			
+				person.getRoles().add(new RoleDTO(NumberUtils.createInteger(roleId), roleId));		
 			}			
 		}
 
