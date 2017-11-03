@@ -60,6 +60,12 @@
 		<property name="roleService" ref="roleService" />
 	</bean>
 
+	<bean name="/person" class="com.ecc.spring_xml.controller.PersonController">
+		<property name="personService" ref="personService" />
+		<property name="roleService" ref="roleService" />
+	</bean>
+
+
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
 		<tx:attributes>
 			<tx:method name="get" read-only="true" />
