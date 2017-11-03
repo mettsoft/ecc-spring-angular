@@ -43,7 +43,6 @@ public class RoleController extends MultiActionController {
 		Integer roleId = NumberUtils.createInteger(request.getParameter(QUERY_PARAMETER_ROLE_ID));
 		if (request.getAttribute(ATTRIBUTE_IS_ACTION_DELETE) != null || 
 			request.getAttribute(ATTRIBUTE_ROLE_NOT_FOUND) != null || roleId == null) {
-			modelView.addObject(QUERY_PARAMETER_ROLE_NAME, request.getParameter(QUERY_PARAMETER_ROLE_NAME));
 			modelView.addObject(VIEW_PARAMETER_HEADER, "Create new role");
 			modelView.addObject(VIEW_PARAMETER_ACTION, "/create");
 		}
@@ -63,7 +62,6 @@ public class RoleController extends MultiActionController {
 
 	public String create(HttpServletRequest request, HttpServletResponse response) {
 		if (request.getMethod().equals("POST")) {
-			Integer roleId = NumberUtils.createInteger(request.getParameter(QUERY_PARAMETER_ROLE_ID));
 			RoleDTO role = new RoleDTO();
 			role.setName(request.getParameter(QUERY_PARAMETER_ROLE_NAME));
 			roleService.validate(role);
@@ -112,8 +110,10 @@ public class RoleController extends MultiActionController {
 	}
 
 	public ModelAndView exceptionHandler(HttpServletRequest request, HttpServletResponse response, Exception cause) {
+		ModelAndView modelView = list(request, response);
 		if (cause instanceof ValidationException) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			modelView.addObject(QUERY_PARAMETER_ROLE_NAME, request.getParameter(QUERY_PARAMETER_ROLE_NAME));
 		}
 		else if (cause instanceof DataRetrievalFailureException) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -123,7 +123,6 @@ public class RoleController extends MultiActionController {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		}
 
-		ModelAndView modelView = list(request, response);
 		modelView.addObject(VIEW_PARAMETER_ERROR_MESSAGE, "Error: " + cause.getMessage());
 		return modelView;
 	}
