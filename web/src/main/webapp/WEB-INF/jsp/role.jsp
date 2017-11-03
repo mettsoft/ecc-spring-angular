@@ -30,7 +30,7 @@
     </style>
 </head>
 
-<body><a href="/">Go to Person Registry</a>
+<body><a href="/person/list">Go to Person Registry</a>
     <div class="container">
         <div>
             <h3 class="error-message">${errorMessage}</h3>
