@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.springframework.dao.DataRetrievalFailureException;
 
 public abstract class AbstractDao<T> implements Dao<T> {
 	private final Class<T> type;
@@ -34,7 +35,7 @@ public abstract class AbstractDao<T> implements Dao<T> {
 		Session session = sessionFactory.getCurrentSession();
 		T entity =  (T) session.get(type, id);
 		if (entity == null) {
-			throw new RuntimeException(String.format("%s not found!", type.getSimpleName()));
+			throw new DataRetrievalFailureException(String.format("%s not found!", type.getSimpleName()));
 		}
 		return entity;
 	}
