@@ -23,16 +23,20 @@
         td {
             border: 1px solid black;
         }
+
+        .error-message {
+            color: red;
+        }
     </style>
 </head>
 
 <body><a href="/">Go to Person Registry</a>
     <div class="container">
         <div>
-            <h3>${message}</h3>
-            <h3>${headerMessage}</h3>
-            <form action="/role" method="POST">
-                <input type="hidden" name="mode" value="${mode}">
+            <h3 class="error-message">${errorMessage}</h3>
+            <h3>${successMessage}</h3>
+            <h3>${headerTitle}</h3>
+            <form action="/role${action}" method="POST">
                 <input type="hidden" name="id" value="${id}">
                 <label for="name">Enter the role name:</label>
                 <input type="text" id="name" name="name" value="${name}">
@@ -58,12 +62,14 @@
                                     <td>${role.name}</td>
                                     <td>
                                         <form action="/role/list" method="GET">
-                                            <input type="hidden" name="id" value="${role.id}"><button>Edit</button>
+                                            <input type="hidden" name="id" value="${role.id}">
+                                            <button>Edit</button>
                                         </form>
                                     </td>
                                     <td>
                                         <form action="/role/delete" method="POST">
-                                            <input type="hidden" name="id" value="${role.id}"><button>Delete</button>
+                                            <input type="hidden" name="id" value="${role.id}">
+                                            <button onclick="return confirm('Are you sure you want to delete ${role.name} role?')">Delete</button>
                                         </form>
                                     </td>
                                 </tr>
