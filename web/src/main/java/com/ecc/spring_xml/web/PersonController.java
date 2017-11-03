@@ -1,4 +1,4 @@
-package com.ecc.spring_xml.controller;
+package com.ecc.spring_xml.web;
 
 import java.util.List;
 import java.util.Date;
