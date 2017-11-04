@@ -1,0 +1,39 @@
+{
+	"name": {
+		"title": "Mr.",
+		"lastName": "Young",
+		"firstName": "Emmett",
+		"middleName": "N.",
+		"suffix": "Jr."
+	},
+	"address": {
+		"streetNumber": 1410,
+		"barangay": "317",
+		"municipality": "Manila",
+		"zipCode": 1003
+	},
+	"birthday": "1992-08-04",
+	"GWA": 1.003,
+	"currentlyEmployed": true,
+	"dateHired": "2017-08-23",
+	"contacts": [
+		{
+			"data": "7815037",
+			"contactType": "Landline"
+		},
+		{
+			"data": "09955886334",
+			"contactType": "Mobile"
+		},
+		{
+			"data": "emmettyoung92@gmail.com",
+			"contactType": "Email"
+		}
+	],
+	"roles": [
+		{
+			"id": 1,
+			"name": "Software Engineer"
+		}
+	]
+}

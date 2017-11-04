@@ -11,7 +11,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.dao.DataRetrievalFailureException;
-
 import org.apache.commons.lang3.StringUtils;
 
 import com.ecc.spring_xml.dto.AddressDTO;
@@ -19,8 +18,10 @@ import com.ecc.spring_xml.dto.ContactDTO;
 import com.ecc.spring_xml.dto.NameDTO;
 import com.ecc.spring_xml.dto.PersonDTO;
 import com.ecc.spring_xml.dto.RoleDTO;
+import com.ecc.spring_xml.factory.PersonFactory;
 import com.ecc.spring_xml.service.PersonService;
 import com.ecc.spring_xml.service.RoleService;
+import com.ecc.spring_xml.util.app.FileUploadBean;
 import com.ecc.spring_xml.util.app.DateUtils;
 import com.ecc.spring_xml.util.app.NumberUtils;
 import com.ecc.spring_xml.util.validator.ValidationException;
@@ -118,6 +119,19 @@ public class PersonController extends MultiActionController {
 	public String create(HttpServletRequest request, HttpServletResponse response) {
 		if (request.getMethod().equals("POST")) {
 			PersonDTO person = createPersonFromRequest(request);
+			personService.validate(person);
+			personService.create(person);
+
+			String message = String.format(CREATE_SUCCESS_MESSAGE, person.getName());
+			RequestContextUtils.getOutputFlashMap(request).put(VIEW_PARAMETER_SUCCESS_MESSAGE, message);
+			return "redirect:/person/list";
+		}
+		throw new UnsupportedOperationException("Unsupported operation!");
+	}
+
+	public String upload(HttpServletRequest request, HttpServletResponse response, FileUploadBean file) {
+		if (request.getMethod().equals("POST")) {
+			PersonDTO person = PersonFactory.createPersonDTO(file.getFile().getBytes());
 			personService.validate(person);
 			personService.create(person);
 

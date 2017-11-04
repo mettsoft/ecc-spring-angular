@@ -61,103 +61,110 @@
         <div class="form">
             <h3 class="error-message">${errorMessage}</h3>
             <h3>${successMessage}</h3>
-            <form action="/person${action}" method="POST">
-                <button hidden></button>
-                <input type="hidden" name="id" value="${id}">
-                <input type="hidden" name="querySearchType" value="${querySearchType}">
-                <input type="hidden" name="queryLastName" value="${queryLastName}">
-                <input type="hidden" name="queryRoleId" value="${queryRoleId}">
-                <input type="hidden" name="queryBirthday" value="${queryBirthday}">
-                <input type="hidden" name="queryOrderBy" value="${queryOrderBy}">
-                <input type="hidden" name="queryOrderType" value="${queryOrderType}">
-                <fieldset>
-                    <legend><strong>${headerTitle}</strong></legend>
-                    <fieldset>
-                        <legend>Name:</legend>
-                        <div>
-                            <label for="title">Title:</label>
-                            <input type="text" id="title" name="title" value="${title}"> </div>
-                        <div>
-                            <label for="lastName">Last name:</label>
-                            <input type="text" id="lastName" name="lastName" value="${lastName}">
-                        </div>
-                        <div>
-                            <label for="firstName">First name:</label>
-                            <input type="text" id="firstName" name="firstName" value="${firstName}">
-                        </div>
-                        <div>
-                            <label for="middleName">Middle name:</label>
-                            <input type="text" id="middleName" name="middleName" value="${middleName}">
-                        </div>
-                        <div>
-                            <label for="suffix">Suffix:</label>
-                            <input type="text" id="suffix" name="suffix" value="${suffix}"> </div>
-                    </fieldset>
-                    <fieldset>
-                        <legend>Address:</legend>
-                        <div>
-                            <label for="streetNumber">Street number:</label>
-                            <input type="text" id="streetNumber" name="streetNumber" value="${streetNumber}"> </div>
-                        <div>
-                            <label for="barangay">Barangay:</label>
-                            <input type="text" id="barangay" name="barangay" value="${barangay}"> </div>
-                        <div>
-                            <label for="municipality">Municipality:</label>
-                            <input type="text" id="municipality" name="municipality" value="${municipality}"> </div>
-                        <div>
-                            <label for="zipCode">Zip code:</label>
-                            <input type="number" id="zipCode" name="zipCode" min="0" value="${zipCode}"> </div>
-                    </fieldset>
-                    <fieldset>
-                        <legend>Other Information:</legend>
-                        <div>
-                            <label for="birthday">Birthday:</label>
-                            <input type="date" id="birthday" name="birthday" value="${birthday}"> </div>
-                        <div>
-                            <label for="GWA">GWA:</label>
-                            <input type="number" id="GWA" name="GWA" value="${GWA}" min="1" max="5" step="0.001"> </div>
-                        <div>
-                            <label>Currently employed:</label>
-                            <input type="radio" name="currentlyEmployed" value="Yes" onclick="document.getElementById('dateHired').disabled=false">Yes</input>
-                            <input type="radio" name="currentlyEmployed" value="No" onclick="document.getElementById('dateHired').disabled=true">No</input>
-                        </div>
-                        <div>
-                            <label for="dateHired">Date Hired:</label>
-                            <input type="date" id="dateHired" name="dateHired" value="${dateHired}">
-                        </div>
-                    </fieldset>
-                    <fieldset>
-                        <legend>Contact Information:</legend>
-                        <c:forEach items="${assignedContacts}" var="contact">
+
+            <fieldset>
+                <legend><strong>${headerTitle}</strong></legend>
+                <c:if test="${action == '/create'}">
+                    <form action="/person/upload" method="POST" enctype="multipart/form-data"> 
+                        <input type="file" name="file" accept=".json">
+                        <button>Upload</button>
+                    </form>
+                </c:if>
+                <form action="/person${action}" method="POST">
+                    <button hidden></button>
+                    <input type="hidden" name="id" value="${id}">
+                    <input type="hidden" name="querySearchType" value="${querySearchType}">
+                    <input type="hidden" name="queryLastName" value="${queryLastName}">
+                    <input type="hidden" name="queryRoleId" value="${queryRoleId}">
+                    <input type="hidden" name="queryBirthday" value="${queryBirthday}">
+                    <input type="hidden" name="queryOrderBy" value="${queryOrderBy}">
+                    <input type="hidden" name="queryOrderType" value="${queryOrderType}">
+                        <fieldset>
+                            <legend>Name:</legend>
                             <div>
-                                <select class="assigned-contacts" name="contactType">
-                                    <option value="Landline">Landline</option>
-                                    <option value="Email">Email</option>
-                                    <option value="Mobile">Mobile</option>
-                                </select>
-                                <button onclick="this.parentNode.remove()">Remove</button>
-                                <input type="text" name="contactData" value="${contact.data}">
+                                <label for="title">Title:</label>
+                                <input type="text" id="title" name="title" value="${title}"> </div>
+                            <div>
+                                <label for="lastName">Last name:</label>
+                                <input type="text" id="lastName" name="lastName" value="${lastName}">
                             </div>
-                        </c:forEach>
-                        <button onclick="this.parentNode.insertBefore(CONTACT_MARK_UP.cloneNode(true), this); return false;">Add</button>
-                    </fieldset>
-                    <fieldset>
-                        <legend>Role Assignment:</legend>
-                        <c:forEach items="${assignedRoleIds}" var="role">
                             <div>
-                                <select class="assigned-roles" name="personRoleIds">
-                                    <c:forEach items="${roleItems}" var="roleItem">
-                                        <option value="${roleItem.id}">${roleItem.name}</option>
-                                    </c:forEach>
-                                </select>
-                                <button onclick="this.parentNode.remove()">Remove</button>
-                            </div>                           
-                        </c:forEach>
-                        <button onclick="this.parentNode.insertBefore(ROLE_MARK_UP.cloneNode(true), this); return false;">Add</button>
-                    </fieldset>
-                    <button>Submit</button>
-                </fieldset>
-            </form>
+                                <label for="firstName">First name:</label>
+                                <input type="text" id="firstName" name="firstName" value="${firstName}">
+                            </div>
+                            <div>
+                                <label for="middleName">Middle name:</label>
+                                <input type="text" id="middleName" name="middleName" value="${middleName}">
+                            </div>
+                            <div>
+                                <label for="suffix">Suffix:</label>
+                                <input type="text" id="suffix" name="suffix" value="${suffix}"> </div>
+                        </fieldset>
+                        <fieldset>
+                            <legend>Address:</legend>
+                            <div>
+                                <label for="streetNumber">Street number:</label>
+                                <input type="text" id="streetNumber" name="streetNumber" value="${streetNumber}"> </div>
+                            <div>
+                                <label for="barangay">Barangay:</label>
+                                <input type="text" id="barangay" name="barangay" value="${barangay}"> </div>
+                            <div>
+                                <label for="municipality">Municipality:</label>
+                                <input type="text" id="municipality" name="municipality" value="${municipality}"> </div>
+                            <div>
+                                <label for="zipCode">Zip code:</label>
+                                <input type="number" id="zipCode" name="zipCode" min="0" value="${zipCode}"> </div>
+                        </fieldset>
+                        <fieldset>
+                            <legend>Other Information:</legend>
+                            <div>
+                                <label for="birthday">Birthday:</label>
+                                <input type="date" id="birthday" name="birthday" value="${birthday}"> </div>
+                            <div>
+                                <label for="GWA">GWA:</label>
+                                <input type="number" id="GWA" name="GWA" value="${GWA}" min="1" max="5" step="0.001"> </div>
+                            <div>
+                                <label>Currently employed:</label>
+                                <input type="radio" name="currentlyEmployed" value="Yes" onclick="document.getElementById('dateHired').disabled=false">Yes</input>
+                                <input type="radio" name="currentlyEmployed" value="No" onclick="document.getElementById('dateHired').disabled=true">No</input>
+                            </div>
+                            <div>
+                                <label for="dateHired">Date Hired:</label>
+                                <input type="date" id="dateHired" name="dateHired" value="${dateHired}">
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <legend>Contact Information:</legend>
+                            <c:forEach items="${assignedContacts}" var="contact">
+                                <div>
+                                    <select class="assigned-contacts" name="contactType">
+                                        <option value="Landline">Landline</option>
+                                        <option value="Email">Email</option>
+                                        <option value="Mobile">Mobile</option>
+                                    </select>
+                                    <button onclick="this.parentNode.remove()">Remove</button>
+                                    <input type="text" name="contactData" value="${contact.data}">
+                                </div>
+                            </c:forEach>
+                            <button onclick="this.parentNode.insertBefore(CONTACT_MARK_UP.cloneNode(true), this); return false;">Add</button>
+                        </fieldset>
+                        <fieldset>
+                            <legend>Role Assignment:</legend>
+                            <c:forEach items="${assignedRoleIds}" var="role">
+                                <div>
+                                    <select class="assigned-roles" name="personRoleIds">
+                                        <c:forEach items="${roleItems}" var="roleItem">
+                                            <option value="${roleItem.id}">${roleItem.name}</option>
+                                        </c:forEach>
+                                    </select>
+                                    <button onclick="this.parentNode.remove()">Remove</button>
+                                </div>                           
+                            </c:forEach>
+                            <button onclick="this.parentNode.insertBefore(ROLE_MARK_UP.cloneNode(true), this); return false;">Add</button>
+                        </fieldset>
+                        <button>Submit</button>
+                </form>
+            </fieldset>
         </div>
         <div class="data">
             <h3>Persons</h3>

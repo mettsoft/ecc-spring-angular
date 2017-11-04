@@ -82,4 +82,9 @@ public class Role {
 		}
 		return false;
 	}
+
+	@Override
+	public String toString() {
+		return String.format("Role [ID=%d] %s", id, name);
+	}
 }
