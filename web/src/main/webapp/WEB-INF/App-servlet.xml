@@ -87,6 +87,7 @@
 	<bean name="/person" class="com.ecc.spring_xml.web.PersonController">
 		<property name="personService" ref="personService" />
 		<property name="roleService" ref="roleService" />
+		<property name="messageSource" ref="messageSource" />
 	</bean>
 
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />

@@ -36,7 +36,7 @@
 <body>
     <div style="float: right;">
         <a href="/role/list?language=${locale=='en'? 'fil' : 'en'}">
-            <spring:message code="language.${locale == 'en'? 'english': 'filipino'}" />
+            <spring:message code="language.${locale == 'en'? 'filipino': 'english'}" />
         </a>                
     </div>
     <a href="/person/list">
@@ -85,15 +85,15 @@
                                         <form action="/role/list" method="GET">
                                             <input type="hidden" name="id" value="${role.id}">
                                             <button>
-                                                <spring:message code="data.button.edit" />
+                                                <spring:message code="data.form.button.edit" />
                                             </button>
                                         </form>
                                     </td>
                                     <td>
                                         <form action="/role/delete" method="POST">
                                             <input type="hidden" name="id" value="${role.id}">
-                                            <button onclick="return confirm('<spring:message code="role.data.button.deleteConfirmation" arguments="${role.name}" />')">
-                                                <spring:message code="data.button.delete" />
+                                            <button onclick="return confirm('<spring:message code="role.data.form.button.deleteConfirmation" arguments="${role.name}" />')">
+                                                <spring:message code="data.form.button.delete" />
                                             </button>
                                         </form>
                                     </td>

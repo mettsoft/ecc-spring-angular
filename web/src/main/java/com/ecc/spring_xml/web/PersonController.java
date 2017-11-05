@@ -1,5 +1,6 @@
 package com.ecc.spring_xml.web;
 
+import java.util.Locale;
 import java.util.List;
 import java.util.Date;
 import java.util.Map;
@@ -7,6 +8,7 @@ import java.util.HashMap;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.springframework.context.MessageSource;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 import org.springframework.web.servlet.support.RequestContextUtils;
@@ -27,10 +29,6 @@ import com.ecc.spring_xml.util.app.NumberUtils;
 import com.ecc.spring_xml.util.validator.ValidationException;
 
 public class PersonController extends MultiActionController {
-	private static final String CREATE_SUCCESS_MESSAGE = "Successfully created the person \"%s\"!";
-	private static final String UPDATE_SUCCESS_MESSAGE = "Successfully updated the person \"%s\"!";
-	private static final String DELETE_SUCCESS_MESSAGE = "Successfully deleted the person \"%s\"!";
-
 	private static final String FORM_PARAMETER_PERSON_ID = "id";
 
 	private static final String FORM_PARAMETER_TITLE = "title";
@@ -70,12 +68,18 @@ public class PersonController extends MultiActionController {
 	private static final String VIEW_PARAMETER_ASSIGNED_CONTACTS = "assignedContacts";
 	private static final String VIEW_PARAMETER_ASSIGNED_CONTACT_TYPES = "assignedContactTypes";
 	private static final String VIEW_PARAMETER_ASSIGNED_ROLE_IDS = "assignedRoleIds";
+	private static final String VIEW_PARAMETER_LOCALE = "locale";
 
 	private static final String ATTRIBUTE_IS_ACTION_DELETE = "isActionDelete";
 	private static final String ATTRIBUTE_PERSON_NOT_FOUND = "personNotFound";
 
 	private PersonService personService;
 	private RoleService roleService;
+	private MessageSource messageSource;
+
+	public void setMessageSource(MessageSource messageSource) {
+		this.messageSource = messageSource;
+	}
 
 	public void setPersonService(PersonService personService) {
 		this.personService = personService;
@@ -87,17 +91,19 @@ public class PersonController extends MultiActionController {
 
 	public ModelAndView list(HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView modelView = new ModelAndView("person");
+		Locale locale = RequestContextUtils.getLocale(request);
+		modelView.addObject(VIEW_PARAMETER_LOCALE, locale);
 
 		Integer personId = NumberUtils.createInteger(request.getParameter(FORM_PARAMETER_PERSON_ID));
 		if (request.getAttribute(ATTRIBUTE_IS_ACTION_DELETE) != null || 
 			request.getAttribute(ATTRIBUTE_PERSON_NOT_FOUND) != null || personId == null) {
-			modelView.addObject(VIEW_PARAMETER_HEADER, "Create new person");
+			modelView.addObject(VIEW_PARAMETER_HEADER, messageSource.getMessage("person.headerTitle.create", null, locale));
 			modelView.addObject(VIEW_PARAMETER_ACTION, "/create");
 		}
 		else {
 			PersonDTO person = personService.get(personId);
 			modelView.addAllObjects(constructViewParametersFromPerson(person));
-			modelView.addObject(VIEW_PARAMETER_HEADER, "Update existing person");	
+			modelView.addObject(VIEW_PARAMETER_HEADER, messageSource.getMessage("person.headerTitle.update", null, locale));
 			modelView.addObject(VIEW_PARAMETER_ACTION, "/update");
 		}
 
@@ -117,12 +123,13 @@ public class PersonController extends MultiActionController {
 	}
 
 	public String create(HttpServletRequest request, HttpServletResponse response) {
+		Locale locale = RequestContextUtils.getLocale(request);
 		if (request.getMethod().equals("POST")) {
 			PersonDTO person = createPersonFromRequest(request);
 			personService.validate(person);
 			personService.create(person);
 
-			String message = String.format(CREATE_SUCCESS_MESSAGE, person.getName());
+			String message = messageSource.getMessage("person.successMessage.create", new Object[] {person.getName()}, locale);
 			RequestContextUtils.getOutputFlashMap(request).put(VIEW_PARAMETER_SUCCESS_MESSAGE, message);
 			return "redirect:/person/list";
 		}
@@ -130,12 +137,13 @@ public class PersonController extends MultiActionController {
 	}
 
 	public String upload(HttpServletRequest request, HttpServletResponse response, FileUploadBean file) {
+		Locale locale = RequestContextUtils.getLocale(request);
 		if (request.getMethod().equals("POST")) {
 			PersonDTO person = PersonFactory.createPersonDTO(file.getFile().getBytes());
 			personService.validate(person);
 			personService.create(person);
 
-			String message = String.format(CREATE_SUCCESS_MESSAGE, person.getName());
+			String message = messageSource.getMessage("person.successMessage.create", new Object[] {person.getName()}, locale);
 			RequestContextUtils.getOutputFlashMap(request).put(VIEW_PARAMETER_SUCCESS_MESSAGE, message);
 			return "redirect:/person/list";
 		}
@@ -143,6 +151,7 @@ public class PersonController extends MultiActionController {
 	}
 
 	public String update(HttpServletRequest request, HttpServletResponse response) {
+		Locale locale = RequestContextUtils.getLocale(request);
 		if (request.getMethod().equals("POST")) {
 			PersonDTO person = createPersonFromRequest(request);
 			Integer personId = NumberUtils.createInteger(request.getParameter(FORM_PARAMETER_PERSON_ID));
@@ -150,7 +159,7 @@ public class PersonController extends MultiActionController {
 			personService.validate(person);
 			personService.update(person);
 
-			String message = String.format(UPDATE_SUCCESS_MESSAGE, person.getName());
+			String message = messageSource.getMessage("person.successMessage.update", new Object[] {person.getName()}, locale);
 			RequestContextUtils.getOutputFlashMap(request).put(VIEW_PARAMETER_SUCCESS_MESSAGE, message);
 			return "redirect:/person/list";
 		}
@@ -158,13 +167,14 @@ public class PersonController extends MultiActionController {
 	}
 
 	public String delete(HttpServletRequest request, HttpServletResponse response) {
+		Locale locale = RequestContextUtils.getLocale(request);
 		if (request.getMethod().equals("POST")) {
 			request.setAttribute(ATTRIBUTE_IS_ACTION_DELETE, true);
 			Integer personId = NumberUtils.createInteger(request.getParameter(FORM_PARAMETER_PERSON_ID));
 			PersonDTO person = personService.get(personId);
 			personService.delete(personId);	
 
-			String message = String.format(DELETE_SUCCESS_MESSAGE, person.getName());
+			String message = messageSource.getMessage("person.successMessage.delete", new Object[] {person.getName()}, locale);
 			RequestContextUtils.getOutputFlashMap(request).put(VIEW_PARAMETER_SUCCESS_MESSAGE, message);
 			return "redirect:/person/list";
 		}

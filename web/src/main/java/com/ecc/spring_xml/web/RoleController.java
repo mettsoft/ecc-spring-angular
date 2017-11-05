@@ -67,7 +67,6 @@ public class RoleController extends MultiActionController {
 
 	public String create(HttpServletRequest request, HttpServletResponse response) {
 		Locale locale = RequestContextUtils.getLocale(request);
-		modelView.addObject(VIEW_PARAMETER_LOCALE, locale);
 		if (request.getMethod().equals("POST")) {
 			RoleDTO role = new RoleDTO();
 			role.setName(request.getParameter(QUERY_PARAMETER_ROLE_NAME));
@@ -83,7 +82,6 @@ public class RoleController extends MultiActionController {
 
 	public String update(HttpServletRequest request, HttpServletResponse response) {
 		Locale locale = RequestContextUtils.getLocale(request);
-		modelView.addObject(VIEW_PARAMETER_LOCALE, locale);
 		if (request.getMethod().equals("POST")) {
 			Integer roleId = NumberUtils.createInteger(request.getParameter(QUERY_PARAMETER_ROLE_ID));
 			RoleDTO role = roleService.get(roleId);
@@ -106,7 +104,6 @@ public class RoleController extends MultiActionController {
 
 	public String delete(HttpServletRequest request, HttpServletResponse response) {
 		Locale locale = RequestContextUtils.getLocale(request);
-		modelView.addObject(VIEW_PARAMETER_LOCALE, locale);
 		if (request.getMethod().equals("POST")) {
 			request.setAttribute(ATTRIBUTE_IS_ACTION_DELETE, true);
 			Integer roleId = NumberUtils.createInteger(request.getParameter(QUERY_PARAMETER_ROLE_ID));
