@@ -1,8 +1,11 @@
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
+<%@ taglib uri = "http://www.springframework.org/tags" prefix = "spring"%>
 <html>
 
 <head>
-    <title>Role | Person Registry System</title>
+    <title>
+        <spring:message code="role.title" />
+    </title>
     <style>
         div.container {
             display: inline-flex;
@@ -30,28 +33,46 @@
     </style>
 </head>
 
-<body><a href="/person/list">Go to Person Registry</a>
+<body>
+    <div style="float: right;">
+        <a href="/role/list?language=${locale=='en'? 'fil' : 'en'}">
+            <spring:message code="language.${locale == 'en'? 'english': 'filipino'}" />
+        </a>                
+    </div>
+    <a href="/person/list">
+        <spring:message code="role.navigation" />
+    </a>
     <div class="container">
         <div>
+            <!-- TODO -->
             <h3 class="error-message">${errorMessage}</h3>
             <h3>${successMessage}</h3>
             <h3>${headerTitle}</h3>
             <form action="/role${action}" method="POST">
                 <input type="hidden" name="id" value="${id}">
-                <label for="name">Enter the role name:</label>
+                <label for="name">
+                    <spring:message code="role.form.label.roleName" />
+                </label>
                 <input type="text" id="name" name="name" value="${name}">
-                <button>Submit</button>
+                <button>
+                    <spring:message code="form.button.submit" />
+                </button>
             </form>
         </div>
         <div>
-            <h3>Roles</h3>
-
+            <h3>
+                <spring:message code="role.data.header" />
+            </h3>
             <c:choose>
                 <c:when test="${data.size() > 0}">
                     <table>
                         <thead>
-                            <th hidden>ID</th>
-                            <th>Name</th>
+                            <th hidden>
+                                <spring:message code="role.data.column.id" />
+                            </th>
+                            <th>
+                                <spring:message code="role.data.column.name" />
+                            </th>
                             <th></th>
                             <th></th>
                         </thead>
@@ -63,13 +84,17 @@
                                     <td>
                                         <form action="/role/list" method="GET">
                                             <input type="hidden" name="id" value="${role.id}">
-                                            <button>Edit</button>
+                                            <button>
+                                                <spring:message code="data.button.edit" />
+                                            </button>
                                         </form>
                                     </td>
                                     <td>
                                         <form action="/role/delete" method="POST">
                                             <input type="hidden" name="id" value="${role.id}">
-                                            <button onclick="return confirm('Are you sure you want to delete ${role.name} role?')">Delete</button>
+                                            <button onclick="return confirm('<spring:message code="role.data.button.deleteConfirmation" arguments="${role.name}" />')">
+                                                <spring:message code="data.button.delete" />
+                                            </button>
                                         </form>
                                     </td>
                                 </tr>
@@ -78,7 +103,9 @@
                     </table>
                 </c:when>
                 <c:otherwise>
-                    <h6>No records found!</h6>
+                    <h6>
+                        <spring:message code="data.noRecordsFound" />
+                    </h6>
                 </c:otherwise>
             </c:choose>
         </div>

@@ -1,8 +1,10 @@
 package com.ecc.spring_xml.web;
 
+import java.util.Locale;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.springframework.context.MessageSource;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 import org.springframework.web.servlet.support.RequestContextUtils;
@@ -14,11 +16,6 @@ import com.ecc.spring_xml.util.app.NumberUtils;
 import com.ecc.spring_xml.util.validator.ValidationException;
 
 public class RoleController extends MultiActionController {
-	private static final String CREATE_SUCCESS_MESSAGE = "Successfully created the role \"%s\"!";
-	private static final String UPDATE_SUCCESS_MESSAGE = "Successfully updated the role \"%s\"!";
-	private static final String DELETE_SUCCESS_MESSAGE = "Successfully deleted the role \"%s\"!";
-	private static final String AFFECTED_PERSONS_MESSAGE = "Please take note that the following persons are affected: [%s].";
-
 	private static final String QUERY_PARAMETER_ROLE_ID = "id";
 	private static final String QUERY_PARAMETER_ROLE_NAME = "name";
 
@@ -27,11 +24,17 @@ public class RoleController extends MultiActionController {
 	private static final String VIEW_PARAMETER_HEADER = "headerTitle";
 	private static final String VIEW_PARAMETER_ACTION = "action";
 	private static final String VIEW_PARAMETER_DATA = "data";
+	private static final String VIEW_PARAMETER_LOCALE = "locale";
 
 	private static final String ATTRIBUTE_IS_ACTION_DELETE = "isActionDelete";
 	private static final String ATTRIBUTE_ROLE_NOT_FOUND = "roleNotFound";
 
 	private RoleService roleService;
+	private MessageSource messageSource;
+
+	public void setMessageSource(MessageSource messageSource) {
+		this.messageSource = messageSource;
+	}
 
 	public void setRoleService(RoleService roleService) {
 		this.roleService = roleService;
@@ -39,18 +42,20 @@ public class RoleController extends MultiActionController {
 
 	public ModelAndView list(HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView modelView = new ModelAndView("role");
+		Locale locale = RequestContextUtils.getLocale(request);
+		modelView.addObject(VIEW_PARAMETER_LOCALE, locale);
 
 		Integer roleId = NumberUtils.createInteger(request.getParameter(QUERY_PARAMETER_ROLE_ID));
 		if (request.getAttribute(ATTRIBUTE_IS_ACTION_DELETE) != null || 
 			request.getAttribute(ATTRIBUTE_ROLE_NOT_FOUND) != null || roleId == null) {
-			modelView.addObject(VIEW_PARAMETER_HEADER, "Create new role");
+			modelView.addObject(VIEW_PARAMETER_HEADER, messageSource.getMessage("role.headerTitle.create", null, locale));
 			modelView.addObject(VIEW_PARAMETER_ACTION, "/create");
 		}
 		else {
 			RoleDTO role = roleService.get(roleId);
 			modelView.addObject(QUERY_PARAMETER_ROLE_ID, role.getId());
 			modelView.addObject(QUERY_PARAMETER_ROLE_NAME, role.getName());
-			modelView.addObject(VIEW_PARAMETER_HEADER, "Update existing role");	
+			modelView.addObject(VIEW_PARAMETER_HEADER, messageSource.getMessage("role.headerTitle.update", null, locale));	
 			modelView.addObject(VIEW_PARAMETER_ACTION, "/update");
 		}
 
@@ -61,13 +66,15 @@ public class RoleController extends MultiActionController {
 	}
 
 	public String create(HttpServletRequest request, HttpServletResponse response) {
+		Locale locale = RequestContextUtils.getLocale(request);
+		modelView.addObject(VIEW_PARAMETER_LOCALE, locale);
 		if (request.getMethod().equals("POST")) {
 			RoleDTO role = new RoleDTO();
 			role.setName(request.getParameter(QUERY_PARAMETER_ROLE_NAME));
 			roleService.validate(role);
 			roleService.create(role);
 
-			String message = String.format(CREATE_SUCCESS_MESSAGE, role.getName());
+			String message = messageSource.getMessage("role.successMessage.create", new Object[] {role.getName()}, locale);
 			RequestContextUtils.getOutputFlashMap(request).put(VIEW_PARAMETER_SUCCESS_MESSAGE, message);
 			return "redirect:/role/list";
 		}
@@ -75,6 +82,8 @@ public class RoleController extends MultiActionController {
 	}
 
 	public String update(HttpServletRequest request, HttpServletResponse response) {
+		Locale locale = RequestContextUtils.getLocale(request);
+		modelView.addObject(VIEW_PARAMETER_LOCALE, locale);
 		if (request.getMethod().equals("POST")) {
 			Integer roleId = NumberUtils.createInteger(request.getParameter(QUERY_PARAMETER_ROLE_ID));
 			RoleDTO role = roleService.get(roleId);
@@ -82,12 +91,12 @@ public class RoleController extends MultiActionController {
 			roleService.validate(role);
 			roleService.update(role);
 
-			String message = String.format(UPDATE_SUCCESS_MESSAGE, role.getName());
+			String message = messageSource.getMessage("role.successMessage.update", new Object[] {role.getName()}, locale);
 			if (role.getPersons().size() > 0) {
 				String personNames = role.getPersons().stream()
 					.map(person -> person.getName().toString())
 					.collect(Collectors.joining("; "));
-				message += " " + String.format(AFFECTED_PERSONS_MESSAGE, personNames);
+				message += " " + messageSource.getMessage("role.successMessage.affectedPersons", new Object[] {personNames}, locale);
 			}
 			RequestContextUtils.getOutputFlashMap(request).put(VIEW_PARAMETER_SUCCESS_MESSAGE, message);
 			return "redirect:/role/list";
@@ -96,13 +105,15 @@ public class RoleController extends MultiActionController {
 	}
 
 	public String delete(HttpServletRequest request, HttpServletResponse response) {
+		Locale locale = RequestContextUtils.getLocale(request);
+		modelView.addObject(VIEW_PARAMETER_LOCALE, locale);
 		if (request.getMethod().equals("POST")) {
 			request.setAttribute(ATTRIBUTE_IS_ACTION_DELETE, true);
 			Integer roleId = NumberUtils.createInteger(request.getParameter(QUERY_PARAMETER_ROLE_ID));
 			RoleDTO role = roleService.get(roleId);
 			roleService.delete(roleId);	
 
-			String message = String.format(DELETE_SUCCESS_MESSAGE, role.getName());
+			String message = messageSource.getMessage("role.successMessage.delete", new Object[] {role.getName()}, locale);
 			RequestContextUtils.getOutputFlashMap(request).put(VIEW_PARAMETER_SUCCESS_MESSAGE, message);
 			return "redirect:/role/list";
 		}
@@ -110,6 +121,7 @@ public class RoleController extends MultiActionController {
 	}
 
 	public ModelAndView exceptionHandler(HttpServletRequest request, HttpServletResponse response, Exception cause) {
+		Locale locale = RequestContextUtils.getLocale(request);
 		ModelAndView modelView = list(request, response);
 		if (cause instanceof ValidationException) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -123,6 +135,7 @@ public class RoleController extends MultiActionController {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		}
 
+		// TODO
 		modelView.addObject(VIEW_PARAMETER_ERROR_MESSAGE, "Error: " + cause.getMessage());
 		return modelView;
 	}
