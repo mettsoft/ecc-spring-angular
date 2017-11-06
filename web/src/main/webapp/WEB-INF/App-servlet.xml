@@ -61,20 +61,17 @@
 
 	<bean id="personAssembler" class="com.ecc.spring_xml.assembler.PersonAssembler" />
 	<bean id="roleAssembler" class="com.ecc.spring_xml.assembler.RoleAssembler" />
-	<bean id="validator" class="com.ecc.spring_xml.util.validator.ModelValidator" />
 	
 	<bean id="personService" class="com.ecc.spring_xml.service.PersonService">
 		<constructor-arg ref="personDao" />
 		<constructor-arg ref="personAssembler" />
 		<constructor-arg ref="roleDao" />
 		<constructor-arg ref="roleAssembler" />
-		<constructor-arg ref="validator" />
 	</bean>
 
 	<bean id="roleService" class="com.ecc.spring_xml.service.RoleService">
 		<constructor-arg ref="roleDao" />
 		<constructor-arg ref="roleAssembler" />
-		<constructor-arg ref="validator" />
 	</bean>
 
 	<bean class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping" />
@@ -88,6 +85,7 @@
 		<property name="personService" ref="personService" />
 		<property name="roleService" ref="roleService" />
 		<property name="messageSource" ref="messageSource" />
+		<property name="validators" ref="personService" />
 	</bean>
 
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />

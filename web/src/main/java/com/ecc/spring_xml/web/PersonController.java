@@ -1,5 +1,6 @@
 package com.ecc.spring_xml.web;
 
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.List;
 import java.util.Date;
@@ -10,11 +11,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.context.MessageSource;
+import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.dao.DataRetrievalFailureException;
+import org.springframework.validation.BindException;
 import org.apache.commons.lang3.StringUtils;
 
 import com.ecc.spring_xml.dto.AddressDTO;
@@ -28,7 +31,6 @@ import com.ecc.spring_xml.service.RoleService;
 import com.ecc.spring_xml.util.app.FileUploadBean;
 import com.ecc.spring_xml.util.app.DateUtils;
 import com.ecc.spring_xml.util.app.NumberUtils;
-import com.ecc.spring_xml.util.validator.ValidationException;
 
 public class PersonController extends MultiActionController {
 	private static final String FORM_PARAMETER_PERSON_ID = "id";
@@ -111,8 +113,6 @@ public class PersonController extends MultiActionController {
 	public String create(HttpServletRequest request, HttpServletResponse response, PersonDTO person) {
 		Locale locale = RequestContextUtils.getLocale(request);
 		if (request.getMethod().equals("POST")) {
-			request.setAttribute(DEFAULT_COMMAND_NAME, person);
-			personService.validate(person);
 			personService.create(person);
 
 			String message = messageSource.getMessage("person.successMessage.create", new Object[] {person.getName()}, locale);
@@ -126,8 +126,6 @@ public class PersonController extends MultiActionController {
 		Locale locale = RequestContextUtils.getLocale(request);
 		if (request.getMethod().equals("POST")) {
 			PersonDTO person = PersonFactory.createPersonDTO(file.getFile().getBytes());
-			request.setAttribute(DEFAULT_COMMAND_NAME, person);
-			personService.validate(person);
 			personService.create(person);
 
 			String message = messageSource.getMessage("person.successMessage.create", new Object[] {person.getName()}, locale);
@@ -140,8 +138,6 @@ public class PersonController extends MultiActionController {
 	public String update(HttpServletRequest request, HttpServletResponse response, PersonDTO person) {
 		Locale locale = RequestContextUtils.getLocale(request);
 		if (request.getMethod().equals("POST")) {
-			request.setAttribute(DEFAULT_COMMAND_NAME, person);
-			personService.validate(person);
 			personService.update(person);
 
 			String message = messageSource.getMessage("person.successMessage.update", new Object[] {person.getName()}, locale);
@@ -165,11 +161,32 @@ public class PersonController extends MultiActionController {
 	}
 
 	public ModelAndView exceptionHandler(HttpServletRequest request, HttpServletResponse response, Exception cause) {
+		Locale locale = RequestContextUtils.getLocale(request);
 		ModelAndView modelView = list(request, response);
-		if (cause instanceof ValidationException) {
+
+		if (cause instanceof ServletRequestBindingException) {
+		    BindException bindException = (BindException) ((ServletRequestBindingException)cause).getRootCause();
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			modelView.addObject(DEFAULT_COMMAND_NAME, request.getAttribute(DEFAULT_COMMAND_NAME));
-			modelView.addAllObjects(constructViewParametersFromPerson(request.getAttribute(DEFAULT_COMMAND_NAME)));
+
+			modelView.addAllObjects(constructViewParametersFromPerson((PersonDTO) bindException.getTarget()));
+			modelView.addObject(DEFAULT_COMMAND_NAME, bindException.getTarget());
+
+			String errorMessage = bindException.getAllErrors().stream()
+				.map(t -> messageSource.getMessage
+					(
+						t.getCode(), 
+						Arrays.stream(t.getArguments())
+							.map(u -> u.toString().startsWith("localize:")? 
+								messageSource.getMessage
+								(
+									StringUtils.substringAfter(u.toString(), "localize:"), 
+									null, 
+									locale
+								): u)
+							.toArray(),
+						locale))
+				.collect(Collectors.joining("<br />"));
+		    modelView.addObject(VIEW_PARAMETER_ERROR_MESSAGE, errorMessage);
 		}
 		else if (cause instanceof DataRetrievalFailureException) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -179,7 +196,6 @@ public class PersonController extends MultiActionController {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		}
 
-		modelView.addObject(VIEW_PARAMETER_ERROR_MESSAGE, "Error: " + cause.getMessage());
 		return modelView;
 	}
 

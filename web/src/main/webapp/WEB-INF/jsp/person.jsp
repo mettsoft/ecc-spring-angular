@@ -108,94 +108,95 @@
                             </legend>
                             <div>
                                 <form:label path="name.title">
-                                    <spring:message code="person.form.label.name.title" />
+                                    <spring:message code="person.form.label.name.title" />:
                                 </form:label>
-                                <form:input type="text" path="name.title" /> </div>
+                                <form:input type="text" path="name.title" />
+                                </div>
                             <div>
                                 <form:label path="name.lastName">
-                                    <spring:message code="person.form.label.name.lastName" />
+                                    <spring:message code="person.form.label.name.lastName" />:
                                 </form:label>
                                 <form:input type="text" path="name.lastName" />
                             </div>
                             <div>
                                 <form:label path="name.firstName">
-                                    <spring:message code="person.form.label.name.firstName" />
+                                    <spring:message code="person.form.label.name.firstName" />:
                                 </form:label>
                                 <form:input type="text" path="name.firstName" />
                             </div>
                             <div>
                                 <form:label path="name.middleName">
-                                    <spring:message code="person.form.label.name.middleName" />
+                                    <spring:message code="person.form.label.name.middleName" />:
                                 </form:label>
                                 <form:input type="text" path="name.middleName" />
                             </div>
                             <div>
                                 <form:label path="name.suffix">
-                                    <spring:message code="person.form.label.name.suffix" />
+                                    <spring:message code="person.form.label.name.suffix" />:
                                 </form:label>
                                 <form:input type="text" path="name.suffix" /></div>
                         </fieldset>
                         <fieldset>
                             <legend>
-                                <spring:message code="person.form.label.address" />
+                                <spring:message code="person.form.label.address" />:
                             </legend>
                             <div>
                                 <form:label path="address.streetNumber">
-                                    <spring:message code="person.form.label.address.streetNumber" />
+                                    <spring:message code="person.form.label.address.streetNumber" />:
                                 </form:label>
                                 <form:input type="text" path="address.streetNumber" /> 
                             </div>
                             <div>
                                 <form:label path="address.barangay">
-                                    <spring:message code="person.form.label.address.barangay" />
+                                    <spring:message code="person.form.label.address.barangay" />:
                                 </form:label>
                                 <form:input type="text" path="address.barangay" /> 
                             </div>
                             <div>
                                 <form:label path="address.municipality">
-                                    <spring:message code="person.form.label.address.municipality" />
+                                    <spring:message code="person.form.label.address.municipality" />:
                                 </form:label>
                                 <form:input type="text" path="address.municipality" /> 
                             </div>
                             <div>
                                 <form:label path="address.zipCode">
-                                    <spring:message code="person.form.label.address.zipCode" />
+                                    <spring:message code="person.form.label.address.zipCode" />:
                                 </form:label>
                                 <form:input type="number" name="zipCode" path="address.zipCode" min="0" /> 
                             </div>
                         </fieldset>
                         <fieldset>
                             <legend>
-                                <spring:message code="person.form.label.otherInformation" />
+                                <spring:message code="person.form.label.otherInformation" />:
                             </legend>
                             <div>
                                 <form:label path="birthday">
-                                    <spring:message code="person.form.label.otherInformation.birthday" />
+                                    <spring:message code="person.form.label.otherInformation.birthday" />:
                                 </form:label>
                                 <form:input type="date" path="birthday" />  
                             </div>
                             <div>
                                 <form:label path="GWA">
-                                    <spring:message code="person.form.label.otherInformation.GWA" />
+                                    <spring:message code="person.form.label.otherInformation.GWA" />:
                                 </form:label>
                                 <form:input type="number" path="GWA" min="1" max="5" step="0.001" /> 
                             </div>
                             <div>
                                 <form:label path="currentlyEmployed">
-                                    <spring:message code="person.form.label.otherInformation.currentlyEmployed" />
+                                    <spring:message code="person.form.label.otherInformation.currentlyEmployed" />:
                                 </form:label>
                                 <form:checkbox path="currentlyEmployed" onclick="document.getElementById('dateHired').disabled=!this.checked" />
                             </div>
                             <div>
                                 <form:label path="dateHired">
-                                    <spring:message code="person.form.label.otherInformation.dateHired" />
+                                    <spring:message code="person.form.label.otherInformation.dateHired" />:
                                 </form:label>
                                 <form:input type="date" path="dateHired" />
                             </div>
                         </fieldset>
                         <fieldset>
                             <legend>
-                                <spring:message code="person.form.label.contactInformation" />
+                                <spring:message code="person.form.label.contactInformation" />:
                             </legend>
                             <c:forEach items="${command.contacts}" var="contact">
                                 <div>
@@ -222,7 +223,7 @@
                         </fieldset>
                         <fieldset>
                             <legend>
-                                <spring:message code="person.form.label.roleAssignments" />
+                                <spring:message code="person.form.label.roleAssignments" />:
                             </legend>
                             <c:forEach items="${command.roles}" var="role">
                                 <div>

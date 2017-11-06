@@ -4,33 +4,39 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.validation.Validator;
+import org.springframework.validation.Errors;
 
 import com.ecc.spring_xml.dto.RoleDTO;
 import com.ecc.spring_xml.model.Role;
 import com.ecc.spring_xml.dao.RoleDao;
 import com.ecc.spring_xml.assembler.RoleAssembler;
 import com.ecc.spring_xml.util.app.AssemblerUtils;
-import com.ecc.spring_xml.util.validator.ValidationException;
-import com.ecc.spring_xml.util.validator.ModelValidator;
+import com.ecc.spring_xml.util.ValidationUtils;
 
-public class RoleService extends AbstractService<Role, RoleDTO> {
+public class RoleService extends AbstractService<Role, RoleDTO> implements Validator {
 	private static final Integer MAX_CHARACTERS = 20;
 
 	private final RoleDao roleDao;
 	private final RoleAssembler roleAssembler;
-	private final ModelValidator validator;
 
-	public RoleService(RoleDao roleDao, RoleAssembler roleAssembler, ModelValidator validator) {
+	public RoleService(RoleDao roleDao, RoleAssembler roleAssembler) {
 		super(roleDao, roleAssembler);
 		this.roleDao = roleDao;
 		this.roleAssembler = roleAssembler;
-		this.validator = validator;
 	}
 
-	public void validate(RoleDTO role) throws ValidationException {
-		validator.validate("NotEmpty", role.getName(), "Role name");
-		validator.validate("MaxLength", role.getName(), MAX_CHARACTERS, "Role name");
-	}
+	@Override
+	public boolean supports(Class clazz) {
+        return clazz.isAssignableFrom(RoleDTO.class);
+    }
+
+    @Override
+    public void validate(Object command, Errors errors) {
+    	RoleDTO role = (RoleDTO) command;
+		ValidationUtils.testNotEmpty(role.getName(), "name", errors, "localize:role.form.label.name");
+		ValidationUtils.testMaxLength(role.getName(), "name", errors, MAX_CHARACTERS, "localize:role.form.label.name");
+    }
 
 	public List<RoleDTO> list() {
 		return AssemblerUtils.asList(roleDao.list(), roleAssembler::createDTO);

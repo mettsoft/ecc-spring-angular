@@ -4,6 +4,11 @@ import java.util.List;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import org.springframework.validation.Validator;
+import org.springframework.validation.Errors;
+import org.springframework.dao.DataRetrievalFailureException;
+import org.apache.commons.lang3.StringUtils;
+
 import com.ecc.spring_xml.dto.PersonDTO;
 import com.ecc.spring_xml.dto.RoleDTO;
 import com.ecc.spring_xml.dto.ContactDTO;
@@ -13,10 +18,9 @@ import com.ecc.spring_xml.assembler.RoleAssembler;
 import com.ecc.spring_xml.dao.PersonDao;
 import com.ecc.spring_xml.dao.RoleDao;
 import com.ecc.spring_xml.util.app.AssemblerUtils;
-import com.ecc.spring_xml.util.validator.ValidationException;
-import com.ecc.spring_xml.util.validator.ModelValidator;
+import com.ecc.spring_xml.util.ValidationUtils;
 
-public class PersonService extends AbstractService<Person, PersonDTO> {
+public class PersonService extends AbstractService<Person, PersonDTO> implements Validator {
 	private static final Integer DEFAULT_MAX_CHARACTERS = 20;
 	private static final Integer LONG_MAX_CHARACTERS = 50;
 	private static final Integer LANDLINE_DIGITS = 7;
@@ -26,110 +30,121 @@ public class PersonService extends AbstractService<Person, PersonDTO> {
 	private final PersonAssembler personAssembler;
 	private final RoleDao roleDao;
 	private final RoleAssembler roleAssembler;
-	private final ModelValidator validator;
 
-	public PersonService(PersonDao personDao, PersonAssembler personAssembler, RoleDao roleDao, RoleAssembler roleAssembler, ModelValidator validator) {
+	public PersonService(PersonDao personDao, PersonAssembler personAssembler, RoleDao roleDao, RoleAssembler roleAssembler) {
 		super(personDao, personAssembler);
 		this.personDao = personDao;
 		this.personAssembler = personAssembler;
 		this.roleDao = roleDao;
 		this.roleAssembler = roleAssembler;
-		this.validator = validator;
 	}
 
-	public void validate(PersonDTO person) {
-		validator.validate("NotEmpty", person, "Person");
-		validator.validate("NotEmpty", person.getName(), "Name");
-		validateName(person.getName().getTitle(), "Title");
-		validateName(person.getName().getLastName(), "Last name");
-		validateName(person.getName().getFirstName(), "First name");
-		validateName(person.getName().getMiddleName(), "Middle name");
-		validateName(person.getName().getSuffix(), "Suffix");
-		validator.validate("NotEmpty", person.getAddress(), "Address");
-		validateAddress(person.getAddress().getStreetNumber(), "Street number");
-		validateAddress(person.getAddress().getBarangay(), "Barangay");
-		validateAddress(person.getAddress().getMunicipality(), "Municipality");
-		validateAddress(person.getAddress().getZipCode(), "Zip code");
-		validateBirthday(person.getBirthday());
-		validateGWA(person.getGWA());
-		validateDateHired(person.getCurrentlyEmployed(), person.getDateHired());
-		validateContacts(person.getContacts());
-		validateRoles(person.getRoles());
-	}
+	@Override
+	public boolean supports(Class clazz) {
+        return clazz.isAssignableFrom(PersonDTO.class);
+    }
+
+    @Override
+    public void validate(Object command, Errors errors) {
+    	PersonDTO person = (PersonDTO) command;
+
+    	// Validate Person not null on importing an empty file.
+    	// Check if missing name in upload is handled.
+    	// Check if missing address in upload is handled.
+		validateName(person.getName().getTitle(), "name.title", errors, "localize:person.form.label.name.title");
+		validateName(person.getName().getLastName(), "name.lastName", errors, "localize:person.form.label.name.lastName");
+		validateName(person.getName().getFirstName(), "name.firstName", errors, "localize:person.form.label.name.firstName");
+		validateName(person.getName().getMiddleName(), "name.middleName", errors, "localize:person.form.label.name.middleName");
+		validateName(person.getName().getSuffix(), "name.suffix", errors, "localize:person.form.label.name.suffix");
+
+		validateAddress(person.getAddress().getStreetNumber(), "address.streetNumber", errors, "localize:person.form.label.address.streetNumber");
+		validateAddress(person.getAddress().getBarangay(), "address.barangay", errors, "localize:person.form.label.address.barangay");
+		validateAddress(person.getAddress().getMunicipality(), "address.municipality", errors, "localize:person.form.label.address.municipality");
+		validateAddress(person.getAddress().getZipCode(), "address.zipCode", errors, "localize:person.form.label.address.zipCode");
+
+		ValidationUtils.testNotEmpty(person.getBirthday(), "birthday", errors, "localize:person.form.label.otherInformation.birthday");
+
+		validateGWA(person.getGWA(), "GWA", errors, "localize:person.form.label.otherInformation.GWA");
+
+		if (!person.getCurrentlyEmployed() && person.getDateHired() != null) {
+			errors.rejectValue("dateHired", "localize:person.validation.message.unemployed");
+		}
+		else if (person.getCurrentlyEmployed() && person.getDateHired() == null) {
+			errors.rejectValue("dateHired", "localize:person.validation.message.employed");
+		}
+
+		validateContacts(person.getContacts(), errors);
+		validateRoles(person.getRoles(), errors);
+    }
 
 	public List<PersonDTO> list(String lastName, Integer roleId, Date birthday, String orderBy, String order) {
 		return AssemblerUtils.asList(personDao.list(lastName, roleId, birthday, orderBy, order), personAssembler::createDTO);
 	}
 
-	private void validateName(String data, String component) {
-		if (!component.equals("Title") && !component.equals("Suffix")) {
-			validator.validate("NotEmpty", data, component);		
+	private void validateName(String data, String field, Errors errors, String argument) {
+		if (!StringUtils.containsIgnoreCase(field, "title") && !StringUtils.containsIgnoreCase(field, "suffix")) {
+			ValidationUtils.testNotEmpty(data, field, errors, argument);
 		}
-		validator.validate("MaxLength", data, DEFAULT_MAX_CHARACTERS, component);
+		ValidationUtils.testMaxLength(data, field, errors, DEFAULT_MAX_CHARACTERS, argument);
 	}
 
-	private <T> void validateAddress(T data, String component) {
-		validator.validate("NotEmpty", data, component);
+	private void validateAddress(Object data, String field, Errors errors, String argument) {
+		ValidationUtils.testNotEmpty(data, field, errors, argument);
 
-		if (component.equals("Street number")) {
-			validator.validate("MaxLength", data, DEFAULT_MAX_CHARACTERS, component);		
+		if (data instanceof String && StringUtils.containsIgnoreCase(field, "street")) {
+			ValidationUtils.testMaxLength((String) data, field, errors, DEFAULT_MAX_CHARACTERS, argument);
 		}
-		else if (component.equals("Municipality") || component.equals("Barangay")) {
-			validator.validate("MaxLength", data, LONG_MAX_CHARACTERS, component);			
-		}
-	}
-
-	private void validateBirthday(Date birthday) {
-		validator.validate("NotEmpty", birthday, "Birthday");
-	}
-
-	private void validateGWA(BigDecimal GWA) {
-		validator.validate("NotEmpty", GWA, "GWA");
-		validator.validate("Minimum", GWA, 1, "GWA");
-		validator.validate("Maximum", GWA, 5, "GWA");
-	}
-
-	private void validateDateHired(Boolean currentlyEmployed, Date dateHired) {
-		if (!currentlyEmployed && dateHired != null) {
-			throw new ValidationException("Date hired cannot be assigned if person is unemployed.");
-		}
-		else if (currentlyEmployed && dateHired == null) {
-			throw new ValidationException("Date hired cannot be empty if person is employed.");
+		else if (data instanceof String && (StringUtils.containsIgnoreCase(field, "municipality") || StringUtils.containsIgnoreCase(field, "barangay"))) {
+			ValidationUtils.testMaxLength((String) data, field, errors, LONG_MAX_CHARACTERS, argument);
 		}
 	}
 
-	private void validateContacts(List<ContactDTO> contacts) {
-		for (ContactDTO contact: contacts) {
-			validator.validate("NotEmpty", contact.getContactType(), "Contact type");
+	private void validateGWA(BigDecimal GWA, String field, Errors errors, String argument) {
+		ValidationUtils.testNotEmpty(GWA, field, errors, argument);
+		ValidationUtils.testMinimumValue(GWA, field, errors, 1, argument);
+		ValidationUtils.testMaximumValue(GWA, field, errors, 5, argument);
+	}
+
+	private void validateRoles(List<RoleDTO> roles, Errors errors) {
+		for (RoleDTO role: roles) {
+			try {
+				roleDao.get(role.getId());			
+			}
+			catch (DataRetrievalFailureException cause) {
+				errors.reject("localize:person.validation.roles.notFound", role.getId().toString());
+			}
+		}
+	}
+
+	private void validateContacts(List<ContactDTO> contacts, Errors errors) {
+		for (int i = 0; i < contacts.size(); i++) {
+			ContactDTO contact = contacts.get(i);
+			ValidationUtils.testNotEmpty(contact.getContactType(), null, errors, "localize:person.contactType");
 			switch(contact.getContactType()) {
 				case "Landline":
-					validateNumericalContact(contact.getData(), LANDLINE_DIGITS, "Landline"); 
+					validateNumericalContact(contact.getData(), errors, LANDLINE_DIGITS, "localize:person.contactType.landline"); 
 					break;
 				case "Mobile":
-					validateNumericalContact(contact.getData(), MOBILE_NUMBER_DIGITS, "Mobile number"); 
+					validateNumericalContact(contact.getData(), errors, MOBILE_NUMBER_DIGITS, "localize:person.contactType.mobile"); 
 					break;
 				case "Email":
-					validateEmail(contact.getData());
+					validateEmail(contact.getData(), errors);
 					break;
 				default: 
-					throw new RuntimeException("Contact type \"" + contact.getContactType() + "\" is not recognized!");
-			}			
+					errors.reject("localize:person.validation.contactType.invalid", contact.getContactType());
+			}
 		}
 	}
 
-	private void validateRoles(List<RoleDTO> roles) {
-		roleDao.throwIfNotExists(AssemblerUtils.asList(roles, roleAssembler::createModel));
+	private void validateNumericalContact(String data, Errors errors, Integer matchingDigits, String argument) {
+		ValidationUtils.testNotEmpty(data, null, errors, argument);
+		ValidationUtils.testDigits(data, null, errors, argument);
+		ValidationUtils.testEqualLength(data, null, errors, matchingDigits, argument);
 	}
 
-	private void validateNumericalContact(String data, Integer matchingDigits, String contactType) {		
-		validator.validate("NotEmpty", data, contactType);
-		validator.validate("Digits", data, contactType);
-		validator.validate("EqualLength", data, matchingDigits, contactType);
-	}
-
-	private void validateEmail(String email) {
-		validator.validate("NotEmpty", email, "Email");
-		validator.validate("MaxLength", email, LONG_MAX_CHARACTERS, "Email");
-		validator.validate("ValidEmail", email);
+	private void validateEmail(String email, Errors errors) {
+		ValidationUtils.testNotEmpty(email, null, errors, "localize:person.contactType.email");
+		ValidationUtils.testValidEmail(email, null, errors);
+		ValidationUtils.testMaxLength(email, null, errors, LONG_MAX_CHARACTERS, "localize:person.contactType.email");
 	}
 }
