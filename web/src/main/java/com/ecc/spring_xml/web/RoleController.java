@@ -142,9 +142,7 @@ public class RoleController extends MultiActionController {
 		else {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		}
-
-		// TODO
-		modelView.addObject(VIEW_PARAMETER_ERROR_MESSAGE, "Error: " + cause.getMessage());
+		
 		return modelView;
 	}
 }
