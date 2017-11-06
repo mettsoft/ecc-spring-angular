@@ -86,8 +86,9 @@ public class RoleController extends MultiActionController {
 			request.setAttribute(DEFAULT_COMMAND_NAME, role);
 			roleService.update(role);
 
+			role = roleService.get(role.getId());
 			String message = messageSource.getMessage("role.successMessage.update", new Object[] {role.getName()}, locale);
-			if (roleService.get(role.getId()).getPersons().size() > 0) {
+			if (role.getPersons().size() > 0) {
 				String personNames = role.getPersons().stream()
 					.map(person -> person.getName().toString())
 					.collect(Collectors.joining("; "));
