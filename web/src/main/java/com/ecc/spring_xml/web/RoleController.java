@@ -17,7 +17,6 @@ import com.ecc.spring_xml.util.validator.ValidationException;
 
 public class RoleController extends MultiActionController {
 	private static final String QUERY_PARAMETER_ROLE_ID = "id";
-	private static final String QUERY_PARAMETER_ROLE_NAME = "name";
 
 	private static final String VIEW_PARAMETER_ERROR_MESSAGE = "errorMessage";
 	private static final String VIEW_PARAMETER_SUCCESS_MESSAGE = "successMessage";
@@ -45,6 +44,7 @@ public class RoleController extends MultiActionController {
 		Locale locale = RequestContextUtils.getLocale(request);
 		modelView.addObject(VIEW_PARAMETER_LOCALE, locale);
 
+		RoleDTO role = new RoleDTO();
 		Integer roleId = NumberUtils.createInteger(request.getParameter(QUERY_PARAMETER_ROLE_ID));
 		if (request.getAttribute(ATTRIBUTE_IS_ACTION_DELETE) != null || 
 			request.getAttribute(ATTRIBUTE_ROLE_NOT_FOUND) != null || roleId == null) {
@@ -52,24 +52,21 @@ public class RoleController extends MultiActionController {
 			modelView.addObject(VIEW_PARAMETER_ACTION, "/create");
 		}
 		else {
-			RoleDTO role = roleService.get(roleId);
-			modelView.addObject(QUERY_PARAMETER_ROLE_ID, role.getId());
-			modelView.addObject(QUERY_PARAMETER_ROLE_NAME, role.getName());
+			role = roleService.get(roleId);
 			modelView.addObject(VIEW_PARAMETER_HEADER, messageSource.getMessage("role.headerTitle.update", null, locale));	
 			modelView.addObject(VIEW_PARAMETER_ACTION, "/update");
 		}
-
+		modelView.addObject(DEFAULT_COMMAND_NAME, role);
 		if (RequestContextUtils.getInputFlashMap(request) != null)
 			modelView.addObject(VIEW_PARAMETER_SUCCESS_MESSAGE, RequestContextUtils.getInputFlashMap(request).get(VIEW_PARAMETER_SUCCESS_MESSAGE));
 		modelView.addObject(VIEW_PARAMETER_DATA, roleService.list());
 		return modelView;
 	}
 
-	public String create(HttpServletRequest request, HttpServletResponse response) {
+	public String create(HttpServletRequest request, HttpServletResponse response, RoleDTO role) {
 		Locale locale = RequestContextUtils.getLocale(request);
 		if (request.getMethod().equals("POST")) {
-			RoleDTO role = new RoleDTO();
-			role.setName(request.getParameter(QUERY_PARAMETER_ROLE_NAME));
+			request.setAttribute(DEFAULT_COMMAND_NAME, role);
 			roleService.validate(role);
 			roleService.create(role);
 
@@ -80,17 +77,15 @@ public class RoleController extends MultiActionController {
 		throw new UnsupportedOperationException("Unsupported operation!");
 	}
 
-	public String update(HttpServletRequest request, HttpServletResponse response) {
+	public String update(HttpServletRequest request, HttpServletResponse response, RoleDTO role) {
 		Locale locale = RequestContextUtils.getLocale(request);
 		if (request.getMethod().equals("POST")) {
-			Integer roleId = NumberUtils.createInteger(request.getParameter(QUERY_PARAMETER_ROLE_ID));
-			RoleDTO role = roleService.get(roleId);
-			role.setName(request.getParameter(QUERY_PARAMETER_ROLE_NAME));
+			request.setAttribute(DEFAULT_COMMAND_NAME, role);
 			roleService.validate(role);
 			roleService.update(role);
 
 			String message = messageSource.getMessage("role.successMessage.update", new Object[] {role.getName()}, locale);
-			if (role.getPersons().size() > 0) {
+			if (roleService.get(role.getId()).getPersons().size() > 0) {
 				String personNames = role.getPersons().stream()
 					.map(person -> person.getName().toString())
 					.collect(Collectors.joining("; "));
@@ -102,13 +97,11 @@ public class RoleController extends MultiActionController {
 		throw new UnsupportedOperationException("Unsupported operation!");
 	}
 
-	public String delete(HttpServletRequest request, HttpServletResponse response) {
+	public String delete(HttpServletRequest request, HttpServletResponse response, RoleDTO role) {
 		Locale locale = RequestContextUtils.getLocale(request);
 		if (request.getMethod().equals("POST")) {
 			request.setAttribute(ATTRIBUTE_IS_ACTION_DELETE, true);
-			Integer roleId = NumberUtils.createInteger(request.getParameter(QUERY_PARAMETER_ROLE_ID));
-			RoleDTO role = roleService.get(roleId);
-			roleService.delete(roleId);	
+			roleService.delete(role.getId());	
 
 			String message = messageSource.getMessage("role.successMessage.delete", new Object[] {role.getName()}, locale);
 			RequestContextUtils.getOutputFlashMap(request).put(VIEW_PARAMETER_SUCCESS_MESSAGE, message);
@@ -122,7 +115,7 @@ public class RoleController extends MultiActionController {
 		ModelAndView modelView = list(request, response);
 		if (cause instanceof ValidationException) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			modelView.addObject(QUERY_PARAMETER_ROLE_NAME, request.getParameter(QUERY_PARAMETER_ROLE_NAME));
+			modelView.addObject(DEFAULT_COMMAND_NAME, request.getAttribute(DEFAULT_COMMAND_NAME));
 		}
 		else if (cause instanceof DataRetrievalFailureException) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);

@@ -1,5 +1,6 @@
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
 <%@ taglib uri = "http://www.springframework.org/tags" prefix = "spring"%>
+<%@ taglib uri = "http://www.springframework.org/tags/form" prefix = "form" %>
 <html>
 
 <head>
@@ -48,16 +49,16 @@
             <h3 class="error-message">${errorMessage}</h3>
             <h3>${successMessage}</h3>
             <h3>${headerTitle}</h3>
-            <form action="/role${action}" method="POST">
-                <input type="hidden" name="id" value="${id}">
+            <form:form action="/role${action}" method="POST">
+                <form:input type="hidden" path="id" />
                 <label for="name">
                     <spring:message code="role.form.label.roleName" />
                 </label>
-                <input type="text" id="name" name="name" value="${name}">
+                <form:input type="text" path="name" />
                 <button>
                     <spring:message code="form.button.submit" />
                 </button>
-            </form>
+            </form:form>
         </div>
         <div>
             <h3>
@@ -92,6 +93,7 @@
                                     <td>
                                         <form action="/role/delete" method="POST">
                                             <input type="hidden" name="id" value="${role.id}">
+                                            <input type="hidden" name="name" value="${role.name}">
                                             <button onclick="return confirm('<spring:message code="role.data.form.button.deleteConfirmation" arguments="${role.name}" />')">
                                                 <spring:message code="data.form.button.delete" />
                                             </button>
