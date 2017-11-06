@@ -31,6 +31,7 @@ import com.ecc.spring_xml.service.RoleService;
 import com.ecc.spring_xml.util.app.FileUploadBean;
 import com.ecc.spring_xml.util.app.DateUtils;
 import com.ecc.spring_xml.util.app.NumberUtils;
+import com.ecc.spring_xml.util.ValidationUtils;
 
 public class PersonController extends MultiActionController {
 	private static final String FORM_PARAMETER_PERSON_ID = "id";
@@ -171,20 +172,7 @@ public class PersonController extends MultiActionController {
 			modelView.addAllObjects(constructViewParametersFromPerson((PersonDTO) bindException.getTarget()));
 			modelView.addObject(DEFAULT_COMMAND_NAME, bindException.getTarget());
 
-			String errorMessage = bindException.getAllErrors().stream()
-				.map(t -> messageSource.getMessage
-					(
-						t.getCode(), 
-						Arrays.stream(t.getArguments())
-							.map(u -> u.toString().startsWith("localize:")? 
-								messageSource.getMessage
-								(
-									StringUtils.substringAfter(u.toString(), "localize:"), 
-									null, 
-									locale
-								): u)
-							.toArray(),
-						locale))
+			String errorMessage = ValidationUtils.localizeErrors(bindException.getAllErrors(), messageSource, locale).stream()
 				.collect(Collectors.joining("<br />"));
 		    modelView.addObject(VIEW_PARAMETER_ERROR_MESSAGE, errorMessage);
 		}

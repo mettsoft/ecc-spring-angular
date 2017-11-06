@@ -79,6 +79,7 @@
 	<bean name="/role" class="com.ecc.spring_xml.web.RoleController">
 		<property name="roleService" ref="roleService" />
 		<property name="messageSource" ref="messageSource" />
+		<property name="validators" ref="roleService" />
 	</bean>
 
 	<bean name="/person" class="com.ecc.spring_xml.web.PersonController">

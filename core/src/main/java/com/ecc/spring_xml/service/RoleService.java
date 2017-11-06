@@ -13,6 +13,7 @@ import com.ecc.spring_xml.dao.RoleDao;
 import com.ecc.spring_xml.assembler.RoleAssembler;
 import com.ecc.spring_xml.util.app.AssemblerUtils;
 import com.ecc.spring_xml.util.ValidationUtils;
+import com.ecc.spring_xml.util.ValidationException;
 
 public class RoleService extends AbstractService<Role, RoleDTO> implements Validator {
 	private static final Integer MAX_CHARACTERS = 20;
@@ -50,8 +51,7 @@ public class RoleService extends AbstractService<Role, RoleDTO> implements Valid
 	@Override
 	protected RuntimeException onUpdateFailure(Role role, RuntimeException cause) {
 		if (cause instanceof DataIntegrityViolationException) {
-			return new RuntimeException(String.format(
-				"Role name \"%s\" is already existing.", role.getName()));
+			return new ValidationException("role.validation.message.duplicateEntry", role.getName());
 		}
 		return super.onUpdateFailure(role, cause);
 	}
@@ -64,8 +64,7 @@ public class RoleService extends AbstractService<Role, RoleDTO> implements Valid
 				.map(person -> person.getName().toString())
 				.collect(Collectors.joining("; "));
 
-			return new RuntimeException(
-				String.format("Role is in used by persons [%s].", personNames));
+			return new ValidationException("role.validation.message.inUsed", personNames);
 		}
 		return super.onDeleteFailure(role, cause);
 	}

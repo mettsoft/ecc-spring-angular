@@ -52,7 +52,7 @@
             <form:form action="/role${action}" method="POST">
                 <form:input type="hidden" path="id" />
                 <label for="name">
-                    <spring:message code="role.form.label.roleName" />
+                    <spring:message code="role.form.label.name" />:
                 </label>
                 <form:input type="text" path="name" />
                 <button>

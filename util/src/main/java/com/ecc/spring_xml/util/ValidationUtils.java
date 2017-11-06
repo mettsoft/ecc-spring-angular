@@ -1,10 +1,16 @@
 package com.ecc.spring_xml.util;
 
+import java.util.List;
+import java.util.Arrays;
+import java.util.Locale;
+import java.util.stream.Collectors;
 import java.math.BigDecimal;
 import java.util.regex.Pattern;
 
+import org.springframework.context.MessageSource;
 import org.springframework.validation.Validator;
 import org.springframework.validation.Errors;
+import org.springframework.validation.ObjectError;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.apache.commons.lang3.StringUtils;
 
@@ -17,6 +23,29 @@ public class ValidationUtils {
 	private static final String NUMERICAL_DIGITS_ERROR_MESSAGE = "{0} must only contain numerical digits.";
 	private static final String MINIMUM_ERROR_MESSAGE_TEMPLATE = "{1} cannot be less than {0}.";
 	private static final String MAXIMUM_ERROR_MESSAGE_TEMPLATE = "{1} cannot be greater than {0}.";
+
+	public static List<String> localizeErrors(List<ObjectError> errors, MessageSource messageSource, Locale locale) {
+		return errors.stream()
+				.map(t -> messageSource.getMessage(t.getCode(), 
+					localizeArguments(t.getArguments(), messageSource, locale), locale))
+				.collect(Collectors.toList());
+	}
+
+	public static String localizeException(ValidationException exception, MessageSource messageSource, Locale locale) {
+		return messageSource.getMessage(exception.getCode(), 
+			localizeArguments(exception.getArguments(), messageSource, locale), locale);
+	}
+
+	private static Object[] localizeArguments(Object[] arguments, MessageSource messageSource, Locale locale) {
+		return Arrays.stream(arguments).map(arg -> 
+			arg.toString().startsWith("localize:")? 
+				messageSource.getMessage
+				(
+					StringUtils.substringAfter(arg.toString(), "localize:"), 
+					null, 
+					locale
+				): arg).toArray();
+	}
 
 	public static void testMaxLength(String data, String field, Errors errors, Object... arguments) {
 		Integer maximumLength = (Integer) arguments[0];
