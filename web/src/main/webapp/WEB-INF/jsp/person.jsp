@@ -1,5 +1,6 @@
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
 <%@ taglib uri = "http://www.springframework.org/tags" prefix = "spring"%>
+<%@ taglib uri = "http://www.springframework.org/tags/form" prefix = "form" %>
 <html>
 
 <head>
@@ -46,7 +47,7 @@
         </a>                
     </div>
     <div id="role-mark-up" hidden>
-        <select name="personRoleIds">
+        <select class="roles">
             <c:forEach items="${roleItems}" var="role">
                 <option value="${role.id}">${role.name}</option>
             </c:forEach>
@@ -56,7 +57,7 @@
         </button>
     </div>
     <div id="contact-mark-up" hidden>
-        <select name="contactType">
+        <select class="contactTypes">
             <option value="Landline">
                 <spring:message code="person.contactType.landline" />
             </option>
@@ -70,7 +71,7 @@
         <button onclick="this.parentNode.remove()">
             <spring:message code="form.button.remove" />
         </button>
-        <input type="text" name="contactData">
+        <input type="text" class="contactData">
     </div>
 
     <!-- Start Content -->
@@ -92,9 +93,9 @@
                         </button>
                     </form>
                 </c:if>
-                <form action="/person${action}" method="POST">
+                <form:form action="/person${action}" method="POST" onsubmit="return onSubmit()">
                     <button hidden></button>
-                    <input type="hidden" name="id" value="${id}">
+                    <form:input type="hidden" path="id" />
                     <input type="hidden" name="querySearchType" value="${querySearchType}">
                     <input type="hidden" name="queryLastName" value="${queryLastName}">
                     <input type="hidden" name="queryRoleId" value="${queryRoleId}">
@@ -106,93 +107,99 @@
                                 <spring:message code="person.form.label.name" />
                             </legend>
                             <div>
-                                <label for="title">
+                                <form:label path="name.title">
                                     <spring:message code="person.form.label.name.title" />
-                                </label>
-                                <input type="text" id="title" name="title" value="${title}"> </div>
+                                </form:label>
+                                <form:input type="text" path="name.title" /> </div>
                             <div>
-                                <label for="lastName">
+                                <form:label path="name.lastName">
                                     <spring:message code="person.form.label.name.lastName" />
-                                </label>
-                                <input type="text" id="lastName" name="lastName" value="${lastName}">
+                                </form:label>
+                                <form:input type="text" path="name.lastName" />
                             </div>
                             <div>
-                                <label for="firstName">
+                                <form:label path="name.firstName">
                                     <spring:message code="person.form.label.name.firstName" />
-                                </label>
-                                <input type="text" id="firstName" name="firstName" value="${firstName}">
+                                </form:label>
+                                <form:input type="text" path="name.firstName" />
                             </div>
                             <div>
-                                <label for="middleName">
+                                <form:label path="name.middleName">
                                     <spring:message code="person.form.label.name.middleName" />
-                                </label>
-                                <input type="text" id="middleName" name="middleName" value="${middleName}">
+                                </form:label>
+                                <form:input type="text" path="name.middleName" />
                             </div>
                             <div>
-                                <label for="suffix">
+                                <form:label path="name.suffix">
                                     <spring:message code="person.form.label.name.suffix" />
-                                </label>
-                                <input type="text" id="suffix" name="suffix" value="${suffix}"> </div>
+                                </form:label>
+                                <form:input type="text" path="name.suffix" /></div>
                         </fieldset>
                         <fieldset>
                             <legend>
                                 <spring:message code="person.form.label.address" />
                             </legend>
                             <div>
-                                <label for="streetNumber">
+                                <form:label path="address.streetNumber">
                                     <spring:message code="person.form.label.address.streetNumber" />
-                                </label>
-                                <input type="text" id="streetNumber" name="streetNumber" value="${streetNumber}"> </div>
+                                </form:label>
+                                <form:input type="text" path="address.streetNumber" /> 
+                            </div>
                             <div>
-                                <label for="barangay">
+                                <form:label path="address.barangay">
                                     <spring:message code="person.form.label.address.barangay" />
-                                </label>
-                                <input type="text" id="barangay" name="barangay" value="${barangay}"> </div>
+                                </form:label>
+                                <form:input type="text" path="address.barangay" /> 
+                            </div>
                             <div>
-                                <label for="municipality">
+                                <form:label path="address.municipality">
                                     <spring:message code="person.form.label.address.municipality" />
-                                </label>
-                                <input type="text" id="municipality" name="municipality" value="${municipality}"> </div>
+                                </form:label>
+                                <form:input type="text" path="address.municipality" /> 
+                            </div>
                             <div>
-                                <label for="zipCode">
+                                <form:label path="address.zipCode">
                                     <spring:message code="person.form.label.address.zipCode" />
-                                </label>
-                                <input type="number" id="zipCode" name="zipCode" min="0" value="${zipCode}"> </div>
+                                </form:label>
+                                <form:input type="number" name="zipCode" path="address.zipCode" min="0" /> 
+                            </div>
                         </fieldset>
                         <fieldset>
                             <legend>
                                 <spring:message code="person.form.label.otherInformation" />
                             </legend>
                             <div>
-                                <label for="birthday">
+                                <form:label path="birthday">
                                     <spring:message code="person.form.label.otherInformation.birthday" />
-                                </label>
-                                <input type="date" id="birthday" name="birthday" value="${birthday}"> </div>
-                            <div>
-                                <label for="GWA">
-                                    <spring:message code="person.form.label.otherInformation.GWA" />
-                                </label>
-                                <input type="number" id="GWA" name="GWA" value="${GWA}" min="1" max="5" step="0.001"> </div>
-                            <div>
-                                <label>
-                                    <spring:message code="person.form.label.otherInformation.currentlyEmployed" />
-                                </label>
-                                <input type="checkbox" name="currentlyEmployed" onclick="document.getElementById('dateHired').disabled=!this.checked">
+                                </form:label>
+                                <form:input type="date" path="birthday" />  
                             </div>
                             <div>
-                                <label for="dateHired">
+                                <form:label path="GWA">
+                                    <spring:message code="person.form.label.otherInformation.GWA" />
+                                </form:label>
+                                <form:input type="number" path="GWA" min="1" max="5" step="0.001" /> 
+                            </div>
+                            <div>
+                                <form:label path="currentlyEmployed">
+                                    <spring:message code="person.form.label.otherInformation.currentlyEmployed" />
+                                </form:label>
+                                <form:checkbox path="currentlyEmployed" onclick="document.getElementById('dateHired').disabled=!this.checked" />
+                            </div>
+                            <div>
+                                <form:label path="dateHired">
                                     <spring:message code="person.form.label.otherInformation.dateHired" />
-                                </label>
-                                <input type="date" id="dateHired" name="dateHired" value="${dateHired}">
+                                </form:label>
+                                <form:input type="date" path="dateHired" />
                             </div>
                         </fieldset>
                         <fieldset>
                             <legend>
                                 <spring:message code="person.form.label.contactInformation" />
                             </legend>
-                            <c:forEach items="${assignedContacts}" var="contact">
+                            <c:forEach items="${command.contacts}" var="contact">
                                 <div>
-                                    <select class="assigned-contacts" name="contactType">
+                                    <select class="contactTypes assigned-contacts">
                                         <option value="Landline">
                                             <spring:message code="person.contactType.landline" />
                                         </option>
@@ -206,7 +213,7 @@
                                     <button onclick="this.parentNode.remove()">
                                         <spring:message code="form.button.remove" />
                                     </button>
-                                    <input type="text" name="contactData" value="${contact.data}">
+                                    <input type="text" class="contactData" value="${contact.data}">
                                 </div>
                             </c:forEach>
                             <button onclick="this.parentNode.insertBefore(CONTACT_MARK_UP.cloneNode(true), this); return false;">
@@ -217,9 +224,9 @@
                             <legend>
                                 <spring:message code="person.form.label.roleAssignments" />
                             </legend>
-                            <c:forEach items="${assignedRoleIds}" var="role">
+                            <c:forEach items="${command.roles}" var="role">
                                 <div>
-                                    <select class="assigned-roles" name="personRoleIds">
+                                    <select class="roles assigned-roles" path="role.id">
                                         <c:forEach items="${roleItems}" var="roleItem">
                                             <option value="${roleItem.id}">${roleItem.name}</option>
                                         </c:forEach>
@@ -236,7 +243,7 @@
                         <button>
                             <spring:message code="form.button.submit" />
                         </button>
-                </form>
+                </form:form>
             </fieldset>
         </div>
         <div class="data">
@@ -338,7 +345,7 @@
                             <th>
                                 <spring:message code="person.data.column.employment" />
                             </th>
-                            <th>C
+                            <th>
                                 <spring:message code="person.data.column.contacts" />
                             </th>
                             <th>
@@ -385,6 +392,11 @@
                                     <td>
                                         <form action="/person/delete" method="POST">
                                             <input type="hidden" name="id" value="${person.id}">
+                                            <input type="hidden" name="name.title" value="${person.name.title}">
+                                            <input type="hidden" name="name.lastName" value="${person.name.lastName}">
+                                            <input type="hidden" name="name.middleName" value="${person.name.middleName}">
+                                            <input type="hidden" name="name.firstName" value="${person.name.firstName}">
+                                            <input type="hidden" name="name.suffix" value="${person.name.suffix}">
                                             <input type="hidden" name="querySearchType" value="${querySearchType}">
                                             <input type="hidden" name="queryLastName" value="${queryLastName}">
                                             <input type="hidden" name="queryRoleId" value="${queryRoleId}">
@@ -439,7 +451,7 @@
         document.getElementById('queryRoleId').value = '${queryRoleId}';
     }
  
-    if ('${currentlyEmployed}' === 'true') {
+    if ('${command.currentlyEmployed}' === 'true') {
         document.getElementById('dateHired').disabled = false;
         document.getElementsByName('currentlyEmployed')[0].checked = true;
     } else {
@@ -454,6 +466,21 @@
     });
 
     document.getElementById('querySearchType').dispatchEvent(new Event("change"));
+
+    function onSubmit() {
+        document.querySelectorAll('select.roles').forEach((e, i) => { 
+            e.name = 'roles[' + (i-1) + '].id';
+            var input = document.createElement('input');
+            input.hidden = true;
+            input.name = 'roles[' + (i-1) + '].name';
+            input.value = e.value;
+            e.parentNode.insertBefore(input, e);
+        });
+
+        document.querySelectorAll('select.contactTypes').forEach((e, i) => e.name = 'contacts[' + (i-1) + '].contactType');
+
+        document.querySelectorAll('input.contactData').forEach((e, i) => e.name = 'contacts[' + (i-1) + '].data');
+    }
 </script>
 
 </html>

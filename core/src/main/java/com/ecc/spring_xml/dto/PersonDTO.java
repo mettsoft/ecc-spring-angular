@@ -19,6 +19,8 @@ public class PersonDTO {
 	private List<RoleDTO> roles;
 	
 	public PersonDTO() {
+		name = new NameDTO();
+		address = new AddressDTO();
 		currentlyEmployed = false;
 		contacts = new ArrayList<>();
 		roles = new ArrayList<>();

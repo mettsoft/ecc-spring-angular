@@ -13,6 +13,7 @@ public class RoleDTO {
 	}
 
 	public RoleDTO(Integer id, String name) {
+		this();
 		setId(id);
 		setName(name);
 	}
