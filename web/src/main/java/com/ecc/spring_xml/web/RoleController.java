@@ -123,7 +123,7 @@ public class RoleController extends MultiActionController {
 
 		modelView.addObject(DEFAULT_COMMAND_NAME, bindException.getTarget());
 
-		String errorMessage = ValidationUtils.localizeErrors(bindException.getAllErrors(), messageSource, locale).stream()
+		String errorMessage = ValidationUtils.localize(bindException.getAllErrors(), messageSource, locale).stream()
 			.collect(Collectors.joining("<br />"));
 	    modelView.addObject(VIEW_PARAMETER_ERROR_MESSAGE, errorMessage);
 		return modelView;
@@ -137,7 +137,8 @@ public class RoleController extends MultiActionController {
 
 		modelView.addObject(DEFAULT_COMMAND_NAME, request.getAttribute(DEFAULT_COMMAND_NAME));
 
-		String errorMessage = ValidationUtils.localizeException(cause, messageSource, locale);
+		String errorMessage = ValidationUtils.localize(cause.getAllErrors(), messageSource, locale).stream()
+			.collect(Collectors.joining("<br />"));
 	    modelView.addObject(VIEW_PARAMETER_ERROR_MESSAGE, errorMessage);
 		return modelView;
 	}
