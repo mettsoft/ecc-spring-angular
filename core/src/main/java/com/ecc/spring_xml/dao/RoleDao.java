@@ -1,11 +1,9 @@
 package com.ecc.spring_xml.dao;
 
 import java.util.List;
-import java.util.Collection;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Restrictions;
 
 import com.ecc.spring_xml.model.Role;
 
