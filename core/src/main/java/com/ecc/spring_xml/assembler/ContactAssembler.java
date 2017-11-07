@@ -1,9 +1,7 @@
 package com.ecc.spring_xml.assembler;
 
 import com.ecc.spring_xml.model.Contact;
-import com.ecc.spring_xml.model.Person;
 import com.ecc.spring_xml.dto.ContactDTO;
-import com.ecc.spring_xml.dto.PersonDTO;
 
 public class ContactAssembler implements Assembler<Contact, ContactDTO> {
 	@Override
