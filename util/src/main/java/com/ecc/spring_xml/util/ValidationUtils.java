@@ -8,7 +8,6 @@ import java.math.BigDecimal;
 import java.util.regex.Pattern;
 
 import org.springframework.context.MessageSource;
-import org.springframework.validation.Validator;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ObjectError;
 import org.apache.commons.validator.routines.EmailValidator;
@@ -24,16 +23,11 @@ public class ValidationUtils {
 	private static final String MINIMUM_ERROR_MESSAGE_TEMPLATE = "{1} cannot be less than {0}.";
 	private static final String MAXIMUM_ERROR_MESSAGE_TEMPLATE = "{1} cannot be greater than {0}.";
 
-	public static List<String> localizeErrors(List<ObjectError> errors, MessageSource messageSource, Locale locale) {
+	public static List<String> localize(List<ObjectError> errors, MessageSource messageSource, Locale locale) {
 		return errors.stream()
 				.map(t -> messageSource.getMessage(t.getCode(), 
 					localizeArguments(t.getArguments(), messageSource, locale), locale))
 				.collect(Collectors.toList());
-	}
-
-	public static String localizeException(ValidationException exception, MessageSource messageSource, Locale locale) {
-		return messageSource.getMessage(exception.getCode(), 
-			localizeArguments(exception.getArguments(), messageSource, locale), locale);
 	}
 
 	private static Object[] localizeArguments(Object[] arguments, MessageSource messageSource, Locale locale) {

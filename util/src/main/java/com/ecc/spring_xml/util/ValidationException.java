@@ -1,21 +1,22 @@
 package com.ecc.spring_xml.util;
 
-import java.util.Locale;
+import java.util.List;
+import java.util.ArrayList;
+import org.springframework.validation.ObjectError;
 
 public class ValidationException extends RuntimeException {
-	private String messageCode;
-	private Object[] arguments;
+	private List<ObjectError> errors;
 
 	public ValidationException(String messageCode, Object...arguments) {
-		this.messageCode = messageCode;
-		this.arguments = arguments;
+		errors = new ArrayList<>(1);
+		errors.add(new ObjectError("command", new String[] { messageCode }, arguments, null));
 	}
 
-	public String getCode() {
-		return messageCode;
+	public ValidationException(List<ObjectError> errors) {
+		this.errors = errors;
 	}
 
-	public Object[] getArguments() {
-		return arguments;
+	public List<ObjectError> getAllErrors() {
+		return errors;
 	}
 }
