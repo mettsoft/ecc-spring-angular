@@ -1,15 +1,14 @@
 package com.ecc.spring_xml.assembler;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.ecc.spring_xml.model.Role;
 import com.ecc.spring_xml.dto.RoleDTO;
 import com.ecc.spring_xml.util.AssemblerUtils;
 
 public class RoleAssembler implements Assembler<Role, RoleDTO> {
+	@Autowired
 	private PersonAssembler personAssembler;
-
-	public void setPersonAssembler(PersonAssembler personAssembler) {
-		this.personAssembler = personAssembler;
-	}
 	
 	@Override
 	public RoleDTO createDTO(Role model) {

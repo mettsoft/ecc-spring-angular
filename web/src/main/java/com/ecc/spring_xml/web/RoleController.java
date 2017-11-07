@@ -1,5 +1,7 @@
 package com.ecc.spring_xml.web;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -31,16 +33,11 @@ public class RoleController extends MultiActionController {
 
 	private static final String ATTRIBUTE_FORCE_CREATE_MODE = "isCreateMode";
 
+	@Autowired
 	private RoleService roleService;
+
+	@Autowired
 	private MessageSource messageSource;
-
-	public void setMessageSource(MessageSource messageSource) {
-		this.messageSource = messageSource;
-	}
-
-	public void setRoleService(RoleService roleService) {
-		this.roleService = roleService;
-	}
 
 	public ModelAndView list(HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView modelView = new ModelAndView("role");

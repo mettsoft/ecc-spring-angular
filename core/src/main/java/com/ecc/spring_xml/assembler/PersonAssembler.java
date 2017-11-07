@@ -1,5 +1,7 @@
 package com.ecc.spring_xml.assembler;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.ecc.spring_xml.model.Person;
 import com.ecc.spring_xml.model.Name;
 import com.ecc.spring_xml.model.Address;
@@ -9,16 +11,11 @@ import com.ecc.spring_xml.dto.AddressDTO;
 import com.ecc.spring_xml.util.AssemblerUtils;
 
 public class PersonAssembler implements Assembler<Person, PersonDTO> {
+	@Autowired
 	private RoleAssembler roleAssembler;
+
+	@Autowired
 	private ContactAssembler contactAssembler;
-
-	public void setRoleAssembler(RoleAssembler roleAssembler) {
-		this.roleAssembler = roleAssembler;
-	}
-
-	public void setContactAssembler(ContactAssembler contactAssembler) {
-		this.contactAssembler = contactAssembler;
-	}
 
 	@Override
 	public PersonDTO createDTO(Person model) {
