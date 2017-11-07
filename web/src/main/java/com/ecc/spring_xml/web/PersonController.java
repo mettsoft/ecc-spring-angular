@@ -17,13 +17,9 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.validation.BindException;
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.validation.ObjectError;
 
-import com.ecc.spring_xml.dto.AddressDTO;
-import com.ecc.spring_xml.dto.ContactDTO;
-import com.ecc.spring_xml.dto.NameDTO;
 import com.ecc.spring_xml.dto.PersonDTO;
-import com.ecc.spring_xml.dto.RoleDTO;
 import com.ecc.spring_xml.factory.PersonFactory;
 import com.ecc.spring_xml.service.PersonService;
 import com.ecc.spring_xml.service.RoleService;
@@ -49,7 +45,7 @@ public class PersonController extends MultiActionController {
 	private static final String QUERY_PARAMETER_ORDER_TYPE = "queryOrderType";
 
 	private static final String VIEW_PARAMETER_ROLE_ITEMS = "roleItems";
-	private static final String VIEW_PARAMETER_ERROR_MESSAGE = "errorMessage";
+	private static final String VIEW_PARAMETER_ERROR_MESSAGES = "errorMessages";
 	private static final String VIEW_PARAMETER_SUCCESS_MESSAGE = "successMessage";
 	private static final String VIEW_PARAMETER_ACTION = "action";
 	private static final String VIEW_PARAMETER_HEADER = "headerTitle";
@@ -58,8 +54,7 @@ public class PersonController extends MultiActionController {
 	private static final String VIEW_PARAMETER_ASSIGNED_ROLE_IDS = "assignedRoleIds";
 	private static final String VIEW_PARAMETER_LOCALE = "locale";
 
-	private static final String ATTRIBUTE_IS_ACTION_DELETE = "isActionDelete";
-	private static final String ATTRIBUTE_PERSON_NOT_FOUND = "personNotFound";
+	private static final String ATTRIBUTE_FORCE_CREATE_MODE = "isCreateMode";
 
 	private PersonService personService;
 	private RoleService roleService;
@@ -84,8 +79,7 @@ public class PersonController extends MultiActionController {
 
 		PersonDTO person = new PersonDTO();
 		Integer personId = NumberUtils.createInteger(request.getParameter(FORM_PARAMETER_PERSON_ID));
-		if (request.getAttribute(ATTRIBUTE_IS_ACTION_DELETE) != null || 
-			request.getAttribute(ATTRIBUTE_PERSON_NOT_FOUND) != null || personId == null) {
+		if (request.getAttribute(ATTRIBUTE_FORCE_CREATE_MODE) != null || personId == null) {
 			modelView.addObject(VIEW_PARAMETER_HEADER, messageSource.getMessage("person.headerTitle.create", null, locale));
 			modelView.addObject(VIEW_PARAMETER_ACTION, "/create");
 		}
@@ -94,7 +88,7 @@ public class PersonController extends MultiActionController {
 				person = personService.get(personId);
 			}
 			catch (ValidationException cause) {
-				request.setAttribute(ATTRIBUTE_PERSON_NOT_FOUND, true);
+				request.setAttribute(ATTRIBUTE_FORCE_CREATE_MODE, true);
 				throw cause;
 			}
 			modelView.addAllObjects(constructViewParametersFromPerson(person));
@@ -104,23 +98,23 @@ public class PersonController extends MultiActionController {
 		modelView.addObject(DEFAULT_COMMAND_NAME, person);
 		modelView.addAllObjects(queryToViewParameters(request));
 		modelView.addObject(VIEW_PARAMETER_ROLE_ITEMS, roleService.list());
+
+		if (RequestContextUtils.getInputFlashMap(request) != null) {
+			modelView.addObject(VIEW_PARAMETER_SUCCESS_MESSAGE, RequestContextUtils.getInputFlashMap(request).get(VIEW_PARAMETER_SUCCESS_MESSAGE));
+		}
+
 		modelView.addObject(VIEW_PARAMETER_DATA, personService.list(
 			request.getParameter(QUERY_PARAMETER_PERSON_LAST_NAME),
 			NumberUtils.createInteger(request.getParameter(QUERY_PARAMETER_ROLE_ID)),	
 			DateUtils.parse(request.getParameter(QUERY_PARAMETER_BIRTHDAY)),
 			request.getParameter(QUERY_PARAMETER_ORDER_BY),
 			request.getParameter(QUERY_PARAMETER_ORDER_TYPE)));
-
-		if (RequestContextUtils.getInputFlashMap(request) != null) {
-			modelView.addObject(VIEW_PARAMETER_SUCCESS_MESSAGE, RequestContextUtils.getInputFlashMap(request).get(VIEW_PARAMETER_SUCCESS_MESSAGE));
-		}
 		return modelView;
 	}
 
 	public String create(HttpServletRequest request, HttpServletResponse response, PersonDTO person) {
 		Locale locale = RequestContextUtils.getLocale(request);
 		if (request.getMethod().equals("POST")) {
-			request.setAttribute(DEFAULT_COMMAND_NAME, person);
 			personService.create(person);
 
 			String message = messageSource.getMessage("person.successMessage.create", new Object[] {person.getName()}, locale);
@@ -131,16 +125,10 @@ public class PersonController extends MultiActionController {
 	}
 
 	public String upload(HttpServletRequest request, HttpServletResponse response, FileUploadBean file) {
-		Locale locale = RequestContextUtils.getLocale(request);
 		if (request.getMethod().equals("POST")) {
 			PersonDTO person = PersonFactory.createPersonDTO(file.getFile().getBytes());
-			request.setAttribute(DEFAULT_COMMAND_NAME, person);
 			personService.validate(person, DEFAULT_COMMAND_NAME);
-			personService.create(person);
-
-			String message = messageSource.getMessage("person.successMessage.create", new Object[] {person.getName()}, locale);
-			RequestContextUtils.getOutputFlashMap(request).put(VIEW_PARAMETER_SUCCESS_MESSAGE, message);
-			return "redirect:/person/list";
+			return create(request, response, person);
 		}
 		throw new UnsupportedOperationException("Unsupported operation!");
 	}
@@ -148,7 +136,6 @@ public class PersonController extends MultiActionController {
 	public String update(HttpServletRequest request, HttpServletResponse response, PersonDTO person) {
 		Locale locale = RequestContextUtils.getLocale(request);
 		if (request.getMethod().equals("POST")) {
-			request.setAttribute(DEFAULT_COMMAND_NAME, person);
 			personService.update(person);
 
 			String message = messageSource.getMessage("person.successMessage.update", new Object[] {person.getName()}, locale);
@@ -161,8 +148,7 @@ public class PersonController extends MultiActionController {
 	public String delete(HttpServletRequest request, HttpServletResponse response, PersonDTO person) {
 		Locale locale = RequestContextUtils.getLocale(request);
 		if (request.getMethod().equals("POST")) {
-			request.setAttribute(DEFAULT_COMMAND_NAME, person);
-			request.setAttribute(ATTRIBUTE_IS_ACTION_DELETE, true);
+			request.setAttribute(ATTRIBUTE_FORCE_CREATE_MODE, true);
 			personService.delete(person.getId());
 
 			String message = messageSource.getMessage("person.successMessage.delete", new Object[] {person.getName()}, locale);
@@ -176,39 +162,33 @@ public class PersonController extends MultiActionController {
 		Locale locale = RequestContextUtils.getLocale(request);
 		ModelAndView modelView = list(request, response);
 
-		if (cause instanceof ServletRequestBindingException) {
-		    BindException bindException = (BindException) ((ServletRequestBindingException)cause).getRootCause();
+		if (cause instanceof ServletRequestBindingException || cause instanceof ValidationException) {
+			List<ObjectError> errors = null;
+			Object target = null;
+			if (cause instanceof ServletRequestBindingException) {
+			    BindException bindException = (BindException) ((ServletRequestBindingException)cause).getRootCause();
+			    errors = bindException.getAllErrors();
+			    target = bindException.getTarget();
+			}
+			else {
+				ValidationException validationException = (ValidationException) cause;
+				errors = validationException.getAllErrors();
+				target = validationException.getTarget();
+			}
+
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-
-			modelView.addAllObjects(constructViewParametersFromPerson((PersonDTO) bindException.getTarget()));
-			modelView.addObject(DEFAULT_COMMAND_NAME, bindException.getTarget());
-
-			String errorMessage = ValidationUtils.localize(bindException.getAllErrors(), messageSource, locale).stream()
-				.collect(Collectors.joining("<br />"));
-		    modelView.addObject(VIEW_PARAMETER_ERROR_MESSAGE, errorMessage);
+			modelView.addObject(DEFAULT_COMMAND_NAME, target);
+			modelView.addObject(VIEW_PARAMETER_ERROR_MESSAGES, ValidationUtils.localize(errors, messageSource, locale));
 		}
-		// else if (cause instanceof DataRetrievalFailureException) {
-		// 	response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-		// 	request.setAttribute(ATTRIBUTE_PERSON_NOT_FOUND, true);
-		// }
 		else {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			modelView = null;
 		}
 
-		return modelView;
-	}
+		cause.printStackTrace();
+		if (cause.getCause() != null)
+			cause.printStackTrace();
 
-	public ModelAndView exceptionHandler(HttpServletRequest request, HttpServletResponse response, ValidationException cause) {
-		Locale locale = RequestContextUtils.getLocale(request);
-		ModelAndView modelView = list(request, response);
-
-		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-
-		modelView.addObject(DEFAULT_COMMAND_NAME, request.getAttribute(DEFAULT_COMMAND_NAME) == null? new PersonDTO(): request.getAttribute(DEFAULT_COMMAND_NAME));
-
-		String errorMessage = ValidationUtils.localize(cause.getAllErrors(), messageSource, locale).stream()
-			.collect(Collectors.joining("<br />"));
-	    modelView.addObject(VIEW_PARAMETER_ERROR_MESSAGE, errorMessage);
 		return modelView;
 	}
 
@@ -230,7 +210,7 @@ public class PersonController extends MultiActionController {
 	}
 
 	private Map<String, Object> constructViewParametersFromPerson(PersonDTO person) {
-		Map<String, Object> parameters = new HashMap<>(); 
+		Map<String, Object> parameters = new HashMap<>(2); 
 		parameters.put(VIEW_PARAMETER_ASSIGNED_ROLE_IDS, person.getRoles().stream().map(t -> t.getId().toString()).collect(Collectors.joining(",")));
 		parameters.put(VIEW_PARAMETER_ASSIGNED_CONTACT_TYPES, person.getContacts().stream().map(t -> "'" + t.getContactType() + "'").collect(Collectors.joining(",")));
 		return parameters;

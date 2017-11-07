@@ -31,7 +31,7 @@ public class ValidationUtils {
 	}
 
 	private static Object[] localizeArguments(Object[] arguments, MessageSource messageSource, Locale locale) {
-		return Arrays.stream(arguments).map(arg -> 
+		return arguments == null? null: Arrays.stream(arguments).map(arg -> 
 			arg.toString().startsWith("localize:")? 
 				messageSource.getMessage
 				(

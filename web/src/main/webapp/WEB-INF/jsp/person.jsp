@@ -80,7 +80,9 @@
     </a>
     <div class="container">
         <div class="form">
-            <h3 class="error-message">${errorMessage}</h3>
+            <c:forEach items="${errorMessages}" var="errorMessage">
+                <h3 class="error-message">${errorMessage}</h3>
+            </c:forEach>
             <h3>${successMessage}</h3>
 
             <fieldset>

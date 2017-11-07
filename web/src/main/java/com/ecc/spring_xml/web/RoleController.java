@@ -114,7 +114,6 @@ public class RoleController extends MultiActionController {
 			RequestContextUtils.getOutputFlashMap(request).put(VIEW_PARAMETER_SUCCESS_MESSAGE, message);
 			return "redirect:/role/list";
 		}
-		// TODO: Test this
 		throw new UnsupportedOperationException("Unsupported operation!");
 	}
 

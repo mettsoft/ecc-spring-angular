@@ -115,11 +115,12 @@ public class PersonService extends AbstractService<Person, PersonDTO> implements
 
 	private void validateRoles(List<RoleDTO> roles, Errors errors) {
 		for (RoleDTO role: roles) {
+			String roleId = role.getId() == null? "null": role.getId().toString(); 
 			try {
-				roleDao.get(role.getId());			
+				roleDao.get(role.getId());
 			}
-			catch (DataRetrievalFailureException cause) {
-				errors.reject("localize:role.validation.message.notFound", role.getId().toString());
+			catch (Exception cause) {
+				errors.reject("role.validation.message.notFound", roleId);
 			}
 		}
 	}
