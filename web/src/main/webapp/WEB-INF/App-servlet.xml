@@ -59,8 +59,16 @@
 		<constructor-arg ref="sessionFactory" />
 	</bean>
 
-	<bean id="personAssembler" class="com.ecc.spring_xml.assembler.PersonAssembler" />
-	<bean id="roleAssembler" class="com.ecc.spring_xml.assembler.RoleAssembler" />
+	<bean id="roleAssembler" class="com.ecc.spring_xml.assembler.RoleAssembler">
+		<property name="personAssembler" ref="personAssembler" />
+	</bean>
+
+	<bean id="personAssembler" class="com.ecc.spring_xml.assembler.PersonAssembler">
+		<property name="roleAssembler" ref="roleAssembler" />
+		<property name="contactAssembler" ref="contactAssembler" />
+	</bean>
+
+	<bean id="contactAssembler" class="com.ecc.spring_xml.assembler.ContactAssembler" />
 	
 	<bean id="personService" class="com.ecc.spring_xml.service.PersonService">
 		<constructor-arg ref="personDao" />

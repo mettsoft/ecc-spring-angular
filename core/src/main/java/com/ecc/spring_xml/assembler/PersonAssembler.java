@@ -1,22 +1,31 @@
 package com.ecc.spring_xml.assembler;
 
 import com.ecc.spring_xml.model.Person;
+import com.ecc.spring_xml.model.Name;
 import com.ecc.spring_xml.model.Address;
 import com.ecc.spring_xml.dto.PersonDTO;
+import com.ecc.spring_xml.dto.NameDTO;
 import com.ecc.spring_xml.dto.AddressDTO;
 import com.ecc.spring_xml.util.AssemblerUtils;
 
 public class PersonAssembler implements Assembler<Person, PersonDTO> {
-	private NameAssembler nameAssembler = new NameAssembler();
-	private RoleAssembler roleAssembler = new RoleAssembler();
-	private ContactAssembler contactAssembler = new ContactAssembler();
+	private RoleAssembler roleAssembler;
+	private ContactAssembler contactAssembler;
+
+	public void setRoleAssembler(RoleAssembler roleAssembler) {
+		this.roleAssembler = roleAssembler;
+	}
+
+	public void setContactAssembler(ContactAssembler contactAssembler) {
+		this.contactAssembler = contactAssembler;
+	}
 
 	@Override
 	public PersonDTO createDTO(Person model) {
-		if (model == null) {
+		PersonDTO dto = createBasicDTO(model);
+		if (dto == null) {
 			return null;
 		}
-		PersonDTO dto = new PersonDTO(model.getId(), nameAssembler.createDTO(model.getName()));
 		dto.setAddress(createAddressDTO(model.getAddress()));
 		dto.setBirthday(model.getBirthday());
 		dto.setGWA(model.getGWA());
@@ -30,10 +39,10 @@ public class PersonAssembler implements Assembler<Person, PersonDTO> {
 
 	@Override 
 	public Person createModel(PersonDTO dto) {
-		if (dto == null) {
+		Person model = createBasicModel(dto);
+		if (model == null) {
 			return null;
 		}
-		Person model = new Person(dto.getId(), nameAssembler.createModel(dto.getName()));
 		model.setAddress(createAddressModel(dto.getAddress()));
 		model.setBirthday(dto.getBirthday());
 		model.setGWA(dto.getGWA());
@@ -43,6 +52,14 @@ public class PersonAssembler implements Assembler<Person, PersonDTO> {
 		model.setContacts(AssemblerUtils.asSet(dto.getContacts(), contactAssembler::createModel));
 		model.setRoles(AssemblerUtils.asSet(dto.getRoles(), roleAssembler::createModel));
 		return model;
+	}
+
+	public PersonDTO createBasicDTO(Person model) {
+		return model == null? null: new PersonDTO(model.getId(), createNameDTO(model.getName()));
+	}
+
+	public Person createBasicModel(PersonDTO dto) {
+		return dto == null? null: new Person(dto.getId(), createNameModel(dto.getName()));
 	}
 
 	private AddressDTO createAddressDTO(Address model) {
@@ -67,5 +84,31 @@ public class PersonAssembler implements Assembler<Person, PersonDTO> {
 		model.setMunicipality(dto.getMunicipality());
 		model.setZipCode(dto.getZipCode());
 		return model;	
+	}
+
+	private NameDTO createNameDTO(Name model) {
+		if (model == null) {
+			return null;
+		}
+		NameDTO dto = new NameDTO();
+		dto.setTitle(model.getTitle());
+		dto.setLastName(model.getLastName());
+		dto.setFirstName(model.getFirstName());
+		dto.setMiddleName(model.getMiddleName());
+		dto.setSuffix(model.getSuffix());
+		return dto;
+	}
+ 
+	private Name createNameModel(NameDTO dto) {
+		if (dto == null) {
+			return null;
+		}
+		Name model = new Name();
+		model.setTitle(dto.getTitle());
+		model.setLastName(dto.getLastName());
+		model.setFirstName(dto.getFirstName());
+		model.setMiddleName(dto.getMiddleName());
+		model.setSuffix(dto.getSuffix());
+		return model;
 	}
 }
