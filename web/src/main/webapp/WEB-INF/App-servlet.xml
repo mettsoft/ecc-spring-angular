@@ -83,13 +83,13 @@
 
 	<bean class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping" />
 	
-	<bean name="/role" class="com.ecc.spring_xml.web.RoleController">
+	<bean class="com.ecc.spring_xml.web.RoleController">
 		<property name="roleService" ref="roleService" />
 		<property name="messageSource" ref="messageSource" />
 		<property name="validators" ref="roleService" />
 	</bean>
 
-	<bean name="/person" class="com.ecc.spring_xml.web.PersonController">
+	<bean class="com.ecc.spring_xml.web.PersonController">
 		<property name="personService" ref="personService" />
 		<property name="roleService" ref="roleService" />
 		<property name="messageSource" ref="messageSource" />
