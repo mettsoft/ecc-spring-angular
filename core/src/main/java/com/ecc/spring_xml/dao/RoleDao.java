@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 
 import com.ecc.spring_xml.model.Role;
 
@@ -18,5 +19,12 @@ public class RoleDao extends AbstractDao<Role> {
 			.setCacheable(true)
 			.addOrder(Order.asc("id"))
 			.list();
+	}
+
+	public Role get(String name) {
+		return (Role) sessionFactory.getCurrentSession()
+			.createCriteria(Role.class)
+			.add(Restrictions.eq("name", name))
+			.uniqueResult();
 	}
 }

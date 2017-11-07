@@ -117,13 +117,13 @@ public class RoleController extends MultiActionController {
 		throw new UnsupportedOperationException("Unsupported operation!");
 	}
 
-	public ModelAndView exceptionHandler(HttpServletRequest request, HttpServletResponse response, Exception cause) {
-		Locale locale = RequestContextUtils.getLocale(request);
-		ModelAndView modelView = list(request, response);
-
+	public ModelAndView exceptionHandler(HttpServletRequest request, HttpServletResponse response, Exception cause) throws Exception {
 		if (cause instanceof ServletRequestBindingException || cause instanceof ValidationException) {
+			Locale locale = RequestContextUtils.getLocale(request);
+			ModelAndView modelView = list(request, response);
 			List<ObjectError> errors = null;
 			Object target = null;
+
 			if (cause instanceof ServletRequestBindingException) {
 			    BindException bindException = (BindException) ((ServletRequestBindingException)cause).getRootCause();
 			    errors = bindException.getAllErrors();
@@ -138,16 +138,13 @@ public class RoleController extends MultiActionController {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			modelView.addObject(DEFAULT_COMMAND_NAME, target);
 			modelView.addObject(VIEW_PARAMETER_ERROR_MESSAGES, ValidationUtils.localize(errors, messageSource, locale));
-		}
-		else {
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			modelView = null;
-		}
-
-		cause.printStackTrace();
-		if (cause.getCause() != null)
 			cause.printStackTrace();
+			if (cause.getCause() != null) {
+				cause.printStackTrace();
+			}
 
-		return modelView;
+			return modelView;
+		}
+		throw cause;
 	}
 }

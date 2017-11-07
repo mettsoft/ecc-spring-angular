@@ -14,6 +14,7 @@ import com.ecc.spring_xml.dto.PersonDTO;
 import com.ecc.spring_xml.dto.RoleDTO;
 import com.ecc.spring_xml.dto.ContactDTO;
 import com.ecc.spring_xml.model.Person;
+import com.ecc.spring_xml.model.Role;
 import com.ecc.spring_xml.assembler.PersonAssembler;
 import com.ecc.spring_xml.dao.PersonDao;
 import com.ecc.spring_xml.dao.RoleDao;
@@ -50,6 +51,7 @@ public class PersonService extends AbstractService<Person, PersonDTO> implements
 
     	Errors errors = new BindException(person, objectName);
     	validate(person, errors);
+		validateRoles(person.getRoles(), errors);
     	if (errors.hasErrors()) {
     		throw new ValidationException(errors.getAllErrors(), person);
     	}
@@ -75,14 +77,13 @@ public class PersonService extends AbstractService<Person, PersonDTO> implements
 		validateGWA(person.getGWA(), "GWA", errors, "localize:person.form.label.otherInformation.GWA");
 
 		if (!person.getCurrentlyEmployed() && person.getDateHired() != null) {
-			errors.rejectValue("dateHired", "localize:person.validation.message.unemployed");
+			errors.rejectValue("dateHired", "person.validation.message.unemployed");
 		}
 		else if (person.getCurrentlyEmployed() && person.getDateHired() == null) {
-			errors.rejectValue("dateHired", "localize:person.validation.message.employed");
+			errors.rejectValue("dateHired", "person.validation.message.employed");
 		}
 
 		validateContacts(person.getContacts(), errors);
-		validateRoles(person.getRoles(), errors);
     }
 
 	public List<PersonDTO> list(String lastName, Integer roleId, Date birthday, String orderBy, String order) {
@@ -114,13 +115,13 @@ public class PersonService extends AbstractService<Person, PersonDTO> implements
 	}
 
 	private void validateRoles(List<RoleDTO> roles, Errors errors) {
-		for (RoleDTO role: roles) {
-			String roleId = role.getId() == null? "null": role.getId().toString(); 
-			try {
-				roleDao.get(role.getId());
+		for (RoleDTO roleDTO: roles) { 
+			Role role = roleDao.get(roleDTO.getName());
+			if (role == null) {
+				errors.reject("role.validation.message.nameNotFound", new Object[] {roleDTO.getName()}, null);
 			}
-			catch (Exception cause) {
-				errors.reject("role.validation.message.notFound", roleId);
+			else {
+				roleDTO.setId(role.getId());
 			}
 		}
 	}
@@ -129,18 +130,21 @@ public class PersonService extends AbstractService<Person, PersonDTO> implements
 		for (int i = 0; i < contacts.size(); i++) {
 			ContactDTO contact = contacts.get(i);
 			ValidationUtils.testNotEmpty(contact.getContactType(), null, errors, "localize:person.contactType");
-			switch(contact.getContactType()) {
-				case "Landline":
-					validateNumericalContact(contact.getData(), errors, LANDLINE_DIGITS, "localize:person.contactType.landline"); 
-					break;
-				case "Mobile":
-					validateNumericalContact(contact.getData(), errors, MOBILE_NUMBER_DIGITS, "localize:person.contactType.mobile"); 
-					break;
-				case "Email":
-					validateEmail(contact.getData(), errors);
-					break;
-				default: 
-					errors.reject("localize:person.validation.contactType.invalid", contact.getContactType());
+
+			if (contact.getContactType() != null) {
+				switch(contact.getContactType()) {
+					case "Landline":
+						validateNumericalContact(contact.getData(), errors, LANDLINE_DIGITS, "localize:person.contactType.landline"); 
+						break;
+					case "Mobile":
+						validateNumericalContact(contact.getData(), errors, MOBILE_NUMBER_DIGITS, "localize:person.contactType.mobile"); 
+						break;
+					case "Email":
+						validateEmail(contact.getData(), errors);
+						break;
+					default: 
+						errors.reject("person.validation.contactType.invalid", new Object[] {contact.getContactType()}, null);
+				}
 			}
 		}
 	}
