@@ -16,7 +16,6 @@ import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 import org.springframework.web.servlet.support.RequestContextUtils;
-import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.validation.BindException;
 import org.apache.commons.lang3.StringUtils;
 
@@ -91,7 +90,13 @@ public class PersonController extends MultiActionController {
 			modelView.addObject(VIEW_PARAMETER_ACTION, "/create");
 		}
 		else {
-			person = personService.get(personId);
+			try {
+				person = personService.get(personId);
+			}
+			catch (ValidationException cause) {
+				request.setAttribute(ATTRIBUTE_PERSON_NOT_FOUND, true);
+				throw cause;
+			}
 			modelView.addAllObjects(constructViewParametersFromPerson(person));
 			modelView.addObject(VIEW_PARAMETER_HEADER, messageSource.getMessage("person.headerTitle.update", null, locale));
 			modelView.addObject(VIEW_PARAMETER_ACTION, "/update");
@@ -182,10 +187,10 @@ public class PersonController extends MultiActionController {
 				.collect(Collectors.joining("<br />"));
 		    modelView.addObject(VIEW_PARAMETER_ERROR_MESSAGE, errorMessage);
 		}
-		else if (cause instanceof DataRetrievalFailureException) {
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			request.setAttribute(ATTRIBUTE_PERSON_NOT_FOUND, true);
-		}
+		// else if (cause instanceof DataRetrievalFailureException) {
+		// 	response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+		// 	request.setAttribute(ATTRIBUTE_PERSON_NOT_FOUND, true);
+		// }
 		else {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		}

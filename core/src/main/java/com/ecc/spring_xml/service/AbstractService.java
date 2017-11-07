@@ -38,7 +38,7 @@ public abstract class AbstractService<T, R> implements Service<R> {
 
 	@Override
 	public void delete(Integer id) {
-		T entity = dao.get(id);
+		T entity = assembler.createModel(get(id));
 		try {
 			dao.delete(entity);
 		}
@@ -49,10 +49,17 @@ public abstract class AbstractService<T, R> implements Service<R> {
 
 	@Override
 	public R get(Integer id) {
-		return assembler.createDTO(dao.get(id));
+		try {
+			T entity = dao.get(id);
+			return assembler.createDTO(entity);
+		}
+		catch (RuntimeException cause) {
+			throw onGetFailure(id, cause);
+		}
 	}
 
 	protected RuntimeException onCreateFailure(T entity, RuntimeException cause) { return cause; }
 	protected RuntimeException onUpdateFailure(T entity, RuntimeException cause) { return cause; }
 	protected RuntimeException onDeleteFailure(T entity, RuntimeException cause) { return cause; }
+	protected RuntimeException onGetFailure(Integer id, RuntimeException cause) { return cause; }
 }

@@ -74,7 +74,6 @@
 		<constructor-arg ref="personDao" />
 		<constructor-arg ref="personAssembler" />
 		<constructor-arg ref="roleDao" />
-		<constructor-arg ref="roleAssembler" />
 	</bean>
 
 	<bean id="roleService" class="com.ecc.spring_xml.service.RoleService">

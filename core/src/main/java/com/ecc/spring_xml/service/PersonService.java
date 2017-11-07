@@ -15,7 +15,6 @@ import com.ecc.spring_xml.dto.RoleDTO;
 import com.ecc.spring_xml.dto.ContactDTO;
 import com.ecc.spring_xml.model.Person;
 import com.ecc.spring_xml.assembler.PersonAssembler;
-import com.ecc.spring_xml.assembler.RoleAssembler;
 import com.ecc.spring_xml.dao.PersonDao;
 import com.ecc.spring_xml.dao.RoleDao;
 import com.ecc.spring_xml.util.AssemblerUtils;
@@ -31,14 +30,12 @@ public class PersonService extends AbstractService<Person, PersonDTO> implements
 	private final PersonDao personDao;
 	private final PersonAssembler personAssembler;
 	private final RoleDao roleDao;
-	private final RoleAssembler roleAssembler;
 
-	public PersonService(PersonDao personDao, PersonAssembler personAssembler, RoleDao roleDao, RoleAssembler roleAssembler) {
+	public PersonService(PersonDao personDao, PersonAssembler personAssembler, RoleDao roleDao) {
 		super(personDao, personAssembler);
 		this.personDao = personDao;
 		this.personAssembler = personAssembler;
 		this.roleDao = roleDao;
-		this.roleAssembler = roleAssembler;
 	}
 
 	@Override
@@ -122,7 +119,7 @@ public class PersonService extends AbstractService<Person, PersonDTO> implements
 				roleDao.get(role.getId());			
 			}
 			catch (DataRetrievalFailureException cause) {
-				errors.reject("localize:person.validation.roles.notFound", role.getId().toString());
+				errors.reject("localize:role.validation.message.notFound", role.getId().toString());
 			}
 		}
 	}
@@ -157,5 +154,13 @@ public class PersonService extends AbstractService<Person, PersonDTO> implements
 		ValidationUtils.testNotEmpty(email, null, errors, "localize:person.contactType.email");
 		ValidationUtils.testValidEmail(email, null, errors);
 		ValidationUtils.testMaxLength(email, null, errors, LONG_MAX_CHARACTERS, "localize:person.contactType.email");
+	}
+
+	@Override
+	protected RuntimeException onGetFailure(Integer id, RuntimeException cause) {
+		if (cause instanceof DataRetrievalFailureException) {
+			return new ValidationException("person.validation.message.notFound", id);		
+		}
+		return super.onGetFailure(id, cause);
 	}
 }

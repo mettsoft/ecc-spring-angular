@@ -56,7 +56,13 @@ public class RoleController extends MultiActionController {
 			modelView.addObject(VIEW_PARAMETER_ACTION, "/create");
 		}
 		else {
-			role = roleService.get(roleId);
+			try {
+				role = roleService.get(roleId);
+			}
+			catch (ValidationException cause) {
+				request.setAttribute(ATTRIBUTE_ROLE_NOT_FOUND, true);
+				throw cause;
+			}
 			modelView.addObject(VIEW_PARAMETER_HEADER, messageSource.getMessage("role.headerTitle.update", null, locale));	
 			modelView.addObject(VIEW_PARAMETER_ACTION, "/update");
 		}
@@ -135,7 +141,7 @@ public class RoleController extends MultiActionController {
 
 		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 
-		modelView.addObject(DEFAULT_COMMAND_NAME, request.getAttribute(DEFAULT_COMMAND_NAME));
+		modelView.addObject(DEFAULT_COMMAND_NAME, request.getAttribute(DEFAULT_COMMAND_NAME) == null? new RoleDTO(): request.getAttribute(DEFAULT_COMMAND_NAME));
 
 		String errorMessage = ValidationUtils.localize(cause.getAllErrors(), messageSource, locale).stream()
 			.collect(Collectors.joining("<br />"));

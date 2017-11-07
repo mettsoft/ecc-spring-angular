@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.validation.Validator;
 import org.springframework.validation.Errors;
 
@@ -67,5 +68,13 @@ public class RoleService extends AbstractService<Role, RoleDTO> implements Valid
 			return new ValidationException("role.validation.message.inUsed", personNames);
 		}
 		return super.onDeleteFailure(role, cause);
+	}
+
+	@Override
+	protected RuntimeException onGetFailure(Integer id, RuntimeException cause) {
+		if (cause instanceof DataRetrievalFailureException) {
+			return new ValidationException("role.validation.message.notFound", id);		
+		}
+		return super.onGetFailure(id, cause);
 	}
 }
