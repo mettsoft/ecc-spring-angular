@@ -6,14 +6,17 @@ import org.springframework.validation.ObjectError;
 
 public class ValidationException extends RuntimeException {
 	private List<ObjectError> errors;
+	private Object target;
 
-	public ValidationException(String messageCode, Object...arguments) {
-		errors = new ArrayList<>(1);
-		errors.add(new ObjectError("command", new String[] { messageCode }, arguments, null));
+	public ValidationException(String messageCode, Object target, Object...arguments) {
+		this.errors = new ArrayList<>(1);
+		this.errors.add(new ObjectError("command", new String[] { messageCode }, arguments, null));
+		this.target = target;
 	}
 
-	public ValidationException(List<ObjectError> errors) {
+	public ValidationException(List<ObjectError> errors, Object target) {
 		this.errors = errors;
+		this.target = target;
 	}
 
 	public List<ObjectError> getAllErrors() {

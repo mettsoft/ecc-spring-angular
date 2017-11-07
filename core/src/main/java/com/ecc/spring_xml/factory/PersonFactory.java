@@ -12,7 +12,7 @@ public class PersonFactory {
 			return new Gson().fromJson(IOUtils.toString(data, "utf-8"), PersonDTO.class);
 		}
 		catch (Exception exception) {
-			throw new ValidationException("person.validation.message.invalidFormat");
+			throw new ValidationException("person.validation.message.invalidFormat", new PersonDTO());
 		}
 	}
 }

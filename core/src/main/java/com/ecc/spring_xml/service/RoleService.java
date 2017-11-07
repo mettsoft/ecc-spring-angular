@@ -52,7 +52,7 @@ public class RoleService extends AbstractService<Role, RoleDTO> implements Valid
 	@Override
 	protected RuntimeException onUpdateFailure(Role role, RuntimeException cause) {
 		if (cause instanceof DataIntegrityViolationException) {
-			return new ValidationException("role.validation.message.duplicateEntry", role.getName());
+			return new ValidationException("role.validation.message.duplicateEntry", roleAssembler.createDTO(role), role.getName());
 		}
 		return super.onUpdateFailure(role, cause);
 	}
@@ -65,7 +65,7 @@ public class RoleService extends AbstractService<Role, RoleDTO> implements Valid
 				.map(person -> person.getName().toString())
 				.collect(Collectors.joining("; "));
 
-			return new ValidationException("role.validation.message.inUsed", personNames);
+			return new ValidationException("role.validation.message.inUsed", roleAssembler.createDTO(role), personNames);
 		}
 		return super.onDeleteFailure(role, cause);
 	}
@@ -73,7 +73,7 @@ public class RoleService extends AbstractService<Role, RoleDTO> implements Valid
 	@Override
 	protected RuntimeException onGetFailure(Integer id, RuntimeException cause) {
 		if (cause instanceof DataRetrievalFailureException) {
-			return new ValidationException("role.validation.message.notFound", id);		
+			return new ValidationException("role.validation.message.notFound", new RoleDTO(), id);		
 		}
 		return super.onGetFailure(id, cause);
 	}

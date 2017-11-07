@@ -45,13 +45,13 @@ public class PersonService extends AbstractService<Person, PersonDTO> implements
 
     public void validate(PersonDTO person, String objectName) {
     	if (person == null) {
-    		throw new ValidationException("validation.message.notEmpty", "localize:person.form.label");
+    		throw new ValidationException("validation.message.notEmpty", new PersonDTO(), "localize:person.form.label");
     	}
 
     	Errors errors = new BindException(person, objectName);
     	validate(person, errors);
     	if (errors.hasErrors()) {
-    		throw new ValidationException(errors.getAllErrors());
+    		throw new ValidationException(errors.getAllErrors(), person);
     	}
     }
 
@@ -159,7 +159,7 @@ public class PersonService extends AbstractService<Person, PersonDTO> implements
 	@Override
 	protected RuntimeException onGetFailure(Integer id, RuntimeException cause) {
 		if (cause instanceof DataRetrievalFailureException) {
-			return new ValidationException("person.validation.message.notFound", id);		
+			return new ValidationException("person.validation.message.notFound", new PersonDTO(), id);		
 		}
 		return super.onGetFailure(id, cause);
 	}
