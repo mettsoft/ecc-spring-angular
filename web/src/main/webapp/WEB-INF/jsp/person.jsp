@@ -456,10 +456,8 @@
  
     if ('${command.currentlyEmployed}' === 'true') {
         document.getElementById('dateHired').disabled = false;
-        document.getElementsByName('currentlyEmployed')[0].checked = true;
     } else {
         document.getElementById('dateHired').disabled = true;
-        document.getElementsByName('currentlyEmployed')[1].checked = true;
     }
  
     var options = [document.getElementById('queryLastName'), document.getElementById('queryRoleId'), document.getElementById('queryBirthday')];
