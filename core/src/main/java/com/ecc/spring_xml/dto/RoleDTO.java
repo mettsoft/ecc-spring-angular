@@ -11,12 +11,6 @@ public class RoleDTO {
 	public RoleDTO() {
 		persons = new ArrayList<>();
 	}
-
-	public RoleDTO(Integer id, String name) {
-		this();
-		setId(id);
-		setName(name);
-	}
 	
 	public void setId(Integer id) {
 		this.id = id;

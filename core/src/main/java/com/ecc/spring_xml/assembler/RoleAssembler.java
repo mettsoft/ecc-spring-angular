@@ -14,7 +14,9 @@ public class RoleAssembler implements Assembler<Role, RoleDTO> {
 		if (model == null) {
 			return null;
 		}
-		RoleDTO dto = new RoleDTO(model.getId(), model.getName());
+		RoleDTO dto = new RoleDTO();
+		dto.setId(model.getId());
+		dto.setName(model.getName());
 		dto.setPersons(AssemblerUtils.asList(model.getPersons(), this::createProxyPersonDTO));
 		return dto;
 	}
@@ -24,7 +26,9 @@ public class RoleAssembler implements Assembler<Role, RoleDTO> {
 		if (dto == null) {
 			return null;
 		}
-		Role model = new Role(dto.getId(), dto.getName());
+		Role model = new Role();
+		model.setId(dto.getId());
+		model.setName(dto.getName());
 		model.setPersons(AssemblerUtils.asSet(dto.getPersons(), this::createProxyPersonModel));
 		return model;
 	}

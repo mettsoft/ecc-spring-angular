@@ -5,13 +5,6 @@ public class ContactDTO {
 	private String data;
 	private String contactType;
 
-	public ContactDTO() {}
-
-	public ContactDTO(String contactType, String data) {
-		setContactType(contactType);
-		setData(data);
-	}
-	
 	public Integer getId() {
 		return id;
 	}
