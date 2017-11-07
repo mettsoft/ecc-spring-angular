@@ -6,6 +6,7 @@ import java.util.Date;
 
 import org.springframework.validation.Validator;
 import org.springframework.validation.Errors;
+import org.springframework.validation.BindException;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.apache.commons.lang3.StringUtils;
 
@@ -19,6 +20,7 @@ import com.ecc.spring_xml.dao.PersonDao;
 import com.ecc.spring_xml.dao.RoleDao;
 import com.ecc.spring_xml.util.app.AssemblerUtils;
 import com.ecc.spring_xml.util.ValidationUtils;
+import com.ecc.spring_xml.util.ValidationException;
 
 public class PersonService extends AbstractService<Person, PersonDTO> implements Validator {
 	private static final Integer DEFAULT_MAX_CHARACTERS = 20;
@@ -44,13 +46,22 @@ public class PersonService extends AbstractService<Person, PersonDTO> implements
         return clazz.isAssignableFrom(PersonDTO.class);
     }
 
+    public void validate(PersonDTO person, String objectName) {
+    	if (person == null) {
+    		throw new ValidationException("validation.message.notEmpty", "localize:person.form.label");
+    	}
+
+    	Errors errors = new BindException(person, objectName);
+    	validate(person, errors);
+    	if (errors.hasErrors()) {
+    		throw new ValidationException(errors.getAllErrors());
+    	}
+    }
+
     @Override
     public void validate(Object command, Errors errors) {
     	PersonDTO person = (PersonDTO) command;
 
-    	// Validate Person not null on importing an empty file.
-    	// Check if missing name in upload is handled.
-    	// Check if missing address in upload is handled.
 		validateName(person.getName().getTitle(), "name.title", errors, "localize:person.form.label.name.title");
 		validateName(person.getName().getLastName(), "name.lastName", errors, "localize:person.form.label.name.lastName");
 		validateName(person.getName().getFirstName(), "name.firstName", errors, "localize:person.form.label.name.firstName");
