@@ -46,6 +46,7 @@ public class RoleService extends AbstractService<Role, RoleDTO> implements Valid
 
 	@Override
 	protected RuntimeException onCreateFailure(Role role, RuntimeException cause) {
+		role.setId(null);
 		return onUpdateFailure(role, cause);
 	}
 

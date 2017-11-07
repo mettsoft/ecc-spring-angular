@@ -22,4 +22,8 @@ public class ValidationException extends RuntimeException {
 	public List<ObjectError> getAllErrors() {
 		return errors;
 	}
+
+	public Object getTarget() {
+		return target;
+	}
 }

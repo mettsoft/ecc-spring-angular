@@ -45,8 +45,9 @@
     </a>
     <div class="container">
         <div>
-            <!-- TODO -->
-            <h3 class="error-message">${errorMessage}</h3>
+            <c:forEach items="${errorMessages}" var="errorMessage">
+                <h3 class="error-message">${errorMessage}</h3>
+            </c:forEach>
             <h3>${successMessage}</h3>
             <h3>${headerTitle}</h3>
             <form:form action="/role${action}" method="POST">
