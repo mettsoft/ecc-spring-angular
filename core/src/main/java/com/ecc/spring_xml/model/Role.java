@@ -1,6 +1,7 @@
 package com.ecc.spring_xml.model;
 
 import java.util.Set;
+import java.util.HashSet;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Id;
@@ -38,11 +39,8 @@ public class Role {
 	@OrderBy
 	private Set<Person> persons;
 
-	public Role() {}
-
-	public Role(Integer id, String name) {
-		setId(id);
-		setName(name);
+	public Role() {
+		persons = new HashSet<>();
 	}
 
 	public Integer getId() {

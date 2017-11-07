@@ -71,15 +71,11 @@ public class Person {
 		setContacts(new HashSet<>());
 		setRoles(new HashSet<>());
 	}
-
-	public Person(Name name) {
-		this();
-		setName(name);
-	}
 	
 	public Person(Integer id, Name name) {
-		this(name);
-		setId(id);		
+		this();
+		setId(id);
+		setName(name);		
 	}
 	
 	public Integer getId() {

@@ -1,7 +1,5 @@
 package com.ecc.spring_xml.model;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
