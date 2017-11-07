@@ -11,7 +11,7 @@ import com.ecc.spring_xml.dto.RoleDTO;
 import com.ecc.spring_xml.model.Role;
 import com.ecc.spring_xml.dao.RoleDao;
 import com.ecc.spring_xml.assembler.RoleAssembler;
-import com.ecc.spring_xml.util.app.AssemblerUtils;
+import com.ecc.spring_xml.util.AssemblerUtils;
 import com.ecc.spring_xml.util.ValidationUtils;
 import com.ecc.spring_xml.util.ValidationException;
 

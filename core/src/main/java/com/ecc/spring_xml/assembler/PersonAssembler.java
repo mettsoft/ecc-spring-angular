@@ -4,7 +4,7 @@ import com.ecc.spring_xml.model.Person;
 import com.ecc.spring_xml.model.Address;
 import com.ecc.spring_xml.dto.PersonDTO;
 import com.ecc.spring_xml.dto.AddressDTO;
-import com.ecc.spring_xml.util.app.AssemblerUtils;
+import com.ecc.spring_xml.util.AssemblerUtils;
 
 public class PersonAssembler implements Assembler<Person, PersonDTO> {
 	private NameAssembler nameAssembler = new NameAssembler();

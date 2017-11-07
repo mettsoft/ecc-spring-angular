@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import com.ecc.spring_xml.util.app.DateUtils;
+import com.ecc.spring_xml.util.DateUtils;
 
 public class PersonDTO {
 	private Integer id;

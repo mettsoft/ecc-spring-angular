@@ -15,7 +15,7 @@ import org.springframework.validation.BindException;
 
 import com.ecc.spring_xml.dto.RoleDTO;
 import com.ecc.spring_xml.service.RoleService;
-import com.ecc.spring_xml.util.app.NumberUtils;
+import com.ecc.spring_xml.util.NumberUtils;
 import com.ecc.spring_xml.util.ValidationUtils;
 import com.ecc.spring_xml.util.ValidationException;
 

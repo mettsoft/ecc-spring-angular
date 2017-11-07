@@ -1,4 +1,4 @@
-package com.ecc.spring_xml.util.app;
+package com.ecc.spring_xml.util;
 
 import java.util.Collection;
 import java.util.List;

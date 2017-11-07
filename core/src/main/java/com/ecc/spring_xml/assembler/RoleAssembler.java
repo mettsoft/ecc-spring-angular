@@ -4,7 +4,7 @@ import com.ecc.spring_xml.model.Role;
 import com.ecc.spring_xml.model.Person;
 import com.ecc.spring_xml.dto.RoleDTO;
 import com.ecc.spring_xml.dto.PersonDTO;
-import com.ecc.spring_xml.util.app.AssemblerUtils;
+import com.ecc.spring_xml.util.AssemblerUtils;
 
 public class RoleAssembler implements Assembler<Role, RoleDTO> {
 	private NameAssembler nameAssembler = new NameAssembler();

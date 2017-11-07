@@ -18,7 +18,7 @@ import com.ecc.spring_xml.assembler.PersonAssembler;
 import com.ecc.spring_xml.assembler.RoleAssembler;
 import com.ecc.spring_xml.dao.PersonDao;
 import com.ecc.spring_xml.dao.RoleDao;
-import com.ecc.spring_xml.util.app.AssemblerUtils;
+import com.ecc.spring_xml.util.AssemblerUtils;
 import com.ecc.spring_xml.util.ValidationUtils;
 import com.ecc.spring_xml.util.ValidationException;
 
