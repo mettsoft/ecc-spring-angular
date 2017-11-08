@@ -1,6 +1,7 @@
 package com.ecc.spring_xml.assembler;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.ecc.spring_xml.model.Person;
 import com.ecc.spring_xml.model.Name;
@@ -10,6 +11,7 @@ import com.ecc.spring_xml.dto.NameDTO;
 import com.ecc.spring_xml.dto.AddressDTO;
 import com.ecc.spring_xml.util.AssemblerUtils;
 
+@Component
 public class PersonAssembler implements Assembler<Person, PersonDTO> {
 	@Autowired
 	private RoleAssembler roleAssembler;

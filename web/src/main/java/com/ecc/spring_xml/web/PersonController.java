@@ -63,6 +63,9 @@ public class PersonController extends MultiActionController {
 	private PersonService personService;
 
 	@Autowired
+	private PersonFactory personFactory;
+
+	@Autowired
 	private RoleService roleService;
 
 	@Autowired
@@ -123,7 +126,7 @@ public class PersonController extends MultiActionController {
 	public String upload(HttpServletRequest request, HttpServletResponse response, FileUploadBean file) {
 		if (request.getMethod().equals("POST")) {
 			request.setAttribute(ATTRIBUTE_FORCE_CREATE_MODE, true);
-			PersonDTO person = PersonFactory.createPersonDTO(file.getFile().getBytes());
+			PersonDTO person = personFactory.createPersonDTO(file.getFile().getBytes());
 			personService.validate(person, DEFAULT_COMMAND_NAME);
 			return create(request, response, person);
 		}

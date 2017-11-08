@@ -8,6 +8,7 @@ import java.util.regex.Matcher;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Component;
 
 import com.ecc.spring_xml.dto.PersonDTO;
 import com.ecc.spring_xml.dto.ContactDTO;
@@ -15,13 +16,14 @@ import com.ecc.spring_xml.dto.RoleDTO;
 import com.ecc.spring_xml.util.ValidationException;
 import com.ecc.spring_xml.util.DateUtils;
 
+@Component
 public class PersonFactory {
    	private static final Pattern PATTERN = Pattern.compile("(.*)=(.*)");
    	private static final String CONTACT_TYPE_LANDLINE = "Landline";
    	private static final String CONTACT_TYPE_MOBILE = "Mobile";
    	private static final String CONTACT_TYPE_EMAIL = "Email";
 
-	public static PersonDTO createPersonDTO(byte[] data) {
+	public PersonDTO createPersonDTO(byte[] data) {
 		try {
 			String dataString = IOUtils.toString(data, "utf-8");
 			Matcher matcher = PATTERN.matcher(dataString);

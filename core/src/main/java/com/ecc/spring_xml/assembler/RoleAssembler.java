@@ -1,11 +1,13 @@
 package com.ecc.spring_xml.assembler;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.ecc.spring_xml.model.Role;
 import com.ecc.spring_xml.dto.RoleDTO;
 import com.ecc.spring_xml.util.AssemblerUtils;
 
+@Component
 public class RoleAssembler implements Assembler<Role, RoleDTO> {
 	@Autowired
 	private PersonAssembler personAssembler;

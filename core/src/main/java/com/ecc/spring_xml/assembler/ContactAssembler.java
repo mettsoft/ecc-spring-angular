@@ -1,8 +1,11 @@
 package com.ecc.spring_xml.assembler;
 
+import org.springframework.stereotype.Component;
+
 import com.ecc.spring_xml.model.Contact;
 import com.ecc.spring_xml.dto.ContactDTO;
 
+@Component
 public class ContactAssembler implements Assembler<Contact, ContactDTO> {
 	@Override
 	public ContactDTO createDTO(Contact model) {

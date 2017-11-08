@@ -3,6 +3,7 @@ package com.ecc.spring_xml.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.stereotype.Component;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.validation.Validator;
@@ -16,6 +17,7 @@ import com.ecc.spring_xml.util.AssemblerUtils;
 import com.ecc.spring_xml.util.ValidationUtils;
 import com.ecc.spring_xml.util.ValidationException;
 
+@Component("roleService")
 public class RoleService extends AbstractService<Role, RoleDTO> implements Validator {
 	private static final Integer MAX_CHARACTERS = 20;
 
