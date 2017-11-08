@@ -1,0 +1,15 @@
+name:title = Mr.
+name:lastName = Young
+name:firstName = Emmett 
+name:middleName = N.
+name:suffix = Jr.
+address:streetNumber = 1410
+address:barangay = 317
+address:municipality = Manila
+address:zipCode = 1003
+birthday = 1992-08-04
+GWA = 1.003
+currentlyEmployed = true
+dateHired = 2017-08-23
+contacts = Landline:7815037, Mobile:09955886334, Email:emmettyoung92@gmail.com
+roles = QA, Software Engineer

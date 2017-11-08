@@ -106,7 +106,7 @@
                                 <spring:message code="form.button.noFileSelected" />
                             </label>
                         </div>
-                        <input id="file-button" hidden type="file" name="file" accept=".json">
+                        <input id="file-button" hidden type="file" name="file" accept=".txt">
                         <button hidden id="upload-button">
                             <spring:message code="form.button.upload" />
                         </button>

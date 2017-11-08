@@ -127,6 +127,7 @@ public class PersonController extends MultiActionController {
 
 	public String upload(HttpServletRequest request, HttpServletResponse response, FileUploadBean file) {
 		if (request.getMethod().equals("POST")) {
+			request.setAttribute(ATTRIBUTE_FORCE_CREATE_MODE, true);
 			PersonDTO person = PersonFactory.createPersonDTO(file.getFile().getBytes());
 			personService.validate(person, DEFAULT_COMMAND_NAME);
 			return create(request, response, person);
@@ -178,8 +179,10 @@ public class PersonController extends MultiActionController {
 			}
 
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			modelView.addAllObjects(constructViewParametersFromPerson((PersonDTO) target));
-			modelView.addObject(DEFAULT_COMMAND_NAME, target);
+			if (request.getAttribute(ATTRIBUTE_FORCE_CREATE_MODE) == null) {
+				modelView.addAllObjects(constructViewParametersFromPerson((PersonDTO) target));
+				modelView.addObject(DEFAULT_COMMAND_NAME, target);				
+			}
 			modelView.addObject(VIEW_PARAMETER_ERROR_MESSAGES, ValidationUtils.localize(errors, messageSource, locale));
 			cause.printStackTrace();
 			if (cause.getCause() != null) {

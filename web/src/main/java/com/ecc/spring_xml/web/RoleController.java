@@ -136,7 +136,9 @@ public class RoleController extends MultiActionController {
 			}
 
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			modelView.addObject(DEFAULT_COMMAND_NAME, target);
+			if (request.getAttribute(ATTRIBUTE_FORCE_CREATE_MODE) == null) {
+				modelView.addObject(DEFAULT_COMMAND_NAME, target);				
+			}
 			modelView.addObject(VIEW_PARAMETER_ERROR_MESSAGES, ValidationUtils.localize(errors, messageSource, locale));
 			cause.printStackTrace();
 			if (cause.getCause() != null) {
