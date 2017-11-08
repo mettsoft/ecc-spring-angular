@@ -1,8 +1,5 @@
 package com.ecc.spring_xml.web;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.Arrays;
 import java.util.Locale;
 import java.util.List;
 import java.util.Date;
@@ -11,16 +8,21 @@ import java.util.HashMap;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.context.MessageSource;
-import org.springframework.web.bind.ServletRequestBindingException;
-import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 import org.springframework.web.servlet.support.RequestContextUtils;
-import org.springframework.validation.BindException;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.apache.commons.lang3.StringUtils;
 
 import com.ecc.spring_xml.dto.PersonDTO;
 import com.ecc.spring_xml.factory.PersonFactory;
@@ -32,7 +34,10 @@ import com.ecc.spring_xml.util.NumberUtils;
 import com.ecc.spring_xml.util.ValidationUtils;
 import com.ecc.spring_xml.util.ValidationException;
 
-public class PersonController extends MultiActionController {
+@Controller
+@RequestMapping("/persons")
+public class PersonController {
+	private static final String DEFAULT_COMMAND_NAME = "command";
 	private static final String FORM_PARAMETER_PERSON_ID = "id";
 
 	private static final String FORM_PARAMETER_PERSON_ROLE_IDS = "personRoleIds";
@@ -71,9 +76,17 @@ public class PersonController extends MultiActionController {
 	@Autowired
 	private MessageSource messageSource;
 
-	public ModelAndView list(HttpServletRequest request, HttpServletResponse response) {
+	@InitBinder
+	protected void initBinder(WebDataBinder binder) {
+		if (personService.supports(binder.getTarget().getClass())) {
+			binder.setValidator(personService);		
+		}
+	    binder.registerCustomEditor(Date.class, new CustomDateEditor(DateUtils.DATE_FORMAT, true));
+	}
+
+	@RequestMapping(method = RequestMethod.GET)
+	public ModelAndView list(HttpServletRequest request, Locale locale) {
 		ModelAndView modelView = new ModelAndView("person");
-		Locale locale = RequestContextUtils.getLocale(request);
 		modelView.addObject(VIEW_PARAMETER_LOCALE, locale);
 
 		PersonDTO person = new PersonDTO();
@@ -111,103 +124,67 @@ public class PersonController extends MultiActionController {
 		return modelView;
 	}
 
-	public String create(HttpServletRequest request, HttpServletResponse response, PersonDTO person) {
-		Locale locale = RequestContextUtils.getLocale(request);
-		if (request.getMethod().equals("POST")) {
-			personService.create(person);
-
-			String message = messageSource.getMessage("person.successMessage.create", new Object[] {person.getName()}, locale);
-			RequestContextUtils.getOutputFlashMap(request).put(VIEW_PARAMETER_SUCCESS_MESSAGE, message);
-			return "redirect:/person/list";
+	@RequestMapping(value = "/create", method = RequestMethod.POST)
+	public String create(HttpServletRequest request, @Validated PersonDTO person, BindingResult bindingResult, Locale locale) {
+		if (bindingResult != null && bindingResult.hasErrors()) {
+			throw new ValidationException(bindingResult.getAllErrors(), person);
 		}
-		throw new UnsupportedOperationException("Unsupported operation!");
+
+		personService.create(person);
+
+		String message = messageSource.getMessage("person.successMessage.create", new Object[] { person.getName() }, locale);
+		RequestContextUtils.getOutputFlashMap(request).put(VIEW_PARAMETER_SUCCESS_MESSAGE, message);
+		return "redirect:/persons";
 	}
 
-	public String upload(HttpServletRequest request, HttpServletResponse response, FileUploadBean file) {
-		if (request.getMethod().equals("POST")) {
-			request.setAttribute(ATTRIBUTE_FORCE_CREATE_MODE, true);
-			PersonDTO person = personFactory.createPersonDTO(file.getFile().getBytes());
-			personService.validate(person, DEFAULT_COMMAND_NAME);
-			return create(request, response, person);
-		}
-		throw new UnsupportedOperationException("Unsupported operation!");
+	@RequestMapping(value = "/upload", method = RequestMethod.POST)
+	public String upload(HttpServletRequest request, FileUploadBean file, Locale locale) {
+		request.setAttribute(ATTRIBUTE_FORCE_CREATE_MODE, true);
+		PersonDTO person = personFactory.createPersonDTO(file.getFile().getBytes());
+		personService.validate(person, DEFAULT_COMMAND_NAME);
+		return create(request, person, null, locale);
 	}
 
-	public String update(HttpServletRequest request, HttpServletResponse response, PersonDTO person) {
-		Locale locale = RequestContextUtils.getLocale(request);
-		if (request.getMethod().equals("POST")) {
-			personService.update(person);
-
-			String message = messageSource.getMessage("person.successMessage.update", new Object[] {person.getName()}, locale);
-			RequestContextUtils.getOutputFlashMap(request).put(VIEW_PARAMETER_SUCCESS_MESSAGE, message);
-			return "redirect:/person/list";
+	@RequestMapping(value = "/update", method = RequestMethod.POST)
+	public String update(HttpServletRequest request, @Validated PersonDTO person, BindingResult bindingResult, Locale locale) {
+		if (bindingResult.hasErrors()) {
+			throw new ValidationException(bindingResult.getAllErrors(), person);
 		}
-		throw new UnsupportedOperationException("Unsupported operation!");
+		personService.update(person);
+
+		String message = messageSource.getMessage("person.successMessage.update", new Object[] { person.getName() }, locale);
+		RequestContextUtils.getOutputFlashMap(request).put(VIEW_PARAMETER_SUCCESS_MESSAGE, message);
+		return "redirect:/persons";
 	}
 
-	public String delete(HttpServletRequest request, HttpServletResponse response, PersonDTO person) {
-		Locale locale = RequestContextUtils.getLocale(request);
-		if (request.getMethod().equals("POST")) {
-			request.setAttribute(ATTRIBUTE_FORCE_CREATE_MODE, true);
-			personService.delete(person.getId());
+	@RequestMapping(value = "/delete", method = RequestMethod.POST)
+	public String delete(HttpServletRequest request, PersonDTO person, Locale locale) {
+		request.setAttribute(ATTRIBUTE_FORCE_CREATE_MODE, true);
+		personService.delete(person.getId());
 
-			String message = messageSource.getMessage("person.successMessage.delete", new Object[] {person.getName()}, locale);
-			RequestContextUtils.getOutputFlashMap(request).put(VIEW_PARAMETER_SUCCESS_MESSAGE, message);
-			return "redirect:/person/list";
-		}
-		throw new UnsupportedOperationException("Unsupported operation!");
+		String message = messageSource.getMessage("person.successMessage.delete", new Object[] { person.getName() }, locale);
+		RequestContextUtils.getOutputFlashMap(request).put(VIEW_PARAMETER_SUCCESS_MESSAGE, message);
+		return "redirect:/persons";
 	}
 
-	public ModelAndView exceptionHandler(HttpServletRequest request, HttpServletResponse response, Exception cause) throws Exception {
-		if (cause instanceof ServletRequestBindingException || cause instanceof ValidationException) {
-			Locale locale = RequestContextUtils.getLocale(request);
-			ModelAndView modelView = list(request, response);
-			List<ObjectError> errors = null;
-			Object target = null;
+	@ExceptionHandler({ ValidationException.class })
+	public ModelAndView exceptionHandler(HttpServletRequest request, HttpServletResponse response, ValidationException cause, Locale locale) {
+		ModelAndView modelView = list(request, locale);
+		List<ObjectError> errors = cause.getAllErrors();
+		Object target = cause.getTarget();
 
-			if (cause instanceof ServletRequestBindingException) {
-			    BindException bindException = (BindException) ((ServletRequestBindingException)cause).getRootCause();
-			    errors = bindException.getAllErrors();
-			    target = bindException.getTarget();
-			}
-			else {
-				ValidationException validationException = (ValidationException) cause;
-				errors = validationException.getAllErrors();
-				target = validationException.getTarget();
-			}
-
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			if (request.getAttribute(ATTRIBUTE_FORCE_CREATE_MODE) == null) {
-				modelView.addAllObjects(constructViewParametersFromPerson((PersonDTO) target));
-				modelView.addObject(DEFAULT_COMMAND_NAME, target);				
-			}
-			modelView.addObject(VIEW_PARAMETER_ERROR_MESSAGES, ValidationUtils.localize(errors, messageSource, locale));
+		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+		if (request.getAttribute(ATTRIBUTE_FORCE_CREATE_MODE) == null) {
+			modelView.addAllObjects(constructViewParametersFromPerson((PersonDTO) target));
+			modelView.addObject(DEFAULT_COMMAND_NAME, target);				
+		}
+		modelView.addObject(VIEW_PARAMETER_ERROR_MESSAGES, ValidationUtils.localize(errors, messageSource, locale));
+		cause.printStackTrace();
+		if (cause.getCause() != null) {
 			cause.printStackTrace();
-			if (cause.getCause() != null) {
-				cause.printStackTrace();
-			}
-
-			return modelView;
 		}
-		throw cause;
-	}
 
-	@Override
-	protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
-		super.initBinder(request, binder);
-	    binder.registerCustomEditor(Date.class, new CustomDateEditor(DateUtils.DATE_FORMAT, true));
-	}
-
-	@Override
-	protected void bind(HttpServletRequest request, Object command) throws Exception {
-		try {
-			super.bind(request, command);		
-		}
-		catch (Exception cause) {
-			if (!StringUtils.containsIgnoreCase(request.getServletPath(), "delete")) {
-				throw cause;
-			}
-		}
+		return modelView;
 	}
 
 	private Map<String, Object> queryToViewParameters(HttpServletRequest request) {

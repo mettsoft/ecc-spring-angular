@@ -51,7 +51,7 @@
 </head>
 <body>
     <div style="float: right;">
-        <a href="/person/list?language=${locale=='en'? 'fil' : 'en'}">
+        <a href="/persons?language=${locale=='en'? 'fil' : 'en'}">
             <spring:message code="language.${locale == 'en'? 'filipino': 'english'}" />
         </a>                
     </div>
@@ -84,7 +84,7 @@
     </div>
 
     <!-- Start Content -->
-    <a href="/role/list">
+    <a href="/roles">
         <spring:message code="person.navigation" />
     </a>
     <div class="container">
@@ -97,7 +97,7 @@
             <fieldset>
                 <legend><strong>${headerTitle}</strong></legend>
                 <c:if test="${action == '/create'}">
-                    <form action="/person/upload" method="POST" enctype="multipart/form-data">
+                    <form action="/persons/upload" method="POST" enctype="multipart/form-data">
                         <div class="browse-button-container">
                             <button id="browse-button">
                                 <spring:message code="form.button.chooseFile" />
@@ -112,7 +112,7 @@
                         </button>
                     </form>
                 </c:if>
-                <form:form action="/person${action}" method="POST" onsubmit="return onSubmit()">
+                <form:form action="/persons${action}" method="POST" onsubmit="return onSubmit()">
                     <button hidden></button>
                     <form:input type="hidden" path="id" />
                     <input type="hidden" name="querySearchType" value="${querySearchType}">
@@ -270,7 +270,7 @@
             <h3>
                 <spring:message code="person.data.header" />
             </h3>
-            <form action="/person/list" method="GET">
+            <form action="/persons" method="GET">
                 <fieldset>
                     <legend>
                         <spring:message code="person.data.searchParameters" />
@@ -396,7 +396,7 @@
                                         </c:forEach>
                                     </td>
                                     <td>
-                                        <form action="/person/list" method="GET">
+                                        <form action="/persons" method="GET">
                                             <input type="hidden" name="id" value="${person.id}">
                                             <input type="hidden" name="querySearchType" value="${querySearchType}">
                                             <input type="hidden" name="queryLastName" value="${queryLastName}">
@@ -410,7 +410,7 @@
                                         </form>
                                     </td>
                                     <td>
-                                        <form action="/person/delete" method="POST">
+                                        <form action="/persons/delete" method="POST">
                                             <input type="hidden" name="id" value="${person.id}">
                                             <input type="hidden" name="name.title" value="${person.name.title}">
                                             <input type="hidden" name="name.lastName" value="${person.name.lastName}">
