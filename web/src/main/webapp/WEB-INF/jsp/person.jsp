@@ -8,6 +8,15 @@
         <spring:message code="person.title" />
     </title>
     <style>
+        .browse-button-container {
+            display: inline-flex;
+        }
+
+        .browse-button-container label {
+            margin: auto;
+            font-size: 14;
+        }
+
         div.container {
             display: inline-flex;
             width: 100%;
@@ -88,9 +97,17 @@
             <fieldset>
                 <legend><strong>${headerTitle}</strong></legend>
                 <c:if test="${action == '/create'}">
-                    <form action="/person/upload" method="POST" enctype="multipart/form-data"> 
-                        <input type="file" name="file" accept=".json">
-                        <button>
+                    <form action="/person/upload" method="POST" enctype="multipart/form-data">
+                        <div class="browse-button-container">
+                            <button id="browse-button">
+                                <spring:message code="form.button.chooseFile" />
+                            </button>
+                            <label for="browse-button">
+                                <spring:message code="form.button.noFileSelected" />
+                            </label>
+                        </div>
+                        <input id="file-button" hidden type="file" name="file" accept=".json">
+                        <button hidden id="upload-button">
                             <spring:message code="form.button.upload" />
                         </button>
                     </form>
@@ -482,6 +499,16 @@
 
         document.querySelectorAll('input.contactData').forEach((e, i) => e.name = 'contacts[' + (i-1) + '].data');
     }
+
+    document.getElementById('browse-button').addEventListener("click", (element) => {
+        document.getElementById('file-button').click();
+        element.preventDefault();
+    });
+
+    document.getElementById('file-button').addEventListener("change", (element) => {
+        document.querySelector('.browse-button-container label').innerHTML = element.target.value.split("\\").pop();
+        document.getElementById('upload-button').hidden = false;
+    });
 </script>
 
 </html>
