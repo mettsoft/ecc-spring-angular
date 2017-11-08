@@ -10,21 +10,18 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
-import org.springframework.web.servlet.ViewResolver;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
-import org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping;
-import org.springframework.validation.Validator;
-
-import com.ecc.spring_xml.web.RoleController;
-import com.ecc.spring_xml.web.PersonController;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.springframework.web.servlet.ViewResolver;
 
 @Configuration
 @ComponentScan(basePackages = "com.ecc.spring_xml")
+@EnableWebMvc
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 public class AppConfiguration extends WebMvcConfigurerAdapter {   
 	@Autowired
@@ -60,7 +57,6 @@ public class AppConfiguration extends WebMvcConfigurerAdapter {
         return localeResolver;
     }
 
-    // TODO: This is not working!
 	@Bean
     public LocaleChangeInterceptor getLocaleChangeInterceptor() {
          LocaleChangeInterceptor getLocaleChangeInterceptor = new LocaleChangeInterceptor();
@@ -71,25 +67,6 @@ public class AppConfiguration extends WebMvcConfigurerAdapter {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(getLocaleChangeInterceptor());
-    }
-
-    @Bean
-    public ControllerClassNameHandlerMapping getHandlerMapping() {
-        return new ControllerClassNameHandlerMapping();
-    }
-
-    @Bean
-    public PersonController getPersonController() {
-        PersonController personController = new PersonController();
-        personController.setValidators(new Validator[] { (Validator) beanFactory.getBean("personService") });
-        return personController;
-    }
-
-    @Bean
-    public RoleController getRoleController() {
-        RoleController roleController = new RoleController();
-        roleController.setValidators(new Validator[] { (Validator) beanFactory.getBean("roleService") });
-        return roleController;
     }
 
     @Bean(name = "multipartResolver")

@@ -1,18 +1,23 @@
 package com.ecc.spring_xml.web;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.web.bind.ServletRequestBindingException;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 import org.springframework.web.servlet.support.RequestContextUtils;
-import org.springframework.validation.BindException;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 
 import com.ecc.spring_xml.dto.RoleDTO;
@@ -21,7 +26,10 @@ import com.ecc.spring_xml.util.NumberUtils;
 import com.ecc.spring_xml.util.ValidationUtils;
 import com.ecc.spring_xml.util.ValidationException;
 
-public class RoleController extends MultiActionController {
+@Controller
+@RequestMapping("/roles")
+public class RoleController {
+	private static final String DEFAULT_COMMAND_NAME = "command";
 	private static final String QUERY_PARAMETER_ROLE_ID = "id";
 
 	private static final String VIEW_PARAMETER_ERROR_MESSAGES = "errorMessages";
@@ -39,9 +47,14 @@ public class RoleController extends MultiActionController {
 	@Autowired
 	private MessageSource messageSource;
 
-	public ModelAndView list(HttpServletRequest request, HttpServletResponse response) {
+	@InitBinder
+	protected void initBinder(WebDataBinder binder) {
+		binder.setValidator(roleService);
+	}
+
+	@RequestMapping(method = RequestMethod.GET)
+	public ModelAndView list(HttpServletRequest request, Locale locale) {
 		ModelAndView modelView = new ModelAndView("role");
-		Locale locale = RequestContextUtils.getLocale(request);
 		modelView.addObject(VIEW_PARAMETER_LOCALE, locale);
 
 		RoleDTO role = new RoleDTO();
@@ -58,7 +71,7 @@ public class RoleController extends MultiActionController {
 				request.setAttribute(ATTRIBUTE_FORCE_CREATE_MODE, true);
 				throw cause;
 			}
-			modelView.addObject(VIEW_PARAMETER_HEADER, messageSource.getMessage("role.headerTitle.update", null, locale));	
+			modelView.addObject(VIEW_PARAMETER_HEADER, messageSource.getMessage("role.headerTitle.update", null, locale));
 			modelView.addObject(VIEW_PARAMETER_ACTION, "/update");
 		}
 		modelView.addObject(DEFAULT_COMMAND_NAME, role);
@@ -70,80 +83,65 @@ public class RoleController extends MultiActionController {
 		return modelView;
 	}
 
-	public String create(HttpServletRequest request, HttpServletResponse response, RoleDTO role) {
-		Locale locale = RequestContextUtils.getLocale(request);
-		if (request.getMethod().equals("POST")) {
-			roleService.create(role);
-
-			String message = messageSource.getMessage("role.successMessage.create", new Object[] {role.getName()}, locale);
-			RequestContextUtils.getOutputFlashMap(request).put(VIEW_PARAMETER_SUCCESS_MESSAGE, message);
-			return "redirect:/role/list";
+	@RequestMapping(value = "/create", method = RequestMethod.POST)
+	public String create(HttpServletRequest request, @Validated RoleDTO role, BindingResult bindingResult, Locale locale) {
+		if (bindingResult.hasErrors()) {
+			throw new ValidationException(bindingResult.getAllErrors(), role);
 		}
-		throw new UnsupportedOperationException("Unsupported operation!");
+
+		roleService.create(role);
+
+		String message = messageSource.getMessage("role.successMessage.create", new Object[] {role.getName()}, locale);
+		RequestContextUtils.getOutputFlashMap(request).put(VIEW_PARAMETER_SUCCESS_MESSAGE, message);
+		return "redirect:/roles";
 	}
 
-	public String update(HttpServletRequest request, HttpServletResponse response, RoleDTO role) {
-		Locale locale = RequestContextUtils.getLocale(request);
-		if (request.getMethod().equals("POST")) {
-			roleService.update(role);
-
-			role = roleService.get(role.getId());
-			String message = messageSource.getMessage("role.successMessage.update", new Object[] {role.getName()}, locale);
-			if (role.getPersons().size() > 0) {
-				String personNames = role.getPersons().stream()
-					.map(person -> person.getName().toString())
-					.collect(Collectors.joining("; "));
-				message += " " + messageSource.getMessage("role.successMessage.affectedPersons", new Object[] {personNames}, locale);
-			}
-			RequestContextUtils.getOutputFlashMap(request).put(VIEW_PARAMETER_SUCCESS_MESSAGE, message);
-			return "redirect:/role/list";
+	@RequestMapping(value = "/update", method = RequestMethod.POST)
+	public String update(HttpServletRequest request, @Validated RoleDTO role, BindingResult bindingResult, Locale locale) {
+		if (bindingResult.hasErrors()) {
+			throw new ValidationException(bindingResult.getAllErrors(), role);
 		}
-		throw new UnsupportedOperationException("Unsupported operation!");
+	
+		roleService.update(role);
+
+		role = roleService.get(role.getId());
+		String message = messageSource.getMessage("role.successMessage.update", new Object[] { role.getName() }, locale);
+		if (role.getPersons().size() > 0) {
+			String personNames = role.getPersons().stream()
+				.map(person -> person.getName().toString())
+				.collect(Collectors.joining("; "));
+			message += " " + messageSource.getMessage("role.successMessage.affectedPersons", new Object[] { personNames }, locale);
+		}
+		RequestContextUtils.getOutputFlashMap(request).put(VIEW_PARAMETER_SUCCESS_MESSAGE, message);
+		return "redirect:/roles";
 	}
 
-	public String delete(HttpServletRequest request, HttpServletResponse response, RoleDTO role) {
-		Locale locale = RequestContextUtils.getLocale(request);
-		if (request.getMethod().equals("POST")) {
-			request.setAttribute(ATTRIBUTE_FORCE_CREATE_MODE, true);
-			roleService.delete(role.getId());	
+	@RequestMapping(value = "/delete", method = RequestMethod.POST)
+	public String delete(HttpServletRequest request, RoleDTO role, Locale locale) {
+		request.setAttribute(ATTRIBUTE_FORCE_CREATE_MODE, true);
+		roleService.delete(role.getId());	
 
-			String message = messageSource.getMessage("role.successMessage.delete", new Object[] {role.getName()}, locale);
-			RequestContextUtils.getOutputFlashMap(request).put(VIEW_PARAMETER_SUCCESS_MESSAGE, message);
-			return "redirect:/role/list";
-		}
-		throw new UnsupportedOperationException("Unsupported operation!");
+		String message = messageSource.getMessage("role.successMessage.delete", new Object[] { role.getName() }, locale);
+		RequestContextUtils.getOutputFlashMap(request).put(VIEW_PARAMETER_SUCCESS_MESSAGE, message);
+		return "redirect:/roles";
 	}
 
-	public ModelAndView exceptionHandler(HttpServletRequest request, HttpServletResponse response, Exception cause) throws Exception {
-		if (cause instanceof ServletRequestBindingException || cause instanceof ValidationException) {
-			Locale locale = RequestContextUtils.getLocale(request);
-			ModelAndView modelView = list(request, response);
-			List<ObjectError> errors = null;
-			Object target = null;
-
-			if (cause instanceof ServletRequestBindingException) {
-			    BindException bindException = (BindException) ((ServletRequestBindingException)cause).getRootCause();
-			    errors = bindException.getAllErrors();
-			    target = bindException.getTarget();
-			}
-			else {
-				ValidationException validationException = (ValidationException) cause;
-				errors = validationException.getAllErrors();
-				target = validationException.getTarget();
-			}
-
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			if (request.getAttribute(ATTRIBUTE_FORCE_CREATE_MODE) == null) {
-				modelView.addObject(DEFAULT_COMMAND_NAME, target);				
-			}
-			modelView.addObject(VIEW_PARAMETER_ERROR_MESSAGES, ValidationUtils.localize(errors, messageSource, locale));
+	@ExceptionHandler({ ValidationException.class })
+	public ModelAndView exceptionHandler(HttpServletRequest request, HttpServletResponse response, ValidationException cause, Locale locale) {
+		ModelAndView modelView = list(request, locale);
+		List<ObjectError> errors = cause.getAllErrors();
+		Object target = cause.getTarget();
+	
+		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+		if (request.getAttribute(ATTRIBUTE_FORCE_CREATE_MODE) == null) {
+			modelView.addObject(DEFAULT_COMMAND_NAME, target);				
+		}
+		modelView.addObject(VIEW_PARAMETER_ERROR_MESSAGES, ValidationUtils.localize(errors, messageSource, locale));
+		cause.printStackTrace();
+		if (cause.getCause() != null) {
 			cause.printStackTrace();
-			if (cause.getCause() != null) {
-				cause.printStackTrace();
-			}
-
-			return modelView;
 		}
-		throw cause;
+
+		return modelView;
 	}
 }

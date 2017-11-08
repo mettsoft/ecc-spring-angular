@@ -36,11 +36,11 @@
 
 <body>
     <div style="float: right;">
-        <a href="/role/list?language=${locale=='en'? 'fil' : 'en'}">
+        <a href="/roles?language=${locale=='en'? 'fil' : 'en'}">
             <spring:message code="language.${locale == 'en'? 'filipino': 'english'}" />
         </a>                
     </div>
-    <a href="/person/list">
+    <a href="/persons">
         <spring:message code="role.navigation" />
     </a>
     <div class="container">
@@ -50,7 +50,7 @@
             </c:forEach>
             <h3>${successMessage}</h3>
             <h3>${headerTitle}</h3>
-            <form:form action="/role${action}" method="POST">
+            <form:form action="/roles${action}" method="POST">
                 <form:input type="hidden" path="id" />
                 <label for="name">
                     <spring:message code="role.form.label.name" />:
@@ -84,7 +84,7 @@
                                     <td hidden>${role.id}</td>
                                     <td>${role.name}</td>
                                     <td>
-                                        <form action="/role/list" method="GET">
+                                        <form action="/roles" method="GET">
                                             <input type="hidden" name="id" value="${role.id}">
                                             <button>
                                                 <spring:message code="data.form.button.edit" />
@@ -92,7 +92,7 @@
                                         </form>
                                     </td>
                                     <td>
-                                        <form action="/role/delete" method="POST">
+                                        <form action="/roles/delete" method="POST">
                                             <input type="hidden" name="id" value="${role.id}">
                                             <input type="hidden" name="name" value="${role.name}">
                                             <button onclick="return confirm('<spring:message code="role.data.form.button.deleteConfirmation" arguments="${role.name}" />')">
