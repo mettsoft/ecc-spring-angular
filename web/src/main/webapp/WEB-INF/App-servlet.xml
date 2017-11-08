@@ -75,18 +75,6 @@
 
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
 
-	<tx:advice id="txAdvice" transaction-manager="transactionManager">
-		<tx:attributes>
-			<tx:method name="get" read-only="true" />
-			<tx:method name="list" read-only="true" />
-			<tx:method name="*" />
-		</tx:attributes>
-	</tx:advice>
-
-	<aop:config>
-		<aop:pointcut id="daoOperation" expression="execution(* com.ecc.spring_xml.dao.*.*(..))" />
-		<aop:advisor pointcut-ref="daoOperation" advice-ref="txAdvice" />
-	</aop:config>
-
+	<tx:annotation-driven />
 	<aop:aspectj-autoproxy proxy-target-class="true"/>
 </beans>

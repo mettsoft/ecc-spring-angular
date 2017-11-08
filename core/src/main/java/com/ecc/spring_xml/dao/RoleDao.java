@@ -5,6 +5,7 @@ import java.util.List;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ecc.spring_xml.model.Role;
 
@@ -13,6 +14,7 @@ public class RoleDao extends AbstractDao<Role> {
 		super(Role.class, sessionFactory);
 	}
 
+	@Transactional
 	public List<Role> list() {
 		return sessionFactory.getCurrentSession()
 			.createCriteria(Role.class)
@@ -21,6 +23,7 @@ public class RoleDao extends AbstractDao<Role> {
 			.list();
 	}
 
+	@Transactional
 	public Role get(String name) {
 		return (Role) sessionFactory.getCurrentSession()
 			.createCriteria(Role.class)
