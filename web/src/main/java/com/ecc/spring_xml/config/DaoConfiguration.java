@@ -15,6 +15,7 @@ import com.ecc.spring_xml.model.Contact;
 import com.ecc.spring_xml.model.Name;
 import com.ecc.spring_xml.model.Person;
 import com.ecc.spring_xml.model.Role;
+import com.ecc.spring_xml.model.User;
 
 @Configuration
 @EnableTransactionManagement
@@ -40,7 +41,8 @@ public class DaoConfiguration {
 		LocalSessionFactoryBean sessionFactoryBean = new LocalSessionFactoryBean();
 		sessionFactoryBean.setDataSource(getDataSource());
 		sessionFactoryBean.setHibernateProperties(properties);
-		sessionFactoryBean.setAnnotatedClasses(Address.class, Contact.class, Name.class, Person.class, Role.class);
+		sessionFactoryBean.setAnnotatedClasses(Address.class, Contact.class, Name.class, 
+			Person.class, Role.class, User.class);
 		return sessionFactoryBean;
 	}
 
