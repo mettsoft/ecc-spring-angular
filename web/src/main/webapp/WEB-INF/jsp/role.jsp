@@ -41,7 +41,7 @@
         </a>                
     </div>
     <a href="/persons">
-        <spring:message code="role.navigation" />
+        <spring:message code="navigation.persons" />
     </a>
     <div class="container">
         <div>

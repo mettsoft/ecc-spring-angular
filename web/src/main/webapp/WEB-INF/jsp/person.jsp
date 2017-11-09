@@ -53,7 +53,7 @@
     <div style="float: right;">
         <a href="/persons?language=${locale=='en'? 'fil' : 'en'}">
             <spring:message code="language.${locale == 'en'? 'filipino': 'english'}" />
-        </a>                
+        </a>
     </div>
     <div id="role-mark-up" hidden>
         <select class="roles">
@@ -84,9 +84,16 @@
     </div>
 
     <!-- Start Content -->
-    <a href="/roles">
-        <spring:message code="person.navigation" />
-    </a>
+    <div>
+        <a href="/roles">
+            <spring:message code="navigation.roles" />
+        </a>        
+    </div>
+    <div>
+        <a href="/users">
+            <spring:message code="navigation.users" />
+        </a>        
+    </div>
     <div class="container">
         <div class="form">
             <c:forEach items="${errorMessages}" var="errorMessage">
