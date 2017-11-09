@@ -51,8 +51,8 @@
 </head>
 <body>
     <div style="float: right;">
-        <a href="/persons?language=${pageContext.request.locale.language=='en'? 'fil' : 'en'}">
-            <spring:message code="language.${pageContext.request.locale.language == 'en'? 'filipino': 'english'}" />
+        <a href="/persons?language=${pageContext.response.locale.language == 'en'? 'fil': 'en'}">
+            <spring:message code="language.${pageContext.response.locale.language == 'en'? 'filipino': 'english'}" />
         </a>
         <form id="logoutForm" action="logout" method="POST">
             <a href="#" onclick="document.getElementById('logoutForm').submit()">Logout</a>

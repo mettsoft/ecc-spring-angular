@@ -36,8 +36,8 @@
 
 <body>
     <div style="float: right;">
-        <a href="/users?language=${pageContext.request.locale.language=='en'? 'fil' : 'en'}">
-            <spring:message code="language.${pageContext.request.locale.language == 'en'? 'filipino': 'english'}" />
+        <a href="/users?language=${pageContext.response.locale.language=='en'? 'fil' : 'en'}">
+            <spring:message code="language.${pageContext.response.locale.language == 'en'? 'filipino': 'english'}" />
         </a>                
     </div>
     <a href="/persons">
