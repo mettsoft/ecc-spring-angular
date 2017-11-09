@@ -20,6 +20,13 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
             .authorizeRequests()
+                .antMatchers("/users/**").hasRole("ADMIN")
+                .antMatchers("/persons/create").hasRole("CREATE_PERSON")
+                .antMatchers("/persons/update").hasRole("UPDATE_PERSON")
+                .antMatchers("/persons/delete").hasRole("DELETE_PERSON")
+                .antMatchers("/roles/create").hasRole("CREATE_ROLE")
+                .antMatchers("/roles/update").hasRole("UPDATE_ROLE")
+                .antMatchers("/roles/delete").hasRole("DELETE_ROLE")
                 .anyRequest().authenticated()
                 .and()
             .formLogin()

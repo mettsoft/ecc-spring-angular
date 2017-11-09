@@ -62,13 +62,17 @@
                 <form:input type="password" path="password" />
                 <h4>Permissions</h4>
                 <fieldset>
-                    <legend>Person Registry</legend>
+                    <legend>
+                        <spring:message code="person.title" />
+                    </legend>
                     <form:checkbox path="permissions" value="1"/>Create
                     <form:checkbox path="permissions" value="2"/>Update
                     <form:checkbox path="permissions" value="4"/>Delete                    
                 </fieldset>
                 <fieldset>
-                    <legend>User Registry</legend>
+                    <legend>
+                        <spring:message code="role.title" />
+                    </legend>
                     <form:checkbox path="permissions" value="8"/>Create
                     <form:checkbox path="permissions" value="16"/>Update
                     <form:checkbox path="permissions" value="32"/>Delete                    
