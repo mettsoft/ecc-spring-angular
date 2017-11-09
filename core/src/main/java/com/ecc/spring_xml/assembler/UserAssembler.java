@@ -1,5 +1,8 @@
 package com.ecc.spring_xml.assembler;
 
+import java.util.List;
+import java.util.ArrayList;
+
 import org.springframework.stereotype.Component;
 
 import com.ecc.spring_xml.model.User;
@@ -17,10 +20,14 @@ public class UserAssembler implements Assembler<User, UserDTO> {
 		dto.setUsername(model.getUsername());
 		dto.setPassword(model.getPassword());
 
-		for (int code = model.getPermissions(), count = 0; code != 0; code >>>= 1, count++) {
-			if ((code & 1) == 1) {
-				dto.getPermissions().add(1 << count);					
-			} 
+		if (model.getPermissions() != null) {
+			List<Integer> permissions = new ArrayList<>();
+			for (int code = model.getPermissions(), count = 0; code != 0; code >>>= 1, count++) {
+				if ((code & 1) == 1) {
+					permissions.add(1 << count);					
+				}
+			}			
+			dto.setPermissions(permissions);
 		}
 		return dto;
 	}
@@ -35,11 +42,13 @@ public class UserAssembler implements Assembler<User, UserDTO> {
 		model.setUsername(dto.getUsername());
 		model.setPassword(dto.getPassword());
 
-		int code = 0;
-		for (int i = 0; i < dto.getPermissions().size(); i++) {
-			code |= dto.getPermissions().get(i);
+		if (dto.getPermissions() != null) {
+			int code = 0;
+			for (int i = 0; i < dto.getPermissions().size(); i++) {
+				code |= dto.getPermissions().get(i);
+			}
+			model.setPermissions(code);			
 		}
-		model.setPermissions(code);
 		return model;
 	}
 }

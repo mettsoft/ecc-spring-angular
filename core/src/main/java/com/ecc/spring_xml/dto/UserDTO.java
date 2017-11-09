@@ -1,17 +1,12 @@
 package com.ecc.spring_xml.dto;
 
 import java.util.List;
-import java.util.ArrayList;
 
 public class UserDTO {
 	private Integer id;
 	private String username;	
 	private String password;
 	private List<Integer> permissions;
-
-	public UserDTO() {
-		permissions = new ArrayList<>();
-	}
 	
 	public Integer getId() {
 		return id;
