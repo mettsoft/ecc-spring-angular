@@ -4,15 +4,18 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.RequestContextUtils;
@@ -40,6 +43,8 @@ public class UserController {
 	private static final String VIEW_PARAMETER_LOCALE = "locale";
 
 	private static final String ATTRIBUTE_FORCE_CREATE_MODE = "isCreateMode";
+
+	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
 	@Autowired
 	private UserService userService;
@@ -120,22 +125,21 @@ public class UserController {
 		return "redirect:/users";
 	}
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler({ ValidationException.class })
-	public ModelAndView exceptionHandler(HttpServletRequest request, HttpServletResponse response, ValidationException cause, Locale locale) {
+	public ModelAndView exceptionHandler(HttpServletRequest request, ValidationException cause, Locale locale) {
 		ModelAndView modelView = list(request, locale);
 		List<ObjectError> errors = cause.getAllErrors();
 		Object target = cause.getTarget();
 	
-		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		if (request.getAttribute(ATTRIBUTE_FORCE_CREATE_MODE) == null) {
 			modelView.addObject(DEFAULT_COMMAND_NAME, target);				
 		}
 		modelView.addObject(VIEW_PARAMETER_ERROR_MESSAGES, ValidationUtils.localize(errors, messageSource, locale));
-		cause.printStackTrace();
-		if (cause.getCause() != null) {
-			cause.printStackTrace();
-		}
 
+		for (String message : ValidationUtils.localize(errors, messageSource, Locale.ENGLISH)) {
+			logger.info(message, cause);
+		}
 		return modelView;
 	}
 }
