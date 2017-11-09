@@ -1,13 +1,16 @@
 package com.ecc.spring_xml.dto;
 
+import java.util.List;
+import java.util.ArrayList;
+
 public class UserDTO {
 	private Integer id;
 	private String username;	
 	private String password;
-	private Integer permissions;
+	private List<Integer> permissions;
 
 	public UserDTO() {
-		permissions = 0;
+		permissions = new ArrayList<>();
 	}
 	
 	public Integer getId() {
@@ -22,7 +25,7 @@ public class UserDTO {
 		return password;
 	}
 
-	public Integer getPermissions() {
+	public List<Integer> getPermissions() {
 		return permissions;
 	}
 
@@ -38,7 +41,7 @@ public class UserDTO {
 		this.password = password;
 	}
 
-	public void setPermissions(Integer permissions) {
+	public void setPermissions(List<Integer> permissions) {
 		this.permissions = permissions;
 	}
 }

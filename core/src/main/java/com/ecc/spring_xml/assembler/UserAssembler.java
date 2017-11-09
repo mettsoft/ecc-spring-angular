@@ -16,7 +16,12 @@ public class UserAssembler implements Assembler<User, UserDTO> {
 		dto.setId(model.getId());
 		dto.setUsername(model.getUsername());
 		dto.setPassword(model.getPassword());
-		dto.setPermissions(model.getPermissions());
+
+		for (int code = model.getPermissions(), count = 0; code != 0; code >>>= 1, count++) {
+			if ((code & 1) == 1) {
+				dto.getPermissions().add(1 << count);					
+			} 
+		}
 		return dto;
 	}
 
@@ -29,7 +34,12 @@ public class UserAssembler implements Assembler<User, UserDTO> {
 		model.setId(dto.getId());
 		model.setUsername(dto.getUsername());
 		model.setPassword(dto.getPassword());
-		model.setPermissions(dto.getPermissions());
+
+		int code = 0;
+		for (int i = 0; i < dto.getPermissions().size(); i++) {
+			code |= dto.getPermissions().get(i);
+		}
+		model.setPermissions(code);
 		return model;
 	}
 }

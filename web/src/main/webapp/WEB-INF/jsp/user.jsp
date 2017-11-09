@@ -13,7 +13,7 @@
             width: 100%;
         }
         
-        div.container div {
+        div.container > div {
             width: 50%;
             margin: 16px;
         }
@@ -60,9 +60,24 @@
                     <spring:message code="user.form.label.password" />:
                 </label>
                 <form:input type="password" path="password" />
-                <button>
-                    <spring:message code="form.button.submit" />
-                </button>
+                <h4>Permissions</h4>
+                <fieldset>
+                    <legend>Person Registry</legend>
+                    <form:checkbox path="permissions" value="1"/>Create
+                    <form:checkbox path="permissions" value="2"/>Update
+                    <form:checkbox path="permissions" value="4"/>Delete                    
+                </fieldset>
+                <fieldset>
+                    <legend>User Registry</legend>
+                    <form:checkbox path="permissions" value="8"/>Create
+                    <form:checkbox path="permissions" value="16"/>Update
+                    <form:checkbox path="permissions" value="32"/>Delete                    
+                </fieldset>
+                <div>
+                    <button>
+                        <spring:message code="form.button.submit" />
+                    </button>                    
+                </div>
             </form:form>
         </div>
         <div>
