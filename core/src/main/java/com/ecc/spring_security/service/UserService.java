@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DataRetrievalFailureException;
@@ -51,7 +52,13 @@ public class UserService extends AbstractService<User, UserDTO> implements Valid
 
 	@Override
 	public void update(UserDTO user) {
-		user.setPassword(DigestUtils.sha256Hex(user.getPassword()));
+		UserDTO originalUser = get(user.getId());
+		if (!StringUtils.isEmpty(user.getPassword())) {
+			user.setPassword(DigestUtils.sha256Hex(user.getPassword()));		
+		}
+		else {
+			user.setPassword(originalUser.getPassword());
+		}
 		super.update(user);
 	}
 
