@@ -48,7 +48,6 @@ public class PersonController {
 	private static final String FORM_PARAMETER_PERSON_CONTACT_TYPE = "contactType";
 	private static final String FORM_PARAMETER_PERSON_CONTACT_DATA = "contactData";
 
-	private static final String QUERY_PARAMETER_SEARCH_TYPE = "querySearchType";
 	private static final String QUERY_PARAMETER_PERSON_LAST_NAME = "queryLastName";
 	private static final String QUERY_PARAMETER_ROLE_ID = "queryRoleId";
 	private static final String QUERY_PARAMETER_BIRTHDAY = "queryBirthday";
@@ -111,7 +110,6 @@ public class PersonController {
 			modelView.addObject(VIEW_PARAMETER_ACTION, "/update");
 		}
 		modelView.addObject(DEFAULT_COMMAND_NAME, person);
-		modelView.addAllObjects(queryToViewParameters(request));
 		modelView.addObject(VIEW_PARAMETER_ROLE_ITEMS, roleService.list());
 
 		if (RequestContextUtils.getInputFlashMap(request) != null) {
@@ -187,17 +185,6 @@ public class PersonController {
 			logger.info(message, cause);
 		}
 		return modelView;
-	}
-
-	private Map<String, Object> queryToViewParameters(HttpServletRequest request) {
-		Map<String, Object> parameters = new HashMap<>(6);
-		parameters.put(QUERY_PARAMETER_SEARCH_TYPE, request.getParameter(QUERY_PARAMETER_SEARCH_TYPE));
-		parameters.put(QUERY_PARAMETER_PERSON_LAST_NAME, request.getParameter(QUERY_PARAMETER_PERSON_LAST_NAME));
-		parameters.put(QUERY_PARAMETER_ROLE_ID, request.getParameter(QUERY_PARAMETER_ROLE_ID));
-		parameters.put(QUERY_PARAMETER_BIRTHDAY, request.getParameter(QUERY_PARAMETER_BIRTHDAY));
-		parameters.put(QUERY_PARAMETER_ORDER_BY, request.getParameter(QUERY_PARAMETER_ORDER_BY));
-		parameters.put(QUERY_PARAMETER_ORDER_TYPE, request.getParameter(QUERY_PARAMETER_ORDER_TYPE));
-		return parameters;
 	}
 
 	private Map<String, Object> constructViewParametersFromPerson(PersonDTO person) {

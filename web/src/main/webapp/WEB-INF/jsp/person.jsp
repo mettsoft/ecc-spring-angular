@@ -129,12 +129,12 @@
                         <form:form action="/persons${action}" method="POST" onsubmit="return onSubmit()">
                             <button hidden></button>
                             <form:input type="hidden" path="id" />
-                            <input type="hidden" name="querySearchType" value="${querySearchType}">
-                            <input type="hidden" name="queryLastName" value="${queryLastName}">
-                            <input type="hidden" name="queryRoleId" value="${queryRoleId}">
-                            <input type="hidden" name="queryBirthday" value="${queryBirthday}">
-                            <input type="hidden" name="queryOrderBy" value="${queryOrderBy}">
-                            <input type="hidden" name="queryOrderType" value="${queryOrderType}">
+                            <input type="hidden" name="querySearchType" value="${param.querySearchType}">
+                            <input type="hidden" name="queryLastName" value="${param.queryLastName}">
+                            <input type="hidden" name="queryRoleId" value="${param.queryRoleId}">
+                            <input type="hidden" name="queryBirthday" value="${param.queryBirthday}">
+                            <input type="hidden" name="queryOrderBy" value="${param.queryOrderBy}">
+                            <input type="hidden" name="queryOrderType" value="${param.queryOrderType}">
                                 <fieldset>
                                     <legend>
                                         <spring:message code="person.form.label.name" />
@@ -304,12 +304,12 @@
                         <form:form action="/persons${action}" method="POST" onsubmit="return onSubmit()">
                             <button hidden></button>
                             <form:input type="hidden" path="id" />
-                            <input type="hidden" name="querySearchType" value="${querySearchType}">
-                            <input type="hidden" name="queryLastName" value="${queryLastName}">
-                            <input type="hidden" name="queryRoleId" value="${queryRoleId}">
-                            <input type="hidden" name="queryBirthday" value="${queryBirthday}">
-                            <input type="hidden" name="queryOrderBy" value="${queryOrderBy}">
-                            <input type="hidden" name="queryOrderType" value="${queryOrderType}">
+                            <input type="hidden" name="querySearchType" value="${param.querySearchType}">
+                            <input type="hidden" name="queryLastName" value="${param.queryLastName}">
+                            <input type="hidden" name="queryRoleId" value="${param.queryRoleId}">
+                            <input type="hidden" name="queryBirthday" value="${param.queryBirthday}">
+                            <input type="hidden" name="queryOrderBy" value="${param.queryOrderBy}">
+                            <input type="hidden" name="queryOrderType" value="${param.queryOrderType}">
                                 <fieldset>
                                     <legend>
                                         <spring:message code="person.form.label.name" />
@@ -486,7 +486,7 @@
                         <label for="queryLastName">
                             <spring:message code="person.data.searchParameters.lastName" />
                         </label>
-                        <input type="text" id="queryLastName" name="queryLastName" value="${queryLastName}"> </div>
+                        <input type="text" id="queryLastName" name="queryLastName" value="${param.queryLastName}"> </div>
                     <div>
                         <label for="queryRoleId">
                             <spring:message code="person.data.searchParameters.role" />
@@ -504,7 +504,7 @@
                         <label for="queryBirthday">
                             <spring:message code="person.data.searchParameters.birthday" />
                         </label>
-                        <input type="date" id="queryBirthday" name="queryBirthday" value="${queryBirthday}"> </div>
+                        <input type="date" id="queryBirthday" name="queryBirthday" value="${param.queryBirthday}"> </div>
                     <div>
                         <label>
                             <spring:message code="person.data.searchParameters.orderBy" />
@@ -594,12 +594,12 @@
                                         <td>
                                             <form action="/persons" method="GET">
                                                 <input type="hidden" name="id" value="${person.id}">
-                                                <input type="hidden" name="querySearchType" value="${querySearchType}">
-                                                <input type="hidden" name="queryLastName" value="${queryLastName}">
-                                                <input type="hidden" name="queryRoleId" value="${queryRoleId}">
-                                                <input type="hidden" name="queryBirthday" value="${queryBirthday}">
-                                                <input type="hidden" name="queryOrderBy" value="${queryOrderBy}">
-                                                <input type="hidden" name="queryOrderType" value="${queryOrderType}">
+                                                <input type="hidden" name="querySearchType" value="${param.querySearchType}">
+                                                <input type="hidden" name="queryLastName" value="${param.queryLastName}">
+                                                <input type="hidden" name="queryRoleId" value="${param.queryRoleId}">
+                                                <input type="hidden" name="queryBirthday" value="${param.queryBirthday}">
+                                                <input type="hidden" name="queryOrderBy" value="${param.queryOrderBy}">
+                                                <input type="hidden" name="queryOrderType" value="${param.queryOrderType}">
                                                 <button>
                                                     <spring:message code="data.form.button.edit" />
                                                 </button>
@@ -615,12 +615,12 @@
                                                 <input type="hidden" name="name.middleName" value="${person.name.middleName}">
                                                 <input type="hidden" name="name.firstName" value="${person.name.firstName}">
                                                 <input type="hidden" name="name.suffix" value="${person.name.suffix}">
-                                                <input type="hidden" name="querySearchType" value="${querySearchType}">
-                                                <input type="hidden" name="queryLastName" value="${queryLastName}">
-                                                <input type="hidden" name="queryRoleId" value="${queryRoleId}">
-                                                <input type="hidden" name="queryBirthday" value="${queryBirthday}">
-                                                <input type="hidden" name="queryOrderBy" value="${queryOrderBy}">
-                                                <input type="hidden" name="queryOrderType" value="${queryOrderType}">
+                                                <input type="hidden" name="querySearchType" value="${param.querySearchType}">
+                                                <input type="hidden" name="queryLastName" value="${param.queryLastName}">
+                                                <input type="hidden" name="queryRoleId" value="${param.queryRoleId}">
+                                                <input type="hidden" name="queryBirthday" value="${param.queryBirthday}">
+                                                <input type="hidden" name="queryOrderBy" value="${param.queryOrderBy}">
+                                                <input type="hidden" name="queryOrderType" value="${param.queryOrderType}">
                                                 <button onclick="return confirm('<spring:message code="person.data.form.button.deleteConfirmation" arguments="${person.name}" />')">
                                                     <spring:message code="data.form.button.delete" />
                                                 </button>
@@ -654,20 +654,20 @@
 
     flatpickr("input[type=date]", {});
  
-    if ('${querySearchType}') {
-        document.getElementById('querySearchType').value = '${querySearchType}';
+    if ('${param.querySearchType}') {
+        document.getElementById('querySearchType').value = '${param.querySearchType}';
     }
  
-    if ('${queryOrderBy}') {
-        document.getElementById('queryOrderBy').value = '${queryOrderBy}';
+    if ('${param.queryOrderBy}') {
+        document.getElementById('queryOrderBy').value = '${param.queryOrderBy}';
     }
  
-    if ('${queryOrderType}') {
-        document.getElementById('queryOrderType').value = '${queryOrderType}';
+    if ('${param.queryOrderType}') {
+        document.getElementById('queryOrderType').value = '${param.queryOrderType}';
     }
  
-    if ('${queryRoleId}') {
-        document.getElementById('queryRoleId').value = '${queryRoleId}';
+    if ('${param.queryRoleId}') {
+        document.getElementById('queryRoleId').value = '${param.queryRoleId}';
     }
  
     if ('${command.currentlyEmployed}' === 'true') {
