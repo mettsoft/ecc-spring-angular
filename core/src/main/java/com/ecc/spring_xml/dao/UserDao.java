@@ -20,6 +20,7 @@ public class UserDao extends AbstractDao<User> {
 	public List<User> list() {
 		return sessionFactory.getCurrentSession()
 			.createCriteria(User.class)
+			.add(Restrictions.isNotNull("permissions"))
 			.addOrder(Order.asc("id"))
 			.list();
 	}
