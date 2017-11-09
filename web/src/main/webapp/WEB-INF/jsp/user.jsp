@@ -73,17 +73,17 @@
                     <legend>
                         <spring:message code="person.title" />
                     </legend>
-                    <form:checkbox path="permissions" value="1"/>Create
-                    <form:checkbox path="permissions" value="2"/>Update
-                    <form:checkbox path="permissions" value="4"/>Delete                    
+                    <form:checkbox path="permissions" value="1"/><spring:message code="permissions.create" />
+                    <form:checkbox path="permissions" value="2"/><spring:message code="permissions.update" />
+                    <form:checkbox path="permissions" value="4"/><spring:message code="permissions.delete" />                    
                 </fieldset>
                 <fieldset>
                     <legend>
                         <spring:message code="role.title" />
                     </legend>
-                    <form:checkbox path="permissions" value="8"/>Create
-                    <form:checkbox path="permissions" value="16"/>Update
-                    <form:checkbox path="permissions" value="32"/>Delete                    
+                    <form:checkbox path="permissions" value="8"/><spring:message code="permissions.create" />
+                    <form:checkbox path="permissions" value="16"/><spring:message code="permissions.update" />
+                    <form:checkbox path="permissions" value="32"/><spring:message code="permissions.delete" />                    
                 </fieldset>
                 <div>
                     <button>
