@@ -670,9 +670,9 @@
         document.getElementById('queryRoleId').value = '${param.queryRoleId}';
     }
  
-    if ('${command.currentlyEmployed}' === 'true') {
+    if ('${command.currentlyEmployed}' === 'true' && document.getElementById('dateHired')) {
         document.getElementById('dateHired').disabled = false;
-    } else {
+    } else if (document.getElementById('dateHired')) {
         document.getElementById('dateHired').disabled = true;
     }
  
