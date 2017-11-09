@@ -20,24 +20,12 @@ import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.ViewResolver;
 
-@Configuration
 @ComponentScan(basePackages = "com.ecc.spring_security")
 @EnableWebMvc
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 public class AppConfiguration extends WebMvcConfigurerAdapter {   
 	@Autowired
 	private BeanFactory beanFactory;
-
-    @Override
-    public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/login").setViewName("login");
-        registry.addViewController("/").setViewName("redirect:/persons");
-    }
-
-    @Override
-    public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
-        configurer.enable();
-    } 
 
     @Bean
     public ViewResolver viewResolver() {
@@ -71,13 +59,19 @@ public class AppConfiguration extends WebMvcConfigurerAdapter {
          return getLocaleChangeInterceptor;
     }
 
+    @Bean(name = "multipartResolver")
+    public CommonsMultipartResolver getMultipartResolver() {
+        return new CommonsMultipartResolver();
+    }
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(getLocaleChangeInterceptor());
     }
 
-    @Bean(name = "multipartResolver")
-    public CommonsMultipartResolver getMultipartResolver() {
-        return new CommonsMultipartResolver();
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/login").setViewName("login");
+        registry.addViewController("/").setViewName("redirect:/persons");
     }
 }
