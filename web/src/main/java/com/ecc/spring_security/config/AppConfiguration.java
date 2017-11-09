@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
@@ -36,10 +36,11 @@ public class AppConfiguration extends WebMvcConfigurerAdapter {
     }
  
     @Bean(name = "messageSource")
-    public ResourceBundleMessageSource getMessageSource() {
-        ResourceBundleMessageSource resource = new ResourceBundleMessageSource();
-        resource.setBasename("messages");
+    public ReloadableResourceBundleMessageSource getMessageSource() {
+        ReloadableResourceBundleMessageSource resource = new ReloadableResourceBundleMessageSource();
+        resource.setBasename("classpath:messages");
         resource.setDefaultEncoding("UTF-8");
+        resource.setCacheSeconds(0);
         return resource;
     }
 
