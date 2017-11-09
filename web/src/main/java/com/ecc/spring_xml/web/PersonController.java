@@ -63,7 +63,6 @@ public class PersonController {
 	private static final String VIEW_PARAMETER_DATA = "data";
 	private static final String VIEW_PARAMETER_ASSIGNED_CONTACT_TYPES = "assignedContactTypes";
 	private static final String VIEW_PARAMETER_ASSIGNED_ROLE_IDS = "assignedRoleIds";
-	private static final String VIEW_PARAMETER_LOCALE = "locale";
 
 	private static final String ATTRIBUTE_FORCE_CREATE_MODE = "isCreateMode";
 
@@ -92,7 +91,6 @@ public class PersonController {
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView list(HttpServletRequest request, Locale locale) {
 		ModelAndView modelView = new ModelAndView("person");
-		modelView.addObject(VIEW_PARAMETER_LOCALE, locale);
 
 		PersonDTO person = new PersonDTO();
 		Integer personId = NumberUtils.createInteger(request.getParameter(FORM_PARAMETER_PERSON_ID));

@@ -40,7 +40,6 @@ public class RoleController {
 	private static final String VIEW_PARAMETER_HEADER = "headerTitle";
 	private static final String VIEW_PARAMETER_ACTION = "action";
 	private static final String VIEW_PARAMETER_DATA = "data";
-	private static final String VIEW_PARAMETER_LOCALE = "locale";
 
 	private static final String ATTRIBUTE_FORCE_CREATE_MODE = "isCreateMode";
 
@@ -60,7 +59,6 @@ public class RoleController {
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView list(HttpServletRequest request, Locale locale) {
 		ModelAndView modelView = new ModelAndView("role");
-		modelView.addObject(VIEW_PARAMETER_LOCALE, locale);
 
 		RoleDTO role = new RoleDTO();
 		Integer roleId = NumberUtils.createInteger(request.getParameter(QUERY_PARAMETER_ROLE_ID));
