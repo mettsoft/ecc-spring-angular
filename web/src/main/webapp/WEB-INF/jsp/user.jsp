@@ -38,7 +38,10 @@
     <div style="float: right;">
         <a href="/users?language=${pageContext.response.locale.language=='en'? 'fil' : 'en'}">
             <spring:message code="language.${pageContext.response.locale.language == 'en'? 'filipino': 'english'}" />
-        </a>                
+        </a>     
+        <form id="logoutForm" action="logout" method="POST">
+            <a href="#" onclick="document.getElementById('logoutForm').submit()">Logout</a>
+        </form>           
     </div>
     <a href="/persons">
         <spring:message code="navigation.persons" />
