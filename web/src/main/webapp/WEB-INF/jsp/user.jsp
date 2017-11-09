@@ -62,7 +62,12 @@
                 <label for="password">
                     <spring:message code="user.form.label.password" />:
                 </label>
-                <form:input type="password" path="password" />
+                <input ${action=='/create'? 'required': ''} type="password" name="password" />
+                <c:if test="${action=='/update'}">
+                    <label>
+                        <spring:message code="user.form.label.passwordHint" />
+                    </label>
+                </c:if>
                 <h4>Permissions</h4>
                 <fieldset>
                     <legend>
