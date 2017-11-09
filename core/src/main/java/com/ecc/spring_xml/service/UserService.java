@@ -49,6 +49,12 @@ public class UserService extends AbstractService<User, UserDTO> implements Valid
 		return super.create(user);
 	}
 
+	@Override
+	public void update(UserDTO user) {
+		user.setPassword(DigestUtils.sha256Hex(user.getPassword()));
+		super.update(user);
+	}
+
 	public List<UserDTO> list() {
 		return AssemblerUtils.asList(userDao.list(), userAssembler::createDTO);
 	}

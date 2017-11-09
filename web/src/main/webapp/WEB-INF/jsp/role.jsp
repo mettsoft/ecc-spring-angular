@@ -1,6 +1,7 @@
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
 <%@ taglib uri = "http://www.springframework.org/tags" prefix = "spring"%>
 <%@ taglib uri = "http://www.springframework.org/tags/form" prefix = "form" %>
+<%@ taglib uri = "http://www.springframework.org/security/tags" prefix = "security" %>
 <html>
 
 <head>
@@ -75,31 +76,39 @@
                             <th>
                                 <spring:message code="role.data.column.name" />
                             </th>
-                            <th></th>
-                            <th></th>
+                            <security:authorize access="hasRole('ROLE_UPDATE_ROLE')">
+                                <th></th>
+                            </security:authorize>
+                            <security:authorize access="hasRole('ROLE_DELETE_ROLE')">
+                                <th></th>
+                            </security:authorize>
                         </thead>
                         <tbody>
                             <c:forEach items="${data}" var="role">
                                 <tr>
                                     <td hidden>${role.id}</td>
                                     <td>${role.name}</td>
-                                    <td>
-                                        <form action="/roles" method="GET">
-                                            <input type="hidden" name="id" value="${role.id}">
-                                            <button>
-                                                <spring:message code="data.form.button.edit" />
-                                            </button>
-                                        </form>
-                                    </td>
-                                    <td>
-                                        <form action="/roles/delete" method="POST">
-                                            <input type="hidden" name="id" value="${role.id}">
-                                            <input type="hidden" name="name" value="${role.name}">
-                                            <button onclick="return confirm('<spring:message code="role.data.form.button.deleteConfirmation" arguments="${role.name}" />')">
-                                                <spring:message code="data.form.button.delete" />
-                                            </button>
-                                        </form>
-                                    </td>
+                                    <security:authorize access="hasRole('ROLE_UPDATE_ROLE')">
+                                        <td>
+                                            <form action="/roles" method="GET">
+                                                <input type="hidden" name="id" value="${role.id}">
+                                                <button>
+                                                    <spring:message code="data.form.button.edit" />
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </security:authorize>
+                                    <security:authorize access="hasRole('ROLE_DELETE_ROLE')">
+                                        <td>
+                                            <form action="/roles/delete" method="POST">
+                                                <input type="hidden" name="id" value="${role.id}">
+                                                <input type="hidden" name="name" value="${role.name}">
+                                                <button onclick="return confirm('<spring:message code="role.data.form.button.deleteConfirmation" arguments="${role.name}" />')">
+                                                    <spring:message code="data.form.button.delete" />
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </security:authorize>
                                 </tr>
                             </c:forEach>
                         </tbody>

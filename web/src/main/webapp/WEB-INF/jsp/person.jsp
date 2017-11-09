@@ -1,6 +1,7 @@
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
 <%@ taglib uri = "http://www.springframework.org/tags" prefix = "spring"%>
 <%@ taglib uri = "http://www.springframework.org/tags/form" prefix = "form" %>
+<%@ taglib uri = "http://www.springframework.org/security/tags" prefix = "security" %>
 <html>
 
 <head>
@@ -92,11 +93,13 @@
             <spring:message code="navigation.roles" />
         </a>        
     </div>
-    <div>
-        <a href="/users">
-            <spring:message code="navigation.users" />
-        </a>        
-    </div>
+    <security:authorize access="hasRole('ROLE_ADMIN')">
+        <div>
+            <a href="/users">
+                <spring:message code="navigation.users" />
+            </a>        
+        </div>
+    </security:authorize>
     <div class="container">
         <div class="form">
             <c:forEach items="${errorMessages}" var="errorMessage">
@@ -381,8 +384,12 @@
                             <th>
                                 <spring:message code="person.data.column.roles" />
                             </th>
-                            <th></th>
-                            <th></th>
+                            <security:authorize access="hasRole('ROLE_UPDATE_PERSON')">
+                                <th></th>
+                            </security:authorize>
+                            <security:authorize access="hasRole('ROLE_DELETE_PERSON')">
+                                <th></th>
+                            </security:authorize>
                         </thead>
                         <tbody>
                             <c:forEach items="${data}" var="person">
@@ -405,39 +412,43 @@
                                             <br />
                                         </c:forEach>
                                     </td>
-                                    <td>
-                                        <form action="/persons" method="GET">
-                                            <input type="hidden" name="id" value="${person.id}">
-                                            <input type="hidden" name="querySearchType" value="${querySearchType}">
-                                            <input type="hidden" name="queryLastName" value="${queryLastName}">
-                                            <input type="hidden" name="queryRoleId" value="${queryRoleId}">
-                                            <input type="hidden" name="queryBirthday" value="${queryBirthday}">
-                                            <input type="hidden" name="queryOrderBy" value="${queryOrderBy}">
-                                            <input type="hidden" name="queryOrderType" value="${queryOrderType}">
-                                            <button>
-                                                <spring:message code="data.form.button.edit" />
-                                            </button>
-                                        </form>
-                                    </td>
-                                    <td>
-                                        <form action="/persons/delete" method="POST">
-                                            <input type="hidden" name="id" value="${person.id}">
-                                            <input type="hidden" name="name.title" value="${person.name.title}">
-                                            <input type="hidden" name="name.lastName" value="${person.name.lastName}">
-                                            <input type="hidden" name="name.middleName" value="${person.name.middleName}">
-                                            <input type="hidden" name="name.firstName" value="${person.name.firstName}">
-                                            <input type="hidden" name="name.suffix" value="${person.name.suffix}">
-                                            <input type="hidden" name="querySearchType" value="${querySearchType}">
-                                            <input type="hidden" name="queryLastName" value="${queryLastName}">
-                                            <input type="hidden" name="queryRoleId" value="${queryRoleId}">
-                                            <input type="hidden" name="queryBirthday" value="${queryBirthday}">
-                                            <input type="hidden" name="queryOrderBy" value="${queryOrderBy}">
-                                            <input type="hidden" name="queryOrderType" value="${queryOrderType}">
-                                            <button onclick="return confirm('<spring:message code="person.data.form.button.deleteConfirmation" arguments="${person.name}" />')">
-                                                <spring:message code="data.form.button.delete" />
-                                            </button>
-                                        </form>
-                                    </td>
+                                    <security:authorize access="hasRole('ROLE_UPDATE_PERSON')">
+                                        <td>
+                                            <form action="/persons" method="GET">
+                                                <input type="hidden" name="id" value="${person.id}">
+                                                <input type="hidden" name="querySearchType" value="${querySearchType}">
+                                                <input type="hidden" name="queryLastName" value="${queryLastName}">
+                                                <input type="hidden" name="queryRoleId" value="${queryRoleId}">
+                                                <input type="hidden" name="queryBirthday" value="${queryBirthday}">
+                                                <input type="hidden" name="queryOrderBy" value="${queryOrderBy}">
+                                                <input type="hidden" name="queryOrderType" value="${queryOrderType}">
+                                                <button>
+                                                    <spring:message code="data.form.button.edit" />
+                                                </button>
+                                            </form>
+                                        </td>
+                                        </security:authorize>
+                                    <security:authorize access="hasRole('ROLE_DELETE_PERSON')">
+                                        <td>
+                                            <form action="/persons/delete" method="POST">
+                                                <input type="hidden" name="id" value="${person.id}">
+                                                <input type="hidden" name="name.title" value="${person.name.title}">
+                                                <input type="hidden" name="name.lastName" value="${person.name.lastName}">
+                                                <input type="hidden" name="name.middleName" value="${person.name.middleName}">
+                                                <input type="hidden" name="name.firstName" value="${person.name.firstName}">
+                                                <input type="hidden" name="name.suffix" value="${person.name.suffix}">
+                                                <input type="hidden" name="querySearchType" value="${querySearchType}">
+                                                <input type="hidden" name="queryLastName" value="${queryLastName}">
+                                                <input type="hidden" name="queryRoleId" value="${queryRoleId}">
+                                                <input type="hidden" name="queryBirthday" value="${queryBirthday}">
+                                                <input type="hidden" name="queryOrderBy" value="${queryOrderBy}">
+                                                <input type="hidden" name="queryOrderType" value="${queryOrderType}">
+                                                <button onclick="return confirm('<spring:message code="person.data.form.button.deleteConfirmation" arguments="${person.name}" />')">
+                                                    <spring:message code="data.form.button.delete" />
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </security:authorize>
                                 </tr>
                             </c:forEach>
                         </tbody>
