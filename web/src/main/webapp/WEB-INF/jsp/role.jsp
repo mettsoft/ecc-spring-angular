@@ -50,17 +50,36 @@
                 <h3 class="error-message">${errorMessage}</h3>
             </c:forEach>
             <h3>${successMessage}</h3>
-            <h3>${headerTitle}</h3>
-            <form:form action="/roles${action}" method="POST">
-                <form:input type="hidden" path="id" />
-                <label for="name">
-                    <spring:message code="role.form.label.name" />:
-                </label>
-                <form:input type="text" path="name" />
-                <button>
-                    <spring:message code="form.button.submit" />
-                </button>
-            </form:form>
+            <c:if test="${action == '/create'}">
+                <security:authorize access="hasRole('ROLE_CREATE_ROLE')">
+                    <h3>${headerTitle}</h3>
+                    <form:form action="/roles${action}" method="POST">
+                        <form:input type="hidden" path="id" />
+                        <label for="name">
+                            <spring:message code="role.form.label.name" />:
+                        </label>
+                        <form:input type="text" path="name" />
+                        <button>
+                            <spring:message code="form.button.submit" />
+                        </button>
+                    </form:form>                
+                </security:authorize>
+            </c:if>
+            <c:if test="${action == '/update'}">
+                <security:authorize access="hasRole('ROLE_UPDATE_ROLE')">
+                    <h3>${headerTitle}</h3>
+                    <form:form action="/roles${action}" method="POST">
+                        <form:input type="hidden" path="id" />
+                        <label for="name">
+                            <spring:message code="role.form.label.name" />:
+                        </label>
+                        <form:input type="text" path="name" />
+                        <button>
+                            <spring:message code="form.button.submit" />
+                        </button>
+                    </form:form>                
+                </security:authorize>
+            </c:if>
         </div>
         <div>
             <h3>

@@ -106,178 +106,356 @@
                 <h3 class="error-message">${errorMessage}</h3>
             </c:forEach>
             <h3>${successMessage}</h3>
-
-            <fieldset>
-                <legend><strong>${headerTitle}</strong></legend>
-                <c:if test="${action == '/create'}">
-                    <form action="/persons/upload" method="POST" enctype="multipart/form-data">
-                        <div class="browse-button-container">
-                            <button id="browse-button">
-                                <spring:message code="form.button.chooseFile" />
-                            </button>
-                            <label for="browse-button">
-                                <spring:message code="form.button.noFileSelected" />
-                            </label>
-                        </div>
-                        <input id="file-button" hidden type="file" name="file" accept=".txt">
-                        <button hidden id="upload-button">
-                            <spring:message code="form.button.upload" />
-                        </button>
-                    </form>
-                </c:if>
-                <form:form action="/persons${action}" method="POST" onsubmit="return onSubmit()">
-                    <button hidden></button>
-                    <form:input type="hidden" path="id" />
-                    <input type="hidden" name="querySearchType" value="${querySearchType}">
-                    <input type="hidden" name="queryLastName" value="${queryLastName}">
-                    <input type="hidden" name="queryRoleId" value="${queryRoleId}">
-                    <input type="hidden" name="queryBirthday" value="${queryBirthday}">
-                    <input type="hidden" name="queryOrderBy" value="${queryOrderBy}">
-                    <input type="hidden" name="queryOrderType" value="${queryOrderType}">
-                        <fieldset>
-                            <legend>
-                                <spring:message code="person.form.label.name" />
-                            </legend>
-                            <div>
-                                <form:label path="name.title">
-                                    <spring:message code="person.form.label.name.title" />:
-                                </form:label>
-                                <form:input type="text" path="name.title" />
-                                </div>
-                            <div>
-                                <form:label path="name.lastName">
-                                    <spring:message code="person.form.label.name.lastName" />:
-                                </form:label>
-                                <form:input type="text" path="name.lastName" />
-                            </div>
-                            <div>
-                                <form:label path="name.firstName">
-                                    <spring:message code="person.form.label.name.firstName" />:
-                                </form:label>
-                                <form:input type="text" path="name.firstName" />
-                            </div>
-                            <div>
-                                <form:label path="name.middleName">
-                                    <spring:message code="person.form.label.name.middleName" />:
-                                </form:label>
-                                <form:input type="text" path="name.middleName" />
-                            </div>
-                            <div>
-                                <form:label path="name.suffix">
-                                    <spring:message code="person.form.label.name.suffix" />:
-                                </form:label>
-                                <form:input type="text" path="name.suffix" /></div>
-                        </fieldset>
-                        <fieldset>
-                            <legend>
-                                <spring:message code="person.form.label.address" />:
-                            </legend>
-                            <div>
-                                <form:label path="address.streetNumber">
-                                    <spring:message code="person.form.label.address.streetNumber" />:
-                                </form:label>
-                                <form:input type="text" path="address.streetNumber" /> 
-                            </div>
-                            <div>
-                                <form:label path="address.barangay">
-                                    <spring:message code="person.form.label.address.barangay" />:
-                                </form:label>
-                                <form:input type="text" path="address.barangay" /> 
-                            </div>
-                            <div>
-                                <form:label path="address.municipality">
-                                    <spring:message code="person.form.label.address.municipality" />:
-                                </form:label>
-                                <form:input type="text" path="address.municipality" /> 
-                            </div>
-                            <div>
-                                <form:label path="address.zipCode">
-                                    <spring:message code="person.form.label.address.zipCode" />:
-                                </form:label>
-                                <form:input type="number" name="zipCode" path="address.zipCode" min="0" /> 
-                            </div>
-                        </fieldset>
-                        <fieldset>
-                            <legend>
-                                <spring:message code="person.form.label.otherInformation" />:
-                            </legend>
-                            <div>
-                                <form:label path="birthday">
-                                    <spring:message code="person.form.label.otherInformation.birthday" />:
-                                </form:label>
-                                <form:input type="date" path="birthday" />  
-                            </div>
-                            <div>
-                                <form:label path="GWA">
-                                    <spring:message code="person.form.label.otherInformation.GWA" />:
-                                </form:label>
-                                <form:input type="number" path="GWA" min="1" max="5" step="0.001" /> 
-                            </div>
-                            <div>
-                                <form:label path="currentlyEmployed">
-                                    <spring:message code="person.form.label.otherInformation.currentlyEmployed" />:
-                                </form:label>
-                                <form:checkbox path="currentlyEmployed" onclick="document.getElementById('dateHired').disabled=!this.checked" />
-                            </div>
-                            <div>
-                                <form:label path="dateHired">
-                                    <spring:message code="person.form.label.otherInformation.dateHired" />:
-                                </form:label>
-                                <form:input type="date" path="dateHired" />
-                            </div>
-                        </fieldset>
-                        <fieldset>
-                            <legend>
-                                <spring:message code="person.form.label.contactInformation" />:
-                            </legend>
-                            <c:forEach items="${command.contacts}" var="contact">
-                                <div>
-                                    <select class="contactTypes assigned-contacts">
-                                        <option value="Landline">
-                                            <spring:message code="person.contactType.landline" />
-                                        </option>
-                                        <option value="Email">
-                                            <spring:message code="person.contactType.email" />
-                                        </option>
-                                        <option value="Mobile">
-                                            <spring:message code="person.contactType.mobile" />
-                                        </option>
-                                    </select>
-                                    <button onclick="this.parentNode.remove()">
-                                        <spring:message code="form.button.remove" />
+            <c:if test="${action == '/create'}">
+                <security:authorize access="hasRole('ROLE_CREATE_PERSON')">
+                    <fieldset>
+                        <legend><strong>${headerTitle}</strong></legend>
+                        <c:if test="${action == '/create'}">
+                            <form action="/persons/upload" method="POST" enctype="multipart/form-data">
+                                <div class="browse-button-container">
+                                    <button id="browse-button">
+                                        <spring:message code="form.button.chooseFile" />
                                     </button>
-                                    <input type="text" class="contactData" value="${contact.data}">
+                                    <label for="browse-button">
+                                        <spring:message code="form.button.noFileSelected" />
+                                    </label>
                                 </div>
-                            </c:forEach>
-                            <button onclick="this.parentNode.insertBefore(CONTACT_MARK_UP.cloneNode(true), this); return false;">
-                                <spring:message code="form.button.add" />
-                            </button>
-                        </fieldset>
-                        <fieldset>
-                            <legend>
-                                <spring:message code="person.form.label.roleAssignments" />:
-                            </legend>
-                            <c:forEach items="${command.roles}" var="role">
-                                <div>
-                                    <select class="roles assigned-roles" path="role.id">
-                                        <c:forEach items="${roleItems}" var="roleItem">
-                                            <option value="${roleItem.id}">${roleItem.name}</option>
-                                        </c:forEach>
-                                    </select>
-                                    <button onclick="this.parentNode.remove()">
-                                        <spring:message code="form.button.remove" />
+                                <input id="file-button" hidden type="file" name="file" accept=".txt">
+                                <button hidden id="upload-button">
+                                    <spring:message code="form.button.upload" />
+                                </button>
+                            </form>
+                        </c:if>
+                        <form:form action="/persons${action}" method="POST" onsubmit="return onSubmit()">
+                            <button hidden></button>
+                            <form:input type="hidden" path="id" />
+                            <input type="hidden" name="querySearchType" value="${querySearchType}">
+                            <input type="hidden" name="queryLastName" value="${queryLastName}">
+                            <input type="hidden" name="queryRoleId" value="${queryRoleId}">
+                            <input type="hidden" name="queryBirthday" value="${queryBirthday}">
+                            <input type="hidden" name="queryOrderBy" value="${queryOrderBy}">
+                            <input type="hidden" name="queryOrderType" value="${queryOrderType}">
+                                <fieldset>
+                                    <legend>
+                                        <spring:message code="person.form.label.name" />
+                                    </legend>
+                                    <div>
+                                        <form:label path="name.title">
+                                            <spring:message code="person.form.label.name.title" />:
+                                        </form:label>
+                                        <form:input type="text" path="name.title" />
+                                        </div>
+                                    <div>
+                                        <form:label path="name.lastName">
+                                            <spring:message code="person.form.label.name.lastName" />:
+                                        </form:label>
+                                        <form:input type="text" path="name.lastName" />
+                                    </div>
+                                    <div>
+                                        <form:label path="name.firstName">
+                                            <spring:message code="person.form.label.name.firstName" />:
+                                        </form:label>
+                                        <form:input type="text" path="name.firstName" />
+                                    </div>
+                                    <div>
+                                        <form:label path="name.middleName">
+                                            <spring:message code="person.form.label.name.middleName" />:
+                                        </form:label>
+                                        <form:input type="text" path="name.middleName" />
+                                    </div>
+                                    <div>
+                                        <form:label path="name.suffix">
+                                            <spring:message code="person.form.label.name.suffix" />:
+                                        </form:label>
+                                        <form:input type="text" path="name.suffix" /></div>
+                                </fieldset>
+                                <fieldset>
+                                    <legend>
+                                        <spring:message code="person.form.label.address" />:
+                                    </legend>
+                                    <div>
+                                        <form:label path="address.streetNumber">
+                                            <spring:message code="person.form.label.address.streetNumber" />:
+                                        </form:label>
+                                        <form:input type="text" path="address.streetNumber" /> 
+                                    </div>
+                                    <div>
+                                        <form:label path="address.barangay">
+                                            <spring:message code="person.form.label.address.barangay" />:
+                                        </form:label>
+                                        <form:input type="text" path="address.barangay" /> 
+                                    </div>
+                                    <div>
+                                        <form:label path="address.municipality">
+                                            <spring:message code="person.form.label.address.municipality" />:
+                                        </form:label>
+                                        <form:input type="text" path="address.municipality" /> 
+                                    </div>
+                                    <div>
+                                        <form:label path="address.zipCode">
+                                            <spring:message code="person.form.label.address.zipCode" />:
+                                        </form:label>
+                                        <form:input type="number" name="zipCode" path="address.zipCode" min="0" /> 
+                                    </div>
+                                </fieldset>
+                                <fieldset>
+                                    <legend>
+                                        <spring:message code="person.form.label.otherInformation" />:
+                                    </legend>
+                                    <div>
+                                        <form:label path="birthday">
+                                            <spring:message code="person.form.label.otherInformation.birthday" />:
+                                        </form:label>
+                                        <form:input type="date" path="birthday" />  
+                                    </div>
+                                    <div>
+                                        <form:label path="GWA">
+                                            <spring:message code="person.form.label.otherInformation.GWA" />:
+                                        </form:label>
+                                        <form:input type="number" path="GWA" min="1" max="5" step="0.001" /> 
+                                    </div>
+                                    <div>
+                                        <form:label path="currentlyEmployed">
+                                            <spring:message code="person.form.label.otherInformation.currentlyEmployed" />:
+                                        </form:label>
+                                        <form:checkbox path="currentlyEmployed" onclick="document.getElementById('dateHired').disabled=!this.checked" />
+                                    </div>
+                                    <div>
+                                        <form:label path="dateHired">
+                                            <spring:message code="person.form.label.otherInformation.dateHired" />:
+                                        </form:label>
+                                        <form:input type="date" path="dateHired" />
+                                    </div>
+                                </fieldset>
+                                <fieldset>
+                                    <legend>
+                                        <spring:message code="person.form.label.contactInformation" />:
+                                    </legend>
+                                    <c:forEach items="${command.contacts}" var="contact">
+                                        <div>
+                                            <select class="contactTypes assigned-contacts">
+                                                <option value="Landline">
+                                                    <spring:message code="person.contactType.landline" />
+                                                </option>
+                                                <option value="Email">
+                                                    <spring:message code="person.contactType.email" />
+                                                </option>
+                                                <option value="Mobile">
+                                                    <spring:message code="person.contactType.mobile" />
+                                                </option>
+                                            </select>
+                                            <button onclick="this.parentNode.remove()">
+                                                <spring:message code="form.button.remove" />
+                                            </button>
+                                            <input type="text" class="contactData" value="${contact.data}">
+                                        </div>
+                                    </c:forEach>
+                                    <button onclick="this.parentNode.insertBefore(CONTACT_MARK_UP.cloneNode(true), this); return false;">
+                                        <spring:message code="form.button.add" />
                                     </button>
-                                </div>                           
-                            </c:forEach>
-                            <button onclick="this.parentNode.insertBefore(ROLE_MARK_UP.cloneNode(true), this); return false;">
-                                <spring:message code="form.button.add" />
-                            </button>
-                        </fieldset>
-                        <button>
-                            <spring:message code="form.button.submit" />
-                        </button>
-                </form:form>
-            </fieldset>
+                                </fieldset>
+                                <fieldset>
+                                    <legend>
+                                        <spring:message code="person.form.label.roleAssignments" />:
+                                    </legend>
+                                    <c:forEach items="${command.roles}" var="role">
+                                        <div>
+                                            <select class="roles assigned-roles" path="role.id">
+                                                <c:forEach items="${roleItems}" var="roleItem">
+                                                    <option value="${roleItem.id}">${roleItem.name}</option>
+                                                </c:forEach>
+                                            </select>
+                                            <button onclick="this.parentNode.remove()">
+                                                <spring:message code="form.button.remove" />
+                                            </button>
+                                        </div>                           
+                                    </c:forEach>
+                                    <button onclick="this.parentNode.insertBefore(ROLE_MARK_UP.cloneNode(true), this); return false;">
+                                        <spring:message code="form.button.add" />
+                                    </button>
+                                </fieldset>
+                                <button>
+                                    <spring:message code="form.button.submit" />
+                                </button>
+                        </form:form>
+                    </fieldset>
+                </security:authorize>
+            </c:if>
+            <c:if test="${action == '/update'}">
+                <security:authorize access="hasRole('ROLE_UPDATE_PERSON')">
+                    <fieldset>
+                        <legend><strong>${headerTitle}</strong></legend>
+                        <c:if test="${action == '/create'}">
+                            <form action="/persons/upload" method="POST" enctype="multipart/form-data">
+                                <div class="browse-button-container">
+                                    <button id="browse-button">
+                                        <spring:message code="form.button.chooseFile" />
+                                    </button>
+                                    <label for="browse-button">
+                                        <spring:message code="form.button.noFileSelected" />
+                                    </label>
+                                </div>
+                                <input id="file-button" hidden type="file" name="file" accept=".txt">
+                                <button hidden id="upload-button">
+                                    <spring:message code="form.button.upload" />
+                                </button>
+                            </form>
+                        </c:if>
+                        <form:form action="/persons${action}" method="POST" onsubmit="return onSubmit()">
+                            <button hidden></button>
+                            <form:input type="hidden" path="id" />
+                            <input type="hidden" name="querySearchType" value="${querySearchType}">
+                            <input type="hidden" name="queryLastName" value="${queryLastName}">
+                            <input type="hidden" name="queryRoleId" value="${queryRoleId}">
+                            <input type="hidden" name="queryBirthday" value="${queryBirthday}">
+                            <input type="hidden" name="queryOrderBy" value="${queryOrderBy}">
+                            <input type="hidden" name="queryOrderType" value="${queryOrderType}">
+                                <fieldset>
+                                    <legend>
+                                        <spring:message code="person.form.label.name" />
+                                    </legend>
+                                    <div>
+                                        <form:label path="name.title">
+                                            <spring:message code="person.form.label.name.title" />:
+                                        </form:label>
+                                        <form:input type="text" path="name.title" />
+                                        </div>
+                                    <div>
+                                        <form:label path="name.lastName">
+                                            <spring:message code="person.form.label.name.lastName" />:
+                                        </form:label>
+                                        <form:input type="text" path="name.lastName" />
+                                    </div>
+                                    <div>
+                                        <form:label path="name.firstName">
+                                            <spring:message code="person.form.label.name.firstName" />:
+                                        </form:label>
+                                        <form:input type="text" path="name.firstName" />
+                                    </div>
+                                    <div>
+                                        <form:label path="name.middleName">
+                                            <spring:message code="person.form.label.name.middleName" />:
+                                        </form:label>
+                                        <form:input type="text" path="name.middleName" />
+                                    </div>
+                                    <div>
+                                        <form:label path="name.suffix">
+                                            <spring:message code="person.form.label.name.suffix" />:
+                                        </form:label>
+                                        <form:input type="text" path="name.suffix" /></div>
+                                </fieldset>
+                                <fieldset>
+                                    <legend>
+                                        <spring:message code="person.form.label.address" />:
+                                    </legend>
+                                    <div>
+                                        <form:label path="address.streetNumber">
+                                            <spring:message code="person.form.label.address.streetNumber" />:
+                                        </form:label>
+                                        <form:input type="text" path="address.streetNumber" /> 
+                                    </div>
+                                    <div>
+                                        <form:label path="address.barangay">
+                                            <spring:message code="person.form.label.address.barangay" />:
+                                        </form:label>
+                                        <form:input type="text" path="address.barangay" /> 
+                                    </div>
+                                    <div>
+                                        <form:label path="address.municipality">
+                                            <spring:message code="person.form.label.address.municipality" />:
+                                        </form:label>
+                                        <form:input type="text" path="address.municipality" /> 
+                                    </div>
+                                    <div>
+                                        <form:label path="address.zipCode">
+                                            <spring:message code="person.form.label.address.zipCode" />:
+                                        </form:label>
+                                        <form:input type="number" name="zipCode" path="address.zipCode" min="0" /> 
+                                    </div>
+                                </fieldset>
+                                <fieldset>
+                                    <legend>
+                                        <spring:message code="person.form.label.otherInformation" />:
+                                    </legend>
+                                    <div>
+                                        <form:label path="birthday">
+                                            <spring:message code="person.form.label.otherInformation.birthday" />:
+                                        </form:label>
+                                        <form:input type="date" path="birthday" />  
+                                    </div>
+                                    <div>
+                                        <form:label path="GWA">
+                                            <spring:message code="person.form.label.otherInformation.GWA" />:
+                                        </form:label>
+                                        <form:input type="number" path="GWA" min="1" max="5" step="0.001" /> 
+                                    </div>
+                                    <div>
+                                        <form:label path="currentlyEmployed">
+                                            <spring:message code="person.form.label.otherInformation.currentlyEmployed" />:
+                                        </form:label>
+                                        <form:checkbox path="currentlyEmployed" onclick="document.getElementById('dateHired').disabled=!this.checked" />
+                                    </div>
+                                    <div>
+                                        <form:label path="dateHired">
+                                            <spring:message code="person.form.label.otherInformation.dateHired" />:
+                                        </form:label>
+                                        <form:input type="date" path="dateHired" />
+                                    </div>
+                                </fieldset>
+                                <fieldset>
+                                    <legend>
+                                        <spring:message code="person.form.label.contactInformation" />:
+                                    </legend>
+                                    <c:forEach items="${command.contacts}" var="contact">
+                                        <div>
+                                            <select class="contactTypes assigned-contacts">
+                                                <option value="Landline">
+                                                    <spring:message code="person.contactType.landline" />
+                                                </option>
+                                                <option value="Email">
+                                                    <spring:message code="person.contactType.email" />
+                                                </option>
+                                                <option value="Mobile">
+                                                    <spring:message code="person.contactType.mobile" />
+                                                </option>
+                                            </select>
+                                            <button onclick="this.parentNode.remove()">
+                                                <spring:message code="form.button.remove" />
+                                            </button>
+                                            <input type="text" class="contactData" value="${contact.data}">
+                                        </div>
+                                    </c:forEach>
+                                    <button onclick="this.parentNode.insertBefore(CONTACT_MARK_UP.cloneNode(true), this); return false;">
+                                        <spring:message code="form.button.add" />
+                                    </button>
+                                </fieldset>
+                                <fieldset>
+                                    <legend>
+                                        <spring:message code="person.form.label.roleAssignments" />:
+                                    </legend>
+                                    <c:forEach items="${command.roles}" var="role">
+                                        <div>
+                                            <select class="roles assigned-roles" path="role.id">
+                                                <c:forEach items="${roleItems}" var="roleItem">
+                                                    <option value="${roleItem.id}">${roleItem.name}</option>
+                                                </c:forEach>
+                                            </select>
+                                            <button onclick="this.parentNode.remove()">
+                                                <spring:message code="form.button.remove" />
+                                            </button>
+                                        </div>                           
+                                    </c:forEach>
+                                    <button onclick="this.parentNode.insertBefore(ROLE_MARK_UP.cloneNode(true), this); return false;">
+                                        <spring:message code="form.button.add" />
+                                    </button>
+                                </fieldset>
+                                <button>
+                                    <spring:message code="form.button.submit" />
+                                </button>
+                        </form:form>
+                    </fieldset>
+                </security:authorize>
+            </c:if>
         </div>
         <div class="data">
             <h3>
@@ -427,7 +605,7 @@
                                                 </button>
                                             </form>
                                         </td>
-                                        </security:authorize>
+                                    </security:authorize>
                                     <security:authorize access="hasRole('ROLE_DELETE_PERSON')">
                                         <td>
                                             <form action="/persons/delete" method="POST">

@@ -23,6 +23,7 @@ import com.ecc.spring_xml.service.UserService;
 public class DatabaseAuthenticationProvider implements AuthenticationProvider {
  
     private static final Map<Integer, String> ROLES;
+    private static final List<GrantedAuthority> ALL_ROLES;
 
     @Autowired
     private UserService userService;
@@ -35,6 +36,9 @@ public class DatabaseAuthenticationProvider implements AuthenticationProvider {
         ROLES.put(8, "ROLE_CREATE_ROLE");
         ROLES.put(16, "ROLE_UPDATE_ROLE");
         ROLES.put(32, "ROLE_DELETE_ROLE");
+        ALL_ROLES = ROLES.values().stream().map(t -> new SimpleGrantedAuthority(t))
+            .collect(Collectors.toList());
+        ALL_ROLES.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
     }
 
     @Override
@@ -48,7 +52,7 @@ public class DatabaseAuthenticationProvider implements AuthenticationProvider {
         if(user != null && user.getPassword().equals(DigestUtils.sha256Hex(password))) {
             List<GrantedAuthority> permissions = 
                 user.getPermissions() == null? 
-                    Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN")): 
+                    ALL_ROLES: 
                         user.getPermissions().stream()
                             .map(code -> new SimpleGrantedAuthority(ROLES.get(code)))
                             .collect(Collectors.toList());
