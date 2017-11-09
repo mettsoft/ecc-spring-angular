@@ -54,6 +54,9 @@
         <a href="/persons?language=${locale=='en'? 'fil' : 'en'}">
             <spring:message code="language.${locale == 'en'? 'filipino': 'english'}" />
         </a>
+        <form id="logoutForm" action="logout" method="POST">
+            <a href="#" onclick="document.getElementById('logoutForm').submit()">Logout</a>
+        </form>
     </div>
     <div id="role-mark-up" hidden>
         <select class="roles">

@@ -53,6 +53,10 @@ public class UserService extends AbstractService<User, UserDTO> implements Valid
 		return AssemblerUtils.asList(userDao.list(), userAssembler::createDTO);
 	}
 
+	public UserDTO get(String username) {
+		return userAssembler.createDTO(userDao.get(username));
+	}
+
 	@Override
 	protected RuntimeException onCreateFailure(User user, RuntimeException cause) {
 		user.setId(null);
