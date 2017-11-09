@@ -1,1 +1,1 @@
-dropdb spring_xml && createdb spring_xml && psql -d spring_xml < infra/src/main/resources/buildtools/*22.sql
+dropdb spring_security && createdb spring_security && psql -d spring_security < infra/src/main/resources/buildtools/*22.sql
