@@ -3,7 +3,6 @@ package com.ecc.spring_security.config;
 import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -24,8 +23,6 @@ import org.springframework.web.servlet.ViewResolver;
 @EnableWebMvc
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 public class AppConfiguration extends WebMvcConfigurerAdapter {   
-	@Autowired
-	private BeanFactory beanFactory;
 
     @Bean
     public ViewResolver viewResolver() {
