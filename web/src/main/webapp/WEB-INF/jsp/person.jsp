@@ -56,6 +56,7 @@
             <spring:message code="language.${pageContext.response.locale.language == 'en'? 'filipino': 'english'}" />
         </a>
         <form id="logoutForm" action="logout" method="POST">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
             <a href="#" onclick="document.getElementById('logoutForm').submit()">Logout</a>
         </form>
     </div>

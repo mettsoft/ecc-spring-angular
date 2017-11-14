@@ -34,6 +34,7 @@
                     <spring:message code="user.form.label.password" />:
                 </label> 
                 <input type="password" name="password"/>
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
             </div>
             <div>
                 <button>
