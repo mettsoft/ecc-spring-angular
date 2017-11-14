@@ -3,7 +3,6 @@ package com.ecc.spring_security.config;
 import java.util.Properties;
 
 import org.apache.commons.dbcp2.BasicDataSource;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
@@ -20,8 +19,8 @@ import com.ecc.spring_security.model.User;
 @Configuration
 @EnableTransactionManagement
 public class DaoConfiguration {
-	@Bean(name = "dataSource", destroyMethod = "close")
-	public BasicDataSource getDataSource() {
+	@Bean(destroyMethod = "close")
+	public BasicDataSource dataSource() {
 		BasicDataSource dataSource = new BasicDataSource();
 		dataSource.setDriverClassName("org.postgresql.Driver");
 		dataSource.setUrl("jdbc:postgresql://localhost:5432/spring_security");
@@ -31,7 +30,7 @@ public class DaoConfiguration {
 	}
 
 	@Bean
-	public LocalSessionFactoryBean getSessionFactoryBean() {
+	public LocalSessionFactoryBean sessionFactoryBean() {
 		Properties properties = new Properties();
 		properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
 		properties.setProperty("hibernate.cache.use_second_level_cache", "true");
@@ -39,17 +38,17 @@ public class DaoConfiguration {
 		properties.setProperty("hibernate.cache.region.factory_class", "org.hibernate.cache.ehcache.EhCacheRegionFactory");
 
 		LocalSessionFactoryBean sessionFactoryBean = new LocalSessionFactoryBean();
-		sessionFactoryBean.setDataSource(getDataSource());
+		sessionFactoryBean.setDataSource(dataSource());
 		sessionFactoryBean.setHibernateProperties(properties);
 		sessionFactoryBean.setAnnotatedClasses(Address.class, Contact.class, Name.class, 
 			Person.class, Role.class, User.class);
 		return sessionFactoryBean;
 	}
 
-	@Bean(name = "transactionManager")
-	public HibernateTransactionManager getTransactionManager() {
+	@Bean
+	public HibernateTransactionManager transactionManager() {
 		HibernateTransactionManager transactionManager = new HibernateTransactionManager();
-		transactionManager.setSessionFactory(getSessionFactoryBean().getObject());
+		transactionManager.setSessionFactory(sessionFactoryBean().getObject());
 		return transactionManager;
 	}
 }

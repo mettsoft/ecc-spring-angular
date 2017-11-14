@@ -2,15 +2,13 @@ package com.ecc.spring_security.config;
 
 import java.util.Locale;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
@@ -19,11 +17,11 @@ import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.ViewResolver;
 
+@Configuration
 @ComponentScan(basePackages = "com.ecc.spring_security")
 @EnableWebMvc
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 public class AppConfiguration extends WebMvcConfigurerAdapter {   
-
     @Bean
     public ViewResolver viewResolver() {
         InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
@@ -32,8 +30,8 @@ public class AppConfiguration extends WebMvcConfigurerAdapter {
         return viewResolver;
     }
  
-    @Bean(name = "messageSource")
-    public ReloadableResourceBundleMessageSource getMessageSource() {
+    @Bean
+    public ReloadableResourceBundleMessageSource messageSource() {
         ReloadableResourceBundleMessageSource resource = new ReloadableResourceBundleMessageSource();
         resource.setBasename("classpath:messages");
         resource.setDefaultEncoding("UTF-8");
@@ -41,8 +39,8 @@ public class AppConfiguration extends WebMvcConfigurerAdapter {
         return resource;
     }
 
-    @Bean(name = "localeResolver")
-    public CookieLocaleResolver getLocaleResolver() {
+    @Bean
+    public CookieLocaleResolver localeResolver() {
         CookieLocaleResolver localeResolver = new CookieLocaleResolver();
         localeResolver.setDefaultLocale(Locale.ENGLISH);
         localeResolver.setCookieName("localeCookie");
@@ -50,21 +48,16 @@ public class AppConfiguration extends WebMvcConfigurerAdapter {
         return localeResolver;
     }
 
-	@Bean
-    public LocaleChangeInterceptor getLocaleChangeInterceptor() {
-         LocaleChangeInterceptor getLocaleChangeInterceptor = new LocaleChangeInterceptor();
-         getLocaleChangeInterceptor.setParamName("language");
-         return getLocaleChangeInterceptor;
-    }
-
-    @Bean(name = "multipartResolver")
-    public CommonsMultipartResolver getMultipartResolver() {
+    @Bean
+    public CommonsMultipartResolver multipartResolver() {
         return new CommonsMultipartResolver();
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(getLocaleChangeInterceptor());
+        LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
+        localeChangeInterceptor.setParamName("language");
+        registry.addInterceptor(localeChangeInterceptor);
     }
 
     @Override
