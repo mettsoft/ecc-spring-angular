@@ -5,12 +5,12 @@ import java.util.List;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ecc.spring_security.model.User;
 
-@Component
+@Repository
 public class UserDao extends AbstractDao<User> {
 	public UserDao(SessionFactory sessionFactory) {
 		super(User.class, sessionFactory);

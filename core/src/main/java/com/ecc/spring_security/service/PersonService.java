@@ -4,7 +4,7 @@ import java.util.List;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.validation.Validator;
 import org.springframework.validation.Errors;
 import org.springframework.validation.BindException;
@@ -23,7 +23,7 @@ import com.ecc.spring_security.util.AssemblerUtils;
 import com.ecc.spring_security.util.ValidationUtils;
 import com.ecc.spring_security.util.ValidationException;
 
-@Component("personService")
+@Service
 public class PersonService extends AbstractService<Person, PersonDTO> implements Validator {
 	private static final Integer DEFAULT_MAX_CHARACTERS = 20;
 	private static final Integer LONG_MAX_CHARACTERS = 50;

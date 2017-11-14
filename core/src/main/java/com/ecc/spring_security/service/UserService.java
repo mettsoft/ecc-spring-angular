@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.validation.Validator;
@@ -19,7 +19,7 @@ import com.ecc.spring_security.util.AssemblerUtils;
 import com.ecc.spring_security.util.ValidationUtils;
 import com.ecc.spring_security.util.ValidationException;
 
-@Component("userService")
+@Service
 public class UserService extends AbstractService<User, UserDTO> implements Validator {
 	private static final Integer MAX_CHARACTERS = 255;
 

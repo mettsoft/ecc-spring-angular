@@ -9,12 +9,12 @@ import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ecc.spring_security.model.Person;
 
-@Component
+@Repository
 public class PersonDao extends AbstractDao<Person> {
 	public PersonDao(SessionFactory sessionFactory) {
 		super(Person.class, sessionFactory);
