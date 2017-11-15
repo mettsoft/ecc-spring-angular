@@ -49,6 +49,7 @@
     </style>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/datejs/1.0/date.min.js"></script>
 </head>
 <body>
     <div style="float: right;">
@@ -687,6 +688,19 @@
 
     document.getElementById('querySearchType').dispatchEvent(new Event("change"));
 
+    var birthday = document.getElementById('birthday').getAttribute('value');
+    if (birthday && !birthday.match('^\\d{4}-\\d{1,2}-\\d{1,2}$')) {
+    	document.getElementById('birthday').value = 
+    		Date.parse(birthday.slice(0, 19) + "UTC").toISOString().slice(0,10);
+    }
+
+    var dateHired = document.getElementById('dateHired').getAttribute('value');
+    if (dateHired && !dateHired.match('^\\d{4}-\\d{1,2}-\\d{1,2}$')) {
+    	document.getElementById('dateHired').value =  
+    		Date.parse(dateHired.slice(0, 19) + "UTC").toISOString().slice(0,10);
+    }
+
+
     function onSubmit() {
         document.querySelectorAll('select.roles').forEach((e, i) => { 
             e.name = 'roles[' + (i-1) + '].id';
@@ -702,11 +716,13 @@
         document.querySelectorAll('input.contactData').forEach((e, i) => e.name = 'contacts[' + (i-1) + '].data');
     }
 
+    document.getElementById('browse-button') && 
     document.getElementById('browse-button').addEventListener("click", (element) => {
         document.getElementById('file-button').click();
         element.preventDefault();
     });
 
+    document.getElementById('file-button') && 
     document.getElementById('file-button').addEventListener("change", (element) => {
         document.querySelector('.browse-button-container label').innerHTML = element.target.value.split("\\").pop();
         document.getElementById('upload-button').hidden = false;
