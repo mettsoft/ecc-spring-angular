@@ -125,6 +125,7 @@
                                     </td>
                                     <td>
                                         <form action="/users/delete" method="POST">
+                                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
                                             <input type="hidden" name="id" value="${user.id}">
                                             <input type="hidden" name="username" value="${user.username}">
                                             <button onclick="return confirm('<spring:message code="user.data.form.button.deleteConfirmation" arguments="${user.username}" />')">

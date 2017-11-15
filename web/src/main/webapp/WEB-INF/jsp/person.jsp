@@ -611,6 +611,7 @@
                                     <security:authorize access="hasRole('ROLE_DELETE_PERSON')">
                                         <td>
                                             <form action="/persons/delete" method="POST">
+                                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
                                                 <input type="hidden" name="id" value="${person.id}">
                                                 <input type="hidden" name="name.title" value="${person.name.title}">
                                                 <input type="hidden" name="name.lastName" value="${person.name.lastName}">

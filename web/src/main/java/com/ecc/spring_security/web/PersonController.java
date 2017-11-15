@@ -174,11 +174,11 @@ public class PersonController {
 	public ModelAndView exceptionHandler(HttpServletRequest request, ValidationException cause, Locale locale) {
 		ModelAndView modelView = list(request, locale);
 		List<ObjectError> errors = cause.getAllErrors();
-		Object target = cause.getTarget();
+		PersonDTO person = (PersonDTO) cause.getTarget();
 
 		if (request.getAttribute(ATTRIBUTE_FORCE_CREATE_MODE) == null) {
-			modelView.addAllObjects(constructViewParametersFromPerson((PersonDTO) target));
-			modelView.addObject(DEFAULT_COMMAND_NAME, target);				
+			modelView.addAllObjects(constructViewParametersFromPerson(person));
+			modelView.addObject(DEFAULT_COMMAND_NAME, person);
 		}
 		modelView.addObject(VIEW_PARAMETER_ERROR_MESSAGES, ValidationUtils.localize(errors, messageSource, locale));
 

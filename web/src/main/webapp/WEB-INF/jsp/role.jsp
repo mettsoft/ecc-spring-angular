@@ -124,6 +124,7 @@
                                     <security:authorize access="hasRole('ROLE_DELETE_ROLE')">
                                         <td>
                                             <form action="/roles/delete" method="POST">
+                                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
                                                 <input type="hidden" name="id" value="${role.id}">
                                                 <input type="hidden" name="name" value="${role.name}">
                                                 <button onclick="return confirm('<spring:message code="role.data.form.button.deleteConfirmation" arguments="${role.name}" />')">
