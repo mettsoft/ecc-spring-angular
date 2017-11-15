@@ -2,29 +2,45 @@ package com.ecc.spring_security.service;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Collection;
+import java.util.stream.Collectors;
 
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DataRetrievalFailureException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.Validator;
 import org.springframework.validation.Errors;
 
-import com.ecc.spring_security.dto.UserDTO;
-import com.ecc.spring_security.model.User;
-import com.ecc.spring_security.dao.UserDao;
 import com.ecc.spring_security.assembler.UserAssembler;
+import com.ecc.spring_security.dao.PermissionDao;
+import com.ecc.spring_security.dao.UserDao;
+import com.ecc.spring_security.dto.UserDTO;
+import com.ecc.spring_security.model.Permission;
+import com.ecc.spring_security.model.User;
 import com.ecc.spring_security.util.AssemblerUtils;
 import com.ecc.spring_security.util.ValidationUtils;
 import com.ecc.spring_security.util.ValidationException;
 
 @Service
-public class UserService extends AbstractService<User, UserDTO> implements Validator {
+public class UserService extends AbstractService<User, UserDTO> implements Validator, UserDetailsService {
 	private static final Integer MAX_CHARACTERS = 255;
 
 	private final UserDao userDao;
 	private final UserAssembler userAssembler;
+
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+
+	@Value("#{permissionDao.list()}")
+	private List<Permission> PERMISSIONS;
 
 	public UserService(UserDao userDao, UserAssembler userAssembler) {
 		super(userDao, userAssembler);
@@ -46,7 +62,7 @@ public class UserService extends AbstractService<User, UserDTO> implements Valid
 
 	@Override
 	public Serializable create(UserDTO user) {
-		user.setPassword(DigestUtils.sha256Hex(user.getPassword()));
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		return super.create(user);
 	}
 
@@ -54,7 +70,7 @@ public class UserService extends AbstractService<User, UserDTO> implements Valid
 	public void update(UserDTO user) {
 		UserDTO originalUser = get(user.getId());
 		if (!StringUtils.isEmpty(user.getPassword())) {
-			user.setPassword(DigestUtils.sha256Hex(user.getPassword()));		
+			user.setPassword(passwordEncoder.encode(user.getPassword()));
 		}
 		else {
 			user.setPassword(originalUser.getPassword());
@@ -66,8 +82,22 @@ public class UserService extends AbstractService<User, UserDTO> implements Valid
 		return AssemblerUtils.asList(userDao.list(), userAssembler::createDTO);
 	}
 
-	public UserDTO get(String username) {
-		return userAssembler.createDTO(userDao.get(username));
+	@Override
+	public UserDetails loadUserByUsername(String username) {
+		User user = userDao.get(username);
+
+		return user == null? null: 
+			new org.springframework.security.core.userdetails.User(username, user.getPassword(), getAuthorities(user.getPermissions()));
+	}
+
+	private Collection<? extends GrantedAuthority> getAuthorities(Collection<Permission> permissions) {
+		if (permissions.contains(new Permission("ROLE_ADMIN"))) {
+			permissions = PERMISSIONS;
+		}
+
+		return permissions.stream()
+			.map(t -> new SimpleGrantedAuthority(t.getName()))
+			.collect(Collectors.toList());
 	}
 
 	@Override

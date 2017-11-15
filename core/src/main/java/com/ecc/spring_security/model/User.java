@@ -1,11 +1,18 @@
 package com.ecc.spring_security.model;
 
+import java.util.Set;
+import java.util.HashSet;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Column;
+import javax.persistence.ManyToMany;
+import javax.persistence.FetchType;
+import javax.persistence.JoinTable;
+import javax.persistence.JoinColumn;
 
 @Entity
 @Table(name="users")
@@ -21,11 +28,14 @@ public class User {
 	@Column(nullable=false)
 	private String password;
 	
-	@Column
-	private Integer permissions;
+	@ManyToMany(fetch=FetchType.EAGER)
+	@JoinTable(
+		joinColumns=@JoinColumn(name="user_id"),
+		inverseJoinColumns=@JoinColumn(name="permission_id"))
+	private Set<Permission> permissions;
 
 	public User() {
-		permissions = 0;
+		permissions = new HashSet<>();
 	}
 
 	public Integer getId() {
@@ -40,7 +50,7 @@ public class User {
 		return password;
 	}
 
-	public Integer getPermissions() {
+	public Set<Permission> getPermissions() {
 		return permissions;
 	}
 
@@ -56,7 +66,7 @@ public class User {
 		this.password = password;
 	}
 
-	public void setPermissions(Integer permissions) {
+	public void setPermissions(Set<Permission> permissions) {
 		this.permissions = permissions;
 	}
 }

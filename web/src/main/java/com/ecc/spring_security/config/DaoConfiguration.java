@@ -15,6 +15,7 @@ import com.ecc.spring_security.model.Name;
 import com.ecc.spring_security.model.Person;
 import com.ecc.spring_security.model.Role;
 import com.ecc.spring_security.model.User;
+import com.ecc.spring_security.model.Permission;
 
 @Configuration
 @EnableTransactionManagement
@@ -41,7 +42,7 @@ public class DaoConfiguration {
 		sessionFactoryBean.setDataSource(dataSource());
 		sessionFactoryBean.setHibernateProperties(properties);
 		sessionFactoryBean.setAnnotatedClasses(Address.class, Contact.class, Name.class, 
-			Person.class, Role.class, User.class);
+			Person.class, Role.class, User.class, Permission.class);
 		return sessionFactoryBean;
 	}
 

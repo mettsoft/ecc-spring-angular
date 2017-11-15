@@ -5,6 +5,7 @@ import java.util.List;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.CriteriaSpecification;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,7 +21,13 @@ public class UserDao extends AbstractDao<User> {
 	public List<User> list() {
 		return sessionFactory.getCurrentSession()
 			.createCriteria(User.class)
-			.add(Restrictions.isNotNull("permissions"))
+			.createAlias("permissions", "P", CriteriaSpecification.LEFT_JOIN)
+			.add(
+				Restrictions.or(
+					Restrictions.ne("P.name", "ROLE_ADMIN"),
+					Restrictions.isNull("P.name")
+				)
+			)
 			.addOrder(Order.asc("id"))
 			.list();
 	}

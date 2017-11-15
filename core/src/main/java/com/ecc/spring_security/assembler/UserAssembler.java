@@ -1,15 +1,30 @@
 package com.ecc.spring_security.assembler;
 
-import java.util.List;
-import java.util.ArrayList;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.Map;
 
+import javax.annotation.PostConstruct;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.ecc.spring_security.model.User;
+import com.ecc.spring_security.dao.PermissionDao;
 import com.ecc.spring_security.dto.UserDTO;
+import com.ecc.spring_security.model.User;
+import com.ecc.spring_security.model.Permission;
 
 @Component
 public class UserAssembler implements Assembler<User, UserDTO> {
+	@Autowired
+	private PermissionDao permissionDao;
+	private Map<String, Permission> PERMISSIONS;
+
+	@PostConstruct
+	public void init() {
+		PERMISSIONS = permissionDao.list().stream().collect(Collectors.toMap(t -> t.getName(), Function.identity()));
+	}
+
 	@Override
 	public UserDTO createDTO(User model) {
 		if (model == null) {
@@ -19,16 +34,9 @@ public class UserAssembler implements Assembler<User, UserDTO> {
 		dto.setId(model.getId());
 		dto.setUsername(model.getUsername());
 		dto.setPassword(model.getPassword());
-
-		if (model.getPermissions() != null) {
-			List<Integer> permissions = new ArrayList<>();
-			for (int code = model.getPermissions(), count = 0; code != 0; code >>>= 1, count++) {
-				if ((code & 1) == 1) {
-					permissions.add(1 << count);					
-				}
-			}			
-			dto.setPermissions(permissions);
-		}
+		dto.setPermissions(model.getPermissions().stream()
+			.map(t -> t.getName())
+			.collect(Collectors.toList()));
 		return dto;
 	}
 
@@ -41,14 +49,9 @@ public class UserAssembler implements Assembler<User, UserDTO> {
 		model.setId(dto.getId());
 		model.setUsername(dto.getUsername());
 		model.setPassword(dto.getPassword());
-
-		if (dto.getPermissions() != null) {
-			int code = 0;
-			for (int i = 0; i < dto.getPermissions().size(); i++) {
-				code |= dto.getPermissions().get(i);
-			}
-			model.setPermissions(code);			
-		}
+		model.setPermissions(dto.getPermissions().stream()
+			.map(t -> PERMISSIONS.get(t))
+			.collect(Collectors.toSet()));
 		return model;
 	}
 }

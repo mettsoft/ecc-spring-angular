@@ -1,1 +1,1 @@
-psql -U exist -d spring_security -a -f ".\infra\src\main\resources\buildtools\2017-11-08_0022.sql"
+dropdb -U exist spring_security && createdb -U exist spring_security && psql -U exist -d spring_security -a -f ".\infra\src\main\resources\buildtools\2017-11-14_0023.sql"
