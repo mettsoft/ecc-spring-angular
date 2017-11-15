@@ -25,6 +25,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
                 .antMatchers("/users/**").hasRole("ADMIN")
                 .antMatchers("/persons/create").hasRole("CREATE_PERSON")
+                .antMatchers("/persons/upload").hasRole("CREATE_PERSON")
                 .antMatchers("/persons/update").hasRole("UPDATE_PERSON")
                 .regexMatchers("/persons\\?.*id=.*").hasRole("UPDATE_PERSON")
                 .antMatchers("/persons/delete").hasRole("DELETE_PERSON")
