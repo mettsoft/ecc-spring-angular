@@ -18,9 +18,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.validation.annotation.Validated;
@@ -31,7 +33,6 @@ import com.ecc.spring_security.dto.PersonDTO;
 import com.ecc.spring_security.factory.PersonFactory;
 import com.ecc.spring_security.service.PersonService;
 import com.ecc.spring_security.service.RoleService;
-import com.ecc.spring_security.util.FileUploadBean;
 import com.ecc.spring_security.util.DateUtils;
 import com.ecc.spring_security.util.NumberUtils;
 import com.ecc.spring_security.util.ValidationUtils;
@@ -81,7 +82,7 @@ public class PersonController {
 
 	@InitBinder
 	protected void initBinder(WebDataBinder binder) {
-		if (personService.supports(binder.getTarget().getClass())) {
+		if (binder.getTarget() != null && personService.supports(binder.getTarget().getClass())) {
 			binder.setValidator(personService);		
 		}
 	    binder.registerCustomEditor(Date.class, new CustomDateEditor(DateUtils.DATE_FORMAT, true));
@@ -139,9 +140,9 @@ public class PersonController {
 	}
 
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
-	public String upload(HttpServletRequest request, FileUploadBean file, Locale locale) {
+	public String upload(HttpServletRequest request, @RequestParam("file") MultipartFile file, Locale locale) {
 		request.setAttribute(ATTRIBUTE_FORCE_CREATE_MODE, true);
-		PersonDTO person = personFactory.createPersonDTO(file.getFile().getBytes());
+		PersonDTO person = personFactory.createPersonDTO(file);
 		personService.validate(person, DEFAULT_COMMAND_NAME);
 		return create(request, person, null, locale);
 	}

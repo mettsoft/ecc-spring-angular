@@ -44,10 +44,6 @@
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 		</dependency>
-		<dependency>
-		    <groupId>commons-fileupload</groupId>
-		    <artifactId>commons-fileupload</artifactId>
-		</dependency>
 	    <dependency>
 	        <groupId>ch.qos.logback</groupId>
 	        <artifactId>logback-classic</artifactId>

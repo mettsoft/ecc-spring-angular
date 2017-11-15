@@ -1,6 +1,10 @@
 package com.ecc.spring_security.config.core;
 
+import javax.servlet.ServletRegistration;
+import javax.servlet.MultipartConfigElement;
+
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
+
 import com.ecc.spring_security.config.AppConfiguration;
 
 public class SpringMvcInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
@@ -18,4 +22,12 @@ public class SpringMvcInitializer extends AbstractAnnotationConfigDispatcherServ
 	protected String[] getServletMappings() {
 		return new String[] { "/" };
 	}
+
+    @Override
+    protected void customizeRegistration(ServletRegistration.Dynamic registration) {
+        MultipartConfigElement multipartConfigElement = 
+            new MultipartConfigElement(System.getProperty("java.io.tmpdir"));
+
+        registration.setMultipartConfig(multipartConfigElement);
+    }
 }

@@ -9,6 +9,7 @@ import java.util.regex.Matcher;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ecc.spring_security.dto.PersonDTO;
 import com.ecc.spring_security.dto.ContactDTO;
@@ -23,9 +24,9 @@ public class PersonFactory {
    	private static final String CONTACT_TYPE_MOBILE = "Mobile";
    	private static final String CONTACT_TYPE_EMAIL = "Email";
 
-	public PersonDTO createPersonDTO(byte[] data) {
+	public PersonDTO createPersonDTO(MultipartFile file) {
 		try {
-			String dataString = IOUtils.toString(data, "utf-8");
+			String dataString = IOUtils.toString(file.getBytes(), "utf-8");
 			Matcher matcher = PATTERN.matcher(dataString);
 
 			PersonDTO person = new PersonDTO();
