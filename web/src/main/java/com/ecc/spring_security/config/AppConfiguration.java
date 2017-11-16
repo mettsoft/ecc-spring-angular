@@ -19,7 +19,7 @@ import com.ecc.spring_security.model.Permission;
 
 @Configuration
 @EnableTransactionManagement(proxyTargetClass = true)
-public class DaoConfiguration {
+public class AppConfiguration {
 	@Bean(destroyMethod = "close")
 	public BasicDataSource dataSource() {
 		BasicDataSource dataSource = new BasicDataSource();
