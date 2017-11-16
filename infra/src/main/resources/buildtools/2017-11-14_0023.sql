@@ -93,21 +93,21 @@ VALUES
 	('Email', 'juandelacruz@yahoo.com', 2);
 
 INSERT INTO 
-	users (id, username, password)
+	users (username, password)
 VALUES 
-	(1, 'admin', '$2a$10$pC4T1OslbWX7aMJWBkbKBOSURRgD6pF0rt2hgbYBwTKDvn6TTIhYi'),
-	(2, 'user', '$2a$10$yr4i3jT.vYP/nApp0OQVD.DCpZpivrVh5Wx9NKD1NwRjU.u37If8q');
+	('admin', '$2a$10$pC4T1OslbWX7aMJWBkbKBOSURRgD6pF0rt2hgbYBwTKDvn6TTIhYi'),
+	('user', '$2a$10$yr4i3jT.vYP/nApp0OQVD.DCpZpivrVh5Wx9NKD1NwRjU.u37If8q');
 
 INSERT INTO 
-	permissions (id, name)
+	permissions (name)
 VALUES 
-	(1, 'ROLE_ADMIN'),
-	(2, 'ROLE_CREATE_PERSON'),
-	(3, 'ROLE_UPDATE_PERSON'),
-	(4, 'ROLE_DELETE_PERSON'),
-	(5, 'ROLE_CREATE_ROLE'),
-	(6, 'ROLE_UPDATE_ROLE'),
-	(7, 'ROLE_DELETE_ROLE');
+	('ROLE_ADMIN'),
+	('ROLE_CREATE_PERSON'),
+	('ROLE_UPDATE_PERSON'),
+	('ROLE_DELETE_PERSON'),
+	('ROLE_CREATE_ROLE'),
+	('ROLE_UPDATE_ROLE'),
+	('ROLE_DELETE_ROLE');
 
 INSERT INTO 
 	users_permissions (user_id, permission_id)
