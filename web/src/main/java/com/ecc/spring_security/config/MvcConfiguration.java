@@ -20,7 +20,7 @@ import org.springframework.web.servlet.ViewResolver;
 @Configuration
 @ComponentScan(basePackages = "com.ecc.spring_security")
 @EnableWebMvc
-public class AppConfiguration extends WebMvcConfigurerAdapter {   
+public class MvcConfiguration extends WebMvcConfigurerAdapter {   
     @Bean
     public ViewResolver viewResolver() {
         InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
