@@ -1,4 +1,4 @@
-package com.ecc.spring_security.web;
+package com.ecc.spring.web;
 
 import java.util.List;
 import java.util.Locale;
@@ -17,10 +17,10 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.ObjectError;
 
-import com.ecc.spring_security.util.ValidationException;
-import com.ecc.spring_security.util.ValidationUtils;
+import com.ecc.spring.util.ValidationException;
+import com.ecc.spring.util.ValidationUtils;
 
-@ControllerAdvice("com.ecc.spring_security.rest")
+@ControllerAdvice("com.ecc.spring.rest")
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 	private static final Logger logger = LoggerFactory.getLogger(RestResponseEntityExceptionHandler.class);
 

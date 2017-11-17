@@ -1,4 +1,4 @@
-package com.ecc.spring_security.rest;
+package com.ecc.spring.rest;
 
 import java.util.Date;
 import java.util.List;
@@ -21,11 +21,11 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.validation.BindingResult;
 
-import com.ecc.spring_security.dto.PersonDTO;
-import com.ecc.spring_security.factory.PersonFactory;
-import com.ecc.spring_security.service.PersonService;
-import com.ecc.spring_security.util.DateUtils;
-import com.ecc.spring_security.util.ValidationException;
+import com.ecc.spring.dto.PersonDTO;
+import com.ecc.spring.factory.PersonFactory;
+import com.ecc.spring.service.PersonService;
+import com.ecc.spring.util.DateUtils;
+import com.ecc.spring.util.ValidationException;
 
 @RestController("restPersonController")
 @RequestMapping("/api/persons")

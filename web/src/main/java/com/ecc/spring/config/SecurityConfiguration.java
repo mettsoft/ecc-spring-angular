@@ -16,8 +16,8 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 
-import com.ecc.spring_security.service.UserService;
-import com.ecc.spring_security.rest.CustomAuthenticationSuccessHandler;
+import com.ecc.spring.service.UserService;
+import com.ecc.spring.rest.CustomAuthenticationSuccessHandler;
 
 @Configuration
 @EnableWebSecurity

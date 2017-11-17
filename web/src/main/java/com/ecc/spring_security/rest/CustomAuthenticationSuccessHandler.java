@@ -1,4 +1,4 @@
-package com.ecc.spring_security.rest;
+package com.ecc.spring.rest;
 
 import java.io.IOException;
 

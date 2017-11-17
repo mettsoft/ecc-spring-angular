@@ -1,4 +1,4 @@
-package com.ecc.spring_security.rest;
+package com.ecc.spring.rest;
 
 import java.util.List;
 
@@ -17,9 +17,9 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.validation.BindingResult;
 
-import com.ecc.spring_security.dto.UserDTO;
-import com.ecc.spring_security.service.UserService;
-import com.ecc.spring_security.util.ValidationException;
+import com.ecc.spring.dto.UserDTO;
+import com.ecc.spring.service.UserService;
+import com.ecc.spring.util.ValidationException;
 
 @RestController("restUserController")
 @RequestMapping("/api/users")
