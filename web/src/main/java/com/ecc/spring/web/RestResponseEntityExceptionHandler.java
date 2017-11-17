@@ -20,7 +20,7 @@ import org.springframework.validation.ObjectError;
 import com.ecc.spring.util.ValidationException;
 import com.ecc.spring.util.ValidationUtils;
 
-@ControllerAdvice("com.ecc.spring.rest")
+@ControllerAdvice("com.ecc.spring.web")
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 	private static final Logger logger = LoggerFactory.getLogger(RestResponseEntityExceptionHandler.class);
 

@@ -18,7 +18,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.ViewResolver;
 
 @Configuration
-@ComponentScan(basePackages = { "com.ecc.spring.rest" }) 
+@ComponentScan(basePackages = { "com.ecc.spring.web" }) 
 @EnableWebMvc
 public class MvcConfiguration extends WebMvcConfigurerAdapter {   
     @Bean

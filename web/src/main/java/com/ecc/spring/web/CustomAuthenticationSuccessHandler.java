@@ -1,4 +1,4 @@
-package com.ecc.spring.rest;
+package com.ecc.spring.web;
 
 import java.io.IOException;
 
