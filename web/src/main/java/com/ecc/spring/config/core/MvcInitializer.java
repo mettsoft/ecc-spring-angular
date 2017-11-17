@@ -12,12 +12,12 @@ import com.ecc.spring.config.SecurityConfiguration;
 public class MvcInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
-		return new Class[] { AppConfiguration.class, SecurityConfiguration.class, MvcConfiguration.class };
+		return new Class[] { AppConfiguration.class, SecurityConfiguration.class };
 	}
 
 	@Override
 	protected Class<?>[] getServletConfigClasses() {
-		return null;
+		return new Class[] { MvcConfiguration.class };
 	}
 
 	@Override
