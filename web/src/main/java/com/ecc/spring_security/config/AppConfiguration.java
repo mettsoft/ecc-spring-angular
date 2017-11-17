@@ -4,7 +4,9 @@ import java.util.Properties;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -18,6 +20,10 @@ import com.ecc.spring_security.model.User;
 import com.ecc.spring_security.model.Permission;
 
 @Configuration
+@ComponentScan(basePackages = "com.ecc.spring_security", 
+	excludeFilters = {
+		@ComponentScan.Filter(type = FilterType.REGEX, pattern = "com.ecc.spring_security.config.*")
+	})
 @EnableTransactionManagement(proxyTargetClass = true)
 public class AppConfiguration {
 	@Bean(destroyMethod = "close")
