@@ -1,4 +1,4 @@
-package com.ecc.spring_security.service;
+package com.ecc.spring.service;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -9,13 +9,13 @@ import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.validation.Validator;
 import org.springframework.validation.Errors;
 
-import com.ecc.spring_security.dto.RoleDTO;
-import com.ecc.spring_security.model.Role;
-import com.ecc.spring_security.dao.RoleDao;
-import com.ecc.spring_security.assembler.RoleAssembler;
-import com.ecc.spring_security.util.AssemblerUtils;
-import com.ecc.spring_security.util.ValidationUtils;
-import com.ecc.spring_security.util.ValidationException;
+import com.ecc.spring.dto.RoleDTO;
+import com.ecc.spring.model.Role;
+import com.ecc.spring.dao.RoleDao;
+import com.ecc.spring.assembler.RoleAssembler;
+import com.ecc.spring.util.AssemblerUtils;
+import com.ecc.spring.util.ValidationUtils;
+import com.ecc.spring.util.ValidationException;
 
 @Service
 public class RoleService extends AbstractService<Role, RoleDTO> implements Validator {

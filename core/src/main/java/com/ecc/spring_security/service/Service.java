@@ -1,4 +1,4 @@
-package com.ecc.spring_security.service;
+package com.ecc.spring.service;
 
 import java.io.Serializable;
 

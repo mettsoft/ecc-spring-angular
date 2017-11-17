@@ -1,15 +1,15 @@
-package com.ecc.spring_security.assembler;
+package com.ecc.spring.assembler;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.ecc.spring_security.model.Person;
-import com.ecc.spring_security.model.Name;
-import com.ecc.spring_security.model.Address;
-import com.ecc.spring_security.dto.PersonDTO;
-import com.ecc.spring_security.dto.NameDTO;
-import com.ecc.spring_security.dto.AddressDTO;
-import com.ecc.spring_security.util.AssemblerUtils;
+import com.ecc.spring.model.Person;
+import com.ecc.spring.model.Name;
+import com.ecc.spring.model.Address;
+import com.ecc.spring.dto.PersonDTO;
+import com.ecc.spring.dto.NameDTO;
+import com.ecc.spring.dto.AddressDTO;
+import com.ecc.spring.util.AssemblerUtils;
 
 @Component
 public class PersonAssembler implements Assembler<Person, PersonDTO> {

@@ -1,4 +1,4 @@
-package com.ecc.spring_security.model;
+package com.ecc.spring.model;
 
 import java.util.Set;
 import java.util.HashSet;

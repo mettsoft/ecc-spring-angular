@@ -1,9 +1,9 @@
-package com.ecc.spring_security.service;
+package com.ecc.spring.service;
 
 import java.io.Serializable;
 
-import com.ecc.spring_security.dao.Dao;
-import com.ecc.spring_security.assembler.Assembler;
+import com.ecc.spring.dao.Dao;
+import com.ecc.spring.assembler.Assembler;
 
 public abstract class AbstractService<T, R> implements Service<R> {
 	private final Dao<T> dao;

@@ -1,4 +1,4 @@
-package com.ecc.spring_security.dao;
+package com.ecc.spring.dao;
 
 import java.util.List;
 import java.util.Date;
@@ -12,7 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ecc.spring_security.model.Person;
+import com.ecc.spring.model.Person;
 
 @Repository
 public class PersonDao extends AbstractDao<Person> {

@@ -6,7 +6,7 @@
 		timeToLiveSeconds="120"> 		
 	</defaultCache> 
 
-	<cache name="com.ecc.spring_security.model.Role" 
+	<cache name="com.ecc.spring.model.Role" 
 		maxEntriesLocalHeap="100"
 		eternal="false"
 		timeToIdleSeconds="120"

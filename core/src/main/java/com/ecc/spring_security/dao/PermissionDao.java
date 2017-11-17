@@ -1,4 +1,4 @@
-package com.ecc.spring_security.dao;
+package com.ecc.spring.dao;
 
 import java.util.List;
 
@@ -7,7 +7,7 @@ import org.hibernate.criterion.Order;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ecc.spring_security.model.Permission;
+import com.ecc.spring.model.Permission;
 
 @Repository
 public class PermissionDao extends AbstractDao<Permission> {

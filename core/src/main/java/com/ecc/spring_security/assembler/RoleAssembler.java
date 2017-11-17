@@ -1,11 +1,11 @@
-package com.ecc.spring_security.assembler;
+package com.ecc.spring.assembler;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.ecc.spring_security.model.Role;
-import com.ecc.spring_security.dto.RoleDTO;
-import com.ecc.spring_security.util.AssemblerUtils;
+import com.ecc.spring.model.Role;
+import com.ecc.spring.dto.RoleDTO;
+import com.ecc.spring.util.AssemblerUtils;
 
 @Component
 public class RoleAssembler implements Assembler<Role, RoleDTO> {

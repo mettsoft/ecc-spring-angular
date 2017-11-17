@@ -1,4 +1,4 @@
-package com.ecc.spring_security.dto;
+package com.ecc.spring.dto;
 
 public class ContactDTO {
 	private Integer id;

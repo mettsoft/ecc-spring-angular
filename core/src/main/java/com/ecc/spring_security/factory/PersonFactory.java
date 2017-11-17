@@ -1,4 +1,4 @@
-package com.ecc.spring_security.factory;
+package com.ecc.spring.factory;
 
 import java.text.ParseException;
 import java.math.BigDecimal;
@@ -11,11 +11,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.ecc.spring_security.dto.PersonDTO;
-import com.ecc.spring_security.dto.ContactDTO;
-import com.ecc.spring_security.dto.RoleDTO;
-import com.ecc.spring_security.util.ValidationException;
-import com.ecc.spring_security.util.DateUtils;
+import com.ecc.spring.dto.PersonDTO;
+import com.ecc.spring.dto.ContactDTO;
+import com.ecc.spring.dto.RoleDTO;
+import com.ecc.spring.util.ValidationException;
+import com.ecc.spring.util.DateUtils;
 
 @Component
 public class PersonFactory {

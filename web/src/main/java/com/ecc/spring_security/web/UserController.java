@@ -1,4 +1,4 @@
-package com.ecc.spring_security.web;
+package com.ecc.spring.web;
 
 import java.util.List;
 import java.util.Locale;
@@ -23,11 +23,11 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 
-import com.ecc.spring_security.dto.UserDTO;
-import com.ecc.spring_security.service.UserService;
-import com.ecc.spring_security.util.NumberUtils;
-import com.ecc.spring_security.util.ValidationUtils;
-import com.ecc.spring_security.util.ValidationException;
+import com.ecc.spring.dto.UserDTO;
+import com.ecc.spring.service.UserService;
+import com.ecc.spring.util.NumberUtils;
+import com.ecc.spring.util.ValidationUtils;
+import com.ecc.spring.util.ValidationException;
 
 @Controller
 @RequestMapping("/users")

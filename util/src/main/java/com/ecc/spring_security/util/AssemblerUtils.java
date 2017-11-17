@@ -1,4 +1,4 @@
-package com.ecc.spring_security.util;
+package com.ecc.spring.util;
 
 import java.util.Collection;
 import java.util.List;

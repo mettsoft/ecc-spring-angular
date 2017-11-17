@@ -1,4 +1,4 @@
-package com.ecc.spring_security.dao;
+package com.ecc.spring.dao;
 
 import java.util.List;
 
@@ -7,7 +7,7 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ecc.spring_security.model.User;
+import com.ecc.spring.model.User;
 
 @Repository
 public class UserDao extends AbstractDao<User> {

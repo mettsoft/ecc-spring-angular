@@ -1,4 +1,4 @@
-package com.ecc.spring_security.dto;
+package com.ecc.spring.dto;
 
 public class AddressDTO {
 	private String streetNumber;

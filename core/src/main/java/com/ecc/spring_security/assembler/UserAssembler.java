@@ -1,4 +1,4 @@
-package com.ecc.spring_security.assembler;
+package com.ecc.spring.assembler;
 
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -9,10 +9,10 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.ecc.spring_security.dao.PermissionDao;
-import com.ecc.spring_security.dto.UserDTO;
-import com.ecc.spring_security.model.User;
-import com.ecc.spring_security.model.Permission;
+import com.ecc.spring.dao.PermissionDao;
+import com.ecc.spring.dto.UserDTO;
+import com.ecc.spring.model.User;
+import com.ecc.spring.model.Permission;
 
 @Component
 public class UserAssembler implements Assembler<User, UserDTO> {

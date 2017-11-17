@@ -1,4 +1,4 @@
-package com.ecc.spring_security.dao;
+package com.ecc.spring.dao;
 
 import java.io.Serializable;
 

@@ -1,4 +1,4 @@
-package com.ecc.spring_security.config;
+package com.ecc.spring.config;
 
 import java.util.Properties;
 
@@ -11,18 +11,18 @@ import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import com.ecc.spring_security.model.Address;
-import com.ecc.spring_security.model.Contact;
-import com.ecc.spring_security.model.Name;
-import com.ecc.spring_security.model.Person;
-import com.ecc.spring_security.model.Role;
-import com.ecc.spring_security.model.User;
-import com.ecc.spring_security.model.Permission;
+import com.ecc.spring.model.Address;
+import com.ecc.spring.model.Contact;
+import com.ecc.spring.model.Name;
+import com.ecc.spring.model.Person;
+import com.ecc.spring.model.Role;
+import com.ecc.spring.model.User;
+import com.ecc.spring.model.Permission;
 
 @Configuration
-@ComponentScan(basePackages = "com.ecc.spring_security", 
+@ComponentScan(basePackages = "com.ecc.spring", 
 	excludeFilters = {
-		@ComponentScan.Filter(type = FilterType.REGEX, pattern = "com.ecc.spring_security.config.*")
+		@ComponentScan.Filter(type = FilterType.REGEX, pattern = "com.ecc.spring.config.*")
 	})
 @EnableTransactionManagement(proxyTargetClass = true)
 public class AppConfiguration {
@@ -30,7 +30,7 @@ public class AppConfiguration {
 	public BasicDataSource dataSource() {
 		BasicDataSource dataSource = new BasicDataSource();
 		dataSource.setDriverClassName("org.postgresql.Driver");
-		dataSource.setUrl("jdbc:postgresql://localhost:5432/spring_security");
+		dataSource.setUrl("jdbc:postgresql://localhost:5432/spring");
 		dataSource.setUsername("exist");
 		dataSource.setPassword("ex1stgl0bal");
 		return dataSource;

@@ -1,13 +1,13 @@
-package com.ecc.spring_security.config.core;
+package com.ecc.spring.config.core;
 
 import javax.servlet.ServletRegistration;
 import javax.servlet.MultipartConfigElement;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-import com.ecc.spring_security.config.AppConfiguration;
-import com.ecc.spring_security.config.MvcConfiguration;
-import com.ecc.spring_security.config.SecurityConfiguration;
+import com.ecc.spring.config.AppConfiguration;
+import com.ecc.spring.config.MvcConfiguration;
+import com.ecc.spring.config.SecurityConfiguration;
 
 public class MvcInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 	@Override

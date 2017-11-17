@@ -1,4 +1,4 @@
-package com.ecc.spring_security.model;
+package com.ecc.spring.model;
 
 import java.util.Set;
 import java.util.HashSet;
@@ -20,7 +20,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import com.ecc.spring_security.model.Person;
+import com.ecc.spring.model.Person;
 
 @Entity
 @Table(name="roles")

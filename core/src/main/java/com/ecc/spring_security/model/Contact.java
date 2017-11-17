@@ -1,4 +1,4 @@
-package com.ecc.spring_security.model;
+package com.ecc.spring.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;

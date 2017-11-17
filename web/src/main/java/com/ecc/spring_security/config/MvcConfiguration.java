@@ -1,4 +1,4 @@
-package com.ecc.spring_security.config;
+package com.ecc.spring.config;
 
 import java.util.Locale;
 

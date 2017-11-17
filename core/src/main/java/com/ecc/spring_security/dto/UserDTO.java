@@ -1,4 +1,4 @@
-package com.ecc.spring_security.dto;
+package com.ecc.spring.dto;
 
 import java.util.List;
 import java.util.ArrayList;

@@ -1,9 +1,9 @@
-package com.ecc.spring_security.assembler;
+package com.ecc.spring.assembler;
 
 import org.springframework.stereotype.Component;
 
-import com.ecc.spring_security.model.Contact;
-import com.ecc.spring_security.dto.ContactDTO;
+import com.ecc.spring.model.Contact;
+import com.ecc.spring.dto.ContactDTO;
 
 @Component
 public class ContactAssembler implements Assembler<Contact, ContactDTO> {

@@ -1,11 +1,11 @@
-package com.ecc.spring_security.dto;
+package com.ecc.spring.dto;
 
 import java.util.List;
 import java.util.ArrayList;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import com.ecc.spring_security.util.DateUtils;
+import com.ecc.spring.util.DateUtils;
 
 public class PersonDTO {
 	private Integer id;
