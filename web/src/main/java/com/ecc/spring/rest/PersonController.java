@@ -27,8 +27,8 @@ import com.ecc.spring.service.PersonService;
 import com.ecc.spring.util.DateUtils;
 import com.ecc.spring.util.ValidationException;
 
-@RestController("restPersonController")
-@RequestMapping("/api/persons")
+@RestController
+@RequestMapping("/persons")
 public class PersonController {
 	private static final String DEFAULT_COMMAND_NAME = "command";
 

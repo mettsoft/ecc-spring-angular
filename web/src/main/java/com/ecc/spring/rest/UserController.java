@@ -21,8 +21,8 @@ import com.ecc.spring.dto.UserDTO;
 import com.ecc.spring.service.UserService;
 import com.ecc.spring.util.ValidationException;
 
-@RestController("restUserController")
-@RequestMapping("/api/users")
+@RestController
+@RequestMapping("users")
 public class UserController {
 
 	@Autowired

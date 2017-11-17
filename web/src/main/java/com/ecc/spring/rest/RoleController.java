@@ -21,8 +21,8 @@ import com.ecc.spring.dto.RoleDTO;
 import com.ecc.spring.service.RoleService;
 import com.ecc.spring.util.ValidationException;
 
-@RestController("restRoleController")
-@RequestMapping("/api/roles")
+@RestController
+@RequestMapping("roles")
 public class RoleController {
 
 	@Autowired
