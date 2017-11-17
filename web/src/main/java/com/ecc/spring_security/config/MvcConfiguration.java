@@ -3,6 +3,7 @@ package com.ecc.spring.config;
 import java.util.Locale;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.web.multipart.MultipartResolver;
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.ViewResolver;
 
 @Configuration
+@ComponentScan(basePackages = "com.ecc.spring.web") 
 @EnableWebMvc
 public class MvcConfiguration extends WebMvcConfigurerAdapter {   
     @Bean

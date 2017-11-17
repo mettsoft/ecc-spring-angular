@@ -22,7 +22,8 @@ import com.ecc.spring.model.Permission;
 @Configuration
 @ComponentScan(basePackages = "com.ecc.spring", 
 	excludeFilters = {
-		@ComponentScan.Filter(type = FilterType.REGEX, pattern = "com.ecc.spring.config.*")
+		@ComponentScan.Filter(type = FilterType.REGEX, pattern = "com.ecc.spring.config.*"),
+		@ComponentScan.Filter(type = FilterType.REGEX, pattern = "com.ecc.spring.web.*")
 	})
 @EnableTransactionManagement(proxyTargetClass = true)
 public class AppConfiguration {
