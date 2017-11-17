@@ -6,11 +6,13 @@ import javax.servlet.MultipartConfigElement;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import com.ecc.spring_security.config.AppConfiguration;
+import com.ecc.spring_security.config.MvcConfiguration;
+import com.ecc.spring_security.config.SecurityConfiguration;
 
 public class SpringMvcInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
-		return new Class[] { AppConfiguration.class };
+		return new Class[] { AppConfiguration.class, MvcConfiguration.class, SecurityConfiguration.class  };
 	}
 
 	@Override
@@ -21,6 +23,11 @@ public class SpringMvcInitializer extends AbstractAnnotationConfigDispatcherServ
 	@Override
 	protected String[] getServletMappings() {
 		return new String[] { "/" };
+	}
+
+	@Override 
+	protected String getServletName() {
+		return "MvcServlet";
 	}
 
     @Override
