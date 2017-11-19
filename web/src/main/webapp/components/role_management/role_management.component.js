@@ -7,5 +7,12 @@ angular.module('roleManagement', [])
       this.errorMessages = ['Foo', 'Bar'];
       this.successMessage = 'Hello World';
       this.writeEndpoint = '/create';
+      this.data = [{name: 'hello'}];
+      this.deleteRow = role => {
+        if (confirm($scope.tr('role.data.form.button.deleteConfirmation', role.name))) {
+          alert(`${role.name} is deleted!`);
+        }
+      };
+      this.editRow = role => alert(`${role.name} is edited!`);
     }]
   });

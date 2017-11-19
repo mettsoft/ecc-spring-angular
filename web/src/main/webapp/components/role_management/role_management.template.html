@@ -21,4 +21,37 @@
       </form>   
     </div>
   </div>
+  <div class="col-sm-8">
+    <h3>{{tr('role.data.header')}}</h3>
+
+    <table ng-if="$ctrl.data.length > 0">
+      <thead>
+        <tr>
+          <th>{{tr('role.data.column.name')}}</th>
+          <!-- Authorization ROLE_UPDATE_ROLE -->
+          <th></th>
+          <!-- Authorization ROLE_DELETE_ROLE -->
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="role in $ctrl.data">
+          <td>{{role.name}}</td>
+          <!-- Authorization ROLE_UPDATE_ROLE -->
+          <td>
+            <button ng-click="$ctrl.editRow(role)">{{tr('data.form.button.edit')}}</button>
+          </td>
+          <!-- Authorization ROLE_DELETE_ROLE -->
+          <td>
+            <button ng-click="$ctrl.deleteRow(role)">
+              {{tr('data.form.button.delete')}}
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h5 ng-if="$ctrl.data.length === 0">
+        {{tr('data.noRecordsFound')}}
+    </h5>
+  </div>
 </div>
