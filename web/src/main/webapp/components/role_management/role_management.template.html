@@ -1,29 +1,26 @@
 <div class="row">	
   <div class="col-sm-4">
-    <div class="alert alert-danger" ng-repeat="errorMessage in $ctrl.errorMessages">  
+    <div class="alert alert-danger" ng-repeat="errorMessage in $ctrl.errorMessages">
       {{errorMessage}}
     </div>
     <div class="alert alert-success" ng-if="$ctrl.successMessage">
       {{$ctrl.successMessage}}
     </div>    
-    <div class="form">
-      <h3>{{$ctrl.headerTitle}}</h3>
-      <!-- TODO: Authorization -->
-      <form action="{{$ctrl.writeEndpoint}}" method="POST">
-        <input type="hidden" name="id" />
-        <label for="name">
-          {{tr('role.form.label.name')}}:
-        </label>
-        <input type="text" name="name" />
-        <button>
-          {{tr('form.button.submit')}}
-        </button>
-      </form>   
-    </div>
+    <h3 ng-if="!$ctrl.command.id">{{tr('role.headerTitle.create')}}</h3>
+    <h3 ng-if="$ctrl.command.id">{{tr('role.headerTitle.update')}}</h3>
+    <!-- TODO: Authorization -->
+    <form>
+      <label for="name">
+        {{tr('role.form.label.name')}}:
+      </label>
+      <input type="text" id="name" ng-model="$ctrl.command.name" />
+      <button ng-click="$ctrl.onCommandSubmit($ctrl.command)">
+        {{tr('form.button.submit')}}
+      </button>
+    </form>
   </div>
   <div class="col-sm-8">
     <h3>{{tr('role.data.header')}}</h3>
-
     <table ng-if="$ctrl.data.length > 0">
       <thead>
         <tr>
@@ -39,13 +36,11 @@
           <td>{{role.name}}</td>
           <!-- Authorization ROLE_UPDATE_ROLE -->
           <td>
-            <button ng-click="$ctrl.editRow(role)">{{tr('data.form.button.edit')}}</button>
+            <button ng-click="$ctrl.editRow($index)">{{tr('data.form.button.edit')}}</button>
           </td>
           <!-- Authorization ROLE_DELETE_ROLE -->
           <td>
-            <button ng-click="$ctrl.deleteRow(role)">
-              {{tr('data.form.button.delete')}}
-            </button>
+            <button ng-click="$ctrl.deleteRow($index)">{{tr('data.form.button.delete')}}</button>
           </td>
         </tr>
       </tbody>
