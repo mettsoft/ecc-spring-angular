@@ -1,5 +1,4 @@
-angular
-	.module('person-registration-system', [])
+angular.module('personRegistrationSystem', ['roleManagement'])
 	.run(['$rootScope', '$http', function($rootScope, $http) {
 		$rootScope.locale = 'en';
 		$http({

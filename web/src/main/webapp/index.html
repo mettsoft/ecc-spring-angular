@@ -1,28 +1,35 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="person-registration-system">
+<html lang="en" ng-app="personRegistrationSystem">
 <head>
- <meta charset="UTF-8">
- <title>Person Registration System</title>
- <link rel="stylesheet" type="text/css" href="styles/bootstrap.min.css">
- <!-- Third party libraries -->
- <script src="libraries/angular.min.js"></script>
- <!-- Custom libraries -->
- <script src="app.js"></script>
+	<meta charset="UTF-8">
+	<title>Person Registration System</title>
+	<link rel="stylesheet" type="text/css" href="styles/bootstrap.min.css">
+	<!-- Third party libraries -->
+	<script src="libraries/angular.min.js"></script>
+	<script src="libraries/angular-ui-router.min.js"></script>
+	<!-- Custom libraries -->
+	<script src="app.js"></script>
+	<script src="components/role_management/role_management.component.js"></script>
 </head>
 
 <body>
 	<div class="container">
 		<div class="row">
-			<div class="col-sm-6"></div>
-			<div class="col-sm-6 text-right">
-				{{tr('language.choose')}}
-				<select ng-model="locale">
-					<option value="en">{{tr('language.english')}}</option>
-					<option value="fil">{{tr('language.filipino')}}</option>
-				</select>
+			<div class="col-sm-6">
+			<!-- TODO: Navigation to other links -->
 			</div>
-		</div>		
+			<div class="col-sm-6 text-right">
+			{{tr('language.choose')}}
+			<select ng-model="locale">
+				<option value="en">{{tr('language.english')}}</option>
+				<option value="fil">{{tr('language.filipino')}}</option>
+			</select>
+			<!-- TODO: Logout -->
+			</div>
+		</div>
+		<ui-view>
+			<role-management></role-management>
+		</ui-view>
 	</div>
- {{tr('navigation.roles')}}
 </body>
 </html>
