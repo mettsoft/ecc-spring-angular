@@ -40,12 +40,13 @@ public class PersonDao extends AbstractDao<Person> {
 	}
 
 	@Override
-	public void update(Person person) {
+	public Person update(Person person) {
 		Session session = sessionFactory.getCurrentSession();
 		Person persistentPerson = (Person) session.get(Person.class, person.getId());
 		persistentPerson.getContacts().clear();
 		session.flush();
 		session.evict(persistentPerson);
 		session.update(person);
+		return person;
 	}
 }

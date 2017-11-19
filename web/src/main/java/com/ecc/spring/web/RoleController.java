@@ -53,12 +53,12 @@ public class RoleController {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)	
-	public void create(@Validated RoleDTO role, BindingResult bindingResult) {
+	public RoleDTO create(@Validated RoleDTO role, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			throw new ValidationException(bindingResult.getAllErrors(), role);
 		}
 		try {
-			roleService.create(role);		
+			return roleService.create(role);		
 		}
 		catch(DataIntegrityViolationException cause) {
 			throw new ValidationException("role.validation.message.duplicateEntry", role, role.getName());
@@ -66,16 +66,12 @@ public class RoleController {
 	}
 
 	@PutMapping
-	public void update(@Validated RoleDTO role, BindingResult bindingResult) {
+	public RoleDTO update(@Validated RoleDTO role, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			throw new ValidationException(bindingResult.getAllErrors(), role);
 		}	
 		try {
-			roleService.update(role);		
-			role = roleService.get(role.getId());		
-		}
-		catch(DataRetrievalFailureException cause) {
-			throw new ValidationException("role.validation.message.notFound", new RoleDTO(), role.getId());		
+			return roleService.update(role);
 		}
 		catch(DataIntegrityViolationException cause) {
 			throw new ValidationException("role.validation.message.duplicateEntry", role, role.getName());
@@ -83,13 +79,15 @@ public class RoleController {
 	}
 
 	@DeleteMapping("/{id}")
-	public void delete(@PathVariable Integer id) {
-		RoleDTO role = null;
+	public RoleDTO delete(@PathVariable Integer id) {
 		try {
-			role = roleService.get(id);
-			roleService.delete(id);
+			return roleService.delete(id);
+		}
+		catch (DataRetrievalFailureException cause) {
+			throw new ValidationException("role.validation.message.notFound", new RoleDTO(), id);		
 		}
 		catch(DataIntegrityViolationException cause) {
+			RoleDTO role = roleService.get(id);
 			if (role.getPersons().size() > 0) {
 				String personNames = role.getPersons()
 					.stream()
@@ -98,9 +96,6 @@ public class RoleController {
 				throw new ValidationException("role.validation.message.inUsed", role, personNames);
 			}
 			throw cause;
-		}
-		catch (DataRetrievalFailureException cause) {
-			throw new ValidationException("role.validation.message.notFound", new RoleDTO(), role.getId());		
 		}
 	}
 }

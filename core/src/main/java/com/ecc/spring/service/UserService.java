@@ -1,6 +1,5 @@
 package com.ecc.spring.service;
 
-import java.io.Serializable;
 import java.util.function.Function;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +19,6 @@ import org.springframework.validation.Validator;
 import org.springframework.validation.Errors;
 
 import com.ecc.spring.dao.UserDao;
-import com.ecc.spring.dao.PermissionDao;
 import com.ecc.spring.dto.UserDTO;
 import com.ecc.spring.model.Permission;
 import com.ecc.spring.model.User;
@@ -60,14 +58,14 @@ public class UserService extends AbstractService<User, UserDTO> implements Valid
 
 	@Transactional
 	@Override
-	public Serializable create(UserDTO user) {
+	public UserDTO create(UserDTO user) {
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		return super.create(user);
 	}
 
 	@Transactional
 	@Override
-	public void update(UserDTO user) {
+	public UserDTO update(UserDTO user) {
 		UserDTO originalUser = get(user.getId());
 		if (!StringUtils.isEmpty(user.getPassword())) {
 			user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -75,7 +73,7 @@ public class UserService extends AbstractService<User, UserDTO> implements Valid
 		else {
 			user.setPassword(originalUser.getPassword());
 		}
-		super.update(user);
+		return super.update(user);
 	}
 
 	@Transactional

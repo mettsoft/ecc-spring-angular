@@ -1,7 +1,5 @@
 package com.ecc.spring.service;
 
-import java.io.Serializable;
-
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ecc.spring.dao.Dao;
@@ -14,18 +12,18 @@ public abstract class AbstractService<T, R> {
 	}
 
   @Transactional
-	public Serializable create(R dto) {
-		return dao.create(createModel(dto));	
+	public R create(R dto) {
+		return createDTO(dao.create(createModel(dto)));	
 	}
 
   @Transactional
-	public void update(R dto) {
-		dao.update(createModel(dto));
+	public R update(R dto) {
+		return createDTO(dao.update(createModel(dto)));
 	}
 
   @Transactional
-	public void delete(Integer id) {
-		dao.delete(dao.get(id));
+	public R delete(Integer id) {
+		return createDTO(dao.delete(dao.get(id)));
 	} 
 
   @Transactional

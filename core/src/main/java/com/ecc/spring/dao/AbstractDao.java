@@ -1,7 +1,5 @@
 package com.ecc.spring.dao;
 
-import java.io.Serializable;
-
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.dao.DataRetrievalFailureException;
@@ -16,18 +14,21 @@ public abstract class AbstractDao<T> implements Dao<T> {
 	}
 
 	@Override
-	public Serializable create(T entity) {
-		return sessionFactory.getCurrentSession().save(entity);
+	public T create(T entity) {
+		sessionFactory.getCurrentSession().save(entity);
+		return entity;
 	}
 
 	@Override
-	public void update(T entity) {
+	public T update(T entity) {
 		sessionFactory.getCurrentSession().update(entity);
+		return entity;
 	}
 
 	@Override
-	public void delete(T entity) {
+	public T delete(T entity) {
 		sessionFactory.getCurrentSession().delete(entity);
+		return entity;
 	} 
 
 	@Override

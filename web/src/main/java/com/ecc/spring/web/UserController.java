@@ -52,12 +52,12 @@ public class UserController {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)	
-	public void create(@Validated UserDTO user, BindingResult bindingResult) {
+	public UserDTO create(@Validated UserDTO user, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			throw new ValidationException(bindingResult.getAllErrors(), user);
 		}
 		try {
-			userService.create(user);		
+			return userService.create(user);		
 		}
 		catch(DataIntegrityViolationException cause) {
 			throw new ValidationException("user.validation.message.duplicateEntry", user, user.getUsername());
@@ -65,12 +65,12 @@ public class UserController {
 	}
 
 	@PutMapping
-	public void update(@Validated UserDTO user, BindingResult bindingResult) {
+	public UserDTO update(@Validated UserDTO user, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			throw new ValidationException(bindingResult.getAllErrors(), user);
 		}	
 		try {
-			userService.update(user);
+			return userService.update(user);
 		}
 		catch(DataIntegrityViolationException cause) {
 			throw new ValidationException("user.validation.message.duplicateEntry", user, user.getUsername());
@@ -78,7 +78,7 @@ public class UserController {
 	}
 
 	@DeleteMapping("/{id}")
-	public void delete(@PathVariable Integer id) {
-		userService.delete(id);	
+	public UserDTO delete(@PathVariable Integer id) {
+		return userService.delete(id);	
 	}
 }

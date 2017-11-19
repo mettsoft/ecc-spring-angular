@@ -65,31 +65,31 @@ public class PersonController {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)	
-	public void create(@Validated PersonDTO person, BindingResult bindingResult) {
+	public PersonDTO create(@Validated PersonDTO person, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			throw new ValidationException(bindingResult.getAllErrors(), person);
 		}
-		personService.create(person);
+		return personService.create(person);
 	}
 
 	@PostMapping(value = "/upload")
 	@ResponseStatus(HttpStatus.CREATED)	
-	public void upload(@RequestParam("file") MultipartFile file) {
+	public PersonDTO upload(@RequestParam("file") MultipartFile file) {
 		PersonDTO person = personService.createPersonDTO(file);
 		personService.validate(person, DEFAULT_COMMAND_NAME);
-		personService.create(person);
+		return personService.create(person);
 	}
 
 	@PutMapping
-	public void update(@Validated PersonDTO person, BindingResult bindingResult) {
+	public PersonDTO update(@Validated PersonDTO person, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			throw new ValidationException(bindingResult.getAllErrors(), person);
 		}	
-		personService.update(person);
+		return personService.update(person);
 	}
 
 	@DeleteMapping("/{id}")
-	public void delete(@PathVariable Integer id) {
-		personService.delete(id);	
+	public PersonDTO delete(@PathVariable Integer id) {
+		return personService.delete(id);	
 	}
 }
