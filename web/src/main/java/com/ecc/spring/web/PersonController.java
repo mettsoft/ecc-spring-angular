@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -65,7 +66,7 @@ public class PersonController {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)	
-	public PersonDTO create(@Validated PersonDTO person, BindingResult bindingResult) {
+	public PersonDTO create(@Validated @RequestBody PersonDTO person, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			throw new ValidationException(bindingResult.getAllErrors(), person);
 		}
@@ -81,7 +82,7 @@ public class PersonController {
 	}
 
 	@PutMapping
-	public PersonDTO update(@Validated PersonDTO person, BindingResult bindingResult) {
+	public PersonDTO update(@Validated @RequestBody PersonDTO person, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			throw new ValidationException(bindingResult.getAllErrors(), person);
 		}	

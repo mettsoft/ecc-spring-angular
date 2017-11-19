@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -53,7 +54,7 @@ public class RoleController {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)	
-	public RoleDTO create(@Validated RoleDTO role, BindingResult bindingResult) {
+	public RoleDTO create(@Validated @RequestBody RoleDTO role, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			throw new ValidationException(bindingResult.getAllErrors(), role);
 		}
@@ -66,7 +67,7 @@ public class RoleController {
 	}
 
 	@PutMapping
-	public RoleDTO update(@Validated RoleDTO role, BindingResult bindingResult) {
+	public RoleDTO update(@Validated @RequestBody RoleDTO role, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			throw new ValidationException(bindingResult.getAllErrors(), role);
 		}	
