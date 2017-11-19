@@ -1,15 +1,28 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="person-registration-system">
 <head>
-	<meta charset="UTF-8">
-	<title>Person Registration System</title>
-	<!-- Third party libraries -->
-	<script src="libraries/angular.min.js"></script>
-	<!-- Custom libraries -->
-	<script src="app.js"></script>
+ <meta charset="UTF-8">
+ <title>Person Registration System</title>
+ <link rel="stylesheet" type="text/css" href="styles/bootstrap.min.css">
+ <!-- Third party libraries -->
+ <script src="libraries/angular.min.js"></script>
+ <!-- Custom libraries -->
+ <script src="app.js"></script>
 </head>
 
 <body>
-	{{tr('navigation.roles')}}
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-6"></div>
+			<div class="col-sm-6 text-right">
+				{{tr('language.choose')}}
+				<select ng-model="locale">
+					<option value="en">{{tr('language.english')}}</option>
+					<option value="fil">{{tr('language.filipino')}}</option>
+				</select>
+			</div>
+		</div>		
+	</div>
+ {{tr('navigation.roles')}}
 </body>
 </html>
