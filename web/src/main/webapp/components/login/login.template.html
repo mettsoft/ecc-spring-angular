@@ -1,0 +1,27 @@
+<div class="row">	
+  <div class="col-sm-12">   
+    <div class="alert alert-danger" ng-if="$ctrl.error">
+      {{tr('login.errorMessage')}}
+    </div>
+    <div class="alert alert-success" ng-if="$ctrl.logout">
+      {{tr('login.logoutMessage')}}
+    </div>    
+    <form>
+      <div>
+        <label for="username"> 
+          {{tr('user.data.column.username')}}:
+        </label>
+        <input type="text" id="username" ng-model="$ctrl.command.username" /> 
+      </div>
+      <div>
+        <label> 
+            {{tr('user.form.label.password')}}:
+       </label> 
+       <input type="password" name="password" ng-model="$ctrl.command.password" />
+      </div>
+      <button ng-click="$ctrl.onCommandSubmit($ctrl.command)">
+        {{tr('login.form.button.signIn')}}
+      </button>
+    </form>
+  </div>
+</div>

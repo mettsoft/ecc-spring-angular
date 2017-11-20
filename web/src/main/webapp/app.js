@@ -1,4 +1,4 @@
-angular.module('personRegistrationSystem', ['roleManagement'])
+angular.module('personRegistrationSystem', ['ui.router', 'roleManagement', 'login'])
 	.run(['$rootScope', '$http', function($rootScope, $http) {
 		$rootScope.locale = 'en';
 		$http.get('/resources').then(response => {
@@ -8,5 +8,12 @@ angular.module('personRegistrationSystem', ['roleManagement'])
 				args.forEach((value, index) => text = text.replace(`{${index}}`, value));
 				return text;
 			};
+		});
+	}])
+	.config(['$stateProvider', $stateProvider => {
+		$stateProvider.state({
+			name: 'roleManagement',
+			url: '/roles',
+			component: 'roleManagement'
 		});
 	}]);
