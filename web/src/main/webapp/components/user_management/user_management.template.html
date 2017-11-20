@@ -1,0 +1,69 @@
+<div class="row">	
+  <div class="col-sm-4">
+    <div class="alert alert-danger" ng-repeat="errorMessage in $ctrl.errorMessages">
+      {{errorMessage}}
+    </div>
+    <div class="alert alert-success" ng-if="$ctrl.successMessage">
+      {{$ctrl.successMessage}}
+    </div>    
+    <h3 ng-if="!$ctrl.command.id">{{tr('user.headerTitle.create')}}</h3>
+    <h3 ng-if="$ctrl.command.id">{{tr('user.headerTitle.update')}}</h3>
+    <form>
+      <div>      
+        <label for="username">
+          {{tr('user.data.column.username')}}:
+        </label>
+        <input type="text" id="username" ng-model="$ctrl.command.username" />
+      </div>
+      <div>      
+        <label for="password">
+          {{tr('user.form.label.password')}}:
+        </label>
+        <input type="password" id="password" ng-model="$ctrl.command.password" ng-required="!$ctrl.command.id" />
+        <div ng-if="$ctrl.command.id">{{tr('user.form.label.passwordHint')}}</div>
+      </div>
+      <h4>Permissions</h4>
+      <fieldset>
+        <legend>{{tr('person.title')}}</legend>
+        <input type="checkbox" ng-model="$ctrl.permissions['ROLE_CREATE_PERSON']"> {{tr('permissions.create')}}
+        <input type="checkbox" ng-model="$ctrl.permissions['ROLE_UPDATE_PERSON']"> {{tr('permissions.update')}}
+        <input type="checkbox" ng-model="$ctrl.permissions['ROLE_DELETE_PERSON']"> {{tr('permissions.delete')}}
+      </fieldset>
+      <fieldset>
+        <legend>{{tr('role.title')}}</legend>
+        <input type="checkbox" ng-model="$ctrl.permissions['ROLE_CREATE_ROLE']"> {{tr('permissions.create')}}
+        <input type="checkbox" ng-model="$ctrl.permissions['ROLE_UPDATE_ROLE']"> {{tr('permissions.update')}}
+        <input type="checkbox" ng-model="$ctrl.permissions['ROLE_DELETE_ROLE']"> {{tr('permissions.delete')}}
+      </fieldset>
+      <button ng-click="$ctrl.onCommandSubmit($ctrl.command)">
+        {{tr('form.button.submit')}}
+      </button>
+    </form>
+  </div>
+  <div class="col-sm-8">
+    <h3>{{tr('user.data.header')}}</h3>
+    <table ng-if="$ctrl.data.length > 0">
+      <thead>
+        <tr>
+          <th>{{tr('user.data.column.username')}}</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="user in $ctrl.data">
+          <td>{{user.username}}</td>
+          <td>
+            <button ng-click="$ctrl.editRow($index)">{{tr('data.form.button.edit')}}</button>
+          </td>
+          <td>
+            <button ng-click="$ctrl.deleteRow($index)">{{tr('data.form.button.delete')}}</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h5 ng-if="$ctrl.data.length === 0">
+        {{tr('data.noRecordsFound')}}
+    </h5>
+  </div>
+</div>
