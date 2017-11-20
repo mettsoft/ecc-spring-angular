@@ -4,7 +4,7 @@ angular.module('login', ['ui.router', 'Authentication'])
     controller: ['$scope', '$rootScope', '$state', 'Authentication', 
       function($scope, $rootScope, $state, Authentication) {
         $scope.tr = $rootScope.tr;
-        $rootScope.onLocaleChange = locale => this.error = this.logout = null;
+        $rootScope.onLocaleChange = locale => this.error = null;
 
         this.onCommandSubmit = command => Authentication.login(command)
           .then(response => $state.go('roleManagement'))

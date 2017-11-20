@@ -6,10 +6,9 @@
     <div class="alert alert-success" ng-if="$ctrl.successMessage">
       {{$ctrl.successMessage}}
     </div>    
-    <h3 ng-if="!$ctrl.command.id">{{tr('role.headerTitle.create')}}</h3>
-    <h3 ng-if="$ctrl.command.id">{{tr('role.headerTitle.update')}}</h3>
-    <!-- TODO: Authorization -->
-    <form>
+    <h3 ng-if="!$ctrl.command.id && access('ROLE_CREATE_ROLE')">{{tr('role.headerTitle.create')}}</h3>
+    <h3 ng-if="$ctrl.command.id && access('ROLE_UPDATE_ROLE')">{{tr('role.headerTitle.update')}}</h3>
+    <form ng-if="$ctrl.command.id && access('ROLE_UPDATE_ROLE') || !$ctrl.command.id && access('ROLE_CREATE_ROLE')">
       <label for="name">
         {{tr('role.form.label.name')}}:
       </label>
@@ -25,21 +24,17 @@
       <thead>
         <tr>
           <th>{{tr('role.data.column.name')}}</th>
-          <!-- Authorization ROLE_UPDATE_ROLE -->
-          <th></th>
-          <!-- Authorization ROLE_DELETE_ROLE -->
-          <th></th>
+          <th ng-if="access('ROLE_UPDATE_ROLE')"></th>
+          <th ng-if="access('ROLE_DELETE_ROLE')"></th>
         </tr>
       </thead>
       <tbody>
         <tr ng-repeat="role in $ctrl.data">
           <td>{{role.name}}</td>
-          <!-- Authorization ROLE_UPDATE_ROLE -->
-          <td>
+          <td ng-if="access('ROLE_UPDATE_ROLE')">
             <button ng-click="$ctrl.editRow($index)">{{tr('data.form.button.edit')}}</button>
           </td>
-          <!-- Authorization ROLE_DELETE_ROLE -->
-          <td>
+          <td ng-if="access('ROLE_DELETE_ROLE')">
             <button ng-click="$ctrl.deleteRow($index)">{{tr('data.form.button.delete')}}</button>
           </td>
         </tr>

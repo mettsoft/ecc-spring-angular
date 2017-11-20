@@ -1,36 +1,31 @@
-angular.module('personRegistrationSystem', ['ui.router', 'roleManagement', 'login'])
-	.run(['$rootScope', '$http', '$state', '$transitions', 
-		function($rootScope, $http, $state, $transitions) {
+angular.module('personRegistrationSystem', ['ui.router', 'roleManagement', 'login', 'Authentication'])
+	.run(['$rootScope', '$http', '$state', '$transitions', 'Authentication',
+		function($rootScope, $http, $state, $transitions, Authentication) {
+			// Expose convenience methods and objects to $rootScope.
 			$rootScope.locale = 'en';
 			$http.get('/resources').then(response => {
-				$rootScope.dictionary = response.data;
+				let dictionary = response.data;
 				$rootScope.tr = (key, ...args) => {
-					let text = $rootScope.dictionary[$rootScope.locale][key];
+					let text = dictionary[$rootScope.locale][key];
 					args.forEach((value, index) => text = text.replace(`{${index}}`, value));
 					return text;
 				};
 			});
+			$rootScope.access = Authentication.access;
+			$rootScope.$state = $state;			
 
+			// Register authentication filter.
 			let authenticationFilter = (function authenticationFilter() {
-				if (!window.sessionStorage.authUser) {
+				if (!Authentication.isAuthenticated()) {
 					$state.go('login');
 				}
 				return authenticationFilter;
 			})();
 			$transitions.onSuccess({}, authenticationFilter);
 
-			$rootScope.$state = $state;			
+			// Register global events.
 			$rootScope.logout = () => $state.go('login');
-	}])
-	.config(['$stateProvider', $stateProvider => {
-		$stateProvider.state({
-			name: 'login',
-			url: '/',
-			component: 'login'
-		});
-		$stateProvider.state({
-			name: 'roleManagement',
-			url: '/roles',
-			component: 'roleManagement'
-		});
+
+			// Initialization.
+			Authentication.reload();
 	}]);
