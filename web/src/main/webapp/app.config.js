@@ -15,4 +15,9 @@ angular.module('personRegistrationSystem')
       url: '/users',
       component: 'userManagement'
     });
+    $stateProvider.state({
+      name: 'personManagement',
+      url: '/persons',
+      component: 'personManagement'
+    });
   }]);

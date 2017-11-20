@@ -20,7 +20,25 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-6">
-			<!-- TODO: Navigation to other modules -->
+				<nav ng-if="$state.current.name !== 'login'">
+					<ul>
+						<li ng-if="$state.current.name !== 'personManagement'">
+							<a ui-sref="personManagement">
+								{{tr('navigation.persons')}}
+							</a>
+						</li>
+						<li ng-if="$state.current.name !== 'roleManagement'">
+							<a ui-sref="roleManagement">
+								{{tr('navigation.roles')}}
+							</a>
+						</li>
+						<li ng-if="$state.current.name !== 'userManagement'">
+							<a ui-sref="userManagement">
+								{{tr('navigation.users')}}
+							</a>
+						</li>
+					</ul>
+				</nav>
 			</div>
 			<div class="col-sm-6 text-right">
 				{{tr('language.choose')}}
@@ -32,7 +50,7 @@
 			</div>
 		</div>
 		<ui-view>
-			<login></login>
+			<login></login>	
 		</ui-view>
 	</div>
 </body>
