@@ -1,4 +1,4 @@
-angular.module('personRegistrationSystem', ['ui.router', 'roleManagement', 'login', 'Authentication'])
+angular.module('personRegistrationSystem', ['ui.router', 'roleManagement', 'userManagement', 'login', 'Authentication'])
 	.run(['$rootScope', '$http', '$state', '$transitions', 'Authentication',
 		function($rootScope, $http, $state, $transitions, Authentication) {
 			// Expose convenience methods and objects to $rootScope.
@@ -14,18 +14,21 @@ angular.module('personRegistrationSystem', ['ui.router', 'roleManagement', 'logi
 			$rootScope.access = Authentication.access;
 			$rootScope.$state = $state;			
 
-			// Register authentication filter.
-			let authenticationFilter = (function authenticationFilter() {
+			// Register security filter.
+			let securityFilter = transition => {
 				if (!Authentication.isAuthenticated()) {
 					$state.go('login');
 				}
-				return authenticationFilter;
-			})();
-			$transitions.onSuccess({}, authenticationFilter);
+				else if (transition && transition.to().name === 'userManagement' && !Authentication.access('ROLE_ADMIN')) {
+					$state.go(transition.from().name);
+				}
+			};
+			$transitions.onEnter({}, securityFilter);
 
 			// Register global events.
 			$rootScope.logout = () => $state.go('login');
 
 			// Initialization.
 			Authentication.reload();
+			securityFilter();
 	}]);
