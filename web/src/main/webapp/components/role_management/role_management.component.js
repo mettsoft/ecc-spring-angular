@@ -5,6 +5,7 @@ angular.module('roleManagement', [])
       $http.get('/roles').then(response => this.data = response.data);
       $scope.__proto__ = $rootScope;
       this.command = {};
+      $rootScope.onLocaleChange = locale => this.successMessage = this.errorMessages = null;
 
       this.editRow = index => this.command = Object.assign({index: index}, this.data[index]);
 
