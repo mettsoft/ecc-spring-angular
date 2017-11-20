@@ -3,7 +3,7 @@ angular.module('roleManagement', [])
     templateUrl: './components/role_management/role_management.template.html',
     controller: ['$scope', '$rootScope', '$http', function($scope, $rootScope, $http) {
       $http.get('/roles').then(response => this.data = response.data);
-      $scope.__proto__ = $rootScope;
+      $scope.tr = $rootScope.tr;
       this.command = {};
       $rootScope.onLocaleChange = locale => this.successMessage = this.errorMessages = null;
 
