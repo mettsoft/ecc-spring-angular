@@ -31,6 +31,7 @@ angular.module('userManagement', ['Authentication'])
           let user = this.data[index];
           if (confirm($scope.tr('user.data.form.button.deleteConfirmation', user.username))) {
             $http.delete(`/users/${user.id}`).then(response => {
+              this.command = {};
               this.data.splice(index, 1);
               this.errorMessages = null;
               this.successMessage = $scope.tr('user.successMessage.delete', user.username);

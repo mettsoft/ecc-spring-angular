@@ -17,6 +17,7 @@ angular.module('roleManagement', ['Authentication'])
           let role = this.data[index];
           if (confirm($scope.tr('role.data.form.button.deleteConfirmation', role.name))) {
             $http.delete(`/roles/${role.id}`).then(response => {
+              this.command = {};
               this.data.splice(index, 1);
               this.errorMessages = null;
               this.successMessage = $scope.tr('role.successMessage.delete', role.name);
