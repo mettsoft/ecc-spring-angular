@@ -20,12 +20,12 @@
 			<!-- TODO: Navigation to other modules -->
 			</div>
 			<div class="col-sm-6 text-right">
-			{{tr('language.choose')}}
-			<select ng-model="locale" ng-change="onLocaleChange(locale)">
-				<option value="en">{{tr('language.english')}}</option>
-				<option value="fil">{{tr('language.filipino')}}</option>
-			</select>
-			<!-- TODO: Logout -->
+				{{tr('language.choose')}}
+				<select ng-model="locale" ng-change="onLocaleChange(locale)">
+					<option value="en">{{tr('language.english')}}</option>
+					<option value="fil">{{tr('language.filipino')}}</option>
+				</select>
+	      <button ng-if="$state.current.name !== 'login'" ng-click="logout()">Logout</button>			
 			</div>
 		</div>
 		<ui-view>
