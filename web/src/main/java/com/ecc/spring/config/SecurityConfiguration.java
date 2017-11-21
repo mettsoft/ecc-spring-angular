@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 
 import com.ecc.spring.service.UserService;
 
@@ -48,6 +49,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
           .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
           .and()
         .httpBasic()
+          .and()
+        .exceptionHandling()
+          .authenticationEntryPoint(new Http403ForbiddenEntryPoint())
           .and()
         .csrf().disable();
   }
