@@ -25,7 +25,7 @@ public abstract class AbstractService<T, R> {
 
   @Transactional
 	public void delete(Integer id) {
-		dao.delete(createModel(get(id)));
+		dao.delete(dao.get(id));
 	} 
 
   @Transactional
