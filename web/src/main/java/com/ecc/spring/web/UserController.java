@@ -80,6 +80,11 @@ public class UserController {
 
 	@DeleteMapping("/{id}")
 	public UserDTO delete(@PathVariable Integer id) {
-		return userService.delete(id);	
+		try {
+			return userService.delete(id);			
+		}
+		catch (DataRetrievalFailureException cause) {
+			throw new ValidationException("user.validation.message.notFound", new UserDTO(), id);		
+		}
 	}
 }

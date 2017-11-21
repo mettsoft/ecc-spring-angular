@@ -91,6 +91,11 @@ public class PersonController {
 
 	@DeleteMapping("/{id}")
 	public PersonDTO delete(@PathVariable Integer id) {
-		return personService.delete(id);	
+		try {
+			return personService.delete(id);			
+		}
+		catch (DataRetrievalFailureException cause) {
+			throw new ValidationException("person.validation.message.notFound", new PersonDTO(), id);
+		}
 	}
 }
