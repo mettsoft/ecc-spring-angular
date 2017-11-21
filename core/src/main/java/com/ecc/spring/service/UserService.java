@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
 import org.springframework.validation.Errors;
 
+import com.ecc.spring.dao.PermissionDao;
 import com.ecc.spring.dao.UserDao;
 import com.ecc.spring.dto.UserDTO;
 import com.ecc.spring.model.Permission;
