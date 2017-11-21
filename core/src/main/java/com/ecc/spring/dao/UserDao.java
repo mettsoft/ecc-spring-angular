@@ -5,7 +5,6 @@ import java.util.List;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.ecc.spring.model.User;
 
@@ -15,14 +14,12 @@ public class UserDao extends AbstractDao<User> {
 		super(User.class, sessionFactory);
 	}
 
-	@Transactional
 	public List<User> list() {
 		return sessionFactory.getCurrentSession()
 			.createQuery("SELECT U FROM User U LEFT JOIN U.permissions P WHERE P.name <> 'ROLE_ADMIN' OR P.name IS NULL GROUP BY U.id ORDER BY U.id")
 			.list();
 	}
 
-	@Transactional
 	public User get(String username) {
 		return (User) sessionFactory.getCurrentSession()
 			.createCriteria(User.class)

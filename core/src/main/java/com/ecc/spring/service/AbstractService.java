@@ -2,6 +2,8 @@ package com.ecc.spring.service;
 
 import java.io.Serializable;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import com.ecc.spring.dao.Dao;
 
 public abstract class AbstractService<T, R> {
@@ -11,6 +13,7 @@ public abstract class AbstractService<T, R> {
 		this.dao = dao;
 	}
 
+  @Transactional
 	public Serializable create(R dto) {
 		T entity = createModel(dto);
 		try {
@@ -21,6 +24,7 @@ public abstract class AbstractService<T, R> {
 		}
 	}
 
+  @Transactional
 	public void update(R dto) {
 		T entity = createModel(dto);
 		try {
@@ -31,6 +35,7 @@ public abstract class AbstractService<T, R> {
 		}
 	}
 
+  @Transactional
 	public void delete(Integer id) {
 		T entity = createModel(get(id));
 		try {
@@ -41,6 +46,7 @@ public abstract class AbstractService<T, R> {
 		}
 	} 
 
+  @Transactional
 	public R get(Integer id) {
 		try {
 			T entity = dao.get(id);

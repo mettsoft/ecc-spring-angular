@@ -12,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
 import org.springframework.validation.Errors;
 import org.springframework.validation.BindException;
@@ -64,7 +65,8 @@ public class PersonService extends AbstractService<Person, PersonDTO> implements
 	public boolean supports(Class clazz) {
     return clazz.isAssignableFrom(PersonDTO.class);
   }
-
+  
+	@Transactional
   public void validate(PersonDTO person, String objectName) {
   	if (person == null) {
   		throw new ValidationException("validation.message.notEmpty", new PersonDTO(), "localize:person.form.label");
@@ -107,6 +109,7 @@ public class PersonService extends AbstractService<Person, PersonDTO> implements
 		validateContacts(person.getContacts(), errors);
   }
 
+  @Transactional
 	public List<PersonDTO> list(String lastName, Integer roleId, Date birthday, String orderBy, String order) {
 		return AssemblerUtils.asList(personDao.list(lastName, roleId, birthday, orderBy, order), this::createDTO);
 	}

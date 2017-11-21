@@ -10,7 +10,6 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.ecc.spring.model.Person;
 
@@ -20,7 +19,6 @@ public class PersonDao extends AbstractDao<Person> {
 		super(Person.class, sessionFactory);
 	}
 
-	@Transactional
 	public List<Person> list(String lastName, Integer roleId, Date birthday, String orderBy, String order) {
 		String orderColumn = StringUtils.isEmpty(orderBy)? "id": orderBy;
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Person.class)
@@ -41,7 +39,6 @@ public class PersonDao extends AbstractDao<Person> {
 		return criteria.list();	
 	}
 
-	@Transactional
 	@Override
 	public void update(Person person) {
 		Session session = sessionFactory.getCurrentSession();

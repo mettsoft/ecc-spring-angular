@@ -5,7 +5,6 @@ import java.util.List;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.ecc.spring.model.Permission;
 
@@ -15,7 +14,6 @@ public class PermissionDao extends AbstractDao<Permission> {
 		super(Permission.class, sessionFactory);
 	}
 
-	@Transactional
 	public List<Permission> list() {
 		return sessionFactory.getCurrentSession()
 			.createCriteria(Permission.class)

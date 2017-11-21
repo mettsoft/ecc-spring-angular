@@ -11,7 +11,6 @@ import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DataRetrievalFailureException;
@@ -20,6 +19,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
 import org.springframework.validation.Errors;
 
@@ -38,6 +38,7 @@ public class UserService extends AbstractService<User, UserDTO> implements Valid
 	private static final Integer MAX_CHARACTERS = 255;
 
 	private final UserDao userDao;
+	private List<Permission> PERMISSIONS;
 	private Map<String, Permission> PERMISSIONS_HASH;
 
 	@Autowired
@@ -45,9 +46,6 @@ public class UserService extends AbstractService<User, UserDTO> implements Valid
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-
-	@Value("#{permissionDao.list()}")
-	private List<Permission> PERMISSIONS;
 
 	public UserService(UserDao userDao) {
 		super(userDao);
@@ -66,12 +64,14 @@ public class UserService extends AbstractService<User, UserDTO> implements Valid
 		ValidationUtils.testMaxLength(user.getUsername(), "username", errors, MAX_CHARACTERS, "localize:user.data.column.username");
   }
 
+	@Transactional
 	@Override
 	public Serializable create(UserDTO user) {
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		return super.create(user);
 	}
 
+	@Transactional
 	@Override
 	public void update(UserDTO user) {
 		UserDTO originalUser = get(user.getId());
@@ -84,11 +84,7 @@ public class UserService extends AbstractService<User, UserDTO> implements Valid
 		super.update(user);
 	}
 
-	@PostConstruct
-	public void init() {
-		PERMISSIONS_HASH = permissionDao.list().stream().collect(Collectors.toMap(t -> t.getName(), Function.identity()));
-	}
-	
+	@Transactional
 	public List<UserDTO> list() {
 		return AssemblerUtils.asList(userDao.list(), this::createDTO);
 	}
@@ -118,11 +114,12 @@ public class UserService extends AbstractService<User, UserDTO> implements Valid
 		model.setUsername(dto.getUsername());
 		model.setPassword(dto.getPassword());
 		model.setPermissions(dto.getPermissions().stream()
-			.map(t -> PERMISSIONS_HASH.get(t))
+			.map(t -> getPermissionHash().get(t))
 			.collect(Collectors.toSet()));
 		return model;
 	}
 
+	@Transactional
 	@Override
 	public UserDetails loadUserByUsername(String username) {
 		User user = userDao.get(username);
@@ -155,11 +152,27 @@ public class UserService extends AbstractService<User, UserDTO> implements Valid
 
 	private Collection<? extends GrantedAuthority> getAuthorities(Collection<Permission> permissions) {
 		if (permissions.contains(new Permission("ROLE_ADMIN"))) {
-			permissions = PERMISSIONS;
+			permissions = getPermissions();
 		}
 
 		return permissions.stream()
 			.map(t -> new SimpleGrantedAuthority(t.getName()))
 			.collect(Collectors.toList());
+	}
+
+	@Transactional
+	private List<Permission> getPermissions() {
+		if (PERMISSIONS == null) {
+			PERMISSIONS = permissionDao.list();
+		}
+		return PERMISSIONS;
+	}
+
+	@Transactional
+	private Map<String, Permission> getPermissionHash() {
+		if (PERMISSIONS_HASH == null) {
+			PERMISSIONS_HASH = permissionDao.list().stream().collect(Collectors.toMap(t -> t.getName(), Function.identity()));
+		}
+		return PERMISSIONS_HASH;
 	}
 }

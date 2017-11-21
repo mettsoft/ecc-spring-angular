@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DataRetrievalFailureException;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
 import org.springframework.validation.Errors;
 
@@ -43,6 +44,7 @@ public class RoleService extends AbstractService<Role, RoleDTO> implements Valid
 		ValidationUtils.testMaxLength(role.getName(), "name", errors, MAX_CHARACTERS, "localize:role.form.label.name");
   }
 
+	@Transactional
 	public List<RoleDTO> list() {
 		return AssemblerUtils.asList(roleDao.list(), this::createDTO);
 	}

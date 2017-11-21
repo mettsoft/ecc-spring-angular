@@ -5,7 +5,6 @@ import java.io.Serializable;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.dao.DataRetrievalFailureException;
-import org.springframework.transaction.annotation.Transactional;
 
 public abstract class AbstractDao<T> implements Dao<T> {
 	private final Class<T> type;
@@ -16,25 +15,21 @@ public abstract class AbstractDao<T> implements Dao<T> {
 		this.sessionFactory = sessionFactory;
 	}
 
-	@Transactional
 	@Override
 	public Serializable create(T entity) {
 		return sessionFactory.getCurrentSession().save(entity);
 	}
 
-	@Transactional
 	@Override
 	public void update(T entity) {
 		sessionFactory.getCurrentSession().update(entity);
 	}
 
-	@Transactional
 	@Override
 	public void delete(T entity) {
 		sessionFactory.getCurrentSession().delete(entity);
 	} 
 
-	@Transactional
 	@Override
 	public T get(Integer id) {
 		Session session = sessionFactory.getCurrentSession();
@@ -42,6 +37,7 @@ public abstract class AbstractDao<T> implements Dao<T> {
 		if (entity == null) {
 			throw new DataRetrievalFailureException(String.format("%s not found!", type.getSimpleName()));
 		}
+		sessionFactory.getCurrentSession().evict(entity);
 		return entity;
 	}
 }
