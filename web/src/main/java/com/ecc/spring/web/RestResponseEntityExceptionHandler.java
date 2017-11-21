@@ -28,13 +28,13 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 	private MessageSource messageSource;
 
 	@ExceptionHandler({ ValidationException.class })
-	protected ResponseEntity<Object> handleValidationException(ValidationException cause, WebRequest request) {
+	protected ResponseEntity<Object> handleValidationException(ValidationException cause, WebRequest request, Locale locale) {
 		ModelMap body = new ModelMap();
 
 		List<ObjectError> errors = cause.getAllErrors();
 		Object target = cause.getTarget();
 
-		List<String> errorMessages = ValidationUtils.localize(errors, messageSource, Locale.ENGLISH);
+		List<String> errorMessages = ValidationUtils.localize(errors, messageSource, locale);
 		for (int i = 0; i < errorMessages.size(); i++) {
 			if (i == errorMessages.size() - 1) {
 				logger.warn(errorMessages.get(i), cause);			
