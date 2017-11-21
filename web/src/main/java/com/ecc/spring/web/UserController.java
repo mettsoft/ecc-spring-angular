@@ -3,6 +3,8 @@ package com.ecc.spring.web;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,7 +42,12 @@ public class UserController {
 
 	@GetMapping("/{id}")
 	public UserDTO get(@PathVariable Integer id) {
-		return userService.get(id);
+		try {
+			return userService.get(id);
+		}
+		catch (DataRetrievalFailureException cause) {
+			throw new ValidationException("user.validation.message.notFound", new UserDTO(), id);		
+		}
 	}
 
 	@PostMapping
@@ -49,7 +56,12 @@ public class UserController {
 		if (bindingResult.hasErrors()) {
 			throw new ValidationException(bindingResult.getAllErrors(), user);
 		}
-		userService.create(user);
+		try {
+			userService.create(user);		
+		}
+		catch(DataIntegrityViolationException cause) {
+			throw new ValidationException("user.validation.message.duplicateEntry", user, user.getUsername());
+		}
 	}
 
 	@PutMapping
@@ -57,7 +69,12 @@ public class UserController {
 		if (bindingResult.hasErrors()) {
 			throw new ValidationException(bindingResult.getAllErrors(), user);
 		}	
-		userService.update(user);
+		try {
+			userService.update(user);
+		}
+		catch(DataIntegrityViolationException cause) {
+			throw new ValidationException("user.validation.message.duplicateEntry", user, user.getUsername());
+		}
 	}
 
 	@DeleteMapping("/{id}")

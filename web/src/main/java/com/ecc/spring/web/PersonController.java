@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -58,7 +59,12 @@ public class PersonController {
 
 	@GetMapping("/{id}")
 	public PersonDTO get(@PathVariable Integer id) {
-		return personService.get(id);
+		try {
+			return personService.get(id);
+		}
+		catch (DataRetrievalFailureException cause) {
+			throw new ValidationException("person.validation.message.notFound", new PersonDTO(), id);
+		}
 	}
 
 	@PostMapping

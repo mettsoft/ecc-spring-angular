@@ -1,8 +1,11 @@
 package com.ecc.spring.web;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,7 +43,12 @@ public class RoleController {
 
 	@GetMapping("/{id}")
 	public RoleDTO get(@PathVariable Integer id) {
-		return roleService.get(id);
+		try {
+			return roleService.get(id);
+		}
+		catch (DataRetrievalFailureException cause) {
+			throw new ValidationException("role.validation.message.notFound", new RoleDTO(), id);		
+		}
 	}
 
 	@PostMapping
@@ -49,7 +57,12 @@ public class RoleController {
 		if (bindingResult.hasErrors()) {
 			throw new ValidationException(bindingResult.getAllErrors(), role);
 		}
-		roleService.create(role);
+		try {
+			roleService.create(role);		
+		}
+		catch(DataIntegrityViolationException cause) {
+			throw new ValidationException("role.validation.message.duplicateEntry", role, role.getName());
+		}
 	}
 
 	@PutMapping
@@ -57,11 +70,37 @@ public class RoleController {
 		if (bindingResult.hasErrors()) {
 			throw new ValidationException(bindingResult.getAllErrors(), role);
 		}	
-		roleService.update(role);
+		try {
+			roleService.update(role);		
+			role = roleService.get(role.getId());		
+		}
+		catch(DataRetrievalFailureException cause) {
+			throw new ValidationException("role.validation.message.notFound", new RoleDTO(), role.getId());		
+		}
+		catch(DataIntegrityViolationException cause) {
+			throw new ValidationException("role.validation.message.duplicateEntry", role, role.getName());
+		}
 	}
 
 	@DeleteMapping("/{id}")
 	public void delete(@PathVariable Integer id) {
-		roleService.delete(id);	
+		RoleDTO role = null;
+		try {
+			role = roleService.get(id);
+			roleService.delete(id);
+		}
+		catch(DataIntegrityViolationException cause) {
+			if (role.getPersons().size() > 0) {
+				String personNames = role.getPersons()
+					.stream()
+					.map(person -> person.getName().toString())
+					.collect(Collectors.joining("; "));
+				throw new ValidationException("role.validation.message.inUsed", role, personNames);
+			}
+			throw cause;
+		}
+		catch (DataRetrievalFailureException cause) {
+			throw new ValidationException("role.validation.message.notFound", new RoleDTO(), role.getId());		
+		}
 	}
 }
