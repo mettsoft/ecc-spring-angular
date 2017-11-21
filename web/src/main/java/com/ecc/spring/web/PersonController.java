@@ -44,11 +44,6 @@ public class PersonController {
 	private static final String DEFAULT_COMMAND_NAME = "command";
 	private static final String FORM_PARAMETER_PERSON_ID = "id";
 
-	private static final String FORM_PARAMETER_PERSON_ROLE_IDS = "personRoleIds";
-
-	private static final String FORM_PARAMETER_PERSON_CONTACT_TYPE = "contactType";
-	private static final String FORM_PARAMETER_PERSON_CONTACT_DATA = "contactData";
-
 	private static final String QUERY_PARAMETER_PERSON_LAST_NAME = "queryLastName";
 	private static final String QUERY_PARAMETER_ROLE_ID = "queryRoleId";
 	private static final String QUERY_PARAMETER_BIRTHDAY = "queryBirthday";
@@ -82,7 +77,7 @@ public class PersonController {
 		if (binder.getTarget() != null && personService.supports(binder.getTarget().getClass())) {
 			binder.setValidator(personService);		
 		}
-	    binder.registerCustomEditor(Date.class, new CustomDateEditor(DateUtils.DATE_FORMAT, true));
+    binder.registerCustomEditor(Date.class, new CustomDateEditor(DateUtils.DATE_FORMAT, true));
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
@@ -166,7 +161,7 @@ public class PersonController {
 		return "redirect:/persons";
 	}
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler({ ValidationException.class })
 	public ModelAndView exceptionHandler(HttpServletRequest request, ValidationException cause, Locale locale) {
 		ModelAndView modelView = list(request, locale);

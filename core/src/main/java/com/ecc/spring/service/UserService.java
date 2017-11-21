@@ -7,8 +7,6 @@ import java.util.Map;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-import javax.annotation.PostConstruct;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
 import org.springframework.validation.Errors;
 
-import com.ecc.spring.dao.PermissionDao;
 import com.ecc.spring.dao.UserDao;
 import com.ecc.spring.dao.PermissionDao;
 import com.ecc.spring.dto.UserDTO;
@@ -29,7 +26,6 @@ import com.ecc.spring.model.Permission;
 import com.ecc.spring.model.User;
 import com.ecc.spring.util.AssemblerUtils;
 import com.ecc.spring.util.ValidationUtils;
-import com.ecc.spring.util.ValidationException;
 
 @Service
 public class UserService extends AbstractService<User, UserDTO> implements Validator, UserDetailsService {

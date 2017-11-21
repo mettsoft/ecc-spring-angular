@@ -1,7 +1,6 @@
 package com.ecc.spring.service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +13,6 @@ import com.ecc.spring.model.Role;
 import com.ecc.spring.dao.RoleDao;
 import com.ecc.spring.util.AssemblerUtils;
 import com.ecc.spring.util.ValidationUtils;
-import com.ecc.spring.util.ValidationException;
 
 @Service
 public class RoleService extends AbstractService<Role, RoleDTO> implements Validator {
