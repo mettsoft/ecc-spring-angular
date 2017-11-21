@@ -23,7 +23,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.validation.BindingResult;
 
 import com.ecc.spring.dto.PersonDTO;
-import com.ecc.spring.factory.PersonFactory;
 import com.ecc.spring.service.PersonService;
 import com.ecc.spring.util.DateUtils;
 import com.ecc.spring.util.ValidationException;
@@ -35,9 +34,6 @@ public class PersonController {
 
 	@Autowired
 	private PersonService personService;
-
-	@Autowired
-	private PersonFactory personFactory;
 
 	@InitBinder
 	protected void initBinder(WebDataBinder binder) {
@@ -79,7 +75,7 @@ public class PersonController {
 	@PostMapping(value = "/upload")
 	@ResponseStatus(HttpStatus.CREATED)	
 	public void upload(@RequestParam("file") MultipartFile file) {
-		PersonDTO person = personFactory.createPersonDTO(file);
+		PersonDTO person = personService.createPersonDTO(file);
 		personService.validate(person, DEFAULT_COMMAND_NAME);
 		personService.create(person);
 	}
