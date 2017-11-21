@@ -3,6 +3,7 @@ package com.ecc.spring.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -17,39 +18,39 @@ import com.ecc.spring.service.UserService;
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private UserService userService;
+  @Autowired
+  private UserService userService;
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-            .authorizeRequests()
-                .antMatchers("/users/permissions").authenticated()
-                .antMatchers("/users/**").hasRole("ADMIN")
-                .antMatchers("/persons/create").hasRole("CREATE_PERSON")
-                .antMatchers("/persons/upload").hasRole("CREATE_PERSON")
-                .antMatchers("/persons/update").hasRole("UPDATE_PERSON")
-                .antMatchers("/persons/delete").hasRole("DELETE_PERSON")
-                .antMatchers("/roles/create").hasRole("CREATE_ROLE")
-                .antMatchers("/roles/update").hasRole("UPDATE_ROLE")
-                .antMatchers("/roles/delete").hasRole("DELETE_ROLE")
-                .anyRequest().authenticated()
-                .and()
-            .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-            .httpBasic()
-                .and()
-            .csrf().disable();
-    }
+  @Override
+  protected void configure(HttpSecurity http) throws Exception {
+      http
+        .authorizeRequests()
+          .antMatchers("/users/permissions").authenticated()
+          .antMatchers("/users/**").hasRole("ADMIN")
+          .antMatchers(HttpMethod.POST, "/persons").hasRole("CREATE_PERSON")
+          .antMatchers(HttpMethod.POST, "/persons/upload").hasRole("CREATE_PERSON")
+          .antMatchers(HttpMethod.PUT, "/persons").hasRole("UPDATE_PERSON")
+          .antMatchers(HttpMethod.DELETE, "/persons/*").hasRole("DELETE_PERSON")
+          .antMatchers(HttpMethod.POST, "/roles").hasRole("CREATE_ROLE")
+          .antMatchers(HttpMethod.PUT, "/roles").hasRole("UPDATE_ROLE")
+          .antMatchers(HttpMethod.DELETE, "/roles/*").hasRole("DELETE_ROLE")
+          .anyRequest().authenticated()
+          .and()
+        .sessionManagement()
+          .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+          .and()
+        .httpBasic()
+          .and()
+        .csrf().disable();
+  }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
-    }
+  @Override
+  protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+      auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
+  }
 
-    @Bean 
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+  @Bean 
+  public PasswordEncoder passwordEncoder() {
+      return new BCryptPasswordEncoder();
+  }
 }
