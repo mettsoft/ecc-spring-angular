@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.context.MessageSource;
+import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -98,9 +99,9 @@ public class PersonController {
 			try {
 				person = personService.get(personId);
 			}
-			catch (ValidationException cause) {
+			catch (DataRetrievalFailureException cause) {
 				request.setAttribute(ATTRIBUTE_FORCE_CREATE_MODE, true);
-				throw cause;
+				throw new ValidationException("person.validation.message.notFound", new PersonDTO(), personId);
 			}
 			modelView.addAllObjects(constructViewParametersFromPerson(person));
 			modelView.addObject(VIEW_PARAMETER_HEADER, messageSource.getMessage("person.headerTitle.update", null, locale));

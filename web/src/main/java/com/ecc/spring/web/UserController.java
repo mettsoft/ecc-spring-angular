@@ -9,6 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -70,9 +72,9 @@ public class UserController {
 			try {
 				user = userService.get(userId);
 			}
-			catch (ValidationException cause) {
+			catch (DataRetrievalFailureException cause) {
 				request.setAttribute(ATTRIBUTE_FORCE_CREATE_MODE, true);
-				throw cause;
+				throw new ValidationException("user.validation.message.notFound", new UserDTO(), userId);		
 			}
 			modelView.addObject(VIEW_PARAMETER_HEADER, messageSource.getMessage("user.headerTitle.update", null, locale));
 			modelView.addObject(VIEW_PARAMETER_ACTION, "/update");
@@ -92,7 +94,12 @@ public class UserController {
 			throw new ValidationException(bindingResult.getAllErrors(), user);
 		}
 
-		userService.create(user);
+		try {
+			userService.create(user);		
+		}
+		catch(DataIntegrityViolationException cause) {
+			throw new ValidationException("user.validation.message.duplicateEntry", user, user.getUsername());
+		}
 
 		String message = messageSource.getMessage("user.successMessage.create", new Object[] {user.getUsername()}, locale);
 		RequestContextUtils.getOutputFlashMap(request).put(VIEW_PARAMETER_SUCCESS_MESSAGE, message);
@@ -105,9 +112,13 @@ public class UserController {
 			throw new ValidationException(bindingResult.getAllErrors(), user);
 		}
 	
-		userService.update(user);
+		try {
+			userService.update(user);
+		}
+		catch(DataIntegrityViolationException cause) {
+			throw new ValidationException("user.validation.message.duplicateEntry", user, user.getUsername());
+		}
 
-		user = userService.get(user.getId());
 		String message = messageSource.getMessage("user.successMessage.update", new Object[] { user.getUsername() }, locale);
 		RequestContextUtils.getOutputFlashMap(request).put(VIEW_PARAMETER_SUCCESS_MESSAGE, message);
 		return "redirect:/users";
@@ -123,7 +134,7 @@ public class UserController {
 		return "redirect:/users";
 	}
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler({ ValidationException.class })
 	public ModelAndView exceptionHandler(HttpServletRequest request, ValidationException cause, Locale locale) {
 		ModelAndView modelView = list(request, locale);

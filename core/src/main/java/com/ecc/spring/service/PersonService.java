@@ -257,15 +257,7 @@ public class PersonService extends AbstractService<Person, PersonDTO> implements
 	public Person createBasicModel(PersonDTO dto) {
 		return dto == null? null: new Person(dto.getId(), createNameModel(dto.getName()));
 	}
-
-	@Override
-	protected RuntimeException onGetFailure(Integer id, RuntimeException cause) {
-		if (cause instanceof DataRetrievalFailureException) {
-			return new ValidationException("person.validation.message.notFound", new PersonDTO(), id);		
-		}
-		return super.onGetFailure(id, cause);
-	}
-
+	
 	private AddressDTO createAddressDTO(Address model) {
 		if (model == null) {
 			return null;

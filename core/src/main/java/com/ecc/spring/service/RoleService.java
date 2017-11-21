@@ -5,8 +5,6 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
 import org.springframework.validation.Errors;
@@ -71,40 +69,5 @@ public class RoleService extends AbstractService<Role, RoleDTO> implements Valid
 		model.setName(dto.getName());
 		model.setPersons(AssemblerUtils.asSet(dto.getPersons(), personService::createBasicModel));
 		return model;
-	}
-
-	@Override
-	protected RuntimeException onCreateFailure(Role role, RuntimeException cause) {
-		role.setId(null);
-		return onUpdateFailure(role, cause);
-	}
-
-	@Override
-	protected RuntimeException onUpdateFailure(Role role, RuntimeException cause) {
-		if (cause instanceof DataIntegrityViolationException) {
-			return new ValidationException("role.validation.message.duplicateEntry", createDTO(role), role.getName());
-		}
-		return super.onUpdateFailure(role, cause);
-	}
-
-	@Override
-	protected RuntimeException onDeleteFailure(Role role, RuntimeException cause) {
-		if (cause instanceof DataIntegrityViolationException && role.getPersons().size() > 0) {
-			String personNames = role.getPersons()
-				.stream()
-				.map(person -> person.getName().toString())
-				.collect(Collectors.joining("; "));
-
-			return new ValidationException("role.validation.message.inUsed", createDTO(role), personNames);
-		}
-		return super.onDeleteFailure(role, cause);
-	}
-
-	@Override
-	protected RuntimeException onGetFailure(Integer id, RuntimeException cause) {
-		if (cause instanceof DataRetrievalFailureException) {
-			return new ValidationException("role.validation.message.notFound", new RoleDTO(), id);		
-		}
-		return super.onGetFailure(id, cause);
 	}
 }

@@ -12,8 +12,6 @@ import javax.annotation.PostConstruct;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -126,28 +124,6 @@ public class UserService extends AbstractService<User, UserDTO> implements Valid
 
 		return user == null? null: 
 			new org.springframework.security.core.userdetails.User(username, user.getPassword(), getAuthorities(user.getPermissions()));
-	}
-
-	@Override
-	protected RuntimeException onCreateFailure(User user, RuntimeException cause) {
-		user.setId(null);
-		return onUpdateFailure(user, cause);
-	}
-
-	@Override
-	protected RuntimeException onUpdateFailure(User user, RuntimeException cause) {
-		if (cause instanceof DataIntegrityViolationException) {
-			return new ValidationException("user.validation.message.duplicateEntry", this.createDTO(user), user.getUsername());
-		}
-		return super.onUpdateFailure(user, cause);
-	}
-
-	@Override
-	protected RuntimeException onGetFailure(Integer id, RuntimeException cause) {
-		if (cause instanceof DataRetrievalFailureException) {
-			return new ValidationException("user.validation.message.notFound", new UserDTO(), id);		
-		}
-		return super.onGetFailure(id, cause);
 	}
 
 	private Collection<? extends GrantedAuthority> getAuthorities(Collection<Permission> permissions) {

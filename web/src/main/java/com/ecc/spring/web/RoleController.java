@@ -9,6 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -70,9 +72,9 @@ public class RoleController {
 			try {
 				role = roleService.get(roleId);
 			}
-			catch (ValidationException cause) {
+			catch (DataRetrievalFailureException cause) {
 				request.setAttribute(ATTRIBUTE_FORCE_CREATE_MODE, true);
-				throw cause;
+				throw new ValidationException("role.validation.message.notFound", new RoleDTO(), roleId);		
 			}
 			modelView.addObject(VIEW_PARAMETER_HEADER, messageSource.getMessage("role.headerTitle.update", null, locale));
 			modelView.addObject(VIEW_PARAMETER_ACTION, "/update");
@@ -92,7 +94,12 @@ public class RoleController {
 			throw new ValidationException(bindingResult.getAllErrors(), role);
 		}
 
-		roleService.create(role);
+		try {
+			roleService.create(role);		
+		}
+		catch(DataIntegrityViolationException cause) {
+			throw new ValidationException("role.validation.message.duplicateEntry", role, role.getName());
+		}
 
 		String message = messageSource.getMessage("role.successMessage.create", new Object[] {role.getName()}, locale);
 		RequestContextUtils.getOutputFlashMap(request).put(VIEW_PARAMETER_SUCCESS_MESSAGE, message);
@@ -105,9 +112,17 @@ public class RoleController {
 			throw new ValidationException(bindingResult.getAllErrors(), role);
 		}
 	
-		roleService.update(role);
+		try {
+			roleService.update(role);		
+			role = roleService.get(role.getId());		
+		}
+		catch(DataRetrievalFailureException cause) {
+			throw new ValidationException("role.validation.message.notFound", new RoleDTO(), role.getId());		
+		}
+		catch(DataIntegrityViolationException cause) {
+			throw new ValidationException("role.validation.message.duplicateEntry", role, role.getName());
+		}
 
-		role = roleService.get(role.getId());
 		String message = messageSource.getMessage("role.successMessage.update", new Object[] { role.getName() }, locale);
 		if (role.getPersons().size() > 0) {
 			String personNames = role.getPersons().stream()
@@ -122,14 +137,30 @@ public class RoleController {
 	@RequestMapping(value = "/delete", method = RequestMethod.POST)
 	public String delete(HttpServletRequest request, RoleDTO role, Locale locale) {
 		request.setAttribute(ATTRIBUTE_FORCE_CREATE_MODE, true);
-		roleService.delete(role.getId());	
+		try {
+			role = roleService.get(role.getId());
+			roleService.delete(role.getId());
+		}
+		catch(DataIntegrityViolationException cause) {
+			if (role.getPersons().size() > 0) {
+				String personNames = role.getPersons()
+					.stream()
+					.map(person -> person.getName().toString())
+					.collect(Collectors.joining("; "));
+				throw new ValidationException("role.validation.message.inUsed", role, personNames);
+			}
+			throw cause;
+		}
+		catch (DataRetrievalFailureException cause) {
+			throw new ValidationException("role.validation.message.notFound", new RoleDTO(), role.getId());		
+		}
 
 		String message = messageSource.getMessage("role.successMessage.delete", new Object[] { role.getName() }, locale);
 		RequestContextUtils.getOutputFlashMap(request).put(VIEW_PARAMETER_SUCCESS_MESSAGE, message);
 		return "redirect:/roles";
 	}
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler({ ValidationException.class })
 	public ModelAndView exceptionHandler(HttpServletRequest request, ValidationException cause, Locale locale) {
 		ModelAndView modelView = list(request, locale);
