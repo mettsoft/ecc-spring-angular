@@ -1,4 +1,7 @@
-angular.module('personRegistrationSystem', ['ui.router', 'roleManagement', 'userManagement', 'login', 'Authentication'])
+let externalDependencies = ['ui.router', 'base64', 'ngCookies'];
+let internalDependencies = ['roleManagement', 'userManagement', 'login', 'Authentication'];
+
+angular.module('personRegistrationSystem', [...externalDependencies, ...internalDependencies])
 	.run(['$rootScope', '$http', '$state', '$transitions', 'Authentication',
 		function($rootScope, $http, $state, $transitions, Authentication) {
 			// Expose convenience methods and objects to $rootScope.
@@ -29,6 +32,5 @@ angular.module('personRegistrationSystem', ['ui.router', 'roleManagement', 'user
 			$rootScope.logout = () => $state.go('login');
 
 			// Initialization.
-			Authentication.reload();
 			securityFilter();
 	}]);
