@@ -24,6 +24,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
             .authorizeRequests()
+                .antMatchers("/users/permissions").authenticated()
                 .antMatchers("/users/**").hasRole("ADMIN")
                 .antMatchers("/persons/create").hasRole("CREATE_PERSON")
                 .antMatchers("/persons/upload").hasRole("CREATE_PERSON")

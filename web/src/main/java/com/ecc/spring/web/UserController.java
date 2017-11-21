@@ -1,11 +1,13 @@
 package com.ecc.spring.web;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -86,5 +88,12 @@ public class UserController {
 		catch (DataRetrievalFailureException cause) {
 			throw new ValidationException("user.validation.message.notFound", new UserDTO(), id);		
 		}
+	}
+
+	@GetMapping("/permissions")
+	public List<String> getPermissions(Authentication authentication) {
+		return authentication.getAuthorities().stream()
+			.map(t -> t.getAuthority())
+			.collect(Collectors.toList());
 	}
 }
