@@ -10,18 +10,22 @@ import java.util.regex.Matcher;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.dao.DataRetrievalFailureException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Validator;
 import org.springframework.validation.Errors;
 import org.springframework.validation.BindException;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ecc.spring.dto.AddressDTO;
 import com.ecc.spring.dto.PersonDTO;
+import com.ecc.spring.dto.NameDTO;
 import com.ecc.spring.dto.RoleDTO;
 import com.ecc.spring.dto.ContactDTO;
+import com.ecc.spring.model.Address;
 import com.ecc.spring.model.Person;
+import com.ecc.spring.model.Name;
 import com.ecc.spring.model.Role;
-import com.ecc.spring.assembler.PersonAssembler;
 import com.ecc.spring.dao.PersonDao;
 import com.ecc.spring.dao.RoleDao;
 import com.ecc.spring.util.AssemblerUtils;
@@ -41,14 +45,19 @@ public class PersonService extends AbstractService<Person, PersonDTO> implements
  	private static final String CONTACT_TYPE_EMAIL = "Email";
 
 	private final PersonDao personDao;
-	private final PersonAssembler personAssembler;
-	private final RoleDao roleDao;
+	
+	@Autowired
+	private RoleService roleService;
 
-	public PersonService(PersonDao personDao, PersonAssembler personAssembler, RoleDao roleDao) {
-		super(personDao, personAssembler);
+	@Autowired
+	private ContactService contactService;
+	
+	@Autowired
+	private RoleDao roleDao;
+
+	public PersonService(PersonDao personDao) {
+		super(personDao);
 		this.personDao = personDao;
-		this.personAssembler = personAssembler;
-		this.roleDao = roleDao;
 	}
 
 	@Override
@@ -99,7 +108,7 @@ public class PersonService extends AbstractService<Person, PersonDTO> implements
   }
 
 	public List<PersonDTO> list(String lastName, Integer roleId, Date birthday, String orderBy, String order) {
-		return AssemblerUtils.asList(personDao.list(lastName, roleId, birthday, orderBy, order), personAssembler::createDTO);
+		return AssemblerUtils.asList(personDao.list(lastName, roleId, birthday, orderBy, order), this::createDTO);
 	}
 
 	public PersonDTO createPersonDTO(MultipartFile file) {
@@ -205,11 +214,103 @@ public class PersonService extends AbstractService<Person, PersonDTO> implements
 	}
 
 	@Override
+	public PersonDTO createDTO(Person model) {
+		PersonDTO dto = createBasicDTO(model);
+		if (dto == null) {
+			return null;
+		}
+		dto.setAddress(createAddressDTO(model.getAddress()));
+		dto.setBirthday(model.getBirthday());
+		dto.setGWA(model.getGWA());
+		dto.setCurrentlyEmployed(model.getCurrentlyEmployed());
+		dto.setDateHired(model.getDateHired());
+		dto.setGWA(model.getGWA());
+		dto.setContacts(AssemblerUtils.asList(model.getContacts(), contactService::createDTO));
+		dto.setRoles(AssemblerUtils.asList(model.getRoles(), roleService::createDTO));
+		return dto;
+	}
+
+	@Override 
+	public Person createModel(PersonDTO dto) {
+		Person model = createBasicModel(dto);
+		if (model == null) {
+			return null;
+		}
+		model.setAddress(createAddressModel(dto.getAddress()));
+		model.setBirthday(dto.getBirthday());
+		model.setGWA(dto.getGWA());
+		model.setCurrentlyEmployed(dto.getCurrentlyEmployed());
+		model.setDateHired(dto.getDateHired());
+		model.setGWA(dto.getGWA());
+		model.setContacts(AssemblerUtils.asSet(dto.getContacts(), contactService::createModel));
+		model.setRoles(AssemblerUtils.asSet(dto.getRoles(), roleService::createModel));
+		return model;
+	}
+
+	public PersonDTO createBasicDTO(Person model) {
+		return model == null? null: new PersonDTO(model.getId(), createNameDTO(model.getName()));
+	}
+
+	public Person createBasicModel(PersonDTO dto) {
+		return dto == null? null: new Person(dto.getId(), createNameModel(dto.getName()));
+	}
+
+	@Override
 	protected RuntimeException onGetFailure(Integer id, RuntimeException cause) {
 		if (cause instanceof DataRetrievalFailureException) {
 			return new ValidationException("person.validation.message.notFound", new PersonDTO(), id);		
 		}
 		return super.onGetFailure(id, cause);
+	}
+
+	private AddressDTO createAddressDTO(Address model) {
+		if (model == null) {
+			return null;
+		}
+		AddressDTO dto = new AddressDTO();
+		dto.setStreetNumber(model.getStreetNumber());
+		dto.setBarangay(model.getBarangay());
+		dto.setMunicipality(model.getMunicipality());
+		dto.setZipCode(model.getZipCode());
+		return dto;	
+	}
+
+	private Address createAddressModel(AddressDTO dto) {
+		if (dto == null) {
+			return null;
+		}
+		Address model = new Address();
+		model.setStreetNumber(dto.getStreetNumber());
+		model.setBarangay(dto.getBarangay());
+		model.setMunicipality(dto.getMunicipality());
+		model.setZipCode(dto.getZipCode());
+		return model;	
+	}
+
+	private NameDTO createNameDTO(Name model) {
+		if (model == null) {
+			return null;
+		}
+		NameDTO dto = new NameDTO();
+		dto.setTitle(model.getTitle());
+		dto.setLastName(model.getLastName());
+		dto.setFirstName(model.getFirstName());
+		dto.setMiddleName(model.getMiddleName());
+		dto.setSuffix(model.getSuffix());
+		return dto;
+	}
+ 
+	private Name createNameModel(NameDTO dto) {
+		if (dto == null) {
+			return null;
+		}
+		Name model = new Name();
+		model.setTitle(dto.getTitle());
+		model.setLastName(dto.getLastName());
+		model.setFirstName(dto.getFirstName());
+		model.setMiddleName(dto.getMiddleName());
+		model.setSuffix(dto.getSuffix());
+		return model;
 	}
 
 	private void validateName(String data, String field, Errors errors, String argument) {

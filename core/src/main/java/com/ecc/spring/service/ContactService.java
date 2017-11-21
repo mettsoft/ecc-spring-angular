@@ -1,12 +1,17 @@
-package com.ecc.spring.assembler;
+package com.ecc.spring.service;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.ecc.spring.model.Contact;
 import com.ecc.spring.dto.ContactDTO;
 
-@Component
-public class ContactAssembler implements Assembler<Contact, ContactDTO> {
+@Service
+public class ContactService extends AbstractService<Contact, ContactDTO> {
+
+	public ContactService() {
+		super(null);
+	}
+
 	@Override
 	public ContactDTO createDTO(Contact model) {
 		if (model == null) {
