@@ -1,15 +1,20 @@
 package com.ecc.spring.service;
 
+import java.text.ParseException;
 import java.util.List;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Validator;
 import org.springframework.validation.Errors;
 import org.springframework.validation.BindException;
-import org.springframework.dao.DataRetrievalFailureException;
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ecc.spring.dto.PersonDTO;
 import com.ecc.spring.dto.RoleDTO;
@@ -20,6 +25,7 @@ import com.ecc.spring.assembler.PersonAssembler;
 import com.ecc.spring.dao.PersonDao;
 import com.ecc.spring.dao.RoleDao;
 import com.ecc.spring.util.AssemblerUtils;
+import com.ecc.spring.util.DateUtils;
 import com.ecc.spring.util.ValidationUtils;
 import com.ecc.spring.util.ValidationException;
 
@@ -29,6 +35,10 @@ public class PersonService extends AbstractService<Person, PersonDTO> implements
 	private static final Integer LONG_MAX_CHARACTERS = 50;
 	private static final Integer LANDLINE_DIGITS = 7;
 	private static final Integer MOBILE_NUMBER_DIGITS = 11;
+ 	private static final Pattern PATTERN = Pattern.compile("(.*)=(.*)");
+ 	private static final String CONTACT_TYPE_LANDLINE = "Landline";
+ 	private static final String CONTACT_TYPE_MOBILE = "Mobile";
+ 	private static final String CONTACT_TYPE_EMAIL = "Email";
 
 	private final PersonDao personDao;
 	private final PersonAssembler personAssembler;
@@ -43,25 +53,25 @@ public class PersonService extends AbstractService<Person, PersonDTO> implements
 
 	@Override
 	public boolean supports(Class clazz) {
-        return clazz.isAssignableFrom(PersonDTO.class);
-    }
+    return clazz.isAssignableFrom(PersonDTO.class);
+  }
 
-    public void validate(PersonDTO person, String objectName) {
-    	if (person == null) {
-    		throw new ValidationException("validation.message.notEmpty", new PersonDTO(), "localize:person.form.label");
-    	}
+  public void validate(PersonDTO person, String objectName) {
+  	if (person == null) {
+  		throw new ValidationException("validation.message.notEmpty", new PersonDTO(), "localize:person.form.label");
+  	}
 
-    	Errors errors = new BindException(person, objectName);
-    	validate(person, errors);
+  	Errors errors = new BindException(person, objectName);
+  	validate(person, errors);
 		validateRoles(person.getRoles(), errors);
-    	if (errors.hasErrors()) {
-    		throw new ValidationException(errors.getAllErrors(), person);
-    	}
-    }
+  	if (errors.hasErrors()) {
+  		throw new ValidationException(errors.getAllErrors(), person);
+  	}
+  }
 
-    @Override
-    public void validate(Object command, Errors errors) {
-    	PersonDTO person = (PersonDTO) command;
+  @Override
+  public void validate(Object command, Errors errors) {
+  	PersonDTO person = (PersonDTO) command;
 
 		validateName(person.getName().getTitle(), "name.title", errors, "localize:person.form.label.name.title");
 		validateName(person.getName().getLastName(), "name.lastName", errors, "localize:person.form.label.name.lastName");
@@ -86,10 +96,120 @@ public class PersonService extends AbstractService<Person, PersonDTO> implements
 		}
 
 		validateContacts(person.getContacts(), errors);
-    }
+  }
 
 	public List<PersonDTO> list(String lastName, Integer roleId, Date birthday, String orderBy, String order) {
 		return AssemblerUtils.asList(personDao.list(lastName, roleId, birthday, orderBy, order), personAssembler::createDTO);
+	}
+
+	public PersonDTO createPersonDTO(MultipartFile file) {
+		try {
+			String dataString = IOUtils.toString(file.getBytes(), "utf-8");
+			Matcher matcher = PATTERN.matcher(dataString);
+
+			PersonDTO person = new PersonDTO();
+			while (matcher.find()) {
+				String property = StringUtils.trim(matcher.group(1)).toLowerCase();
+				String value = StringUtils.trim(matcher.group(2));
+
+				try {				
+					switch(property) {
+						case "name:title": 
+							person.getName().setTitle(value);
+							break;
+						case "name:lastname": 
+							person.getName().setLastName(value);
+							break;
+						case "name:firstname": 
+							person.getName().setMiddleName(value);
+							break;
+						case "name:middlename": 
+							person.getName().setFirstName(value);
+							break;
+						case "name:suffix": 
+							person.getName().setSuffix(value);
+							break;
+						case "address:streetnumber": 
+							person.getAddress().setStreetNumber(value);
+							break;
+						case "address:barangay": 
+							person.getAddress().setBarangay(value);
+							break;
+						case "address:municipality": 
+							person.getAddress().setMunicipality(value);
+							break;
+						case "address:zipcode": 
+							person.getAddress().setZipCode(Integer.valueOf(value));	
+							break;
+						case "birthday": 
+							person.setBirthday(DateUtils.DATE_FORMAT.parse(value));	
+							break;
+						case "gwa": 
+							person.setGWA(new BigDecimal(value));
+							break;
+						case "currentlyemployed": 
+							person.setCurrentlyEmployed(Boolean.valueOf(value));
+							break;
+						case "datehired": 
+							person.setDateHired(DateUtils.DATE_FORMAT.parse(value));
+							break;
+						case "contacts":
+							String[] contactTokens = StringUtils.split(value, ",");
+							for (String contactToken: contactTokens) {
+								ContactDTO contact = new ContactDTO();
+								contactToken = StringUtils.trim(contactToken);
+								if (StringUtils.startsWithIgnoreCase(contactToken, "landline:")) {
+									contact.setContactType(CONTACT_TYPE_LANDLINE);
+									contact.setData(StringUtils.removeStartIgnoreCase(contactToken, "landline:"));
+								}
+								else if (StringUtils.startsWithIgnoreCase(contactToken, "mobile:")) {
+									contact.setContactType(CONTACT_TYPE_MOBILE);
+									contact.setData(StringUtils.removeStartIgnoreCase(contactToken, "mobile:"));
+								}
+								else if (StringUtils.startsWithIgnoreCase(contactToken, "email:")) {
+									contact.setContactType(CONTACT_TYPE_EMAIL);
+									contact.setData(StringUtils.removeStartIgnoreCase(contactToken, "email:"));
+								}
+								else {
+									throw new RuntimeException();
+								}
+								person.getContacts().add(contact);
+							}
+							break;
+						case "roles": 
+							String[] roleTokens = StringUtils.split(value, ",");
+							for (String roleToken: roleTokens) {
+								RoleDTO role = new RoleDTO();
+								role.setName(StringUtils.trim(roleToken));
+								person.getRoles().add(role);
+							}
+							break;
+					}
+				}
+				catch (Exception exception) {
+					throw new ParseException(matcher.group(0), 0);
+				}
+			}
+
+			return person;
+		}
+		catch (ParseException exception) {
+			throw new ValidationException("person.validation.message.parseError", new PersonDTO(), exception.getMessage());
+		}
+		catch (Exception exception) {
+			if (exception instanceof ValidationException) {
+				throw (ValidationException) exception;
+			}
+			throw new ValidationException("person.validation.message.invalidFormat", new PersonDTO());
+		}
+	}
+
+	@Override
+	protected RuntimeException onGetFailure(Integer id, RuntimeException cause) {
+		if (cause instanceof DataRetrievalFailureException) {
+			return new ValidationException("person.validation.message.notFound", new PersonDTO(), id);		
+		}
+		return super.onGetFailure(id, cause);
 	}
 
 	private void validateName(String data, String field, Errors errors, String argument) {
@@ -161,13 +281,5 @@ public class PersonService extends AbstractService<Person, PersonDTO> implements
 		ValidationUtils.testNotEmpty(email, null, errors, "localize:person.contactType.email");
 		ValidationUtils.testValidEmail(email, null, errors);
 		ValidationUtils.testMaxLength(email, null, errors, LONG_MAX_CHARACTERS, "localize:person.contactType.email");
-	}
-
-	@Override
-	protected RuntimeException onGetFailure(Integer id, RuntimeException cause) {
-		if (cause instanceof DataRetrievalFailureException) {
-			return new ValidationException("person.validation.message.notFound", new PersonDTO(), id);		
-		}
-		return super.onGetFailure(id, cause);
 	}
 }

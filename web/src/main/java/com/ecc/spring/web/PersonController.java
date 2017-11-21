@@ -30,7 +30,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 
 import com.ecc.spring.dto.PersonDTO;
-import com.ecc.spring.factory.PersonFactory;
 import com.ecc.spring.service.PersonService;
 import com.ecc.spring.service.RoleService;
 import com.ecc.spring.util.DateUtils;
@@ -70,9 +69,6 @@ public class PersonController {
 
 	@Autowired
 	private PersonService personService;
-
-	@Autowired
-	private PersonFactory personFactory;
 
 	@Autowired
 	private RoleService roleService;
@@ -142,7 +138,7 @@ public class PersonController {
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
 	public String upload(HttpServletRequest request, @RequestParam("file") MultipartFile file, Locale locale) {
 		request.setAttribute(ATTRIBUTE_FORCE_CREATE_MODE, true);
-		PersonDTO person = personFactory.createPersonDTO(file);
+		PersonDTO person = personService.createPersonDTO(file);
 		personService.validate(person, DEFAULT_COMMAND_NAME);
 		return create(request, person, null, locale);
 	}
