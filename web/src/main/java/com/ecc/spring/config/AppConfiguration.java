@@ -6,7 +6,6 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.FilterType;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -20,11 +19,7 @@ import com.ecc.spring.model.User;
 import com.ecc.spring.model.Permission;
 
 @Configuration
-@ComponentScan(basePackages = "com.ecc.spring", 
-	excludeFilters = {
-		@ComponentScan.Filter(type = FilterType.REGEX, pattern = "com.ecc.spring.config.*"),
-		@ComponentScan.Filter(type = FilterType.REGEX, pattern = "com.ecc.spring.web.*")
-	})
+@ComponentScan(basePackages = {"com.ecc.spring.dao", "com.ecc.spring.service"})
 @EnableTransactionManagement(proxyTargetClass = true)
 public class AppConfiguration {
 	@Bean(destroyMethod = "close")
