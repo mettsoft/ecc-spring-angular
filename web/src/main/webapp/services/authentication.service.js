@@ -14,7 +14,10 @@ angular.module('Authentication', [])
           }).then(response => {
             $cookies.putObject("authUser", {
               username: command.username,
-              authorities: response.data,
+              authorities: response.data.reduce((acc, t) => 
+                Object.assign(acc, { 
+                  [t]: true 
+                }), {}),
               Authorization: authorizationHeader.Authorization
             });
             this.reload();

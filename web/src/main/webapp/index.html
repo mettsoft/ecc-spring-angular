@@ -35,7 +35,7 @@
 								{{tr('navigation.roles')}}
 							</a>
 						</li>
-						<li ng-if="$state.current.name !== 'userManagement'">
+						<li ng-if="$state.current.name !== 'userManagement' && access('ROLE_ADMIN')">
 							<a ui-sref="userManagement">
 								{{tr('navigation.users')}}
 							</a>
