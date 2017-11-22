@@ -40,4 +40,5 @@ angular.module('personRegistrationSystem', [...externalDependencies, ...internal
 
 			// Initialization.
 			securityFilter();
+			Authentication.reload();
 	}]);
