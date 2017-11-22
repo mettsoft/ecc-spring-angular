@@ -8,7 +8,7 @@ $.ajax({
 });
 
 const externalDependencies = ['ui.router', 'base64', 'ngCookies'];
-const internalDependencies = ['roleManagement', 'userManagement', 'login', 'Authentication'];
+const internalDependencies = ['personManagement', 'roleManagement', 'userManagement', 'login', 'Authentication'];
 
 angular.module('personRegistrationSystem', [...externalDependencies, ...internalDependencies])
 	.run(['$rootScope', '$http', '$state', '$transitions', 'Authentication',
