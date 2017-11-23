@@ -19,7 +19,7 @@
         <label for="password">
           {{tr('user.form.label.password')}}:
         </label>
-        <input type="password" id="password" ng-model="$ctrl.command.password" ng-required="!$ctrl.command.id" />
+        <input type="password" id="password" ng-model="$ctrl.command.password" />
         <div ng-if="$ctrl.command.id">{{tr('user.form.label.passwordHint')}}</div>
       </div>
       <h4>Permissions</h4>

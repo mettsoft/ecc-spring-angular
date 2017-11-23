@@ -22,7 +22,11 @@ angular.module('userManagement', ['Authentication'])
 
         // Bind listeners to local events.
         this.editRow = index => {
-          this.command = Object.assign({index: index}, this.data[index], {password: ''});
+          this.command = Object.assign({}, this.data[index], {
+            index: index, 
+            allowEmptyPassword: true,
+            password: ''
+          });
           resetPermissions();
           this.command.permissions.forEach(value => this.permissions[value] = true);
         };
