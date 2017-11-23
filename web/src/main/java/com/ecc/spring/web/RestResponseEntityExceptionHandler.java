@@ -34,8 +34,6 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 		ModelMap body = new ModelMap();
 
 		List<ObjectError> errors = cause.getAllErrors();
-		Object target = cause.getTarget();
-
 		List<String> errorMessages = ValidationUtils.localize(errors, messageSource, locale);
 		for (int i = 0; i < errorMessages.size(); i++) {
 			if (i == errorMessages.size() - 1) {
@@ -47,7 +45,6 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 		}
 	
 		body.addAttribute("errors", errorMessages);
-		body.addAttribute("target", target);
 		return handleExceptionInternal(cause, body, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
 	}
 
