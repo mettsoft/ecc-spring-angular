@@ -21,7 +21,7 @@ public abstract class AbstractDao<T> implements Dao<T> {
 
 	@Override
 	public T update(T entity) {
-		sessionFactory.getCurrentSession().update(entity);
+		sessionFactory.getCurrentSession().merge(entity);
 		return entity;
 	}
 
