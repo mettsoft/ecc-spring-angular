@@ -24,6 +24,12 @@ angular.module('personRegistrationSystem', [...externalDependencies, ...internal
 			$rootScope.access = Authentication.access;
 			$rootScope.$state = $state;			
 
+			// Bind the locale change interceptor.
+			$rootScope.onRootLocaleChange = locale => {
+        $http.defaults.headers.common['Accept-Language'] = locale;
+        $rootScope.onLocaleChange(locale);
+			};
+
 			// Register security filter.
 			let securityFilter = transition => {
 				if (!Authentication.isAuthenticated()) {
