@@ -55,6 +55,11 @@ public class UserService extends AbstractService<User, UserDTO> implements Valid
   	UserDTO user = (UserDTO) command;
 		ValidationUtils.testNotEmpty(user.getUsername(), "username", errors, "localize:user.data.column.username");
 		ValidationUtils.testMaxLength(user.getUsername(), "username", errors, MAX_CHARACTERS, "localize:user.data.column.username");
+
+		if (!user.getAllowEmptyPassword()) {
+			ValidationUtils.testNotEmpty(user.getPassword(), "password", errors, "localize:user.form.label.password");
+		}
+		ValidationUtils.testMaxLength(user.getPassword(), "password", errors, MAX_CHARACTERS, "localize:user.form.label.password");		
   }
 
 	@Transactional
