@@ -1,0 +1,295 @@
+<div class="row"> 
+  <div class="col-sm-4">
+    <div class="alert alert-danger" ng-repeat="errorMessage in $ctrl.errorMessages">
+      {{errorMessage}}
+    </div>
+    <div class="alert alert-success" ng-if="$ctrl.successMessage">
+      {{$ctrl.successMessage}}
+    </div>    
+    <h3 ng-if="!$ctrl.command.id && access('ROLE_CREATE_PERSON')">  
+      {{tr('person.headerTitle.create')}}
+    </h3>
+    <h3 ng-if="$ctrl.command.id && access('ROLE_UPDATE_PERSON')"> 
+      {{tr('person.headerTitle.update')}}
+    </h3>
+    <form ng-if="!$ctrl.command.id && access('ROLE_CREATE_PERSON')">
+      <div class="browse-button-container">
+        <button id="browse-button" onclick="$('#file-button').click()">
+          {{tr('form.button.chooseFile')}}
+        </button>
+        <label for="browse-button">
+          {{$ctrl.file.name || tr('form.button.noFileSelected')}}
+        </label>
+      </div>
+      <input ngf-select ng-model="$ctrl.file" id="file-button" type="file" accept=".txt" style="display: none;">
+      <button ng-show="$ctrl.file" ng-click="$ctrl.upload($ctrl.file)">
+        {{tr('form.button.upload')}}
+      </button>
+    </form>
+    <form ng-if="$ctrl.command.id && access('ROLE_UPDATE_PERSON') || !$ctrl.command.id && access('ROLE_CREATE_PERSON')">
+      <fieldset>
+        <legend>
+          {{tr('person.form.label.name')}}
+        </legend>
+        <div>
+          <label for="name.title">
+            {{tr('person.form.label.name.title')}}:
+          </label>
+          <input type="text" id="name.title" ng-model="$ctrl.command.name.title" />
+          </div>
+        <div>
+          <label for="name.lastName">
+            {{tr('person.form.label.name.lastName')}}:
+          </label>
+          <input type="text" id="name.lastName" ng-model="$ctrl.command.name.lastName" />
+        </div>
+        <div>
+          <label for="name.firstName">
+            {{tr('person.form.label.name.firstName')}}:
+          </label>
+          <input type="text" id="name.firstName" ng-model="$ctrl.command.name.firstName" />
+        </div>
+        <div>
+          <label for="name.middleName">
+            {{tr('person.form.label.name.middleName')}}:
+          </label>
+          <input type="text" id="name.middleName" ng-model="$ctrl.command.name.middleName" />
+        </div>
+        <div>
+          <label for="name.suffix">
+            {{tr('person.form.label.name.suffix')}}:
+          </label>
+          <input type="text" id="name.suffix" ng-model="$ctrl.command.name.suffix" />
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>
+          {{tr('person.form.label.address')}}:
+        </legend>
+        <div>
+          <label for="address.streetNumber">
+            {{tr('person.form.label.address.streetNumber')}}:
+          </label>
+          <input type="text" id="address.streetNumber" ng-model="$ctrl.command.address.streetNumber" /> 
+        </div>
+        <div>
+          <label for="address.barangay">
+            {{tr('person.form.label.address.barangay')}}:
+          </label>
+          <input type="text" id="address.barangay" ng-model="$ctrl.command.address.barangay" /> 
+        </div>
+        <div>
+          <label for="address.municipality">
+            {{tr('person.form.label.address.municipality')}}:
+          </label>
+          <input type="text" id="address.municipality" ng-model="$ctrl.command.address.municipality" /> 
+        </div>
+        <div>
+          <label for="address.zipCode">
+            {{tr('person.form.label.address.zipCode')}}:
+          </label>
+          <input type="number" id="address.zipCode" ng-model="$ctrl.command.address.zipCode" min="0" /> 
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>
+          {{tr('person.form.label.otherInformation')}}:
+        </legend>
+        <div>
+          <label for="birthday">
+            {{tr('person.form.label.otherInformation.birthday')}}:
+          </label>
+          <input type="date" id="birthday" ng-model="$ctrl.command.birthday" />   
+        </div>
+        <div>
+          <label for="GWA">
+            {{tr('person.form.label.otherInformation.GWA')}}:
+          </label>
+          <input type="number" id="GWA" ng-model="$ctrl.command.gwa" min="1" max="5" step="0.001" /> 
+        </div>
+        <div>
+          <label for="currentlyEmployed">
+            {{tr('person.form.label.otherInformation.currentlyEmployed')}}:
+          </label>
+          <input type="checkbox" id="currentlyEmployed" ng-model="$ctrl.command.currentlyEmployed" />
+        </div>
+        <div>
+          <label for="dateHired">
+            {{tr('person.form.label.otherInformation.dateHired')}}:
+          </label>
+          <input type="date" id="dateHired" ng-model="$ctrl.command.dateHired" ng-disabled="!$ctrl.command.currentlyEmployed"/> 
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>
+          {{tr('person.form.label.contactInformation')}}:
+        </legend>
+        <div ng-repeat="contact in $ctrl.command.contacts">
+          <select ng-model="contact.contactType">
+              <option value="Landline">
+                {{tr('person.contactType.landline')}}
+              </option>
+              <option value="Email">
+                {{tr('person.contactType.email')}}
+              </option>
+              <option value="Mobile">
+                {{tr('person.contactType.mobile')}}
+              </option>
+          </select>
+          <button ng-click="$ctrl.command.contacts.splice($index, 1)">
+            {{tr('form.button.remove')}}
+          </button>
+          <input type="text" ng-model="contact.data">
+        </div>
+        <button ng-click="$ctrl.command.contacts.push({contactType: 'Landline'})">
+          {{tr('form.button.add')}}
+        </button>
+      </fieldset>
+      <fieldset>
+        <legend>
+          {{tr('person.form.label.roleAssignments')}}:
+        </legend>
+        <div ng-repeat="role in $ctrl.command.roles">
+          <select ng-model="role.id">
+            <option ng-repeat="role in $ctrl.preload.roleItems" ng-value="{{role.id}}">
+              {{role.name}}
+            </option>
+          </select>
+          <button ng-click="$ctrl.command.roles.splice($index, 1)">
+            {{tr('form.button.remove')}}
+          </button>
+        </div>                           
+        <button ng-click="$ctrl.command.roles.push({id: $ctrl.preload.roleItems[0].idf})">
+          {{tr('form.button.add')}}
+        </button>
+      </fieldset>
+      <button ng-click="$ctrl.onCommandSubmit($ctrl.command)">
+        {{tr('form.button.submit')}}
+      </button>
+    </form>
+  </div>
+  <div class="col-sm-8">
+    <h3>{{tr('person.data.header')}}</h3>
+
+    <form>
+      <fieldset>
+        <legend>{{tr('person.data.searchParameters')}}</legend>
+        <div>
+          <label for="query.searchType">
+            {{tr('person.data.searchParameters.criteria')}}
+          </label>
+          <select id="query.searchType" ng-model="$ctrl.query.searchType">
+            <option value="0">
+              {{tr('person.data.searchParameters.criteria.lastName')}}
+            </option>
+            <option value="1">
+              {{tr('person.data.searchParameters.criteria.role')}}
+            </option>
+            <option value="2">
+              {{tr('person.data.searchParameters.criteria.birthday')}}
+            </option>
+          </select>
+        </div>
+        <div ng-if="$ctrl.query.searchType == 0">
+          <label for="query.lastName">
+            {{tr('person.data.searchParameters.lastName')}}
+          </label>
+          <input type="text" id="query.lastName" ng-model="$ctrl.query.lastName">
+        </div>
+        <div ng-if="$ctrl.query.searchType == 1">
+          <label for="query.roleId">
+            {{tr('person.data.searchParameters.role')}}
+          </label>
+          <select id="query.roleId" ng-model="$ctrl.query.roleId">
+            <option value="">
+              {{tr('person.data.searchParameters.options.all')}}
+            </option>
+            <option ng-repeat="role in $ctrl.preload.roleItems" value="{{role.id}}">
+              {{role.name}}
+            </option>
+          </select>
+        </div>
+        <div ng-if="$ctrl.query.searchType == 2">
+          <label for="query.birthday">
+            {{tr('person.data.searchParameters.birthday')}}
+          </label>
+          <input type="date" id="query.birthday" ng-model="$ctrl.query.birthday">
+        </div>
+        <div>
+          <label for="query.orderBy">
+            {{tr('person.data.searchParameters.orderBy')}}
+          </label>
+          <select id="query.orderBy" ng-model="$ctrl.query.orderBy">
+            <option value="name.lastName">
+              {{tr('person.data.searchParameters.orderBy.lastName')}}
+            </option>
+            <option value="dateHired">
+              {{tr('person.data.searchParameters.orderBy.dateHired')}}
+            </option>
+            <option value="GWA">
+              {{tr('person.data.searchParameters.orderBy.GWA')}}
+            </option>
+          </select>
+          <select ng-model="$ctrl.query.orderType">
+            <option value="ASC">
+              {{tr('person.data.searchParameters.order.ascending')}}
+            </option>
+            <option value="DESC">
+              {{tr('person.data.searchParameters.order.descending')}}
+            </option>
+          </select>
+        </div>
+        <button ng-click="$ctrl.search($ctrl.query)">
+          {{tr('form.button.search')}}
+        </button>
+      </fieldset>
+    </form>
+    <table ng-if="$ctrl.data.length > 0" class="table">
+      <thead>
+        <tr>
+          <th>{{tr('person.data.column.name')}}</th>
+          <th>{{tr('person.data.column.address')}}</th>
+          <th>{{tr('person.data.column.birthday')}}</th>
+          <th>{{tr('person.data.column.GWA')}}</th>
+          <th>{{tr('person.data.column.employment')}}</th>
+          <th>{{tr('person.data.column.contacts')}}</th>
+          <th>{{tr('person.data.column.roles')}}</th>
+          <th ng-if="access('ROLE_UPDATE_PERSON')"></th>
+          <th ng-if="access('ROLE_DELETE_PERSON')"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="person in $ctrl.data">
+          <td>
+            {{$ctrl.serializeName(person.name)}}
+          </td>
+          <td>
+            {{$ctrl.serializeAddress(person.address)}}
+          </td>
+          <td>{{person.birthday}}</td>
+          <td>{{person.gwa}}</td>
+          <td>{{person.employmentStatus}}</td>
+          <td>
+            <div ng-repeat="contact in person.contacts">
+                {{contact.contactType}}: {{contact.data}}
+            </div>
+          </td>
+          <td>
+            <div ng-repeat="role in person.roles">
+                {{role.name}}
+            </div>
+          </td>
+          <td ng-if="access('ROLE_UPDATE_PERSON')">
+            <button ng-click="$ctrl.editRow($index)">{{tr('data.form.button.edit')}}</button>
+          </td>
+          <td ng-if="access('ROLE_DELETE_PERSON')">
+            <button ng-click="$ctrl.deleteRow($index)">{{tr('data.form.button.delete')}}</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h5 ng-if="$ctrl.data.length === 0">
+        {{tr('data.noRecordsFound')}}
+    </h5>
+  </div>
+</div>
