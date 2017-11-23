@@ -6,7 +6,9 @@ import java.util.Locale;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.context.MessageSource;
@@ -37,7 +39,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 		List<String> errorMessages = ValidationUtils.localize(errors, messageSource, locale);
 		for (int i = 0; i < errorMessages.size(); i++) {
 			if (i == errorMessages.size() - 1) {
-				logger.warn(errorMessages.get(i), cause);			
+				logger.warn(errorMessages.get(i), cause);
 			}
 			else {
 				logger.warn(errorMessages.get(i));
@@ -47,5 +49,12 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 		body.addAttribute("errors", errorMessages);
 		body.addAttribute("target", target);
 		return handleExceptionInternal(cause, body, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+	}
+
+	@Override
+	protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
+			HttpHeaders headers, HttpStatus status, WebRequest request) {
+		logger.error("Bad request:", ex);
+		return super.handleHttpMessageNotReadable(ex, headers, status, request);
 	}
 }
