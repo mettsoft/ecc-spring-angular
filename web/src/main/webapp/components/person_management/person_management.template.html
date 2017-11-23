@@ -159,7 +159,7 @@
             {{tr('form.button.remove')}}
           </button>
         </div>                           
-        <button ng-click="$ctrl.command.roles.push({id: $ctrl.preload.roleItems[0].idf})">
+        <button ng-click="$ctrl.command.roles.push({id: $ctrl.preload.roleItems[0].id, name: $ctrl.preload.roleItems[0].name})">
           {{tr('form.button.add')}}
         </button>
       </fieldset>
