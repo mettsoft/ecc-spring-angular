@@ -31,21 +31,27 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
 	@ExceptionHandler({ ValidationException.class })
 	protected ResponseEntity<Object> handleValidationException(ValidationException cause, WebRequest request, Locale locale) {
-		ModelMap body = new ModelMap();
-
-		List<ObjectError> errors = cause.getAllErrors();
-		List<String> errorMessages = ValidationUtils.localize(errors, messageSource, locale);
-		for (int i = 0; i < errorMessages.size(); i++) {
-			if (i == errorMessages.size() - 1) {
-				logger.warn(errorMessages.get(i), cause);
+		try {
+			ModelMap body = new ModelMap();
+			List<ObjectError> errors = cause.getAllErrors();
+			List<String> errorMessages = ValidationUtils.localize(errors, messageSource, locale);
+			
+			for (int i = 0; i < errorMessages.size(); i++) {
+				if (i == errorMessages.size() - 1) {
+					logger.warn(errorMessages.get(i), cause);
+				}
+				else {
+					logger.warn(errorMessages.get(i));
+				}
 			}
-			else {
-				logger.warn(errorMessages.get(i));
-			}
+		
+			body.addAttribute("errors", errorMessages);
+			return handleExceptionInternal(cause, body, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);			
 		}
-	
-		body.addAttribute("errors", errorMessages);
-		return handleExceptionInternal(cause, body, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+		catch(Exception exception) {
+			logger.error("Fatal error!", exception);
+			throw exception;
+		}
 	}
 
 	@Override
