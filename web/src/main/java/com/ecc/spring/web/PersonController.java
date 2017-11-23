@@ -46,11 +46,11 @@ public class PersonController {
 
 	@GetMapping
 	public List<PersonDTO> list(
-		@RequestParam(value = "queryLastName", required = false) String lastName,
-		@RequestParam(value = "queryRoleId", required = false) Integer roleId,
-		@RequestParam(value = "queryBirthday", required = false) Date birthday,
-		@RequestParam(value = "queryOrderBy", required = false) String orderBy,
-		@RequestParam(value = "queryOrderType", required = false) String orderType) {
+		@RequestParam(value = "lastName", required = false) String lastName,
+		@RequestParam(value = "roleId", required = false) Integer roleId,
+		@RequestParam(value = "birthday", required = false) Date birthday,
+		@RequestParam(value = "orderBy", required = false) String orderBy,
+		@RequestParam(value = "orderType", required = false) String orderType) {
 		return personService.list(lastName, roleId, birthday, orderBy, orderType);
 	}
 
