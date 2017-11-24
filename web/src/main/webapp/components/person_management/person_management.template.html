@@ -218,7 +218,7 @@
           <label for="query.searchType">
             {{tr('person.data.searchParameters.criteria')}}
           </label>
-          <select id="query.searchType" ng-model="$ctrl.query.searchType">
+          <select id="query.searchType" ng-model="$ctrl.query.searchType" ng-change="$ctrl.onSearchTypeChange($ctrl.query.searchType)">
             <option value="0">
               {{tr('person.data.searchParameters.criteria.lastName')}}
             </option>
