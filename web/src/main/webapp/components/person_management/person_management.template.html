@@ -1,7 +1,7 @@
 <div class="row"> 
   <div class="col-sm-4">
-    <div class="alert alert-danger" ng-if="$ctrl.errorMessages.default">
-      {{$ctrl.errorMessages.default}}
+    <div class="alert alert-danger" ng-repeat="errorMessage in $ctrl.errorMessages.default">
+      {{errorMessage}}
     </div>
     <div class="alert alert-success" ng-if="$ctrl.successMessage">
       {{$ctrl.successMessage}}
