@@ -57,7 +57,7 @@ public class UserController {
 	@ResponseStatus(HttpStatus.CREATED)	
 	public UserDTO create(@Validated @RequestBody UserDTO user, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
-			throw new ValidationException(bindingResult.getAllErrors(), user);
+			throw new ValidationException(bindingResult.getFieldErrors(), user);
 		}
 		try {
 			return userService.create(user);		
@@ -70,7 +70,7 @@ public class UserController {
 	@PutMapping
 	public UserDTO update(@Validated @RequestBody UserDTO user, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
-			throw new ValidationException(bindingResult.getAllErrors(), user);
+			throw new ValidationException(bindingResult.getFieldErrors(), user);
 		}	
 		try {
 			return userService.update(user);

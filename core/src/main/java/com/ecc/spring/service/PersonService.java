@@ -75,7 +75,7 @@ public class PersonService extends AbstractService<Person, PersonDTO> implements
   	validate(person, errors);
 		validateRoles(person.getRoles(), errors);
   	if (errors.hasErrors()) {
-  		throw new ValidationException(errors.getAllErrors(), person);
+  		throw new ValidationException(errors.getFieldErrors(), person);
   	}
   }
 
@@ -335,7 +335,7 @@ public class PersonService extends AbstractService<Person, PersonDTO> implements
 		for (RoleDTO roleDTO: roles) { 
 			Role role = roleDao.get(roleDTO.getName());
 			if (role == null) {
-				errors.reject("role.validation.message.nameNotFound", new Object[] {roleDTO.getName()}, null);
+				errors.rejectValue("roles", "role.validation.message.nameNotFound", new Object[] {roleDTO.getName()}, null);
 			}
 			else {
 				roleDTO.setId(role.getId());
@@ -367,14 +367,14 @@ public class PersonService extends AbstractService<Person, PersonDTO> implements
 	}
 
 	private void validateNumericalContact(String data, Errors errors, Integer matchingDigits, String argument) {
-		ValidationUtils.testNotEmpty(data, null, errors, argument);
-		ValidationUtils.testDigits(data, null, errors, argument);
-		ValidationUtils.testEqualLength(data, null, errors, matchingDigits, argument);
+		ValidationUtils.testNotEmpty(data, "contacts", errors, argument);
+		ValidationUtils.testDigits(data, "contacts", errors, argument);
+		ValidationUtils.testEqualLength(data, "contacts", errors, matchingDigits, argument);
 	}
 
 	private void validateEmail(String email, Errors errors) {
-		ValidationUtils.testNotEmpty(email, null, errors, "localize:person.contactType.email");
-		ValidationUtils.testValidEmail(email, null, errors);
-		ValidationUtils.testMaxLength(email, null, errors, LONG_MAX_CHARACTERS, "localize:person.contactType.email");
+		ValidationUtils.testNotEmpty(email, "contacts", errors, "localize:person.contactType.email");
+		ValidationUtils.testValidEmail(email, "contacts", errors);
+		ValidationUtils.testMaxLength(email, "contacts", errors, LONG_MAX_CHARACTERS, "localize:person.contactType.email");
 	}
 }
