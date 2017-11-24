@@ -73,12 +73,12 @@ public class PersonService extends AbstractService<Person, PersonDTO> implements
 
   	Errors errors = new BindException(person, objectName);
   	validate(person, errors);
-		validateRoles(person.getRoles(), errors);
   	if (errors.hasErrors()) {
   		throw new ValidationException(errors.getFieldErrors(), person);
   	}
   }
 
+	@Transactional
   @Override
   public void validate(Object command, Errors errors) {
   	PersonDTO person = (PersonDTO) command;
@@ -106,6 +106,7 @@ public class PersonService extends AbstractService<Person, PersonDTO> implements
 		}
 
 		validateContacts(person.getContacts(), errors);
+		validateRoles(person.getRoles(), errors);
   }
 
   @Transactional
