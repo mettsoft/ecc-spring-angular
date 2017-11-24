@@ -8,16 +8,15 @@ import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import com.ecc.spring.util.DateUtils;
-
 public class PersonDTO {
 	private Integer id;
 	private NameDTO name;
 	private AddressDTO address;
-	@JsonFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
 	private Date birthday;
 	private BigDecimal GWA;
 	private Boolean currentlyEmployed;
-	@JsonFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
 	private Date dateHired;
 	private List<ContactDTO> contacts;
 	private List<RoleDTO> roles;

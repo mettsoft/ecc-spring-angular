@@ -3,12 +3,6 @@ const DEFAULT_COMMAND = {
   roles: []
 };
 
-function dateToString(object, ...keys) {
-  const command = Object.assign({}, object);
-  keys.forEach(key => command[key] = command[key]? command[key].toISOString().split('T')[0]: undefined);
-  return command;
-}
-
 function stringToDate(object, ...keys) {
   const command = Object.assign({}, object);
   keys.forEach(key => command[key] = command[key]? new Date(command[key]): undefined);
@@ -68,7 +62,7 @@ angular.module('personManagement', ['Authentication', 'ngFileUpload'])
           $http({
             method: method,
             url: '/persons',
-            data: dateToString(command, 'birthday', 'dateHired')
+            data: command
           }).then(response => {
             this.command = Object.assign({}, DEFAULT_COMMAND);
             this.errorMessages = null;
@@ -112,7 +106,7 @@ angular.module('personManagement', ['Authentication', 'ngFileUpload'])
         };
 
         this.search = query => { 
-          $http.get('/persons?' + $httpParamSerializer(dateToString(query, 'birthday')))
+          $http.get('/persons?' + $httpParamSerializer(query))
             .then(response => this.data = response.data);
         };
         this.search(this.query);

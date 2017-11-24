@@ -306,9 +306,9 @@
           <td>
             {{$ctrl.serializeAddress(person.address)}}
           </td>
-          <td>{{person.birthday}}</td>
+          <td>{{person.birthday | date: 'yyyy-MM-dd' }}</td>
           <td>{{person.gwa}}</td>
-          <td>{{person.employmentStatus}}</td>
+          <td>{{person.currentlyEmployed? (person.dateHired | date: 'yyyy-MM-dd') : "No"}}</td>
           <td>
             <div ng-repeat="contact in person.contacts">
                 {{contact.contactType}}: {{contact.data}}

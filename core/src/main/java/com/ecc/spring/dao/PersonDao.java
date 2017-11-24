@@ -33,7 +33,7 @@ public class PersonDao extends AbstractDao<Person> {
 		}
 
 		if (birthday != null) {
-			criteria.add(Restrictions.eq("birthday", birthday));
+			criteria.add(Restrictions.between("birthday", birthday, new Date(birthday.getTime() + 24*60*60*1000)));
 		}
 
 		return criteria.list();	

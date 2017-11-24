@@ -1,5 +1,6 @@
 package com.ecc.spring.web;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -41,7 +42,7 @@ public class PersonController {
 		if (binder.getTarget() != null && personService.supports(binder.getTarget().getClass())) {
 			binder.setValidator(personService);		
 		}
-    binder.registerCustomEditor(Date.class, new CustomDateEditor(DateUtils.DATE_FORMAT, true));
+    binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"), true));
 	}
 
 	@GetMapping
