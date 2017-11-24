@@ -132,10 +132,10 @@ public class PersonService extends AbstractService<Person, PersonDTO> implements
 							person.getName().setLastName(value);
 							break;
 						case "name:firstname": 
-							person.getName().setMiddleName(value);
+							person.getName().setFirstName(value);
 							break;
 						case "name:middlename": 
-							person.getName().setFirstName(value);
+							person.getName().setMiddleName(value);
 							break;
 						case "name:suffix": 
 							person.getName().setSuffix(value);
