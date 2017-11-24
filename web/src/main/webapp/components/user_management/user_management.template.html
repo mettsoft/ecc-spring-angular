@@ -1,7 +1,7 @@
 <div class="row">	
   <div class="col-sm-4">
-    <div class="alert alert-danger" ng-repeat="errorMessage in $ctrl.errorMessages">
-      {{errorMessage}}
+    <div class="alert alert-danger" ng-if="$ctrl.errorMessages.default">
+      {{$ctrl.errorMessages.default}}
     </div>
     <div class="alert alert-success" ng-if="$ctrl.successMessage">
       {{$ctrl.successMessage}}
@@ -14,12 +14,18 @@
           {{tr('user.data.column.username')}}:
         </label>
         <input type="text" id="username" ng-model="$ctrl.command.username" />
+        <div class="text-danger" ng-if="$ctrl.errorMessages.username[0]">
+          {{$ctrl.errorMessages.username[0]}}
+        </div>
       </div>
       <div>      
         <label for="password">
           {{tr('user.form.label.password')}}:
         </label>
         <input type="password" id="password" ng-model="$ctrl.command.password" />
+        <div class="text-danger" ng-if="$ctrl.errorMessages.password[0]">
+          {{$ctrl.errorMessages.password[0]}}
+        </div>
         <div ng-if="$ctrl.command.id">{{tr('user.form.label.passwordHint')}}</div>
       </div>
       <h4>Permissions</h4>

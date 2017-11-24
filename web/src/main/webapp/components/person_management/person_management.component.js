@@ -56,7 +56,7 @@ angular.module('personManagement', ['Authentication', 'ngFileUpload'])
               this.errorMessages = null;
               this.successMessage = $scope.tr('person.successMessage.delete', this.serializeName(person.name));
             }).catch(response => {
-              this.errorMessages = response.data.errors;
+              this.errorMessages = response.data;
               this.successMessage = null;
             });
           }
@@ -80,7 +80,7 @@ angular.module('personManagement', ['Authentication', 'ngFileUpload'])
               this.successMessage = $scope.tr('person.successMessage.update', this.serializeName(command.name));
             }
           }).catch(response => {
-            this.errorMessages = response.data.errors;
+            this.errorMessages = response.data;
             this.successMessage = null;
           });
         };
@@ -94,7 +94,7 @@ angular.module('personManagement', ['Authentication', 'ngFileUpload'])
             this.successMessage = $scope.tr('person.successMessage.create', this.serializeName(response.data.name));
             this.data.push(response.data);
           }).catch(response => {
-            this.errorMessages = response.data.errors;
+            this.errorMessages = response.data;
             this.successMessage = null;
           });
         };

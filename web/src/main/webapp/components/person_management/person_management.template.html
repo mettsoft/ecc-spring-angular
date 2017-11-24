@@ -1,7 +1,7 @@
 <div class="row"> 
   <div class="col-sm-4">
-    <div class="alert alert-danger" ng-repeat="errorMessage in $ctrl.errorMessages">
-      {{errorMessage}}
+    <div class="alert alert-danger" ng-if="$ctrl.errorMessages.default">
+      {{$ctrl.errorMessages.default}}
     </div>
     <div class="alert alert-success" ng-if="$ctrl.successMessage">
       {{$ctrl.successMessage}}
@@ -35,31 +35,46 @@
           <label for="name.title">
             {{tr('person.form.label.name.title')}}:
           </label>
-          <input type="text" id="name.title" ng-model="$ctrl.command.name.title" />
+          <input type="text" id="name.title" ng-model="$ctrl.command.name.title" />      
+          <div class="text-danger" ng-if="$ctrl.errorMessages['name.title'][0]">
+            {{$ctrl.errorMessages['name.title'][0]}}
           </div>
+        </div>
         <div>
           <label for="name.lastName">
             {{tr('person.form.label.name.lastName')}}:
           </label>
-          <input type="text" id="name.lastName" ng-model="$ctrl.command.name.lastName" />
+          <input type="text" id="name.lastName" ng-model="$ctrl.command.name.lastName" /> 
+          <div class="text-danger" ng-if="$ctrl.errorMessages['name.lastName'][0]">
+            {{$ctrl.errorMessages['name.lastName'][0]}}
+          </div>
         </div>
         <div>
           <label for="name.firstName">
             {{tr('person.form.label.name.firstName')}}:
           </label>
-          <input type="text" id="name.firstName" ng-model="$ctrl.command.name.firstName" />
+          <input type="text" id="name.firstName" ng-model="$ctrl.command.name.firstName" /> 
+          <div class="text-danger" ng-if="$ctrl.errorMessages['name.firstName'][0]">
+            {{$ctrl.errorMessages['name.firstName'][0]}}
+          </div>
         </div>
         <div>
           <label for="name.middleName">
             {{tr('person.form.label.name.middleName')}}:
           </label>
-          <input type="text" id="name.middleName" ng-model="$ctrl.command.name.middleName" />
+          <input type="text" id="name.middleName" ng-model="$ctrl.command.name.middleName" /> 
+          <div class="text-danger" ng-if="$ctrl.errorMessages['name.middleName'][0]">
+            {{$ctrl.errorMessages['name.middleName'][0]}}
+          </div>
         </div>
         <div>
           <label for="name.suffix">
             {{tr('person.form.label.name.suffix')}}:
           </label>
-          <input type="text" id="name.suffix" ng-model="$ctrl.command.name.suffix" />
+          <input type="text" id="name.suffix" ng-model="$ctrl.command.name.suffix" /> 
+          <div class="text-danger" ng-if="$ctrl.errorMessages['name.suffix'][0]">
+            {{$ctrl.errorMessages['name.suffix'][0]}}
+          </div>
         </div>
       </fieldset>
       <fieldset>
@@ -70,25 +85,37 @@
           <label for="address.streetNumber">
             {{tr('person.form.label.address.streetNumber')}}:
           </label>
-          <input type="text" id="address.streetNumber" ng-model="$ctrl.command.address.streetNumber" /> 
+          <input type="text" id="address.streetNumber" ng-model="$ctrl.command.address.streetNumber" />  
+          <div class="text-danger" ng-if="$ctrl.errorMessages['address.streetNumber'][0]">
+            {{$ctrl.errorMessages['address.streetNumber'][0]}}
+          </div>
         </div>
         <div>
           <label for="address.barangay">
             {{tr('person.form.label.address.barangay')}}:
           </label>
           <input type="text" id="address.barangay" ng-model="$ctrl.command.address.barangay" /> 
+          <div class="text-danger" ng-if="$ctrl.errorMessages['address.barangay'][0]">
+            {{$ctrl.errorMessages['address.barangay'][0]}}
+          </div>
         </div>
         <div>
           <label for="address.municipality">
             {{tr('person.form.label.address.municipality')}}:
           </label>
           <input type="text" id="address.municipality" ng-model="$ctrl.command.address.municipality" /> 
+          <div class="text-danger" ng-if="$ctrl.errorMessages['address.municipality'][0]">
+            {{$ctrl.errorMessages['address.municipality'][0]}}
+          </div>
         </div>
         <div>
           <label for="address.zipCode">
             {{tr('person.form.label.address.zipCode')}}:
           </label>
           <input type="number" id="address.zipCode" ng-model="$ctrl.command.address.zipCode" min="0" /> 
+          <div class="text-danger" ng-if="$ctrl.errorMessages['address.zipCode'][0]">
+            {{$ctrl.errorMessages['address.zipCode'][0]}}
+          </div>
         </div>
       </fieldset>
       <fieldset>
@@ -100,12 +127,19 @@
             {{tr('person.form.label.otherInformation.birthday')}}:
           </label>
           <input type="date" id="birthday" ng-model="$ctrl.command.birthday" />   
+          <div class="text-danger" ng-if="$ctrl.errorMessages.birthday[0]">
+            {{$ctrl.errorMessages.birthday[0]}}
+          </div>
         </div>
         <div>
           <label for="GWA">
             {{tr('person.form.label.otherInformation.GWA')}}:
           </label>
-          <input type="number" id="GWA" ng-model="$ctrl.command.gwa" min="1" max="5" step="0.001" /> 
+          <input type="number" id="GWA" ng-model="$ctrl.command.gwa" min="1" max="5" step="0.001" />
+          <div class="text-danger" ng-if="$ctrl.errorMessages.GWA[0]">
+            {{$ctrl.errorMessages.GWA[0]}}
+          </div>
+
         </div>
         <div>
           <label for="currentlyEmployed">
@@ -118,6 +152,9 @@
             {{tr('person.form.label.otherInformation.dateHired')}}:
           </label>
           <input type="date" id="dateHired" ng-model="$ctrl.command.dateHired" ng-disabled="!$ctrl.command.currentlyEmployed"/> 
+          <div class="text-danger" ng-if="$ctrl.errorMessages.dateHired[0]">
+            {{$ctrl.errorMessages.dateHired[0]}}
+          </div>
         </div>
       </fieldset>
       <fieldset>
@@ -136,10 +173,13 @@
                 {{tr('person.contactType.mobile')}}
               </option>
           </select>
-          <button ng-click="$ctrl.command.contacts.splice($index, 1)">
+          <button ng-click="$ctrl.command.contacts.splice($index, 1) && $ctrl.errorMessages.contacts.splice($index, 1)">
             {{tr('form.button.remove')}}
           </button>
           <input type="text" ng-model="contact.data">
+          <div class="text-danger" ng-if="$ctrl.errorMessages.contacts[$index]">
+            {{$ctrl.errorMessages.contacts[$index]}}
+          </div>
         </div>
         <button ng-click="$ctrl.command.contacts.push({contactType: 'Landline'})">
           {{tr('form.button.add')}}
