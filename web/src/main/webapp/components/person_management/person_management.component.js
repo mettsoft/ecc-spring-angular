@@ -46,7 +46,7 @@ angular.module('personManagement', ['Authentication', 'ngFileUpload'])
           const person = this.data[index];
           if (confirm($scope.tr('person.data.form.button.deleteConfirmation', this.serializeName(person.name)))) {
             $http.delete(`/persons/${person.id}`).then(response => {
-              this.command = Object.assign({}, DEFAULT_COMMAND);
+              this.command = angular.copy(DEFAULT_COMMAND);
               this.data.splice(index, 1);
               this.errorMessages = null;
               this.successMessage = $scope.tr('person.successMessage.delete', this.serializeName(person.name));
@@ -64,7 +64,7 @@ angular.module('personManagement', ['Authentication', 'ngFileUpload'])
             url: '/persons',
             data: command
           }).then(response => {
-            this.command = Object.assign({}, DEFAULT_COMMAND);
+            this.command = angular.copy(DEFAULT_COMMAND);
             this.errorMessages = null;
             if (!command.id) {
               this.successMessage = $scope.tr('person.successMessage.create', this.serializeName(command.name));
@@ -97,7 +97,7 @@ angular.module('personManagement', ['Authentication', 'ngFileUpload'])
         };
 
         // Initialization
-        this.command = Object.assign({}, DEFAULT_COMMAND);
+        this.command = angular.copy(DEFAULT_COMMAND);
         this.preload = {};
         this.query = {
           searchType: '0',
