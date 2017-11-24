@@ -73,12 +73,12 @@ public class PersonService extends AbstractService<Person, PersonDTO> implements
 
   	Errors errors = new BindException(person, objectName);
   	validate(person, errors);
-		validateRoles(person.getRoles(), errors);
   	if (errors.hasErrors()) {
   		throw new ValidationException(errors.getFieldErrors(), person);
   	}
   }
 
+	@Transactional
   @Override
   public void validate(Object command, Errors errors) {
   	PersonDTO person = (PersonDTO) command;
@@ -106,6 +106,7 @@ public class PersonService extends AbstractService<Person, PersonDTO> implements
 		}
 
 		validateContacts(person.getContacts(), errors);
+		validateRoles(person.getRoles(), errors);
   }
 
   @Transactional
@@ -332,10 +333,11 @@ public class PersonService extends AbstractService<Person, PersonDTO> implements
 	}
 
 	private void validateRoles(List<RoleDTO> roles, Errors errors) {
-		for (RoleDTO roleDTO: roles) { 
+		for (int i = 0; i < roles.size(); i++) { 
+			RoleDTO roleDTO = roles.get(i);
 			Role role = roleDao.get(roleDTO.getName());
 			if (role == null) {
-				errors.rejectValue("roles", "role.validation.message.nameNotFound", new Object[] {roleDTO.getName()}, null);
+				errors.rejectValue(String.format("roles[%d]", i), "role.validation.message.nameNotFound", new Object[] {roleDTO.getName()}, null);
 			}
 			else {
 				roleDTO.setId(role.getId());
@@ -351,13 +353,13 @@ public class PersonService extends AbstractService<Person, PersonDTO> implements
 			if (contact.getContactType() != null) {
 				switch(contact.getContactType()) {
 					case "Landline":
-						validateNumericalContact(contact.getData(), errors, LANDLINE_DIGITS, "localize:person.contactType.landline"); 
+						validateNumericalContact(i, contact.getData(), errors, LANDLINE_DIGITS, "localize:person.contactType.landline"); 
 						break;
 					case "Mobile":
-						validateNumericalContact(contact.getData(), errors, MOBILE_NUMBER_DIGITS, "localize:person.contactType.mobile"); 
+						validateNumericalContact(i, contact.getData(), errors, MOBILE_NUMBER_DIGITS, "localize:person.contactType.mobile"); 
 						break;
 					case "Email":
-						validateEmail(contact.getData(), errors);
+						validateEmail(i, contact.getData(), errors);
 						break;
 					default: 
 						errors.reject("person.validation.contactType.invalid", new Object[] {contact.getContactType()}, null);
@@ -366,15 +368,15 @@ public class PersonService extends AbstractService<Person, PersonDTO> implements
 		}
 	}
 
-	private void validateNumericalContact(String data, Errors errors, Integer matchingDigits, String argument) {
-		ValidationUtils.testNotEmpty(data, "contacts", errors, argument);
-		ValidationUtils.testDigits(data, "contacts", errors, argument);
-		ValidationUtils.testEqualLength(data, "contacts", errors, matchingDigits, argument);
+	private void validateNumericalContact(Integer index, String data, Errors errors, Integer matchingDigits, String argument) {
+		ValidationUtils.testNotEmpty(data, String.format("contacts[%d]", index), errors, argument);
+		ValidationUtils.testDigits(data, String.format("contacts[%d]", index), errors, argument);
+		ValidationUtils.testEqualLength(data, String.format("contacts[%d]", index), errors, matchingDigits, argument);
 	}
 
-	private void validateEmail(String email, Errors errors) {
-		ValidationUtils.testNotEmpty(email, "contacts", errors, "localize:person.contactType.email");
-		ValidationUtils.testValidEmail(email, "contacts", errors);
-		ValidationUtils.testMaxLength(email, "contacts", errors, LONG_MAX_CHARACTERS, "localize:person.contactType.email");
+	private void validateEmail(Integer index, String email, Errors errors) {
+		ValidationUtils.testNotEmpty(email, String.format("contacts[%d]", index), errors, "localize:person.contactType.email");
+		ValidationUtils.testValidEmail(email, String.format("contacts[%d]", index), errors);
+		ValidationUtils.testMaxLength(email, String.format("contacts[%d]", index), errors, LONG_MAX_CHARACTERS, "localize:person.contactType.email");
 	}
 }
