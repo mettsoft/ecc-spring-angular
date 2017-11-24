@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.FieldError;
 
 import com.ecc.spring.util.ValidationException;
@@ -30,6 +31,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
 	@ExceptionHandler({ ValidationException.class })
 	protected ResponseEntity<Object> handleValidationException(ValidationException cause, WebRequest request, Locale locale) {
+		ModelMap body = new ModelMap();
 		try {
 			List<FieldError> errors = cause.getFieldErrors();
 			Map<String, List<String>> errorMessages = ValidationUtils.localize(errors, messageSource, locale);			
@@ -37,7 +39,10 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 				logger.warn(entry.toString());
 			}
 			logger.warn(null, cause);
-			return handleExceptionInternal(cause, errorMessages, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);			
+
+			body.addAttribute("target", cause.getTarget());
+			body.addAttribute("errors", errorMessages);
+			return handleExceptionInternal(cause, body, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);			
 		}
 		catch(Exception exception) {
 			logger.error("Fatal error!", exception);
