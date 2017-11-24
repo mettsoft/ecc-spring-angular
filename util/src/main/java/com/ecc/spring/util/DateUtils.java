@@ -18,6 +18,11 @@ public class DateUtils {
  	}
 
  	public static String toString(Date date) {
- 		return DATE_FORMAT.format(date);
+    try {
+   		return DATE_FORMAT.format(date);    
+    }
+    catch (NullPointerException cause) {
+      return null;
+    }
  	}
 }
