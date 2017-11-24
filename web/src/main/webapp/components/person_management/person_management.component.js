@@ -95,6 +95,8 @@ angular.module('personManagement', ['Authentication', 'ngFileUpload'])
             this.data.push(response.data);
           }).catch(response => {
             this.errorMessages = response.data.errors;
+            this.errorMessages.default = $scope.tr('person.validation.message.uploadError');
+            this.command = response.data.target;
             this.successMessage = null;
           });
         };
