@@ -56,7 +56,7 @@ public class RoleController {
 	@ResponseStatus(HttpStatus.CREATED)	
 	public RoleDTO create(@Validated @RequestBody RoleDTO role, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
-			throw new ValidationException(bindingResult.getAllErrors(), role);
+			throw new ValidationException(bindingResult.getFieldErrors(), role);
 		}
 		try {
 			return roleService.create(role);		
@@ -69,7 +69,7 @@ public class RoleController {
 	@PutMapping
 	public RoleDTO update(@Validated @RequestBody RoleDTO role, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
-			throw new ValidationException(bindingResult.getAllErrors(), role);
+			throw new ValidationException(bindingResult.getFieldErrors(), role);
 		}	
 		try {
 			return roleService.update(role);

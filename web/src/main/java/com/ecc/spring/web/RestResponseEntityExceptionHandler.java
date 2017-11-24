@@ -2,13 +2,13 @@ package com.ecc.spring.web;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.context.MessageSource;
@@ -16,8 +16,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-import org.springframework.ui.ModelMap;
-import org.springframework.validation.ObjectError;
+import org.springframework.validation.FieldError;
 
 import com.ecc.spring.util.ValidationException;
 import com.ecc.spring.util.ValidationUtils;
@@ -32,21 +31,13 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 	@ExceptionHandler({ ValidationException.class })
 	protected ResponseEntity<Object> handleValidationException(ValidationException cause, WebRequest request, Locale locale) {
 		try {
-			ModelMap body = new ModelMap();
-			List<ObjectError> errors = cause.getAllErrors();
-			List<String> errorMessages = ValidationUtils.localize(errors, messageSource, locale);
-			
-			for (int i = 0; i < errorMessages.size(); i++) {
-				if (i == errorMessages.size() - 1) {
-					logger.warn(errorMessages.get(i), cause);
-				}
-				else {
-					logger.warn(errorMessages.get(i));
-				}
+			List<FieldError> errors = cause.getFieldErrors();
+			Map<String, List<String>> errorMessages = ValidationUtils.localize(errors, messageSource, locale);			
+			for (Map.Entry entry : errorMessages.entrySet()) {
+				logger.warn(entry.toString());
 			}
-		
-			body.addAttribute("errors", errorMessages);
-			return handleExceptionInternal(cause, body, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);			
+			logger.warn(null, cause);
+			return handleExceptionInternal(cause, errorMessages, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);			
 		}
 		catch(Exception exception) {
 			logger.error("Fatal error!", exception);

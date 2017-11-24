@@ -1,17 +1,19 @@
 package com.ecc.spring.util;
 
-import java.util.List;
 import java.util.Arrays;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Locale;
-import java.util.stream.Collectors;
+import java.util.Map;
+import java.util.LinkedHashMap;
 import java.math.BigDecimal;
 import java.util.regex.Pattern;
 
-import org.springframework.context.MessageSource;
-import org.springframework.validation.Errors;
-import org.springframework.validation.ObjectError;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.context.MessageSource;
+import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
 
 public class ValidationUtils {
 	private static final Pattern PATTERN = Pattern.compile("^[0-9]+$");
@@ -23,11 +25,26 @@ public class ValidationUtils {
 	private static final String MINIMUM_ERROR_MESSAGE_TEMPLATE = "{1} cannot be less than {0}.";
 	private static final String MAXIMUM_ERROR_MESSAGE_TEMPLATE = "{1} cannot be greater than {0}.";
 
-	public static List<String> localize(List<ObjectError> errors, MessageSource messageSource, Locale locale) {
-		return errors.stream()
-				.map(t -> messageSource.getMessage(t.getCode(), 
-					localizeArguments(t.getArguments(), messageSource, locale), locale))
-				.collect(Collectors.toList());
+	public static Map<String, List<String>> localize(List<FieldError> errors, MessageSource messageSource, Locale locale) {
+		Map<String, List<String>> result = new LinkedHashMap<>(); 
+
+		for (FieldError error : errors) {
+			if (!result.containsKey(error.getField())) {
+				result.put(error.getField(), new ArrayList<>());
+			}
+			result.get(error.getField()).add(
+				messageSource.getMessage(
+					error.getCode(), 
+					localizeArguments(
+						error.getArguments(), 
+						messageSource, 
+						locale
+					), 
+					locale
+				)
+			);
+		}
+		return result;
 	}
 
 	private static Object[] localizeArguments(Object[] arguments, MessageSource messageSource, Locale locale) {

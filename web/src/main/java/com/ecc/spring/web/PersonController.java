@@ -68,7 +68,7 @@ public class PersonController {
 	@ResponseStatus(HttpStatus.CREATED)	
 	public PersonDTO create(@Validated @RequestBody PersonDTO person, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
-			throw new ValidationException(bindingResult.getAllErrors(), person);
+			throw new ValidationException(bindingResult.getFieldErrors(), person);
 		}
 		return personService.create(person);
 	}
@@ -84,7 +84,7 @@ public class PersonController {
 	@PutMapping
 	public PersonDTO update(@Validated @RequestBody PersonDTO person, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
-			throw new ValidationException(bindingResult.getAllErrors(), person);
+			throw new ValidationException(bindingResult.getFieldErrors(), person);
 		}	
 		return personService.update(person);
 	}
