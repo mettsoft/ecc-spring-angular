@@ -21,6 +21,18 @@ angular.module('personManagement', ['Authentication', 'ngFileUpload'])
         // Bind listener to a global event.
         $rootScope.onLocaleChange = locale => this.successMessage = this.errorMessages = null;
 
+        // Helper methods
+        const decodeErrors = (errors, target, ...properties) => {
+          properties.forEach(property => {
+            for (let i = 0; i < target[property].length; i++) {
+              if (!this.errorMessages[property]) {
+                this.errorMessages[property] = {};
+              }
+              this.errorMessages[property][i] = this.errorMessages[`${property}[${i}]`];              
+            }
+          });
+        };
+
         // Convenience methods.
         this.serializeName = name => [
           name.title, 
@@ -76,6 +88,7 @@ angular.module('personManagement', ['Authentication', 'ngFileUpload'])
             }
           }).catch(response => {
             this.errorMessages = response.data.errors;
+            decodeErrors(response.data.errors, response.data.target, 'contacts', 'roles');
             this.successMessage = null;
           });
         };
@@ -94,6 +107,7 @@ angular.module('personManagement', ['Authentication', 'ngFileUpload'])
               this.errorMessages.default = [];
             }
             this.errorMessages.default.push($scope.tr('person.validation.message.uploadError'));
+            decodeErrors(response.data.errors, response.data.target, 'contacts', 'roles');
             this.command = stringToDate(response.data.target, "birthday", "dateHired");
             this.successMessage = null;
           });

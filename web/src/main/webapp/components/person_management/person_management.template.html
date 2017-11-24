@@ -195,9 +195,12 @@
               {{role.name}}
             </option>
           </select>
-          <button ng-click="$ctrl.command.roles.splice($index, 1)">
+          <button ng-click="$ctrl.command.roles.splice($index, 1) && $ctrl.errorMessages.roles.splice($index, 1)">
             {{tr('form.button.remove')}}
           </button>
+          <div class="text-danger" ng-if="$ctrl.errorMessages.roles[$index]">
+            {{$ctrl.errorMessages.roles[$index]}}
+          </div>
         </div>                           
         <button ng-click="$ctrl.command.roles.push({id: $ctrl.preload.roleItems[0].id, name: $ctrl.preload.roleItems[0].name})">
           {{tr('form.button.add')}}
