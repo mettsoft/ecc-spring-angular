@@ -90,8 +90,11 @@ angular.module('personManagement', ['Authentication', 'ngFileUpload'])
             this.data.push(response.data);
           }).catch(response => {
             this.errorMessages = response.data.errors;
-            this.errorMessages.default = $scope.tr('person.validation.message.uploadError');
-            this.command = response.data.target;
+            if (!this.errorMessages.default) {
+              this.errorMessages.default = [];
+            }
+            this.errorMessages.default.push($scope.tr('person.validation.message.uploadError'));
+            this.command = stringToDate(response.data.target, "birthday", "dateHired");
             this.successMessage = null;
           });
         };
