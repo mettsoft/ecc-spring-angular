@@ -22,7 +22,7 @@ angular.module('roleManagement', ['Authentication'])
               this.errorMessages = null;
               this.successMessage = $scope.tr('role.successMessage.delete', role.name);
             }).catch(response => {
-              this.errorMessages = response.data;
+              this.errorMessages = response.data.errors;
               this.successMessage = null;
             });
           }
@@ -50,7 +50,7 @@ angular.module('roleManagement', ['Authentication'])
               }
             }
           }).catch(response => {
-            this.errorMessages = response.data;
+            this.errorMessages = response.data.errors;
             this.successMessage = null;
           });
         };

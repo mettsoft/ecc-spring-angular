@@ -40,7 +40,7 @@ angular.module('userManagement', ['Authentication'])
               this.errorMessages = null;
               this.successMessage = $scope.tr('user.successMessage.delete', user.username);
             }).catch(response => {
-              this.errorMessages = response.data;
+              this.errorMessages = response.data.errors;
               this.successMessage = null;
             });
           }
@@ -71,7 +71,7 @@ angular.module('userManagement', ['Authentication'])
               this.successMessage = $scope.tr('user.successMessage.update', command.username);
             }
           }).catch(response => {
-            this.errorMessages = response.data;
+            this.errorMessages = response.data.errors;
             this.successMessage = null;
           });
         };
