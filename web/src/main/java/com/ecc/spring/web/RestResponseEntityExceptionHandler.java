@@ -38,7 +38,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 			for (Map.Entry entry : errorMessages.entrySet()) {
 				logger.warn(entry.toString());
 			}
-			logger.warn(null, cause);
+			logger.warn("Stack Trace:", cause);
 
 			body.addAttribute("target", cause.getTarget());
 			body.addAttribute("errors", errorMessages);
