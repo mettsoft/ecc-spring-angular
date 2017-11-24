@@ -107,8 +107,4 @@ public class PersonDTO {
 	public void setRoles(List<RoleDTO> roles) {
 		this.roles = roles;
 	}
-
-	public String getEmploymentStatus() {
-		return currentlyEmployed? DateUtils.toString(dateHired): "No";
-	}
 }
