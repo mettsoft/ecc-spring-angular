@@ -190,7 +190,7 @@
           {{tr('person.form.label.roleAssignments')}}:
         </legend>
         <div ng-repeat="role in $ctrl.command.roles">
-          <select ng-model="role.id">
+          <select ng-model="role.id" ng-click="role.name = $ctrl.preload.roleHash[role.id].name">
             <option ng-repeat="role in $ctrl.preload.roleItems" ng-value="{{role.id}}">
               {{role.name}}
             </option>

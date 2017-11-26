@@ -127,6 +127,11 @@ angular.module('personManagement', ['Authentication', 'ngFileUpload'])
             .then(response => this.data = response.data);
         };
         this.search(this.query);
-        $http.get('/roles').then(response => this.preload.roleItems = response.data);
+        $http.get('/roles').then(response => {
+          this.preload.roleItems = response.data;
+          this.preload.roleHash = response.data.reduce((acc, role) => Object.assign(acc, {
+            [role.id]: role
+          }), {});
+        });
       }]
   });
