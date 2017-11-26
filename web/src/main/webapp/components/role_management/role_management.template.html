@@ -13,8 +13,8 @@
         {{tr('role.form.label.name')}}:
       </label>
       <input type="text" id="name" ng-model="$ctrl.command.name" />
-      <div class="text-danger" ng-if="$ctrl.errorMessages.name[0]">
-        {{$ctrl.errorMessages.name[0]}}
+      <div class="text-danger" ng-repeat="errorMessage in $ctrl.errorMessages.name">
+        {{errorMessage}}
       </div>
       <button ng-click="$ctrl.onCommandSubmit($ctrl.command)">
         {{tr('form.button.submit')}}

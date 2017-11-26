@@ -14,8 +14,8 @@
           {{tr('user.data.column.username')}}:
         </label>
         <input type="text" id="username" ng-model="$ctrl.command.username" />
-        <div class="text-danger" ng-if="$ctrl.errorMessages.username[0]">
-          {{$ctrl.errorMessages.username[0]}}
+        <div class="text-danger" ng-repeat="errorMessage in $ctrl.errorMessages.username">
+          {{errorMessage}}
         </div>
       </div>
       <div>      
@@ -23,8 +23,8 @@
           {{tr('user.form.label.password')}}:
         </label>
         <input type="password" id="password" ng-model="$ctrl.command.password" />
-        <div class="text-danger" ng-if="$ctrl.errorMessages.password[0]">
-          {{$ctrl.errorMessages.password[0]}}
+        <div class="text-danger" ng-repeat="errorMessage in $ctrl.errorMessages.password">
+          {{errorMessage}}
         </div>
         <div ng-if="$ctrl.command.id">{{tr('user.form.label.passwordHint')}}</div>
       </div>
