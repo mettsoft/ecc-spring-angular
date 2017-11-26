@@ -98,9 +98,11 @@ angular.module('personManagement', ['Authentication', 'ngFileUpload'])
             url: '/persons/upload',
             data: {file: file}
           }).then(response => {
-            this.file = null;
+            this.command = angular.copy(DEFAULT_COMMAND);
+            this.errorMessages = null;
             this.successMessage = $scope.tr('person.successMessage.create', this.serializeName(response.data.name));
             this.data.push(response.data);
+            this.file = null;
           }).catch(response => {
             this.errorMessages = response.data.errors;
             if (!this.errorMessages.default) {
