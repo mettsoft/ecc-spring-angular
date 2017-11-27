@@ -11,7 +11,10 @@ angular.module('roleManagement', ['Authentication'])
         $rootScope.onLocaleChange = locale => this.successMessage = this.errorMessages = null;
 
         // Bind listeners to local events.
-        this.editRow = index => this.command = Object.assign({index: index}, this.data[index]);
+        this.editRow = index => { 
+          this.errorMessages = this.successMessage = null;
+          this.command = Object.assign({index: index}, this.data[index])
+        };
 
         this.deleteRow = index => {
           let role = this.data[index];

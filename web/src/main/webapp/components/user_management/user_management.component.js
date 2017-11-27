@@ -22,6 +22,7 @@ angular.module('userManagement', ['Authentication'])
 
         // Bind listeners to local events.
         this.editRow = index => {
+          this.errorMessages = this.successMessage = null;
           this.command = Object.assign({}, this.data[index], {
             index: index, 
             allowEmptyPassword: true,

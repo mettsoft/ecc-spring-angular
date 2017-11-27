@@ -52,7 +52,10 @@ angular.module('personManagement', ['Authentication', 'ngFileUpload'])
 
         // Bind listeners to local events.
         this.onSearchTypeChange = searchType => this.query.lastName = this.query.roleId = this.query.birthday = "";
-        this.editRow = index => this.command = Object.assign({index: index}, stringToDate(this.data[index], 'birthday', 'dateHired'));
+        this.editRow = index => {
+          this.errorMessages = this.successMessage = null;
+          this.command = Object.assign({index: index}, stringToDate(this.data[index], 'birthday', 'dateHired'));
+        };
 
         this.deleteRow = index => {
           const person = this.data[index];
